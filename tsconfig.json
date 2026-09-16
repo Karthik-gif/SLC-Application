@@ -1,0 +1,4 @@
+{
+  "//": "Each package is typechecked on its own; see the typecheck script in package.json. There are deliberately no project references: nothing in this repo emits (Vite consumes the packages as TypeScript source), and a composite project is not allowed to set noEmit.",
+  "files": []
+}

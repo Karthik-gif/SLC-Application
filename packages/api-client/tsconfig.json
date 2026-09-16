@@ -1,0 +1,11 @@
+{
+  "//": "Browser-facing source. types:[] keeps Node globals out of it deliberately, so this project excludes the tests; they are typechecked by tsconfig.test.json.",
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2023", "DOM"],
+    "jsx": "react-jsx",
+    "types": []
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.test.ts"]
+}

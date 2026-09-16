@@ -1,0 +1,868 @@
+{
+  "meta": {
+    "title": "Trade Flow Excel Upload",
+    "version": "v12",
+    "sourceWorkbook": "RICE TF (1).XLSX",
+    "generatedDate": "2026-09-08"
+  },
+  "uiConfig": {
+    "maxFileMb": 50,
+    "defaultPageSize": 10
+  },
+  "masterData": {
+    "businessUnits": [
+      {
+        "code": "B01",
+        "name": "GRAINS"
+      },
+      {
+        "code": "B02",
+        "name": "RICE"
+      },
+      {
+        "code": "B03",
+        "name": "COTTON"
+      },
+      {
+        "code": "B05",
+        "name": "EDIBLE OIL"
+      },
+      {
+        "code": "B06",
+        "name": "RUBBER"
+      },
+      {
+        "code": "B10",
+        "name": "FERTILIZER"
+      }
+    ],
+    "tfTypes": [
+      {
+        "code": "CONTAINER",
+        "name": "Container"
+      },
+      {
+        "code": "BULK",
+        "name": "Bulk"
+      }
+    ]
+  },
+  "template": {
+    "fileName": "Trade_Flow_Template.xlsx",
+    "sheetName": "Sheet1",
+    "headers": [
+      "Trade Flow ID",
+      "TF Split ID",
+      "TF Upload Date",
+      "Business Unit Name",
+      "Operator",
+      "BL- Vessel Name",
+      "BU Commodity",
+      "P - Contract Number",
+      "Purchase Incoterms",
+      "Payment terms - Purchase Side",
+      "Banks-Purchase Leg-Seller Ba",
+      "Banks-Purchase Leg-Buyer Bank",
+      "S Contract Number",
+      "Sales Incoterms",
+      "Payment terms - Sales Side",
+      "Banks-Sale Leg-Seller Bank",
+      "Banks-Sale Leg-Buyer Bank",
+      "OGA Title From - Date",
+      "OGA Title Till - Date",
+      "Quantity",
+      "Contract Price",
+      "CMP (MT)",
+      "Contract Amt(USD)",
+      "Port of Loading",
+      "Port of Destination",
+      "Sailing Date",
+      "BL Number",
+      "Number of Days",
+      "ETA at Discharge Port",
+      "Consignee on BL",
+      "Notify Party",
+      "LC details in BL",
+      "Origin Entity",
+      "Supplier- Olam Destination",
+      "Buyer- 3P Destination",
+      "Avail 1/3 OB TSF From",
+      "Avail 1/3 OB TSF Till",
+      "Avail 3/3 OB TSF From",
+      "Avail 3/3 OB TSF Till",
+      "OGBS Remark",
+      "BL Receipt date",
+      "Blocked Status Desc",
+      "OGBS Status Desc",
+      "POL Country",
+      "POD Country"
+    ],
+    "columns": [
+      {
+        "index": 0,
+        "name": "Trade Flow ID",
+        "type": "text"
+      },
+      {
+        "index": 1,
+        "name": "TF Split ID",
+        "type": "text"
+      },
+      {
+        "index": 2,
+        "name": "TF Upload Date",
+        "type": "date"
+      },
+      {
+        "index": 3,
+        "name": "Business Unit Name",
+        "type": "text"
+      },
+      {
+        "index": 4,
+        "name": "Operator",
+        "type": "text"
+      },
+      {
+        "index": 5,
+        "name": "BL- Vessel Name",
+        "type": "text"
+      },
+      {
+        "index": 6,
+        "name": "BU Commodity",
+        "type": "text"
+      },
+      {
+        "index": 7,
+        "name": "P - Contract Number",
+        "type": "text"
+      },
+      {
+        "index": 8,
+        "name": "Purchase Incoterms",
+        "type": "text"
+      },
+      {
+        "index": 9,
+        "name": "Payment terms - Purchase Side",
+        "type": "text"
+      },
+      {
+        "index": 10,
+        "name": "Banks-Purchase Leg-Seller Ba",
+        "type": "text"
+      },
+      {
+        "index": 11,
+        "name": "Banks-Purchase Leg-Buyer Bank",
+        "type": "text"
+      },
+      {
+        "index": 12,
+        "name": "S Contract Number",
+        "type": "text"
+      },
+      {
+        "index": 13,
+        "name": "Sales Incoterms",
+        "type": "text"
+      },
+      {
+        "index": 14,
+        "name": "Payment terms - Sales Side",
+        "type": "text"
+      },
+      {
+        "index": 15,
+        "name": "Banks-Sale Leg-Seller Bank",
+        "type": "text"
+      },
+      {
+        "index": 16,
+        "name": "Banks-Sale Leg-Buyer Bank",
+        "type": "text"
+      },
+      {
+        "index": 17,
+        "name": "OGA Title From - Date",
+        "type": "date"
+      },
+      {
+        "index": 18,
+        "name": "OGA Title Till - Date",
+        "type": "date"
+      },
+      {
+        "index": 19,
+        "name": "Quantity",
+        "type": "number"
+      },
+      {
+        "index": 20,
+        "name": "Contract Price",
+        "type": "number"
+      },
+      {
+        "index": 21,
+        "name": "CMP (MT)",
+        "type": "number"
+      },
+      {
+        "index": 22,
+        "name": "Contract Amt(USD)",
+        "type": "number"
+      },
+      {
+        "index": 23,
+        "name": "Port of Loading",
+        "type": "text"
+      },
+      {
+        "index": 24,
+        "name": "Port of Destination",
+        "type": "text"
+      },
+      {
+        "index": 25,
+        "name": "Sailing Date",
+        "type": "date"
+      },
+      {
+        "index": 26,
+        "name": "BL Number",
+        "type": "text"
+      },
+      {
+        "index": 27,
+        "name": "Number of Days",
+        "type": "text"
+      },
+      {
+        "index": 28,
+        "name": "ETA at Discharge Port",
+        "type": "date"
+      },
+      {
+        "index": 29,
+        "name": "Consignee on BL",
+        "type": "text"
+      },
+      {
+        "index": 30,
+        "name": "Notify Party",
+        "type": "text"
+      },
+      {
+        "index": 31,
+        "name": "LC details in BL",
+        "type": "text"
+      },
+      {
+        "index": 32,
+        "name": "Origin Entity",
+        "type": "text"
+      },
+      {
+        "index": 33,
+        "name": "Supplier- Olam Destination",
+        "type": "text"
+      },
+      {
+        "index": 34,
+        "name": "Buyer- 3P Destination",
+        "type": "text"
+      },
+      {
+        "index": 35,
+        "name": "Avail 1/3 OB TSF From",
+        "type": "date"
+      },
+      {
+        "index": 36,
+        "name": "Avail 1/3 OB TSF Till",
+        "type": "date"
+      },
+      {
+        "index": 37,
+        "name": "Avail 3/3 OB TSF From",
+        "type": "date"
+      },
+      {
+        "index": 38,
+        "name": "Avail 3/3 OB TSF Till",
+        "type": "date"
+      },
+      {
+        "index": 39,
+        "name": "OGBS Remark",
+        "type": "text"
+      },
+      {
+        "index": 40,
+        "name": "BL Receipt date",
+        "type": "date"
+      },
+      {
+        "index": 41,
+        "name": "Blocked Status Desc",
+        "type": "text"
+      },
+      {
+        "index": 42,
+        "name": "OGBS Status Desc",
+        "type": "text"
+      },
+      {
+        "index": 43,
+        "name": "POL Country",
+        "type": "text"
+      },
+      {
+        "index": 44,
+        "name": "POD Country",
+        "type": "text"
+      }
+    ],
+    "fileBase64Chunks": [
+      "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"
+    ]
+  },
+  "referenceWorkbook": {
+    "fileName": "RICE TF (1).XLSX",
+    "sheetName": "Sheet1",
+    "headers": [
+      "Trade Flow ID",
+      "TF Split ID",
+      "TF Upload Date",
+      "Business Unit Name",
+      "Operator",
+      "BL- Vessel Name",
+      "BU Commodity",
+      "P - Contract Number",
+      "Purchase Incoterms",
+      "Payment terms - Purchase Side",
+      "Banks-Purchase Leg-Seller Ba",
+      "Banks-Purchase Leg-Buyer Bank",
+      "S Contract Number",
+      "Sales Incoterms",
+      "Payment terms - Sales Side",
+      "Banks-Sale Leg-Seller Bank",
+      "Banks-Sale Leg-Buyer Bank",
+      "OGA Title From - Date",
+      "OGA Title Till - Date",
+      "Quantity",
+      "Contract Price",
+      "CMP (MT)",
+      "Contract Amt(USD)",
+      "Port of Loading",
+      "Port of Destination",
+      "Sailing Date",
+      "BL Number",
+      "Number of Days",
+      "ETA at Discharge Port",
+      "Consignee on BL",
+      "Notify Party",
+      "LC details in BL",
+      "Origin Entity",
+      "Supplier- Olam Destination",
+      "Buyer- 3P Destination",
+      "Avail 1/3 OB TSF From",
+      "Avail 1/3 OB TSF Till",
+      "Avail 3/3 OB TSF From",
+      "Avail 3/3 OB TSF Till",
+      "OGBS Remark",
+      "BL Receipt date",
+      "Blocked Status Desc",
+      "OGBS Status Desc",
+      "POL Country",
+      "POD Country"
+    ],
+    "columns": [
+      {
+        "index": 0,
+        "name": "Trade Flow ID",
+        "type": "text"
+      },
+      {
+        "index": 1,
+        "name": "TF Split ID",
+        "type": "text"
+      },
+      {
+        "index": 2,
+        "name": "TF Upload Date",
+        "type": "date"
+      },
+      {
+        "index": 3,
+        "name": "Business Unit Name",
+        "type": "text"
+      },
+      {
+        "index": 4,
+        "name": "Operator",
+        "type": "text"
+      },
+      {
+        "index": 5,
+        "name": "BL- Vessel Name",
+        "type": "text"
+      },
+      {
+        "index": 6,
+        "name": "BU Commodity",
+        "type": "text"
+      },
+      {
+        "index": 7,
+        "name": "P - Contract Number",
+        "type": "text"
+      },
+      {
+        "index": 8,
+        "name": "Purchase Incoterms",
+        "type": "text"
+      },
+      {
+        "index": 9,
+        "name": "Payment terms - Purchase Side",
+        "type": "text"
+      },
+      {
+        "index": 10,
+        "name": "Banks-Purchase Leg-Seller Ba",
+        "type": "text"
+      },
+      {
+        "index": 11,
+        "name": "Banks-Purchase Leg-Buyer Bank",
+        "type": "text"
+      },
+      {
+        "index": 12,
+        "name": "S Contract Number",
+        "type": "text"
+      },
+      {
+        "index": 13,
+        "name": "Sales Incoterms",
+        "type": "text"
+      },
+      {
+        "index": 14,
+        "name": "Payment terms - Sales Side",
+        "type": "text"
+      },
+      {
+        "index": 15,
+        "name": "Banks-Sale Leg-Seller Bank",
+        "type": "text"
+      },
+      {
+        "index": 16,
+        "name": "Banks-Sale Leg-Buyer Bank",
+        "type": "text"
+      },
+      {
+        "index": 17,
+        "name": "OGA Title From - Date",
+        "type": "date"
+      },
+      {
+        "index": 18,
+        "name": "OGA Title Till - Date",
+        "type": "date"
+      },
+      {
+        "index": 19,
+        "name": "Quantity",
+        "type": "number"
+      },
+      {
+        "index": 20,
+        "name": "Contract Price",
+        "type": "number"
+      },
+      {
+        "index": 21,
+        "name": "CMP (MT)",
+        "type": "number"
+      },
+      {
+        "index": 22,
+        "name": "Contract Amt(USD)",
+        "type": "number"
+      },
+      {
+        "index": 23,
+        "name": "Port of Loading",
+        "type": "text"
+      },
+      {
+        "index": 24,
+        "name": "Port of Destination",
+        "type": "text"
+      },
+      {
+        "index": 25,
+        "name": "Sailing Date",
+        "type": "date"
+      },
+      {
+        "index": 26,
+        "name": "BL Number",
+        "type": "text"
+      },
+      {
+        "index": 27,
+        "name": "Number of Days",
+        "type": "text"
+      },
+      {
+        "index": 28,
+        "name": "ETA at Discharge Port",
+        "type": "date"
+      },
+      {
+        "index": 29,
+        "name": "Consignee on BL",
+        "type": "text"
+      },
+      {
+        "index": 30,
+        "name": "Notify Party",
+        "type": "text"
+      },
+      {
+        "index": 31,
+        "name": "LC details in BL",
+        "type": "text"
+      },
+      {
+        "index": 32,
+        "name": "Origin Entity",
+        "type": "text"
+      },
+      {
+        "index": 33,
+        "name": "Supplier- Olam Destination",
+        "type": "text"
+      },
+      {
+        "index": 34,
+        "name": "Buyer- 3P Destination",
+        "type": "text"
+      },
+      {
+        "index": 35,
+        "name": "Avail 1/3 OB TSF From",
+        "type": "date"
+      },
+      {
+        "index": 36,
+        "name": "Avail 1/3 OB TSF Till",
+        "type": "date"
+      },
+      {
+        "index": 37,
+        "name": "Avail 3/3 OB TSF From",
+        "type": "date"
+      },
+      {
+        "index": 38,
+        "name": "Avail 3/3 OB TSF Till",
+        "type": "date"
+      },
+      {
+        "index": 39,
+        "name": "OGBS Remark",
+        "type": "text"
+      },
+      {
+        "index": 40,
+        "name": "BL Receipt date",
+        "type": "date"
+      },
+      {
+        "index": 41,
+        "name": "Blocked Status Desc",
+        "type": "text"
+      },
+      {
+        "index": 42,
+        "name": "OGBS Status Desc",
+        "type": "text"
+      },
+      {
+        "index": 43,
+        "name": "POL Country",
+        "type": "text"
+      },
+      {
+        "index": 44,
+        "name": "POD Country",
+        "type": "text"
+      }
+    ],
+    "rows": [
+      [
+        "3000045645",
+        "01",
+        "2024-12-18",
+        "Rice",
+        "",
+        "MV SUPRA BARON V.24001",
+        "THAI WHITE RICE 5% BROKEN DOUBLE POLISHED",
+        "",
+        "FOB",
+        "LCUUC",
+        "KASIKORNBANK PCL",
+        "WELLS FARGO BANK, NA",
+        "",
+        "CIF",
+        "DPB",
+        "SCB",
+        "NO BANK",
+        "2024-11-25",
+        "2024-12-12",
+        3000,
+        494.99,
+        494.99,
+        1484970,
+        "KOHSICHANG, THAILAND",
+        "MAPUTO, MOZAMBIQUE",
+        "2024-11-25",
+        "",
+        "",
+        "2024-12-17",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "0001-01-02",
+        "0001-01-02",
+        "0001-01-02",
+        "0001-01-02",
+        "ALLOCATED TO BDB/BCI SOFISA DEAL",
+        "2024-12-13",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "3000045645",
+        "02",
+        "2024-12-18",
+        "Rice",
+        "",
+        "MV SUPRA BARON V.24001",
+        "THAI WHITE RICE 5% BROKEN DOUBLE POLISHED",
+        "",
+        "FOB",
+        "LCUUC",
+        "KASIKORNBANK PCL",
+        "WELLS FARGO BANK, NA",
+        "",
+        "CIF",
+        "DPB",
+        "SCB",
+        "NO BANK",
+        "2024-11-25",
+        "2024-12-12",
+        3000,
+        494.99,
+        494.99,
+        1484970,
+        "KOHSICHANG, THAILAND",
+        "MAPUTO, MOZAMBIQUE",
+        "2024-11-25",
+        "",
+        "",
+        "2024-12-17",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "0001-01-02",
+        "0001-01-02",
+        "0001-01-02",
+        "0001-01-02",
+        "ALLOCATED TO BDB/BCI SOFISA DEAL",
+        "2024-12-13",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "3000045624",
+        "01",
+        "2024-12-09",
+        "Rice",
+        "",
+        "MV HPC ATLANTIC",
+        "INDIAN WHITE RICE 100 PCT BROKEN, SORTEXED, SILKY POLISHED",
+        "",
+        "FOB",
+        "PPMT",
+        "NO BANK",
+        "NO BANK",
+        "",
+        "CIF",
+        "DP",
+        "NO BANK",
+        "NO BANK",
+        "2024-12-03",
+        "2024-12-18",
+        2000,
+        400,
+        400,
+        800000,
+        "KAKINADA, INDIA",
+        "ABIDJAN, COTE D'IVOIRE",
+        "2024-11-18",
+        "",
+        "",
+        "2024-12-18",
+        "TO ORDER",
+        "NO",
+        "",
+        "",
+        "",
+        "",
+        "0001-01-02",
+        "0001-01-02",
+        "0001-01-02",
+        "0001-01-02",
+        "ALLOCATED TO SOFISA/BDB/BCI",
+        "2024-12-27",
+        "",
+        "",
+        "",
+        ""
+      ],
+      [
+        "3000045647",
+        "01",
+        "2024-12-18",
+        "Rice",
+        "",
+        "MV LAGO DI LEDRO",
+        "INDIAN PARBOILED RICE 5 PCT BROKEN",
+        "",
+        "FOB",
+        "LCUUC",
+        "HDFC BANK",
+        "WELLS FARGO BANK, NA",
+        "",
+        "CFR",
+        "CAD",
+        "SCB",
+        "NO BANK",
+        "2024-12-08",
+        "2024-12-23",
+        3000,
+        445,
+        445,
+        1335000,
+        "VISAKHAPATNAM, INDIA",
+        "FREE TOWN, SIERRE LEONE",
+        "2024-11-23",
+        "",
+        "",
+        "2024-12-24",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "0001-01-02",
+        "0001-01-02",
+        "0001-01-02",
+        "0001-01-02",
+        "ALLOCATED TO SOFIA/BDB/BCI",
+        "2024-12-13",
+        "",
+        "",
+        "",
+        ""
+      ]
+    ]
+  }
+}

@@ -1,0 +1,386 @@
+/* Original stylesheet of DTTK.html, scoped under .dttk.
+ * Generated — every declaration is byte-identical to the legacy page; only selectors are
+ * prefixed and @keyframes renamed, so each converted app keeps its exact original look
+ * while several can coexist in one SPA. Do not hand-edit; re-run tools/scope-css.mjs.
+ */
+.dttk {--bg:#f5f7f9;--surface:#fff;--surface-2:#f2f4f5;--border:#d5dadd;--border-strong:#8996a1;--text:#1d2d3e;--sub:#475e75;--muted:#687b8d;--blue:#0a6ed1;--blue-hover:#085caf;--blue-soft:#eaf3fc;--blue-soft-2:#d1e8ff;--green:#107e3e;--shadow:0 1px 3px rgba(34,53,72,.13);--radius:8px;--sidebar:355px;--header:52px}
+.dttk *, .dttk {box-sizing:border-box}
+.dttk {margin:0;min-height:100%;font-family:"72","Segoe UI",Arial,sans-serif;color:var(--text);background:var(--bg);font-size:13px}
+.dttk button, .dttk input, .dttk select {font:inherit;color:inherit}
+.dttk button {cursor:pointer}
+.dttk .app {height:100vh;display:grid;grid-template-columns:var(--sidebar) minmax(0,1fr);grid-template-rows:var(--header) minmax(0,1fr);overflow:hidden}
+.dttk .topbar {grid-column:1/-1;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 18px;z-index:10}
+.dttk .title-wrap {display:flex;align-items:center;gap:11px;min-width:0}
+.dttk .mark {width:30px;height:30px;border-radius:6px;background:linear-gradient(145deg,#0a6ed1,#35a5dc);display:grid;place-items:center;color:#fff;box-shadow:0 2px 7px rgba(10,110,209,.22)}
+.dttk .title {font-size:17px;font-weight:700;white-space:nowrap}
+.dttk .title small {font-size:12px;color:var(--muted);font-weight:400;margin-left:8px}
+.dttk .actions {display:flex;align-items:center;gap:6px}
+.dttk .btn {height:32px;padding:0 11px;border:1px solid var(--border-strong);background:var(--surface);border-radius:4px;font-weight:600;display:inline-flex;align-items:center;gap:7px;color:var(--sub)}
+.dttk .btn:hover {background:var(--surface-2);color:var(--text)}
+.dttk .btn.primary {background:var(--blue);border-color:var(--blue);color:#fff}
+.dttk .btn.primary:hover {background:var(--blue-hover)}
+.dttk .btn.icon-only {padding:0;width:32px;justify-content:center}
+.dttk .btn svg, .dttk .tool svg {width:15px;height:15px;fill:currentColor}
+.dttk .connection {width:8px;height:8px;background:#20a454;border-radius:50%;box-shadow:0 0 0 3px #d9f3e2;margin:0 6px}
+.dttk .sidebar {background:var(--surface);border-right:1px solid var(--border);overflow:auto;padding:12px;scrollbar-width:thin}
+.dttk .side-head {display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.dttk .side-head strong {font-size:14px}
+.dttk .section {border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;background:var(--surface)}
+.dttk .section-title {background:var(--surface-2);border-bottom:1px solid var(--border);padding:7px 10px;font-size:12px;font-weight:700;color:var(--sub)}
+.dttk .fields {padding:9px 10px 7px}
+.dttk .field {display:grid;grid-template-columns:128px minmax(0,1fr);gap:8px;align-items:center;margin-bottom:7px}
+.dttk .field label {font-size:12px;color:var(--sub);line-height:1.15}
+.dttk .field input, .dttk .field select {width:100%;height:28px;border:1px solid var(--border-strong);border-radius:3px;background:#fff;padding:3px 8px;outline:none;min-width:0}
+.dttk .field input:focus, .dttk .field select:focus {border-color:var(--blue);box-shadow:0 0 0 1px var(--blue)}
+.dttk .field .compound {display:flex;gap:5px;min-width:0}
+.dttk .field .short {width:74px;flex:none}
+.dttk .field .code {width:54px;flex:none}
+.dttk .field .amount {text-align:right;font-variant-numeric:tabular-nums}
+.dttk .field .suffix {height:28px;min-width:43px;padding:5px 6px;border:1px solid var(--border);border-radius:3px;background:var(--surface-2);font-size:11px;color:var(--sub)}
+.dttk .field.wide {grid-template-columns:1fr}
+.dttk .field.wide label {margin-bottom:-4px}
+.dttk .main {overflow:auto;padding:12px;display:grid;grid-template-rows:minmax(335px,1.08fr) minmax(245px,.92fr);gap:10px}
+.dttk .panel {background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden}
+.dttk .panel-head {height:39px;display:flex;align-items:center;justify-content:space-between;padding:0 11px;border-bottom:1px solid var(--border);flex:none}
+.dttk .panel-title {font-weight:700;font-size:13px}
+.dttk .panel-meta {font-size:11px;color:var(--muted);font-weight:500}
+.dttk .panel-tools {display:flex;gap:5px;align-items:center}
+.dttk .tool {width:29px;height:27px;border:1px solid var(--border);border-radius:3px;background:#fff;color:var(--sub);display:grid;place-items:center}
+.dttk .tool:hover, .dttk .tool.active {background:var(--blue-soft);border-color:#a7cff5;color:var(--blue)}
+.dttk .search {height:27px;width:190px;border:1px solid var(--border-strong);border-radius:3px;padding:3px 8px;outline:none}
+.dttk .search:focus {border-color:var(--blue);box-shadow:0 0 0 1px var(--blue)}
+.dttk .table-wrap {overflow:auto;flex:1;scrollbar-width:thin}
+.dttk table {border-collapse:collapse;width:100%;min-width:1060px;table-layout:fixed}
+.dttk th {position:sticky;top:0;z-index:2;background:var(--surface-2);color:var(--sub);font-size:11px;text-align:left;padding:7px 8px;border-bottom:1px solid var(--border);border-right:1px solid #e6e9eb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dttk td {padding:6px 8px;border-bottom:1px solid #edf0f2;border-right:1px solid #edf0f2;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:#fff}
+.dttk tbody tr:hover td {background:#f7fbff}
+.dttk tbody tr.selected td {background:var(--blue-soft)}
+.dttk td.num {text-align:right;font-variant-numeric:tabular-nums}
+.dttk td.link {color:var(--blue);font-weight:600;text-decoration:underline;cursor:pointer}
+.dttk .empty-space {min-height:70px;background:linear-gradient(#fff,#fbfcfd)}
+.dttk .panel-foot {height:33px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 10px;color:var(--muted);font-size:11px;flex:none}
+.dttk .pager {display:flex;gap:3px}
+.dttk .pager button {width:24px;height:23px;border:1px solid var(--border);background:#fff;border-radius:3px;color:var(--sub)}
+.dttk .pager button:disabled {opacity:.4;cursor:default}
+.dttk .collapse {display:none;position:fixed;left:344px;top:50%;z-index:20;width:22px;height:54px;border:0;border-radius:0 5px 5px 0;background:var(--blue);color:#fff}
+.dttk .toast {position:fixed;right:18px;bottom:18px;background:#243b53;color:#fff;padding:10px 14px;border-radius:6px;box-shadow:0 6px 24px rgba(0,0,0,.25);opacity:0;transform:translateY(8px);pointer-events:none;transition:.2s;z-index:50}
+.dttk .toast.show {opacity:1;transform:none}
+@media(max-width:980px) {
+.dttk {--sidebar:320px}
+.dttk .title small {display:none}
+.dttk .actions .label {display:none}
+.dttk .actions .btn {width:34px;padding:0;justify-content:center}
+.dttk .main {padding:9px;gap:9px}
+.dttk .field {grid-template-columns:112px minmax(0,1fr)}
+}
+@media(max-width:720px) {
+.dttk .app {grid-template-columns:1fr}
+.dttk .sidebar {position:fixed;left:0;top:var(--header);bottom:0;width:min(88vw,355px);z-index:15;box-shadow:8px 0 28px rgba(29,45,62,.18);transform:translateX(-100%);transition:.2s}
+.dttk .app.side-open .sidebar {transform:none}
+.dttk .collapse {display:block;left:0}
+.dttk .app.side-open .collapse {left:min(calc(88vw - 11px),344px)}
+.dttk .main {grid-column:1}
+.dttk .topbar {padding:0 10px}
+.dttk .title {font-size:15px}
+.dttk .connection {display:none}
+.dttk .main {grid-template-rows:minmax(360px,1fr) minmax(280px,.8fr)}
+}
+@media print {
+.dttk .actions, .dttk .panel-tools, .dttk .collapse {display:none}
+.dttk .app {height:auto;display:block}
+.dttk .sidebar {overflow:visible;border:0}
+.dttk .main {overflow:visible;display:block}
+.dttk .panel {margin:10px 0;box-shadow:none;min-height:300px}
+.dttk .table-wrap {overflow:visible}
+}
+/* Create OTTK modal layout */
+.dttk .app {grid-template-columns:minmax(0,1fr)}
+.dttk .main {grid-column:1;overflow:hidden;padding:12px 14px}
+.dttk .sidebar, .dttk .collapse {display:none!important}
+.dttk .create-btn {height:34px;padding:0 15px;border-radius:5px;box-shadow:0 2px 6px rgba(10,110,209,.18)}
+.dttk .modal-backdrop {position:fixed;inset:0;z-index:100;background:rgba(23,43,61,.48);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;visibility:hidden;transition:opacity .18s ease,visibility .18s ease}
+.dttk .modal-backdrop.open {opacity:1;visibility:visible}
+.dttk .ottk-modal {width:min(1240px,calc(100vw - 32px));max-height:min(850px,calc(100vh - 32px));background:var(--surface);border:1px solid #b9c2c9;border-radius:12px;box-shadow:0 22px 70px rgba(16,38,58,.3);display:grid;grid-template-rows:58px minmax(0,1fr) 58px;overflow:hidden;transform:translateY(10px) scale(.992);transition:transform .18s ease}
+.dttk .modal-backdrop.open .ottk-modal {transform:none}
+.dttk .modal-head {padding:0 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#fff,#fafbfc)}
+.dttk .modal-heading {display:flex;align-items:center;gap:11px}
+.dttk .modal-heading-icon {width:32px;height:32px;border-radius:7px;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center}
+.dttk .modal-heading h2 {font-size:17px;margin:0 0 2px}
+.dttk .modal-heading p {font-size:11px;color:var(--muted);margin:0}
+.dttk .modal-close {width:32px;height:32px;border:0;border-radius:50%;background:transparent;color:var(--muted);font-size:24px;line-height:1}
+.dttk .modal-close:hover {background:var(--surface-2);color:var(--text)}
+.dttk .modal-content-grid {min-height:0;padding:13px 16px;display:grid;grid-template-columns:.92fr 1fr 1fr;grid-template-rows:auto auto;grid-template-areas:"basic trade trade" "deposit others additional";gap:11px;background:#f7f9fa;overflow:hidden;align-content:stretch}
+.dttk .modal-content-grid .section {margin:0;min-width:0;box-shadow:0 1px 2px rgba(34,53,72,.06)}
+.dttk .modal-content-grid .section:nth-child(1) {grid-area:basic}
+.dttk .modal-content-grid .section:nth-child(2) {grid-area:trade}
+.dttk .modal-content-grid .section:nth-child(3) {grid-area:deposit}
+.dttk .modal-content-grid .section:nth-child(4) {grid-area:others}
+.dttk .modal-content-grid .section:nth-child(5) {grid-area:additional}
+.dttk .modal-content-grid .section-title {height:34px;display:flex;align-items:center;padding:0 11px;background:#f8fafb;color:#304a62;border-left:3px solid var(--blue)}
+.dttk .modal-content-grid .fields {padding:9px 11px 7px}
+.dttk .modal-content-grid .field {grid-template-columns:122px minmax(0,1fr);gap:7px;margin-bottom:6px}
+.dttk .modal-content-grid .field:last-child {margin-bottom:0}
+.dttk .modal-content-grid .section:nth-child(2) .fields {display:grid;grid-template-columns:1fr 1fr;column-gap:18px;align-content:start}
+.dttk .modal-content-grid .section:nth-child(2) .field {grid-template-columns:116px minmax(0,1fr)}
+.dttk .modal-footer {padding:0 18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:#fff}
+.dttk .modal-note {font-size:11px;color:var(--muted)}
+.dttk .modal-note b {color:#bb0000}
+.dttk .modal-actions {display:flex;gap:8px}
+.dttk .modal-actions .btn {min-width:96px;justify-content:center}
+.dttk body.modal-open {overflow:hidden}
+.dttk .status-pill {display:inline-flex;align-items:center;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:600}
+.dttk .status-pill.open {color:var(--green);background:#e4f5e9}
+.dttk .status-pill.pending {color:#9b6b00;background:#fff4cc}
+.dttk .filter-btn.active {background:var(--blue);color:#fff;border-color:var(--blue)}
+@media(max-width:980px) {
+.dttk .modal-content-grid {grid-template-columns:1fr 1fr;grid-template-areas:"basic trade" "deposit trade" "others additional"}
+.dttk .modal-content-grid .section:nth-child(2) .fields {display:block}
+.dttk .modal-content-grid .field, .dttk .modal-content-grid .section:nth-child(2) .field {grid-template-columns:108px minmax(0,1fr)}
+.dttk .ottk-modal {height:calc(100vh - 20px);width:calc(100vw - 20px)}
+}
+@media(max-height:760px) and (min-width:721px) {
+.dttk .ottk-modal {grid-template-rows:50px minmax(0,1fr) 50px;height:calc(100vh - 16px)}
+.dttk .modal-content-grid {padding:8px 10px;gap:7px}
+.dttk .modal-content-grid .section-title {height:27px;font-size:11px}
+.dttk .modal-content-grid .fields {padding:6px 8px 4px}
+.dttk .modal-content-grid .field {margin-bottom:3px}
+.dttk .modal-content-grid .field input, .dttk .modal-content-grid .field select, .dttk .modal-content-grid .suffix {height:24px;font-size:11px;padding-top:1px;padding-bottom:1px}
+.dttk .modal-content-grid .field label {font-size:11px}
+}
+@media(max-width:720px) {
+.dttk .main {grid-template-rows:minmax(340px,1fr) minmax(250px,.8fr)}
+.dttk .modal-backdrop {padding:0}
+.dttk .ottk-modal {width:100vw;height:100vh;border:0;border-radius:0}
+.dttk .modal-content-grid {grid-template-columns:1fr 1fr;grid-template-areas:"basic trade" "deposit trade" "others additional";gap:6px;padding:7px}
+.dttk .modal-content-grid .field, .dttk .modal-content-grid .section:nth-child(2) .field {grid-template-columns:88px minmax(0,1fr);gap:4px;margin-bottom:3px}
+.dttk .modal-content-grid .field label {font-size:10px}
+.dttk .modal-content-grid .field input, .dttk .modal-content-grid .field select {height:24px;font-size:10px}
+.dttk .modal-head {padding:0 10px}
+.dttk .modal-heading p, .dttk .modal-note {display:none}
+}
+/* Screenshot-inspired request modal */
+.dttk .modal-backdrop {background:rgba(30,48,66,.36);padding:18px}
+.dttk .ottk-modal {width:min(1220px,calc(100vw - 36px));max-height:min(800px,calc(100vh - 36px));border-radius:10px;border:1px solid #cbd9e6;grid-template-rows:56px minmax(0,1fr) 54px;box-shadow:0 18px 60px rgba(28,50,72,.28);font-size:12px}
+.dttk .modal-head {padding:0 20px;background:#eef6ff;border-bottom:2px solid #86bff3}
+.dttk .modal-heading-icon {display:none}
+.dttk .modal-heading h2 {font-size:15px;color:#102a43;margin-bottom:4px}
+.dttk .modal-heading p {font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:#536d86}
+.dttk .modal-close {width:30px;height:30px;border-radius:4px;background:rgba(255,255,255,.72);font-size:20px;color:#607d94}
+.dttk .modal-close:hover {background:#fff;color:#12324d}
+.dttk .modal-head-right {display:flex;align-items:center;gap:13px;flex:none}
+.dttk .modal-head-created {display:flex;align-items:center;gap:5px;font-size:11px;color:#536d86;white-space:nowrap}
+.dttk .modal-head-created b {font-size:12px;color:#102a43}
+.dttk .modal-content-grid {display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto;grid-template-areas:"basic basic" "trade trade" "deposit deposit" "others additional";gap:10px 14px;padding:12px 18px 14px;background:#fff;overflow-y:auto;align-content:start}
+.dttk .modal-content-grid .section {border:0;border-radius:0;box-shadow:none;overflow:visible;background:transparent;align-self:start}
+.dttk .modal-content-grid .section:nth-child(1), .dttk .modal-content-grid .section:nth-child(2) {border:1px solid #dbe3e9;border-radius:7px;background:#fff;padding:9px 13px}
+.dttk .modal-content-grid .section-title {height:26px;padding:3px 0 6px;border:0;border-bottom:1px solid #cbd3da;background:transparent;color:#6a727a;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.11em}
+.dttk .modal-content-grid .section-title::before {content:"";width:4px;height:4px;border-radius:50%;background:#37a4de;margin-right:6px;flex:none}
+.dttk .modal-content-grid .fields, .dttk .modal-content-grid .section:nth-child(2) .fields {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 14px;padding:8px 2px 2px}
+.dttk .modal-content-grid .field, .dttk .modal-content-grid .section:nth-child(2) .field {display:flex;flex-direction:column;align-items:stretch;gap:4px;margin:0;min-width:0}
+.dttk .modal-content-grid .field label {font-size:12px;line-height:1.2;font-weight:600;text-transform:none;letter-spacing:0;color:#5f6f7f}
+.dttk .modal-content-grid .field input, .dttk .modal-content-grid .field select {height:28px;border:0;border-bottom:1px solid #dfe5ea;border-radius:0;padding:4px 4px;background:#fff;font-size:13px;font-weight:600;color:#20364b;box-shadow:none}
+.dttk .modal-content-grid .field input:hover, .dttk .modal-content-grid .field select:hover {border-bottom-color:#8fb9dd}
+.dttk .modal-content-grid .field input:focus, .dttk .modal-content-grid .field select:focus {border-color:var(--blue);box-shadow:0 1px 0 var(--blue)}
+.dttk .modal-content-grid .field input[readonly] {background:transparent;color:#60758a}
+.dttk .modal-content-grid .compound {height:28px;gap:6px}
+.dttk .modal-content-grid .compound input {height:28px}
+.dttk .modal-content-grid .suffix {height:28px;width:70px;min-width:70px;flex:none;border:0;border-bottom:1px solid #dfe5ea;border-radius:0;background:transparent;padding:5px 3px;font-size:11px;font-weight:700}
+.dttk .modal-content-grid .section:nth-child(3) {border:1px solid #cfe2f7;border-radius:7px;background:#eef6ff;padding:9px 13px}
+.dttk .modal-content-grid .section:nth-child(3) .section-title {color:#1265b4;border-bottom-color:#c6d9ed}
+.dttk .modal-content-grid .section:nth-child(3) .section-title::before {background:#1265b4}
+.dttk .modal-content-grid .section:nth-child(3) .field input, .dttk .modal-content-grid .section:nth-child(3) .field select {background:transparent}
+.dttk .modal-content-grid .section:nth-child(4), .dttk .modal-content-grid .section:nth-child(5) {border:1px solid #cfead8;border-radius:7px;background:#effbf3;padding:9px 13px}
+.dttk .modal-content-grid .section:nth-child(4) .section-title, .dttk .modal-content-grid .section:nth-child(5) .section-title {color:#237b3b;border-bottom-color:#c5e0cd}
+.dttk .modal-content-grid .section:nth-child(4) .section-title::before, .dttk .modal-content-grid .section:nth-child(5) .section-title::before {background:#237b3b}
+.dttk .modal-content-grid .section:nth-child(4) .fields, .dttk .modal-content-grid .section:nth-child(5) .fields {grid-template-columns:repeat(3,minmax(0,1fr))}
+.dttk .modal-content-grid .section:nth-child(4) .field input, .dttk .modal-content-grid .section:nth-child(4) .field select, .dttk .modal-content-grid .section:nth-child(5) .field input, .dttk .modal-content-grid .section:nth-child(5) .field select {background:transparent}
+.dttk .modal-content-grid .section:nth-child(4) {margin-bottom:0}
+.dttk .modal-content-grid .section:nth-child(5) {margin-bottom:0}
+.dttk .modal-footer {padding:0 20px;background:#f8fafb;border-top:1px solid #d8e0e7}
+.dttk .modal-note {font-size:10px}
+.dttk .modal-actions {gap:8px}
+.dttk .modal-actions .btn {height:31px;border-radius:4px;font-size:12px;min-width:96px}
+.dttk .modal-actions .btn.primary {box-shadow:0 2px 5px rgba(10,110,209,.2)}
+@media(max-height:760px) and (min-width:801px) {
+.dttk .ottk-modal {height:calc(100vh - 16px);grid-template-rows:52px minmax(0,1fr) 50px}
+.dttk .modal-content-grid {padding:9px 14px;gap:7px 11px}
+.dttk .modal-content-grid .section-title {height:23px;padding-bottom:4px}
+.dttk .modal-content-grid .fields, .dttk .modal-content-grid .section:nth-child(2) .fields {gap:6px 12px;padding:6px 2px 2px}
+.dttk .modal-content-grid .field input, .dttk .modal-content-grid .field select, .dttk .modal-content-grid .compound, .dttk .modal-content-grid .compound input, .dttk .modal-content-grid .suffix {height:25px}
+.dttk .modal-content-grid .section:nth-child(3), .dttk .modal-content-grid .section:nth-child(4), .dttk .modal-content-grid .section:nth-child(5) {padding:7px 10px}
+}
+@media(max-width:800px) {
+.dttk .modal-backdrop {padding:0}
+.dttk .ottk-modal {width:100vw;height:100vh;border:0;border-radius:0;grid-template-rows:52px minmax(0,1fr) 50px}
+.dttk .modal-content-grid {grid-template-columns:1fr 1fr;grid-template-areas:"basic basic" "trade trade" "deposit deposit" "others additional";padding:8px;gap:8px;overflow-y:auto}
+.dttk .modal-content-grid .fields, .dttk .modal-content-grid .section:nth-child(2) .fields {grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 10px;padding:6px 2px 2px}
+.dttk .modal-content-grid .field {gap:3px}
+.dttk .modal-content-grid .field label {font-size:9px}
+.dttk .modal-content-grid .field input, .dttk .modal-content-grid .field select {font-size:11px;height:26px}
+.dttk .modal-content-grid .section:nth-child(3), .dttk .modal-content-grid .section:nth-child(4), .dttk .modal-content-grid .section:nth-child(5) {padding:7px 9px}
+.dttk .modal-content-grid .section-title {height:22px;padding-bottom:4px;font-size:9px}
+.dttk .modal-footer {padding:0 10px}
+.dttk .modal-actions .btn {min-width:76px;height:30px}
+}
+/* Content-sized table columns: single-line, fully visible values */
+.dttk .table-wrap table {width:max-content!important;min-width:100%!important;table-layout:auto!important}
+.dttk .table-wrap col {width:auto!important}
+.dttk .table-wrap th, .dttk .table-wrap td {width:auto!important;max-width:none!important;white-space:nowrap!important;overflow:visible!important;text-overflow:clip!important;padding-left:10px;padding-right:10px}
+.dttk .modal-content-grid .num-input {text-align:right;font-variant-numeric:tabular-nums}
+.dttk #interestRateField input {max-width:92px}
+.dttk .modal-content-grid .fs-amount-input {text-align:right;font-variant-numeric:tabular-nums}
+.dttk .modal-content-grid .fs-amount-input.field-error {border-bottom-color:#d20a0a!important;background:#fff5f5!important;box-shadow:0 1px 0 #d20a0a!important}
+.dttk .advanced-filters {display:none;align-items:center;gap:7px;flex-wrap:wrap;padding:7px 10px;background:#f8fafb;border-bottom:1px solid var(--border);flex:none}
+.dttk .advanced-filters.open {display:flex}
+.dttk .advanced-filters select {height:28px;min-width:125px;border:1px solid var(--border-strong);border-radius:3px;background:#fff;padding:3px 26px 3px 8px;font-size:11px}
+.dttk .advanced-filters .filter-label {font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-right:2px}
+.dttk .filter-reset-btn {height:28px;padding:0 9px;border:1px solid var(--border);border-radius:3px;background:#fff;color:var(--sub);font-size:11px;font-weight:600}
+.dttk .filter-reset-btn:hover {background:var(--surface-2)}
+/* Live-CRUD additions */
+.dttk .connection.offline {background:#c0392b;box-shadow:0 0 0 3px #fbdbd6}
+.dttk .modal-content-grid .field[hidden] {display:none}
+.dttk .modal-content-grid .compound .btn.icon-only {height:28px;width:28px;flex:none;border-radius:3px;padding:0;border:1px solid var(--border-strong);background:#fff;color:var(--sub)}
+.dttk .modal-content-grid .compound .btn.icon-only:hover {background:var(--blue-soft);border-color:#a7cff5;color:var(--blue)}
+.dttk .modal-content-grid .compound .btn.icon-only svg {width:14px;height:14px}
+.dttk #otherCharges[readonly] {background:var(--surface-2);color:var(--sub);font-weight:600}
+.dttk .charges-modal {width:min(980px,calc(100vw - 32px));max-height:min(680px,calc(100vh - 32px));background:var(--surface);border:1px solid #b9c2c9;border-radius:12px;box-shadow:0 22px 70px rgba(16,38,58,.3);display:grid;grid-template-rows:56px minmax(0,1fr) 52px;overflow:hidden;transform:translateY(10px) scale(.992);transition:transform .18s ease}
+.dttk .modal-backdrop.open .charges-modal {transform:none}
+.dttk .charges-body {min-height:0;padding:12px 16px;overflow:auto;background:#f7f9fa}
+.dttk .charges-table-wrap {border:1px solid var(--border);border-radius:6px;overflow:auto;background:#fff}
+.dttk .charges-table {border-collapse:collapse;width:100%;min-width:920px}
+.dttk .charges-table th {position:sticky;top:0;background:var(--surface-2);color:var(--sub);font-size:11px;text-align:left;padding:6px 7px;border-bottom:1px solid var(--border);border-right:1px solid #e6e9eb;white-space:nowrap}
+.dttk .charges-table td {padding:4px 6px;border-bottom:1px solid #edf0f2;border-right:1px solid #edf0f2}
+.dttk .charges-table td.num {text-align:right}
+.dttk .charges-table input, .dttk .charges-table select {width:100%;height:27px;border:1px solid var(--border-strong);border-radius:3px;background:#fff;padding:2px 6px;font-size:12px}
+.dttk .charges-table input.amt {text-align:right;font-variant-numeric:tabular-nums}
+.dttk .charges-table input[readonly] {background:var(--surface-2);color:var(--sub)}
+.dttk .charges-footer-total {display:flex;align-items:center;gap:9px;font-size:12px;color:var(--sub);font-weight:600}
+.dttk .charges-footer-total input {width:150px;height:29px;text-align:right;border:1px solid var(--border-strong);border-radius:3px;background:var(--surface-2);font-variant-numeric:tabular-nums;font-weight:700;padding:3px 8px}
+.dttk .success-modal {width:min(360px,calc(100vw - 32px));background:var(--surface);border-radius:12px;box-shadow:0 22px 70px rgba(16,38,58,.3);padding:28px 26px 24px;text-align:center;transform:translateY(10px) scale(.992);transition:transform .18s ease}
+.dttk .modal-backdrop.open .success-modal {transform:none}
+.dttk .success-icon {width:52px;height:52px;border-radius:50%;background:#e4f5e9;color:var(--green);display:grid;place-items:center;margin:0 auto 14px;font-size:26px;font-weight:700}
+.dttk .success-modal h3 {margin:0 0 8px;font-size:16px;color:var(--text)}
+.dttk .success-modal p {margin:0 0 20px;font-size:13px;color:var(--sub);line-height:1.5}
+.dttk .success-note {font-size:12px;color:var(--green)}
+.dttk .success-warn {font-size:12px;color:#bb0000}
+.dttk .success-modal .btn {min-width:96px;justify-content:center;margin:0 auto}
+/* ---------------------------------------------------------------------------------------------
+   DTTK modal layout.
+
+   The shared stylesheet places the five modal sections by :nth-child into fixed grid areas sized
+   for the OTTK form. The DTTK form has a different shape (a 14-field Discounting block, a 7-field
+   Confirmation block), so every rule here is keyed on .dttk-grid and the .sec-* class of each
+   section instead: higher specificity than the shared rules, so the inherited media queries can no
+   longer reshuffle the areas out from under it.
+--------------------------------------------------------------------------------------------- */
+.dttk .modal-content-grid.dttk-grid {
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  grid-template-rows:auto;
+  grid-template-areas:"basic basic" "trade trade" "discounting discounting" "confirmation additional";
+  gap:14px 16px;padding:14px 18px 16px;align-content:start;
+}
+.dttk .modal-content-grid.dttk-grid .sec-basic {grid-area:basic}
+.dttk .modal-content-grid.dttk-grid .sec-trade {grid-area:trade}
+.dttk .modal-content-grid.dttk-grid .sec-confirmation {grid-area:confirmation}
+.dttk .modal-content-grid.dttk-grid .sec-discounting {grid-area:discounting}
+.dttk .modal-content-grid.dttk-grid .sec-additional {grid-area:additional}
+/* Type 1 "02 Discounting Only" hides Confirmation Bank (applyType1Visibility() toggles this
+   class) - without this, its grid cell just sits empty next to Additional Information instead of
+   being reclaimed, so Additional Information is widened to the full row in its place. */
+.dttk .modal-content-grid.dttk-grid.no-confirmation {
+  grid-template-areas:"basic basic" "trade trade" "discounting discounting" "additional additional";
+}
+/* Read-only OTTK view modal reuses the same basic/trade/discounting/confirmation/additional
+   scaffold (Basic and Trade full width, then two sections side by side) - just a different set of
+   section classes mapped onto the same five area names, so no second template is needed. */
+.dttk .modal-content-grid.dttk-grid .sec-otxn {grid-area:basic}
+.dttk .modal-content-grid.dttk-grid .sec-otrade {grid-area:trade}
+.dttk .modal-content-grid.dttk-grid .sec-odeposit {grid-area:discounting}
+.dttk .modal-content-grid.dttk-grid .sec-ocommercial {grid-area:confirmation}
+.dttk .modal-content-grid.dttk-grid .sec-ocontact {grid-area:additional}
+.dttk .modal-content-grid.dttk-grid .section {
+  border:1px solid #dbe3e9;border-radius:8px;background:#fff;padding:10px 14px 13px;
+  align-self:stretch;box-shadow:none;overflow:visible;
+}
+.dttk .modal-content-grid.dttk-grid .sec-confirmation {border-color:#cfe2f7;background:#f6fbff}
+.dttk .modal-content-grid.dttk-grid .sec-discounting, .dttk .modal-content-grid.dttk-grid .sec-additional {border-color:#cfead8;background:#f6fdf9}
+.dttk .modal-content-grid.dttk-grid .section-title {
+  height:auto;padding:0 0 7px;margin:0;border:0;border-bottom:1px solid #cbd3da;background:none;
+  color:#6a727a;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+  display:flex;align-items:center;
+}
+.dttk .modal-content-grid.dttk-grid .sec-confirmation .section-title {color:#1265b4;border-bottom-color:#c6d9ed}
+.dttk .modal-content-grid.dttk-grid .sec-discounting .section-title, .dttk .modal-content-grid.dttk-grid .sec-additional .section-title {color:#237b3b;border-bottom-color:#c5e0cd}
+.dttk .modal-content-grid.dttk-grid .section-title::before {
+  content:"";width:4px;height:4px;border-radius:50%;background:currentColor;margin-right:7px;flex:none;
+}
+/* One rhythm for every section: columns fill the section's own width, and every control in a row
+   sits on the same baseline whether it is a plain input, a select or a compound. */
+.dttk .modal-content-grid.dttk-grid .fields {
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));
+  gap:14px 18px;padding:12px 0 0;align-items:end;
+}
+.dttk .modal-content-grid.dttk-grid .field {
+  display:flex;flex-direction:column;justify-content:flex-end;align-items:stretch;
+  gap:5px;margin:0;min-width:0;
+}
+.dttk .modal-content-grid.dttk-grid .field label {
+  font-size:11px;font-weight:600;line-height:1.3;color:#5f6f7f;letter-spacing:0;text-transform:none;
+}
+.dttk .modal-content-grid.dttk-grid .field input, .dttk .modal-content-grid.dttk-grid .field select {
+  height:30px;width:100%;min-width:0;border:0;border-bottom:1px solid #dfe5ea;border-radius:0;
+  padding:4px 2px;background:transparent;font-size:12.5px;font-weight:600;color:#20364b;box-shadow:none;
+}
+.dttk .modal-content-grid.dttk-grid .field input:hover, .dttk .modal-content-grid.dttk-grid .field select:hover {border-bottom-color:#8fb9dd}
+.dttk .modal-content-grid.dttk-grid .field input:focus, .dttk .modal-content-grid.dttk-grid .field select:focus {border-bottom-color:var(--blue);box-shadow:0 1px 0 var(--blue)}
+.dttk .modal-content-grid.dttk-grid .field input[readonly] {color:#60758a;font-weight:500}
+.dttk .modal-content-grid.dttk-grid .field input:disabled {color:#33475a;font-weight:600;-webkit-text-fill-color:#33475a;opacity:1;cursor:default;background:transparent}
+.dttk .modal-content-grid.dttk-grid .compound {display:flex;align-items:flex-end;gap:7px;min-width:0}
+.dttk .modal-content-grid.dttk-grid .compound>input {flex:1 1 auto;min-width:0}
+.dttk .modal-content-grid.dttk-grid .compound>.suffix {
+  flex:0 0 62px;width:62px;height:30px;padding:6px 2px;border:0;border-bottom:1px solid #dfe5ea;
+  border-radius:0;background:transparent;font-size:11px;font-weight:700;color:#5f6f7f;
+}
+.dttk .modal-content-grid.dttk-grid .compound>select.suffix {font-weight:700}
+.dttk .modal-content-grid.dttk-grid .compound>.code {flex:0 0 58px;width:58px}
+.dttk .modal-content-grid.dttk-grid .compound .btn.icon-only {
+  flex:0 0 30px;width:30px;height:30px;padding:0;border-radius:4px;
+  border:1px solid var(--border-strong);background:#fff;color:var(--sub);
+}
+.dttk .modal-content-grid.dttk-grid .compound .btn.icon-only:hover {background:var(--blue-soft);border-color:#a7cff5;color:var(--blue)}
+.dttk .modal-content-grid.dttk-grid .compound .btn.icon-only svg {width:14px;height:14px}
+.dttk .modal-content-grid.dttk-grid .num-input, .dttk .modal-content-grid.dttk-grid .fs-amount-input {text-align:right;font-variant-numeric:tabular-nums}
+.dttk .modal-content-grid.dttk-grid #otherCharges[readonly] {background:transparent;color:var(--sub);font-weight:600}
+.dttk .modal-content-grid.dttk-grid .field[hidden] {display:none}
+/* Discounting Bank / Confirmation Bank carry the counterparty name and are the field the human
+   actually reads most often in this section - given two grid tracks instead of one so the bank
+   name isn't clipped behind a narrow select. */
+.dttk .modal-content-grid.dttk-grid .field.wide2 {grid-column:span 2}
+/* Expected LC Date and Expected LC Tenor share one grid track as a compact pair instead of each
+   claiming a full-width column - the date shrinks to its natural width and the tenor stays a short
+   number+suffix beside it, exactly like the OTTK console's own field. */
+.dttk .modal-content-grid.dttk-grid .field.field-duo {flex-direction:row;align-items:flex-end;gap:14px}
+.dttk .modal-content-grid.dttk-grid .field-duo .duo-item {display:flex;flex-direction:column;gap:5px;flex:1 1 auto;min-width:0}
+.dttk .modal-content-grid.dttk-grid .field-duo .duo-item.duo-narrow {flex:0 0 auto}
+.dttk .modal-content-grid.dttk-grid .field-duo input[type="date"] {max-width:152px}
+.dttk .modal-content-grid.dttk-grid .field-duo .duo-narrow .compound>input.short {flex:0 0 48px;width:48px}
+@media(max-width:1080px) {
+.dttk .modal-content-grid.dttk-grid {
+    grid-template-columns:minmax(0,1fr);
+    grid-template-areas:"basic" "trade" "discounting" "confirmation" "additional";
+  }
+}
+.dttk .charges-note {font-size:11px;color:var(--muted);margin-right:auto}
+.dttk html.display-ticket, .dttk body.display-ticket {background:transparent}
+.dttk body.display-ticket .topbar, .dttk body.display-ticket .main, .dttk body.display-ticket #saveDttk, .dttk body.display-ticket #clearModal, .dttk body.display-ticket #openCharges, .dttk body.display-ticket #openConfCharges {display:none!important}
+.dttk body.display-ticket .dttk-grid select:disabled {opacity:1;color:#33475a;-webkit-text-fill-color:#33475a}
+/* Fourth Signal logo in the topbar -- the same asset the SLC hub (8771) serves,
+   so every console in web/ carries one identical mark. This is an <img>, and
+   img.mark / img.ds-mark outranks the plain .mark / .ds-mark class rule that
+   painted the old blue gradient square, so the gradient, shadow and radius are
+   switched off here rather than deleted out of the rule they came from. */
+.dttk img.mark, .dttk img.ds-mark {
+  width: 32px; height: 32px; flex: none;
+  background: none; box-shadow: none; border-radius: 0;
+  object-fit: contain;
+}

@@ -1,0 +1,18 @@
+#root {
+  min-height: 100vh;
+}
+.app-notfound {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+/* A Link used as a button must not carry the browser's underline/blue. */
+a.slc-btn,
+a.slc-btn:visited {
+  text-decoration: none;
+  color: var(--text-sub);
+}
+a.slc-btn--primary,
+a.slc-btn--primary:visited {
+  color: #fff;
+}

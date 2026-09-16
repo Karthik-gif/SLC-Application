@@ -1,0 +1,1252 @@
+/* Original stylesheet of Uplaod TF.html, scoped under .tfupload.
+ * Generated — every declaration is byte-identical to the legacy page; only selectors are
+ * prefixed and @keyframes renamed, so each converted app keeps its exact original look
+ * while several can coexist in one SPA. Do not hand-edit; re-run tools/scope-css.mjs.
+ */
+.tfupload {
+  --page:#f5f6f7;
+  --surface:#ffffff;
+  --surface-alt:#f7f8f9;
+  --line:#d9d9d9;
+  --line-strong:#b8b8b8;
+  --text:#1d2d3e;
+  --text-secondary:#556b82;
+  --muted:#6a6d70;
+  --blue:#0a6ed1;
+  --blue-hover:#0854a0;
+  --blue-active:#004b93;
+  --blue-soft:#eaf3fc;
+  --blue-soft-2:#d1e8ff;
+  --green:#107e3e;
+  --green-soft:#ebf5eb;
+  --red:#bb0000;
+  --red-soft:#ffebeb;
+  --orange:#e9730c;
+  --orange-soft:#fff3e8;
+  --shadow:0 2px 8px rgba(0,0,0,.10);
+  --radius:8px;
+}
+.tfupload *, .tfupload {
+  box-sizing:border-box;
+  font-family:"Inter",Arial,Helvetica,sans-serif;
+}
+.tfupload {
+  margin:0;
+  min-height:100%;
+  background:var(--page);
+  color:var(--text);
+  font-size:12px;
+  line-height:1.45;
+}
+.tfupload {
+  min-height:100vh;
+}
+.tfupload button, .tfupload input, .tfupload select {
+  font:inherit;
+}
+.tfupload button {
+  cursor:pointer;
+}
+.tfupload .hidden {
+  display:none!important;
+}
+.tfupload .app-shell {
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+.tfupload .app-header {
+  height:48px;
+  min-height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:0 20px;
+  background:var(--surface);
+  border-bottom:1px solid var(--line);
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+}
+.tfupload .app-title {
+  font-size:16px;
+  font-weight:600;
+  color:var(--text);
+}
+.tfupload .app-subtitle {
+  margin-left:10px;
+  color:var(--muted);
+  font-size:11px;
+}
+.tfupload .header-left {
+  display:flex;
+  align-items:baseline;
+  min-width:0;
+}
+.tfupload .header-right {
+  color:var(--muted);
+  font-size:11px;
+  white-space:nowrap;
+}
+.tfupload .page {
+  width:100%;
+  max-width:1460px;
+  margin:0 auto;
+  padding:20px;
+}
+.tfupload .screen-heading {
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:14px;
+}
+.tfupload .screen-title {
+  margin:0;
+  font-size:20px;
+  line-height:1.2;
+  font-weight:600;
+  color:var(--text);
+}
+.tfupload .screen-copy {
+  margin:5px 0 0;
+  color:var(--muted);
+  font-size:12px;
+}
+.tfupload .card {
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+.tfupload .upload-layout {
+  display:grid;
+  grid-template-columns:minmax(280px,360px) minmax(0,1fr);
+  gap:14px;
+  align-items:stretch;
+}
+.tfupload .card-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  min-height:46px;
+  padding:11px 14px;
+  border-bottom:1px solid var(--line);
+}
+.tfupload .card-title {
+  font-size:13px;
+  font-weight:600;
+  color:var(--text);
+}
+.tfupload .card-subtitle {
+  margin-top:2px;
+  color:var(--muted);
+  font-size:10px;
+}
+.tfupload .card-body {
+  padding:14px;
+}
+.tfupload .section-line {
+  height:3px;
+  width:36px;
+  margin:0 0 12px;
+  border-radius:2px;
+  background:var(--blue);
+}
+.tfupload .field {
+  margin-bottom:14px;
+}
+.tfupload .field:last-child {
+  margin-bottom:0;
+}
+.tfupload .field label {
+  display:block;
+  margin:0 0 5px;
+  color:var(--text-secondary);
+  font-size:11px;
+  font-weight:600;
+}
+.tfupload .req {
+  color:var(--red);
+  margin-left:2px;
+}
+.tfupload select, .tfupload input[type="text"] {
+  width:100%;
+  height:34px;
+  padding:4px 34px 4px 10px;
+  background:var(--surface);
+  border:1px solid var(--line-strong);
+  border-radius:4px;
+  color:var(--text);
+  font-size:12px;
+}
+.tfupload select:focus, .tfupload input[type="text"]:focus {
+  border-color:var(--blue);
+  box-shadow:0 0 0 1px var(--blue);
+  outline:none;
+}
+.tfupload .field-hint {
+  margin-top:5px;
+  color:var(--muted);
+  font-size:10px;
+}
+.tfupload .info-box {
+  margin-top:16px;
+  padding:10px 11px;
+  background:var(--blue-soft);
+  border:1px solid var(--blue-soft-2);
+  border-radius:4px;
+  color:var(--text-secondary);
+  font-size:10px;
+}
+.tfupload .btn {
+  min-height:32px;
+  padding:0 13px;
+  border:1px solid var(--line-strong);
+  border-radius:4px;
+  background:var(--surface);
+  color:var(--text);
+  font-size:12px;
+  font-weight:600;
+}
+.tfupload .btn:hover {
+  background:#f2f4f5;
+}
+.tfupload .btn.primary {
+  background:var(--blue);
+  border-color:var(--blue);
+  color:#fff;
+}
+.tfupload .btn.primary:hover {
+  background:var(--blue-hover);
+  border-color:var(--blue-hover);
+}
+.tfupload .btn.soft {
+  background:var(--blue-soft);
+  border-color:var(--blue-soft-2);
+  color:var(--blue-active);
+}
+.tfupload .btn.soft:hover {
+  background:var(--blue-soft-2);
+  border-color:#9dc9f1;
+}
+.tfupload .btn:disabled {
+  opacity:.46;
+  cursor:not-allowed;
+}
+.tfupload .upload-card .card-body {
+  display:flex;
+  flex-direction:column;
+  min-height:390px;
+}
+.tfupload .drop-zone {
+  min-height:230px;
+  flex:1 1 auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  border:1px dashed #9fb7ca;
+  border-radius:6px;
+  background:#fbfdff;
+  text-align:center;
+  transition:border-color .15s,background .15s;
+}
+.tfupload .drop-zone.drag-over {
+  border-color:var(--blue);
+  background:var(--blue-soft);
+}
+.tfupload .upload-glyph {
+  width:50px;
+  height:50px;
+  margin:0 auto 12px;
+  position:relative;
+  border:1px solid var(--blue-soft-2);
+  border-radius:10px;
+  background:var(--blue-soft);
+}
+.tfupload .upload-glyph:before {
+  content:"";
+  position:absolute;
+  left:23px;
+  top:11px;
+  width:2px;
+  height:22px;
+  background:var(--blue);
+}
+.tfupload .upload-glyph:after {
+  content:"";
+  position:absolute;
+  left:17px;
+  top:11px;
+  width:12px;
+  height:12px;
+  border-left:2px solid var(--blue);
+  border-top:2px solid var(--blue);
+  transform:rotate(45deg);
+}
+.tfupload .drop-title {
+  color:var(--text);
+  font-size:13px;
+  font-weight:600;
+}
+.tfupload .drop-copy {
+  margin-top:5px;
+  color:var(--muted);
+  font-size:11px;
+}
+.tfupload .drop-copy .browse-link {
+  border:0;
+  padding:0;
+  background:transparent;
+  color:var(--blue);
+  font-weight:600;
+  text-decoration:underline;
+}
+.tfupload .file-note {
+  margin-top:8px;
+  color:var(--muted);
+  font-size:10px;
+}
+.tfupload .selected-file {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:10px;
+  padding:9px 10px;
+  border:1px solid var(--line);
+  border-radius:4px;
+  background:var(--surface-alt);
+}
+.tfupload .file-main {
+  min-width:0;
+}
+.tfupload .file-name {
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:var(--text);
+  font-weight:600;
+}
+.tfupload .file-meta {
+  margin-top:2px;
+  color:var(--muted);
+  font-size:10px;
+}
+.tfupload .file-remove {
+  border:0;
+  background:transparent;
+  color:var(--blue);
+  font-size:11px;
+  font-weight:600;
+}
+.tfupload .upload-actions {
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:12px;
+}
+.tfupload .progress-card {
+  margin-top:12px;
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:4px;
+  background:var(--surface-alt);
+}
+.tfupload .progress-top {
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:8px;
+}
+.tfupload .progress-label {
+  font-weight:600;
+  color:var(--text);
+}
+.tfupload .progress-pct {
+  color:var(--blue-active);
+  font-weight:600;
+}
+.tfupload .progress-track {
+  height:6px;
+  overflow:hidden;
+  border-radius:4px;
+  background:#e5e8eb;
+}
+.tfupload .progress-bar {
+  width:0;
+  height:100%;
+  background:var(--blue);
+  transition:width .25s ease;
+}
+.tfupload .progress-steps {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
+  margin-top:9px;
+}
+.tfupload .progress-step {
+  color:var(--muted);
+  font-size:9px;
+}
+.tfupload .progress-step.active {
+  color:var(--blue-active);
+  font-weight:600;
+}
+.tfupload .progress-step.done {
+  color:var(--green);
+}
+.tfupload .message {
+  margin-top:10px;
+  padding:9px 10px;
+  border-radius:4px;
+  font-size:11px;
+}
+.tfupload .message.error {
+  background:var(--red-soft);
+  border:1px solid #f0b2b2;
+  color:var(--red);
+}
+.tfupload .message.success {
+  background:var(--green-soft);
+  border:1px solid #b5d9b5;
+  color:var(--green);
+}
+.tfupload .upload-toast {
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:2000;
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  width:350px;
+  max-width:calc(100vw - 24px);
+  padding:12px 14px;
+  background:#f2f4f5;
+  border:1px solid #d9d9d9;
+  border-left:3px solid var(--green);
+  border-radius:4px;
+  color:#1d2d3e;
+  box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+.tfupload .upload-toast-icon {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:28px;
+  height:28px;
+  flex:0 0 28px;
+  border-radius:50%;
+  background:#e5e8eb;
+  color:#556b82;
+  font-size:15px;
+  font-weight:600;
+}
+.tfupload .upload-toast-content {
+  min-width:0;
+}
+.tfupload .upload-toast-title {
+  margin-bottom:3px;
+  color:#1d2d3e;
+  font-size:12px;
+  font-weight:600;
+}
+.tfupload .upload-toast-message {
+  color:#556b82;
+  font-size:11px;
+  font-weight:400;
+}
+.tfupload .recent-topbar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+.tfupload .back-btn {
+  min-width:82px;
+}
+.tfupload .summary-grid {
+  display:grid;
+  grid-template-columns:minmax(240px,1.7fr) repeat(4,minmax(120px,1fr));
+  gap:10px;
+  margin-bottom:12px;
+}
+.tfupload .summary-item {
+  min-width:0;
+  padding:11px 12px;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:6px;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+.tfupload .summary-label {
+  color:var(--muted);
+  font-size:10px;
+}
+.tfupload .summary-value {
+  margin-top:3px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:var(--text);
+  font-size:13px;
+  font-weight:600;
+}
+.tfupload .table-card {
+  overflow:hidden;
+}
+.tfupload .table-toolbar {
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:12px;
+  padding:10px 12px;
+  border-bottom:1px solid var(--line);
+  background:var(--surface);
+}
+.tfupload .toolbar-group {
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+}
+.tfupload .toolbar-field {
+  min-width:190px;
+}
+.tfupload .toolbar-field label {
+  display:block;
+  margin-bottom:3px;
+  color:var(--muted);
+  font-size:10px;
+}
+.tfupload .toolbar-field input, .tfupload .toolbar-field select {
+  height:30px;
+}
+.tfupload .table-meta {
+  color:var(--muted);
+  font-size:10px;
+  white-space:nowrap;
+}
+.tfupload .table-wrap {
+  width:100%;
+  max-height:58vh;
+  overflow:auto;
+  background:var(--surface);
+}
+.tfupload .preview-table {
+  width:max-content;
+  min-width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  font-size:11px;
+}
+.tfupload .preview-table th {
+  position:sticky;
+  top:0;
+  z-index:4;
+  min-width:140px;
+  max-width:260px;
+  padding:8px 10px;
+  background:#f2f4f5;
+  color:var(--text-secondary);
+  border-right:1px solid #e4e6e8;
+  border-bottom:1px solid var(--line);
+  text-align:left;
+  font-weight:600;
+  white-space:nowrap;
+}
+.tfupload .preview-table td {
+  max-width:260px;
+  padding:8px 10px;
+  background:var(--surface);
+  color:var(--text);
+  border-right:1px solid #eef0f2;
+  border-bottom:1px solid #eef0f2;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.tfupload .preview-table tbody tr:hover td {
+  background:#f7fbff;
+}
+.tfupload .preview-table .num {
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+.tfupload .preview-table th.sticky-1, .tfupload .preview-table td.sticky-1 {
+  position:sticky;
+  left:0;
+  z-index:3;
+}
+.tfupload .preview-table th.sticky-2, .tfupload .preview-table td.sticky-2 {
+  position:sticky;
+  left:140px;
+  z-index:3;
+}
+.tfupload .preview-table th.sticky-1, .tfupload .preview-table th.sticky-2 {
+  z-index:6;
+}
+.tfupload .pagination {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:9px 12px;
+  border-top:1px solid var(--line);
+  background:var(--surface);
+}
+.tfupload .page-info {
+  color:var(--muted);
+  font-size:10px;
+}
+.tfupload .page-actions {
+  display:flex;
+  gap:5px;
+}
+.tfupload .page-btn {
+  min-width:30px;
+  height:28px;
+  padding:0 8px;
+  border:1px solid var(--line);
+  border-radius:4px;
+  background:var(--surface);
+  color:var(--text);
+  font-size:10px;
+}
+.tfupload .page-btn:hover:not(:disabled) {
+  background:var(--blue-soft);
+  border-color:var(--blue-soft-2);
+  color:var(--blue-active);
+}
+.tfupload .page-btn:disabled {
+  opacity:.4;
+  cursor:not-allowed;
+}
+.tfupload .empty-preview {
+  padding:36px;
+  text-align:center;
+  color:var(--muted);
+}
+.tfupload ::-webkit-scrollbar {
+  width:8px;
+  height:8px;
+}
+.tfupload ::-webkit-scrollbar-track {
+  background:#f0f2f4;
+}
+.tfupload ::-webkit-scrollbar-thumb {
+  background:#a8b3bd;
+  border:2px solid #f0f2f4;
+  border-radius:8px;
+}
+@media(max-width:1000px) {
+.tfupload .upload-layout {
+    grid-template-columns:1fr;
+  }
+.tfupload .summary-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+.tfupload .summary-item:first-child {
+    grid-column:1/-1;
+  }
+}
+@media(max-width:680px) {
+.tfupload .page {
+    padding:12px;
+  }
+.tfupload .app-header {
+    height:auto;
+    min-height:48px;
+    padding:9px 12px;
+    flex-wrap:wrap;
+  }
+.tfupload .app-subtitle {
+    display:none;
+  }
+.tfupload .screen-heading, .tfupload .recent-topbar, .tfupload .table-toolbar {
+    flex-direction:column;
+    align-items:stretch;
+  }
+.tfupload .summary-grid {
+    grid-template-columns:1fr;
+  }
+.tfupload .summary-item:first-child {
+    grid-column:auto;
+  }
+.tfupload .toolbar-group {
+    flex-wrap:wrap;
+  }
+.tfupload .toolbar-field {
+    min-width:0;
+    flex:1 1 180px;
+  }
+.tfupload .progress-steps {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+.tfupload .page {
+  max-width:none;
+  padding:10px 14px 14px;
+}
+.tfupload .compact-heading {
+  align-items:center;
+  margin-bottom:10px;
+}
+.tfupload .compact-heading .screen-title {
+  font-size:18px;
+}
+.tfupload .template-link {
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:4px 2px;
+  border:0;
+  border-bottom:1px solid rgba(233,115,12,.35);
+  background:transparent;
+  color:var(--orange);
+  font-size:12px;
+  font-weight:600;
+  cursor:pointer;
+}
+.tfupload .template-link:hover {
+  color:#c65f07;
+  border-bottom-color:var(--orange);
+}
+.tfupload .download-mark {
+  position:relative;
+  width:14px;
+  height:15px;
+  display:inline-block;
+}
+.tfupload .download-mark:before {
+  content:"";
+  position:absolute;
+  left:6px;
+  top:0;
+  width:2px;
+  height:9px;
+  background:currentColor;
+}
+.tfupload .download-mark:after {
+  content:"";
+  position:absolute;
+  left:3px;
+  top:5px;
+  width:6px;
+  height:6px;
+  border-right:2px solid currentColor;
+  border-bottom:2px solid currentColor;
+  transform:rotate(45deg);
+}
+.tfupload .intake-layout {
+  display:grid;
+  grid-template-columns:minmax(430px,36%) minmax(0,64%);
+  gap:10px;
+  margin-bottom:10px;
+  align-items:stretch;
+}
+.tfupload .compact-card-head {
+  min-height:40px;
+  padding:8px 12px;
+}
+.tfupload .context-body {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  padding:10px 12px 12px;
+  align-items:end;
+}
+.tfupload .compact-field {
+  margin:0;
+}
+.tfupload .compact-field label {
+  margin-bottom:4px;
+}
+.tfupload .compact-upload-card .card-body {
+  min-height:0;
+}
+.tfupload .compact-upload-body {
+  padding:10px 12px;
+}
+.tfupload .upload-file-row {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 84px;
+  gap:10px;
+  align-items:stretch;
+}
+.tfupload .compact-drop-zone {
+  min-height:64px;
+  padding:8px 12px;
+  text-align:left;
+}
+.tfupload .drop-inline {
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+}
+.tfupload .compact-upload-glyph {
+  width:30px;
+  height:30px;
+  margin:0;
+  border-radius:6px;
+  flex:0 0 30px;
+}
+.tfupload .compact-upload-glyph:before {
+  left:14px;
+  top:6px;
+  height:15px;
+}
+.tfupload .compact-upload-glyph:after {
+  left:10px;
+  top:6px;
+  width:9px;
+  height:9px;
+}
+.tfupload .drop-text-wrap {
+  min-width:0;
+}
+.tfupload .drop-title {
+  font-size:12px;
+}
+.tfupload .drop-copy {
+  display:inline;
+  margin:0 0 0 4px;
+}
+.tfupload .file-note {
+  margin-top:3px;
+  font-size:9px;
+}
+.tfupload .extract-actions {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:7px;
+}
+.tfupload .extract-actions .btn {
+  width:100%;
+}
+.tfupload .selected-file {
+  margin-top:7px;
+  padding:6px 9px;
+}
+.tfupload .progress-card {
+  margin-top:7px;
+  padding:7px 9px;
+}
+.tfupload .progress-top {
+  margin-bottom:5px;
+}
+.tfupload .progress-steps {
+  display:none;
+}
+.tfupload .message {
+  margin-top:8px;
+}
+.tfupload .preview-headbar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  min-height:45px;
+  padding:8px 12px;
+  border-bottom:1px solid var(--line);
+  background:var(--surface);
+}
+.tfupload .preview-heading-wrap {
+  min-width:0;
+}
+.tfupload .preview-summary {
+  margin-top:2px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:var(--muted);
+  font-size:10px;
+}
+.tfupload .final-upload-btn {
+  min-width:88px;
+}
+.tfupload .table-toolbar {
+  padding:7px 10px;
+}
+.tfupload .search-field {
+  min-width:260px;
+}
+.tfupload .table-wrap {
+  height:calc(100vh - 290px);
+  min-height:340px;
+  max-height:none;
+}
+.tfupload .preview-table {
+  font-size:10.5px;
+}
+.tfupload .preview-table th {
+  min-width:118px;
+  max-width:190px;
+  padding:7px 8px;
+}
+.tfupload .preview-table td {
+  max-width:190px;
+  padding:7px 8px;
+}
+.tfupload .preview-table th.sticky-2, .tfupload .preview-table td.sticky-2 {
+  left:118px;
+}
+.tfupload .pagination {
+  padding:7px 10px;
+}
+.tfupload .page-number-group {
+  display:flex;
+  gap:4px;
+}
+.tfupload .page-number-group .page-btn.active {
+  background:var(--blue-soft);
+  border-color:var(--blue);
+  color:var(--blue-active);
+  font-weight:600;
+}
+@media(max-width:900px) {
+.tfupload .intake-layout {
+    grid-template-columns:1fr;
+  }
+.tfupload .context-body {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+.tfupload .table-wrap {
+    height:calc(100vh - 420px);
+    min-height:300px;
+  }
+}
+@media(max-width:680px) {
+.tfupload .context-body {
+    grid-template-columns:1fr;
+  }
+.tfupload .compact-heading {
+    flex-direction:row;
+    align-items:flex-start;
+  }
+.tfupload .upload-file-row {
+    grid-template-columns:1fr;
+  }
+.tfupload .extract-actions {
+    flex-direction:row;
+    justify-content:flex-end;
+  }
+.tfupload .extract-actions .btn {
+    width:auto;
+    min-width:88px;
+  }
+.tfupload .preview-headbar, .tfupload .table-toolbar, .tfupload .pagination {
+    align-items:stretch;
+    flex-direction:column;
+  }
+.tfupload .page-actions {
+    flex-wrap:wrap;
+  }
+.tfupload .table-wrap {
+    height:55vh;
+    min-height:300px;
+  }
+}
+.tfupload .template-link {
+  color:var(--blue)!important;
+  border-bottom-color:rgba(10,110,209,.28)!important;
+}
+.tfupload .template-link:hover {
+  color:var(--blue-hover)!important;
+  border-bottom-color:var(--blue)!important;
+}
+.tfupload #progressCard {
+  display:none!important;
+}
+.tfupload .file-meta, .tfupload .file-remove {
+  display:none!important;
+}
+.tfupload .selected-file {
+  min-height:38px;
+  padding:8px 10px;
+}
+.tfupload .search-field {
+  width:230px!important;
+  min-width:230px!important;
+  max-width:230px!important;
+  flex:0 0 230px!important;
+}
+.tfupload .search-field input {
+  width:100%;
+}
+.tfupload .page-actions {
+  margin-left:auto;
+}
+@media(max-width:680px) {
+.tfupload .search-field {
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    flex:1 1 auto!important;
+  }
+.tfupload .toolbar-group {
+    width:100%;
+  }
+.tfupload .page-actions {
+    margin-left:0;
+  }
+}
+.tfupload .compact-card-head {
+  min-height:34px;
+  padding:6px 12px;
+}
+.tfupload .context-card {
+  display:flex;
+  flex-direction:column;
+}
+.tfupload .context-body {
+  flex:1 1 auto;
+  align-content:center;
+  padding:8px 12px;
+}
+.tfupload .compact-upload-body {
+  padding:8px 12px;
+}
+.tfupload .compact-drop-zone {
+  min-height:56px;
+  padding:6px 10px;
+}
+.tfupload .drop-zone.has-file .drop-inline {
+  display:none;
+}
+.tfupload .drop-zone .selected-file {
+  width:100%;
+  min-height:42px;
+  margin:0;
+  padding:8px 10px;
+  border-color:var(--line);
+  background:var(--surface-alt);
+}
+.tfupload .drop-zone.has-file .selected-file {
+  display:flex!important;
+}
+.tfupload .table-wrap {
+  height:calc(100vh - 260px);
+}
+@media(max-width:900px) {
+.tfupload .table-wrap {
+    height:calc(100vh - 390px);
+  }
+}
+@media(max-width:680px) {
+.tfupload .table-wrap {
+    height:55vh;
+  }
+}
+.tfupload .table-wrap {
+  height:auto!important;
+  min-height:0!important;
+  max-height:calc(100vh - 260px)!important;
+}
+.tfupload .page-actions {
+  align-items:center;
+  gap:4px;
+}
+.tfupload .page-number-group {
+  display:flex;
+  gap:4px;
+}
+.tfupload .page-btn {
+  min-width:30px;
+  padding:0 8px;
+}
+@media(max-width:900px) {
+.tfupload .table-wrap {
+    max-height:calc(100vh - 390px)!important;
+  }
+}
+@media(max-width:680px) {
+.tfupload .table-wrap {
+    max-height:55vh!important;
+  }
+}
+.tfupload .tf-status {
+  display:inline-flex;
+  align-items:center;
+  padding:2px 8px;
+  border-radius:10px;
+  font-size:10px;
+  font-weight:600;
+  white-space:nowrap;
+}
+.tfupload .tf-status-pending {
+  background:var(--surface-alt);
+  color:var(--muted);
+}
+.tfupload .tf-status-success {
+  background:var(--green-soft);
+  color:var(--green);
+}
+.tfupload .tf-status-error {
+  background:var(--red-soft);
+  color:var(--red);
+  cursor:help;
+}
+/* ============================================================================
+   OTTK design system
+   Fonts, colour tokens and chrome taken from web/ottk-dttk-console/index.html
+   so every console under web/ reads as one product. Appended last on purpose:
+   this file carries six earlier <style> layers and the alignment has to win the
+   cascade over all of them. Presentation only - no ids, handlers or behaviour
+   are touched by anything in this block.
+   ========================================================================= */
+/* OTTK's palette mapped onto this console's own token names, so every existing
+   rule picks the new colours up without being rewritten one at a time. */
+.tfupload {
+  --page:#f5f7f9;
+  --surface:#ffffff;
+  --surface-alt:#f2f4f5;
+  --line:#d5dadd;
+  --line-strong:#8996a1;
+  --text:#1d2d3e;
+  --text-secondary:#475e75;
+  --muted:#687b8d;
+  --blue:#0a6ed1;
+  --blue-hover:#085caf;
+  --blue-active:#004b93;
+  --blue-soft:#eaf3fc;
+  --blue-soft-2:#d1e8ff;
+  --green:#107e3e;
+  --green-soft:#e4f5e9;
+  --red:#bb0000;
+  --red-soft:#ffebeb;
+  --shadow:0 1px 3px rgba(34,53,72,.13);
+  --radius:8px;
+  --ds-font:"72","Segoe UI",Arial,sans-serif;
+  --ds-header:52px;
+}
+/* "72" is SAP's UI font and the first face OTTK asks for; the rest of the stack
+   is the fallback OTTK uses, so a machine without "72" lands on Segoe UI in both
+   consoles rather than on Inter here and Segoe UI there. */
+.tfupload *, .tfupload {font-family:var(--ds-font)}
+.tfupload {font-size:13px;line-height:1.45;background:var(--page);color:var(--text)}
+/* --- Topbar ------------------------------------------------------------- */
+.tfupload .app-header {
+  height:var(--ds-header);min-height:var(--ds-header);padding:0 18px;
+  background:var(--surface);border-bottom:1px solid var(--line);box-shadow:none;
+}
+.tfupload .header-left {display:flex;align-items:center;gap:11px;min-width:0}
+.tfupload .app-title {font-size:17px;font-weight:700;color:var(--text);white-space:nowrap}
+.tfupload .ds-mark {
+  width:30px;height:30px;border-radius:6px;flex:none;display:grid;place-items:center;
+  background:linear-gradient(145deg,#0a6ed1,#35a5dc);color:#fff;
+  box-shadow:0 2px 7px rgba(10,110,209,.22);
+}
+.tfupload .ds-mark svg {width:18px;height:18px;fill:currentColor}
+.tfupload .ds-code {font-size:12px;font-weight:400;color:var(--muted);white-space:nowrap}
+.tfupload .header-right {display:flex;align-items:center;gap:6px;font-size:13px}
+/* Same green dot OTTK uses to say "the page is talking to SAP". */
+.tfupload .ds-conn {
+  width:8px;height:8px;flex:none;margin:0 6px;border-radius:50%;
+  background:#20a454;box-shadow:0 0 0 3px #d9f3e2;
+}
+/* --- Buttons ------------------------------------------------------------- */
+.tfupload .btn, .tfupload .template-link {
+  height:32px;padding:0 11px;border:1px solid var(--line-strong);border-radius:4px;
+  background:var(--surface);color:var(--text-secondary);font-size:13px;font-weight:600;
+  display:inline-flex;align-items:center;gap:7px;text-decoration:none;
+}
+.tfupload .btn:hover, .tfupload .template-link:hover {background:var(--surface-alt);color:var(--text);text-decoration:none}
+/* The v4-polish layer paints .template-link blue with !important; now that it is
+   a real .btn in the topbar it has to read as one, so the colour is forced back. */
+.tfupload .template-link {color:var(--text-secondary)!important;border-bottom-color:var(--line-strong)!important}
+.tfupload .template-link:hover {color:var(--text)!important;border-bottom-color:var(--line-strong)!important}
+.tfupload .btn.primary {background:var(--blue);border-color:var(--blue);color:#fff}
+.tfupload .btn.primary:hover {background:var(--blue-hover)}
+.tfupload .btn.soft {background:var(--blue-soft);border-color:#a7cff5;color:var(--blue)}
+.tfupload .btn:disabled {opacity:.45;cursor:default}
+.tfupload .btn:disabled:hover {background:var(--surface)}
+.tfupload .btn.primary:disabled:hover {background:var(--blue)}
+/* --- Page + panels ------------------------------------------------------- */
+.tfupload .page {max-width:1560px;padding:12px 14px}
+/* The topbar already names the app, so the in-page heading drops to a section
+   label instead of competing with it at 20px. */
+.tfupload .screen-title {font-size:14px;font-weight:700;color:var(--text)}
+.tfupload .screen-copy {font-size:11px;color:var(--muted)}
+.tfupload .card {
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+.tfupload .card-head {min-height:39px;padding:0 11px;border-bottom:1px solid var(--line)}
+.tfupload .card-title {font-size:13px;font-weight:700;color:var(--text)}
+.tfupload .card-subtitle, .tfupload .preview-summary, .tfupload .table-meta, .tfupload .page-info {font-size:11px;font-weight:500;color:var(--muted)}
+.tfupload .preview-headbar {min-height:39px;padding:0 11px;border-bottom:1px solid var(--line)}
+.tfupload .section-line {background:var(--blue)}
+/* --- Fields -------------------------------------------------------------- */
+.tfupload .field label, .tfupload .toolbar-field label {font-size:12px;font-weight:600;color:var(--text-secondary)}
+.tfupload .req {color:var(--red)}
+.tfupload select, .tfupload input[type="text"] {
+  height:28px;border:1px solid var(--line-strong);border-radius:3px;background:#fff;
+  color:var(--text);font-size:13px;padding:3px 8px;
+}
+.tfupload select {padding-right:28px}
+.tfupload select:focus, .tfupload input[type="text"]:focus {
+  border-color:var(--blue);box-shadow:0 0 0 1px var(--blue);outline:none;
+}
+/* --- Table --------------------------------------------------------------- */
+.tfupload .table-toolbar {background:#f8fafb;border-bottom:1px solid var(--line);padding:7px 11px}
+.tfupload .preview-table th {
+  background:var(--surface-alt);color:var(--text-secondary);font-size:11px;font-weight:700;
+  text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);
+  border-right:1px solid #e6e9eb;white-space:nowrap;
+}
+.tfupload .preview-table td {
+  padding:6px 8px;border-bottom:1px solid #edf0f2;border-right:1px solid #edf0f2;
+  font-size:12px;color:var(--text);background:#fff;
+}
+.tfupload .preview-table tbody tr:hover td {background:#f7fbff}
+.tfupload .preview-table .num {text-align:right;font-variant-numeric:tabular-nums}
+.tfupload .empty-preview {font-size:12px;color:var(--muted)}
+/* --- Pager (OTTK's .panel-foot) ------------------------------------------ */
+.tfupload .pagination {
+  min-height:33px;padding:0 10px;border-top:1px solid var(--line);
+  color:var(--muted);font-size:11px;
+}
+.tfupload .page-btn, .tfupload .page-number-group button {
+  min-width:24px;height:23px;padding:0 5px;border:1px solid var(--line);border-radius:3px;
+  background:#fff;color:var(--text-secondary);font-size:11px;font-weight:600;
+}
+.tfupload .page-btn:hover:not(:disabled), .tfupload .page-number-group button:hover {background:var(--surface-alt)}
+.tfupload .page-btn:disabled {opacity:.4;cursor:default}
+.tfupload .page-number-group button.active {background:var(--blue);border-color:var(--blue);color:#fff}
+/* --- Status pills, messages, toast --------------------------------------- */
+.tfupload .tf-status {padding:3px 8px;border-radius:12px;font-size:11px;font-weight:600}
+.tfupload .tf-status-success {background:var(--green-soft);color:var(--green)}
+.tfupload .tf-status-pending {background:#fff4cc;color:#9b6b00}
+.tfupload .tf-status-error {background:var(--red-soft);color:var(--red)}
+.tfupload .message {font-size:12px;border-radius:4px}
+/* OTTK's toast is a dark slab bottom-right; the icon and two text lines this
+   console already renders keep their slots inside it. */
+.tfupload .upload-toast {
+  background:#243b53;border:0;border-left:0;border-radius:6px;color:#fff;
+  box-shadow:0 6px 24px rgba(0,0,0,.25);padding:11px 14px;
+}
+.tfupload .upload-toast-icon {background:rgba(255,255,255,.14);color:#8fe0ab}
+.tfupload .upload-toast-title {color:#fff;font-size:12px;font-weight:700}
+.tfupload .upload-toast-message {color:#c6d4e1;font-size:11px}
+/* --- Drop zone ----------------------------------------------------------- */
+.tfupload .drop-zone {border-radius:6px;border-color:var(--line-strong);background:#fbfcfd}
+.tfupload .drop-zone.drag-over {border-color:var(--blue);background:var(--blue-soft)}
+.tfupload .drop-title {font-size:13px;font-weight:700;color:var(--text)}
+.tfupload .drop-copy, .tfupload .file-note {font-size:11px;color:var(--muted)}
+.tfupload .browse-link {color:var(--blue);font-weight:600}
+/* Fourth Signal logo in the topbar -- the same asset the SLC hub (8771) serves,
+   so every console in web/ carries one identical mark. This is an <img>, and
+   img.mark / img.ds-mark outranks the plain .mark / .ds-mark class rule that
+   painted the old blue gradient square, so the gradient, shadow and radius are
+   switched off here rather than deleted out of the rule they came from. */
+.tfupload img.mark, .tfupload img.ds-mark {
+  width: 32px; height: 32px; flex: none;
+  background: none; box-shadow: none; border-radius: 0;
+  object-fit: contain;
+}

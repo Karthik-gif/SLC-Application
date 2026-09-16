@@ -1,0 +1,95 @@
+{
+  "$comment": [
+    "Application registry. The launcher resolves a menu tile's 'code' to an entry here, so",
+    "Menu Path's hardcoded http://localhost:876x/ URLs become internal routes on one origin.",
+    "",
+    "status:",
+    "  ready    - converted to React and exercised end to end",
+    "  scaffold - route exists and renders, conversion from the legacy HTML not finished",
+    "  planned  - no application behind it yet (the launcher says so rather than failing silently)",
+    "",
+    "'services' lists the config/services.json keys the app is permitted to call. The gateway",
+    "does not enforce this yet; it documents intent and drives the launcher's service badges.",
+    "'legacy' points at the HTML file the React app was converted from."
+  ],
+  "apps": [
+    {
+      "code": "ottk-dttk-console",
+      "id": "ottk",
+      "route": "/apps/ottk",
+      "title": "Origination Ticket (OTTK)",
+      "status": "ready",
+      "services": [
+        "ottk",
+        "dttk"
+      ],
+      "legacy": "legacy/OTTK.html",
+      "legacyPort": 8765,
+      "note": "Converted from legacy/OTTK.html with its original stylesheet scoped under .ottk. Not yet run against live SAP."
+    },
+    {
+      "code": "dttk-console",
+      "id": "dttk",
+      "route": "/apps/dttk",
+      "title": "Distribution Ticket (DTTK)",
+      "status": "ready",
+      "services": [
+        "dttk",
+        "ottk"
+      ],
+      "legacy": "legacy/DTTK.html",
+      "legacyPort": 8766,
+      "note": "Converted from legacy/DTTK.html with its original stylesheet scoped under .dttk. Also serves the read-only entry points OTTK and Deal ID link to (?display=<dttk> and ?displayOttk=<ottk>). Not yet run against live SAP."
+    },
+    {
+      "code": "deal-id-console",
+      "id": "deal-id",
+      "route": "/apps/deal-id",
+      "title": "Deal ID Creation",
+      "status": "ready",
+      "services": [
+        "dealid",
+        "ottk",
+        "dttk"
+      ],
+      "legacy": "legacy/Deal ID.html",
+      "legacyPort": 8767,
+      "note": "Converted and exercised end to end against a stub backend: load, filter, select, balance derivation, the balance guard, create, key recovery and refresh. Not yet run against live SAP."
+    },
+    {
+      "code": "tf-upload-console",
+      "id": "tf-upload",
+      "route": "/apps/tf-upload",
+      "title": "Trade Flow Upload",
+      "status": "ready",
+      "services": [
+        "tf"
+      ],
+      "legacy": "legacy/Uplaod TF.html",
+      "legacyPort": 8768,
+      "note": "Converted from legacy/Uplaod TF.html with its original stylesheet scoped under .tfupload. Parses .xlsx in the browser with no third-party library, as the original did. Not yet run against live SAP."
+    },
+    {
+      "code": "tf-manage-console",
+      "id": "tf-manage",
+      "route": "/apps/tf-manage",
+      "title": "Manage Trade Flows",
+      "status": "scaffold",
+      "services": [],
+      "legacy": "legacy/Manage TF.html",
+      "legacyPort": 8770,
+      "note": "Legacy page runs on DUMMY_MASTER_DATA and has never called an API. Its SAP contract is undefined."
+    },
+    {
+      "code": "inv-console",
+      "id": "invoice",
+      "route": "/apps/invoice",
+      "title": "Amend BLs & Finalise Invoices",
+      "status": "scaffold",
+      "services": [],
+      "legacy": "legacy/Invoice.html",
+      "legacyPort": 8769,
+      "note": "Legacy page reads a global FTI_DEALS that nothing defines, falling back to DUMMY.deals. Its SAP contract is undefined."
+    }
+  ]
+}

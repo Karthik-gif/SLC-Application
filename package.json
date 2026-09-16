@@ -1,0 +1,31 @@
+{
+  "name": "slc-application",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "SLC \u2014 API/OData-driven multi-application platform (React + Node)",
+  "engines": {
+    "node": ">=24",
+    "npm": ">=11"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n gateway,web -c cyan,magenta \"npm:dev:gateway\" \"npm:dev:web\"",
+    "dev:gateway": "node --env-file-if-exists=.env --watch packages/gateway/src/index.ts",
+    "dev:web": "npm run dev -w @slc/web",
+    "build": "npm run build -w @slc/web",
+    "start": "node --env-file-if-exists=.env packages/gateway/src/index.ts",
+    "typecheck": "tsc -p packages/api-client && tsc -p packages/api-client/tsconfig.test.json && tsc -p packages/ui && tsc -p packages/gateway && tsc -p apps/web",
+    "test": "node --test \"packages/**/*.test.ts\" \"apps/**/src/**/*.test.ts\"",
+    "lint": "eslint .",
+    "verify": "npm run typecheck && npm test && npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "concurrently": "^9.1.2",
+    "typescript": "^5.9.2"
+  }
+}

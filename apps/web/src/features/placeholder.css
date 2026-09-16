@@ -1,0 +1,17 @@
+.placeholder {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+.placeholder .slc-empty__detail p {
+  margin: 0 0 10px;
+}
+.placeholder .slc-empty__detail p:last-child {
+  margin-bottom: 0;
+}
+.placeholder code {
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+}

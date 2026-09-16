@@ -1,0 +1,652 @@
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { BackButton } from '../../auth/BackButton.tsx'
+import { SignOutButton } from '../../auth/SignOutButton.tsx'
+import { codeText, fmtDate, fmtNum, parseAmount, toNum } from '@slc/api-client'
+import { useAsync, useConnectionState } from '@slc/api-client/react'
+import {
+  createOttk,
+  fetchFeeRowsByType,
+  loadDttk,
+  loadFeeTypes,
+  loadLookups,
+  loadOttk,
+  pingBackend,
+  syncOttkFeeRows,
+  updateOttk,
+} from './api.ts'
+import type { FeeSyncResult } from './api.ts'
+import { buildChargeRows, chargesTotal, fmt2, recalcAllRows } from '../../shared/charges.ts'
+import { EMPTY_FORM, formFromRow, toPayload } from './form.ts'
+import type { OttkForm } from './form.ts'
+import { OttkModal, STRUCTURE_OPTIONS } from './OttkModal.tsx'
+import { ChargesModal } from '../../shared/ChargesModal.tsx'
+import { TicketPanel, derivedOptions, exact, loose } from '../../shared/TicketPanel.tsx'
+import type { Col, FilterDef } from '../../shared/TicketPanel.tsx'
+import { EMPTY_LOOKUPS } from './types.ts'
+import type { ChargeRow, DttkRow, OttkRow } from './types.ts'
+import './ottk.legacy.css'
+
+/**
+ * Origination Ticket (OTTK).
+ *
+ * A faithful reproduction of legacy/OTTK.html: this file and its siblings mirror that page
+ * element for element and class for class, and ottk.legacy.css is that page's own
+ * stylesheet with selectors scoped under .ottk. The shared @slc/ui components are
+ * deliberately not used here — their markup differs, so they would change how it looks.
+ */
+
+const BRAND_LOGO =
+  'https://raw.githubusercontent.com/ryannayak/fs-assets/e82f35a83e28689167b22b4300d4994a249acee0/fs-short-logo.png'
+
+/** Exactly the legacy statusPill(): anything not open/pending still renders as open. */
+function StatusPill({ status }: { status: string | undefined }) {
+  const text = status || 'Draft'
+  const cls = /open/i.test(text) ? 'open' : /pend/i.test(text) ? 'pending' : 'open'
+  return <span className={`status-pill ${cls}`}>{text}</span>
+}
+
+function structureMatch<Row extends { Zstr?: string; ZstrText?: string }>(row: Row, value: string): boolean {
+  const target = (row.Zstr || row.ZstrText || '').toLowerCase()
+  const needle = value.toLowerCase()
+  return target.includes(needle) || needle.includes(target)
+}
+
+export default function OttkApp() {
+  const navigate = useNavigate()
+  const connection = useConnectionState()
+
+  const [reloadToken, setReloadToken] = useState(0)
+  const ottk = useAsync<OttkRow[]>((signal) => loadOttk(signal), [reloadToken])
+  const dttk = useAsync<DttkRow[]>((signal) => loadDttk(signal), [reloadToken])
+  const lookupsState = useAsync((signal) => loadLookups(signal), [])
+
+  const ottkRows = useMemo(() => ottk.data ?? [], [ottk.data])
+  const dttkRows = useMemo(() => dttk.data ?? [], [dttk.data])
+  const lookups = lookupsState.data ?? EMPTY_LOOKUPS
+
+  const [toast, setToast] = useState<string>()
+  const [selectedOttkKey, setSelectedOttkKey] = useState<string>()
+  const [selectedDttkKey, setSelectedDttkKey] = useState<string>()
+
+  const [modalOpen, setModalOpen] = useState(false)
+  const [mode, setMode] = useState<'create' | 'edit'>('create')
+  const [editKey, setEditKey] = useState('')
+  const [statusText, setStatusText] = useState('Draft')
+  const [createdBy, setCreatedBy] = useState('')
+  const [form, setForm] = useState<OttkForm>(EMPTY_FORM)
+  const [saving, setSaving] = useState(false)
+  const [amountErrors, setAmountErrors] = useState<Record<string, boolean>>({})
+
+  const [chargesOpen, setChargesOpen] = useState(false)
+  const [chargeRows, setChargeRows] = useState<ChargeRow[]>([])
+  const [chargeSnapshot, setChargeSnapshot] = useState<ChargeRow[]>([])
+  const [chargesLoadedForKey, setChargesLoadedForKey] = useState<string>()
+
+  const [success, setSuccess] = useState<{ title: string; ottkNo: string; verb: string; fees: FeeSyncResult }>()
+
+  const notify = useCallback((message: string) => {
+    setToast(message)
+    window.setTimeout(() => setToast(undefined), 2400)
+  }, [])
+
+  useEffect(() => {
+    const timer = setInterval(() => void pingBackend(), 30_000)
+    return () => clearInterval(timer)
+  }, [])
+
+  const resetCharges = () => {
+    setChargeRows([])
+    setChargeSnapshot([])
+    setChargesLoadedForKey(undefined)
+  }
+
+  const openCreate = () => {
+    setForm(EMPTY_FORM)
+    setAmountErrors({})
+    setCreatedBy('')
+    resetCharges()
+    setMode('create')
+    setEditKey('')
+    setStatusText('Draft')
+    setModalOpen(true)
+  }
+
+  const openEdit = (row: OttkRow) => {
+    setForm(formFromRow(row, lookups.banks))
+    setAmountErrors({})
+    setCreatedBy(row.ZcreatedBy || row.LocalCreatedBy || '')
+    resetCharges()
+    setMode('edit')
+    setEditKey(row.ZottkNo ?? '')
+    setStatusText(row.ZstatDesc || row.ZottkSt || 'Draft')
+    setModalOpen(true)
+  }
+
+  /** Copy carries the source's header AND its charge lines onto a brand-new ticket. */
+  const onCopy = async () => {
+    if (!selectedOttkKey) return notify('Select an OTTK line to copy first')
+    const row = ottkRows.find((r) => String(r.ZottkNo) === selectedOttkKey)
+    if (!row) return notify('Could not find selected OTTK data')
+
+    setForm(formFromRow(row, lookups.banks))
+    setAmountErrors({})
+    setCreatedBy('')
+    setMode('create')
+    setEditKey('')
+    setStatusText('Draft')
+    setModalOpen(true)
+    notify(`OTTK ${selectedOttkKey} copied (incl. charges) — review and create`)
+
+    // The Other Charges total is re-derived from the copied lines rather than inherited
+    // from the source's stored ZothFee.
+    const feeTypes = lookups.feeTypes.length ? lookups.feeTypes : await loadFeeTypes()
+    const rows = recalcAllRows(
+      buildChargeRows(feeTypes, await fetchFeeRowsByType(selectedOttkKey)),
+      parseAmount(row.ZottkValue == null ? '' : String(row.ZottkValue)) ?? toNum(row.ZottkValue),
+    )
+    setChargeRows(rows)
+    setChargesLoadedForKey(undefined)
+    const total = chargesTotal(rows)
+    setForm((current) => ({ ...current, otherCharges: total ? fmt2(total) : '' }))
+  }
+
+  const tradeValueNum = parseAmount(form.tradeValue) ?? toNum(form.tradeValue)
+
+  const openCharges = async () => {
+    let feeTypes = lookups.feeTypes
+    // A FeeType lookup that failed at load would leave this grid permanently empty with no
+    // way back short of reloading the page, so it is retried once here.
+    if (!feeTypes.length) {
+      feeTypes = await loadFeeTypes()
+      if (!feeTypes.length) notify('No fee types available — check the connection and refresh')
+    }
+
+    let rows = chargeRows
+    if (mode === 'edit' && editKey && chargesLoadedForKey !== editKey) {
+      rows = buildChargeRows(feeTypes, await fetchFeeRowsByType(editKey))
+      setChargesLoadedForKey(editKey)
+    } else if (!rows.length) {
+      rows = buildChargeRows(feeTypes, {})
+    }
+    rows = recalcAllRows(rows, tradeValueNum)
+
+    setChargeRows(rows)
+    setChargeSnapshot(JSON.parse(JSON.stringify(rows)) as ChargeRow[])
+    setChargesOpen(true)
+  }
+
+  const cancelCharges = () => {
+    // Cancel reverts to the snapshot taken when the popup opened.
+    setChargeRows(JSON.parse(JSON.stringify(chargeSnapshot)) as ChargeRow[])
+    setChargesOpen(false)
+  }
+
+  const applyCharges = (total: number) => {
+    setForm((current) => ({ ...current, otherCharges: total ? fmt2(total) : '' }))
+    setChargesOpen(false)
+  }
+
+  async function onSave() {
+    // Every magnitude-suffixed field must parse before anything is sent.
+    const errors: Record<string, boolean> = {}
+    for (const key of ['tradeValue', 'depositAmount', 'expectedPLAmt'] as const) {
+      if (form[key].trim() && parseAmount(form[key]) === null) errors[key] = true
+    }
+    if (Object.keys(errors).length) {
+      setAmountErrors(errors)
+      notify('Please correct the highlighted amount')
+      return
+    }
+    setAmountErrors({})
+
+    const payload = toPayload(form)
+    if (!payload['Zbukrs']) return notify('Company Code is required')
+
+    setSaving(true)
+    try {
+      const currency = String(payload['ZottkCurr'] ?? 'USD')
+      if (mode === 'edit' && editKey) {
+        await updateOttk(editKey, payload)
+        const fees = await syncOttkFeeRows(editKey, currency, chargeRows)
+        setModalOpen(false)
+        setReloadToken((token) => token + 1)
+        setSuccess({ title: 'OTTK Updated', ottkNo: editKey, verb: 'updated', fees })
+      } else {
+        const newNo = await createOttk(payload)
+        const fees = newNo
+          ? await syncOttkFeeRows(newNo, currency, chargeRows)
+          : {
+              saved: 0,
+              failed: ['OTTK number could not be read back from the service — charge lines were not saved'],
+            }
+        setModalOpen(false)
+        setReloadToken((token) => token + 1)
+        setSuccess({ title: 'OTTK Created', ottkNo: newNo, verb: 'created', fees })
+      }
+    } catch (error) {
+      notify(`Save failed: ${error instanceof Error ? error.message : String(error)}`)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  // Escape closes the topmost open layer, innermost first.
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return
+      if (success) setSuccess(undefined)
+      else if (chargesOpen) cancelCharges()
+      else if (modalOpen) setModalOpen(false)
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  })
+
+  const origColumns: Array<Col<OttkRow>> = [
+    {
+      header: 'OTTK No',
+      width: 90,
+      className: 'link',
+      // The number opens the editor; the rest of the row only selects.
+      cell: (r) => (
+        <span
+          style={{ cursor: 'pointer' }}
+          onClick={(event) => {
+            event.stopPropagation()
+            openEdit(r)
+          }}
+        >
+          {r.ZottkNo ?? ''}
+        </span>
+      ),
+    },
+    { header: 'Type', width: 78, cell: (r) => codeText(r.Ztype, r.ZtypeText) },
+    { header: 'Structure', width: 110, cell: (r) => codeText(r.Zstr, r.ZstrText) },
+    { header: 'Entity ID', width: 72, cell: (r) => r.ZentId ?? '' },
+    { header: 'Entity String', width: 180, cell: (r) => r.ZentDesc ?? '' },
+    {
+      header: 'LC Issuing Bank',
+      width: 200,
+      cell: (r) => (r.ZottkBank ? `${r.ZottkBank} — ${r.BpName ?? ''}` : ''),
+    },
+    { header: 'Trade Value', width: 120, className: 'num', cell: (r) => fmtNum(r.ZottkValue) },
+    { header: 'Crcy', width: 62, cell: (r) => r.ZottkCurr ?? '' },
+    { header: 'Expected LC Date', width: 105, cell: (r) => fmtDate(r.Zdate) },
+    { header: 'Tenor', width: 70, className: 'num', cell: (r) => String(r.Ztenor ?? '') },
+    { header: 'LC Applicant', width: 120, cell: (r) => r.ZlcApp ?? '' },
+    { header: 'LC Beneficiary', width: 120, cell: (r) => r.ZlcBen ?? '' },
+    { header: 'CoCode', width: 80, cell: (r) => r.Zbukrs ?? '' },
+    { header: 'Deposit Amt', width: 90, className: 'num', cell: (r) => fmtNum(r.ZdepAmt) },
+    {
+      header: 'Interest',
+      width: 90,
+      cell: (r) => (r.ZintCat ? `${r.ZintCatText ?? r.ZintCat} ${fmtNum(r.ZintRate)}%` : ''),
+    },
+    { header: 'Status', width: 100, cell: (r) => <StatusPill status={r.ZstatDesc ?? r.ZottkSt} /> },
+  ]
+
+  const distColumns: Array<Col<DttkRow>> = [
+    {
+      header: 'DTTK No',
+      width: 80,
+      className: 'link',
+      cell: (r) => (
+        <button
+          type="button"
+          style={{
+            border: 0,
+            background: 'none',
+            font: 'inherit',
+            color: 'inherit',
+            textDecoration: 'inherit',
+            padding: 0,
+            cursor: 'pointer',
+          }}
+          aria-label={`Display DTTK ${r.ZdttkNo ?? ''}`}
+          onClick={(event) => {
+            event.stopPropagation()
+            // The legacy console opened the DTTK page in an overlay iframe served by the
+            // proxy. That route has no equivalent here, so this links to the DTTK
+            // application — a scaffold until it is converted.
+            navigate(`/apps/dttk?display=${encodeURIComponent(r.ZdttkNo ?? '')}`)
+          }}
+        >
+          {r.ZdttkNo ?? ''}
+        </button>
+      ),
+    },
+    { header: 'Type1', width: 60, cell: (r) => codeText(r.Ztype1, r.Ztype1Text) },
+    { header: 'Type2', width: 60, cell: (r) => codeText(r.Ztype2, r.Ztype2Text) },
+    { header: 'Related OTTK', width: 90, cell: (r) => r.ZottkNo ?? '' },
+    { header: 'DTTK Value', width: 105, className: 'num', cell: (r) => fmtNum(r.ZdttkValue) },
+    { header: 'Crcy', width: 62, cell: (r) => r.ZdttkCurr ?? '' },
+    { header: 'Expected Date', width: 100, cell: (r) => fmtDate(r.Zdate) },
+    { header: 'Tenor', width: 68, className: 'num', cell: (r) => String(r.Ztenor ?? '') },
+    { header: 'LC Applicant', width: 92, cell: (r) => r.ZlcApp ?? '' },
+    { header: 'LC Beneficiary', width: 105, cell: (r) => r.ZlcBen ?? '' },
+    { header: 'Company Code', width: 70, cell: (r) => r.Zbukrs ?? '' },
+    { header: 'Company Name', width: 150, cell: (r) => r.Butxt ?? '' },
+    { header: 'Status', width: 80, cell: (r) => <StatusPill status={r.ZstatDesc ?? r.ZdttkSt} /> },
+  ]
+
+  const origFilters: Array<FilterDef<OttkRow>> = useMemo(
+    () => [
+      {
+        id: 'status',
+        ariaLabel: 'OTTK status',
+        allLabel: 'All statuses',
+        options: derivedOptions(ottkRows, 'ZstatDesc'),
+        match: (row, value) => looseStatus(row.ZstatDesc ?? row.ZottkSt, value),
+      },
+      {
+        id: 'type',
+        ariaLabel: 'OTTK type',
+        allLabel: 'All types',
+        options: [
+          { value: '01', label: '01 New' },
+          { value: '02', label: '02 With Ref DTTK' },
+        ],
+        match: exact<OttkRow>('Ztype'),
+      },
+      {
+        id: 'currency',
+        ariaLabel: 'OTTK currency',
+        allLabel: 'All currencies',
+        options: derivedOptions(ottkRows, 'ZottkCurr'),
+        match: loose<OttkRow>('ZottkCurr'),
+      },
+      {
+        id: 'entity',
+        ariaLabel: 'Entity',
+        allLabel: 'All entities',
+        options: lookups.entities.map((e) => ({ value: e.ZentId ?? '', label: e.ZentId ?? '' })),
+        match: loose<OttkRow>('ZentId'),
+      },
+      {
+        id: 'structure',
+        ariaLabel: 'Structure',
+        allLabel: 'All structures',
+        options: STRUCTURE_OPTIONS,
+        match: structureMatch,
+      },
+      {
+        id: 'bank',
+        ariaLabel: 'LC issuing bank',
+        allLabel: 'All issuing banks',
+        options: lookups.banks.map((b) => ({ value: b.Zbp ?? '', label: `${b.Zbp ?? ''} — ${b.BpName ?? ''}` })),
+        match: exact<OttkRow>('ZottkBank'),
+      },
+      {
+        id: 'applicant',
+        ariaLabel: 'LC applicant',
+        allLabel: 'All applicants',
+        options: derivedOptions(ottkRows, 'ZlcApp'),
+        match: loose<OttkRow>('ZlcApp'),
+      },
+      {
+        id: 'cocode',
+        ariaLabel: 'Company code',
+        allLabel: 'All company codes',
+        options: derivedOptions(ottkRows, 'Zbukrs'),
+        match: loose<OttkRow>('Zbukrs'),
+      },
+      {
+        id: 'beneficiary',
+        ariaLabel: 'LC beneficiary',
+        allLabel: 'All beneficiaries',
+        options: derivedOptions(ottkRows, 'ZlcBen'),
+        match: loose<OttkRow>('ZlcBen'),
+      },
+    ],
+    [ottkRows, lookups],
+  )
+
+  const distFilters: Array<FilterDef<DttkRow>> = useMemo(
+    () => [
+      {
+        id: 'currency',
+        ariaLabel: 'Distribution currency',
+        allLabel: 'All currencies',
+        options: derivedOptions(dttkRows, 'ZdttkCurr'),
+        match: loose<DttkRow>('ZdttkCurr'),
+      },
+      {
+        id: 'applicant',
+        ariaLabel: 'LC applicant',
+        allLabel: 'All applicants',
+        options: derivedOptions(dttkRows, 'ZlcApp'),
+        match: loose<DttkRow>('ZlcApp'),
+      },
+      {
+        id: 'company',
+        ariaLabel: 'Company code',
+        allLabel: 'All company codes',
+        options: derivedOptions(dttkRows, 'Zbukrs'),
+        match: loose<DttkRow>('Zbukrs'),
+      },
+      {
+        id: 'beneficiary',
+        ariaLabel: 'LC beneficiary',
+        allLabel: 'All beneficiaries',
+        options: derivedOptions(dttkRows, 'ZlcBen'),
+        match: loose<DttkRow>('ZlcBen'),
+      },
+      {
+        id: 'companyName',
+        ariaLabel: 'Company name',
+        allLabel: 'All company names',
+        options: derivedOptions(dttkRows, 'Butxt'),
+        match: loose<DttkRow>('Butxt'),
+      },
+      {
+        id: 'type1',
+        ariaLabel: 'Type1',
+        allLabel: 'All Type1',
+        options: derivedOptions(dttkRows, 'Ztype1', 'Ztype1Text'),
+        match: loose<DttkRow>('Ztype1'),
+      },
+      {
+        id: 'type2',
+        ariaLabel: 'Type2',
+        allLabel: 'All Type2',
+        options: derivedOptions(dttkRows, 'Ztype2', 'Ztype2Text'),
+        match: loose<DttkRow>('Ztype2'),
+      },
+      {
+        id: 'status',
+        ariaLabel: 'Status',
+        allLabel: 'All statuses',
+        options: derivedOptions(dttkRows, 'ZdttkSt'),
+        match: loose<DttkRow>('ZdttkSt'),
+      },
+    ],
+    [dttkRows],
+  )
+
+  return (
+    <div className="ottk">
+      <div className="app">
+        <header className="topbar">
+          <div className="title-wrap">
+            <BackButton />
+            <img className="mark" alt="Fourth Signal" src={BRAND_LOGO} />
+            <div className="title">
+              Origination Ticket <small>OTTK</small>
+            </div>
+          </div>
+          <div className="actions">
+            <button type="button" className="btn primary create-btn" title="Create a new OTTK" onClick={openCreate}>
+              <svg viewBox="0 0 24 24">
+                <path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5z" />
+              </svg>
+              <span className="label">Create OTTK</span>
+            </button>
+            <span
+              className={connection === 'unreachable' ? 'connection offline' : 'connection'}
+              title={connection === 'unreachable' ? 'Cannot reach the SAP gateway' : 'System connected'}
+            />
+            <button type="button" className="btn" onClick={() => window.print()} title="Release & Print">
+              <svg viewBox="0 0 24 24">
+                <path d="M19 8H5a3 3 0 0 0-3 3v4h4v4h12v-4h4v-4a3 3 0 0 0-3-3zm-3 9H8v-5h8v5zm1-13H7v3h10V4z" />
+              </svg>
+              <span className="label">Release &amp; Print</span>
+            </button>
+            <button
+              type="button"
+              className="btn"
+              title="Refresh"
+              onClick={() => {
+                setReloadToken((token) => token + 1)
+                notify('Ticket lists refreshed')
+              }}
+            >
+              <svg viewBox="0 0 24 24">
+                <path d="M17.65 6.35A8 8 0 1 0 20 12h-2a6 6 0 1 1-1.76-4.24L13 11h8V3l-3.35 3.35z" />
+              </svg>
+              <span className="label">Refresh</span>
+            </button>
+            <button type="button" className="btn" title="Copy OTTK" onClick={() => void onCopy()}>
+              <svg viewBox="0 0 24 24">
+                <path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z" />
+              </svg>
+              <span className="label">Copy OTTK</span>
+            </button>
+            <SignOutButton />
+          </div>
+        </header>
+
+        <main className="main">
+          <TicketPanel
+            title="Open Origination Tickets"
+            searchPlaceholder="Search OTTK…"
+            searchAriaLabel="Search origination tickets"
+            rows={ottkRows}
+            columns={origColumns}
+            filters={origFilters}
+            rowKey={(row) => row.ZottkNo ?? ''}
+            selectedKey={selectedOttkKey}
+            onSelectRow={(row) => setSelectedOttkKey(row.ZottkNo ?? '')}
+            exportName="origTable"
+            minWidth={1540}
+            onFiltersCleared={() => notify('Origination filters cleared')}
+            onExported={() => notify('CSV export downloaded')}
+          />
+          <TicketPanel
+            title="Open Distribution Tickets"
+            searchPlaceholder="Search tickets…"
+            searchAriaLabel="Search distribution tickets"
+            rows={dttkRows}
+            columns={distColumns}
+            filters={distFilters}
+            rowKey={(row) => row.ZdttkNo ?? ''}
+            selectedKey={selectedDttkKey}
+            onSelectRow={(row) => setSelectedDttkKey(row.ZdttkNo ?? '')}
+            exportName="distTable"
+            onFiltersCleared={() => notify('Distribution filters cleared')}
+            onExported={() => notify('CSV export downloaded')}
+          />
+        </main>
+      </div>
+
+      <OttkModal
+        open={modalOpen}
+        mode={mode}
+        editKey={editKey}
+        statusText={statusText}
+        createdBy={createdBy}
+        form={form}
+        onFormChange={setForm}
+        lookups={lookups}
+        amountErrors={amountErrors}
+        onOpenCharges={() => void openCharges()}
+        onClear={() => {
+          setForm(EMPTY_FORM)
+          setAmountErrors({})
+          setCreatedBy('')
+          resetCharges()
+          notify('Form cleared')
+        }}
+        onClose={() => setModalOpen(false)}
+        onSave={() => void onSave()}
+        saving={saving}
+      />
+
+      <ChargesModal
+        open={chargesOpen}
+        rows={chargeRows}
+        onRowsChange={setChargeRows}
+        onCancel={cancelCharges}
+        onApply={applyCharges}
+      />
+
+      <div
+        className={success ? 'modal-backdrop open' : 'modal-backdrop'}
+        aria-hidden={!success}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="successModalTitle"
+        onClick={(event) => {
+          if (event.target === event.currentTarget) setSuccess(undefined)
+        }}
+      >
+        <section className="success-modal">
+          <div className="success-icon" aria-hidden="true">
+            ✓
+          </div>
+          <h3 id="successModalTitle">{success?.title}</h3>
+          <p>
+            {success?.ottkNo ? (
+              <>
+                Origination Ticket <b>#{success.ottkNo}</b> has been {success.verb} successfully.
+              </>
+            ) : (
+              <>Origination ticket has been {success?.verb} successfully.</>
+            )}
+            {/* The charge-line outcome belongs here, not in a toast: a toast is replaced
+                within seconds and sits behind this dialog, so a failed line went unseen. */}
+            {success?.fees.saved ? (
+              <>
+                <br />
+                <span className="success-note">
+                  {success.fees.saved} charge line{success.fees.saved === 1 ? '' : 's'} saved.
+                </span>
+              </>
+            ) : null}
+            {success?.fees.failed.length ? (
+              <>
+                <br />
+                <span className="success-warn">
+                  Charges not saved:
+                  <br />
+                  {success.fees.failed.map((message) => (
+                    <span key={message}>
+                      {message}
+                      <br />
+                    </span>
+                  ))}
+                </span>
+              </>
+            ) : null}
+          </p>
+          <button type="button" className="btn primary" onClick={() => setSuccess(undefined)}>
+            OK
+          </button>
+        </section>
+      </div>
+
+      <div className={toast ? 'toast show' : 'toast'} role="status" aria-live="polite">
+        {toast}
+      </div>
+    </div>
+  )
+}
+
+/** Status filter matches against the description or the raw code, whichever is present. */
+function looseStatus(status: string | undefined, value: string): boolean {
+  if (!value) return true
+  if (!status) return false
+  const a = status.toLowerCase()
+  const b = value.toLowerCase()
+  return a.includes(b) || b.includes(a)
+}

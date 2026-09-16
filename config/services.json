@@ -1,0 +1,76 @@
+{
+  "$comment": [
+    "Backend registry. One entry per reachable backend; the gateway resolves /api/<key>/* against it.",
+    "Ported from web/*/sap_config.json in SAP-Project-Development V1, which duplicated this block",
+    "identically across 13 proxy.py processes. Adding a backend is an entry here, not new code.",
+    "",
+    "kind:",
+    "  odata - a dedicated SAP OData V4 service (ZFS_SB_*_O4_API). Typed, one per business object.",
+    "  dyngw - the dynamic gateway service (ZFS_SB_DYNGW_O4_API): Registry + CallLog broker calls,",
+    "          so a new app needs a registry row rather than an ABAP transport.",
+    "  rest  - a non-SAP JSON/REST API. No instance is configured yet; see 'example' below for the",
+    "          shape, and docs/ARCHITECTURE.md for what the gateway does and does not do for it.",
+    "",
+    "No secret belongs in this file. 'passwordEnv' names an environment variable; the gateway",
+    "refuses to start if a referenced variable is unset."
+  ],
+  "auth": {
+    "sap-ds4": {
+      "kind": "basic",
+      "systemId": "DS4_100_NIIF",
+      "user": "FS_DEV3",
+      "passwordEnv": "SAP_DS4_100_NIIF_PASSWORD"
+    }
+  },
+  "services": {
+    "ottk": {
+      "kind": "odata",
+      "auth": "sap-ds4",
+      "client": "100",
+      "tlsVerify": false,
+      "base": "https://vhnlqds4ap01.sap.niififl.in:44300/sap/opu/odata4/sap/zfs_sb_slcottkdetail_o4_api/srvd_a2x/sap/zfs_sd_slcottkdetail/0001",
+      "description": "ZFS_SB_SLCOTTKDETAIL_O4_API — SlcOttkDetail, SlcOttkFee, Bank, EntityString, CoCode, RefInt, FeeType"
+    },
+    "dttk": {
+      "kind": "odata",
+      "auth": "sap-ds4",
+      "client": "100",
+      "tlsVerify": false,
+      "base": "https://vhnlqds4ap01.sap.niififl.in:44300/sap/opu/odata4/sap/zfs_sb_slcdttkdetail_o4_api/srvd_a2x/sap/zfs_sd_slcdttkdetail/0001",
+      "description": "ZFS_SB_SLCDTTKDETAIL_O4_API — SlcDttkDetail, SlcDttkFee, Bank, CFeeType, DFeeType"
+    },
+    "dealid": {
+      "kind": "odata",
+      "auth": "sap-ds4",
+      "client": "100",
+      "tlsVerify": false,
+      "base": "https://vhnlqds4ap01.sap.niififl.in:44300/sap/opu/odata4/sap/zfs_sb_dealid_o4_api/srvd_a2x/sap/zfs_sd_dealid/0001",
+      "description": "ZFS_SB_DEALID_O4_API — DealId"
+    },
+    "tf": {
+      "kind": "odata",
+      "auth": "sap-ds4",
+      "client": "100",
+      "tlsVerify": false,
+      "base": "https://vhnlqds4ap01.sap.niififl.in:44300/sap/opu/odata4/sap/zfs_sb_trdflow_o4_api/srvd_a2x/sap/zfs_sd_trdflow/0001",
+      "description": "ZFS_SB_TRDFLOW_O4_API — TrdFlow, ChComm"
+    },
+    "dyngw": {
+      "kind": "dyngw",
+      "auth": "sap-ds4",
+      "client": "100",
+      "tlsVerify": false,
+      "base": "https://vhnlqds4ap01.sap.niififl.in:44300/sap/opu/odata4/sap/zfs_sb_dyngw_o4_api/srvd_a2x/sap/zfs_sd_dyngw/0001",
+      "description": "ZFS_SB_DYNGW_O4_API — Registry, CallLog. Brokered access; no per-object ABAP service."
+    }
+  },
+  "examples": {
+    "$comment": "Not loaded. Copy into 'services' and fill in when a real non-SAP API exists.",
+    "billing": {
+      "kind": "rest",
+      "base": "https://api.example.internal/v1",
+      "auth": "billing-token",
+      "description": "Shape only — the rest seam is built and tested, no instance is configured."
+    }
+  }
+}
