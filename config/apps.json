@@ -90,6 +90,156 @@
       "legacy": "legacy/Invoice.html",
       "legacyPort": 8769,
       "note": "Legacy page reads a global FTI_DEALS that nothing defines, falling back to DUMMY.deals. Its SAP contract is undefined."
+    },
+    {
+      "code": "icl-request-console",
+      "id": "icl-request",
+      "route": "/apps/icl-request",
+      "title": "Create ICL Request",
+      "status": "scaffold",
+      "services": [],
+      "legacy": "legacy/ICL_Request_Modern_v13.html",
+      "note": "Legacy page never called an API — no fetch, no XMLHttpRequest. Converted as a UI-only React shell with its seed data quarantined in data.ts; SAP OData wiring is a follow-up once the entity is defined."
+    },
+    {
+      "code": "icl-deposit-console",
+      "id": "icl-deposit",
+      "route": "/apps/icl-deposit",
+      "title": "Create Deposit",
+      "status": "scaffold",
+      "services": [],
+      "legacy": "legacy/ICL_Deposit_v15.html",
+      "note": "Legacy page never called an API — no fetch, no XMLHttpRequest. Converted as a UI-only React shell with its seed data quarantined in data.ts; SAP OData wiring is a follow-up once the entity is defined."
+    },
+    {
+      "code": "icl-approve-request-console",
+      "id": "icl-approve-request",
+      "route": "/apps/icl-approve-request",
+      "title": "View & Approve ICL Request",
+      "status": "scaffold",
+      "services": [],
+      "legacy": "legacy/ICL_VIEW_APPROVE_REQUEST_v18.html",
+      "note": "Legacy page never called an API — no fetch, no XMLHttpRequest. Converted as a UI-only React shell with its seed data quarantined in data.ts; SAP OData wiring is a follow-up once the entity is defined."
+    },
+    {
+      "code": "icl-create-received-console",
+      "id": "icl-create-received",
+      "route": "/apps/icl-create-received",
+      "title": "Create ICL Received",
+      "status": "scaffold",
+      "services": [],
+      "legacy": "legacy/Create_ICL_Received_v13.html",
+      "note": "Legacy page never called an API — no fetch, no XMLHttpRequest. Converted as a UI-only React shell with its seed data quarantined in data.ts; SAP OData wiring is a follow-up once the entity is defined."
+    },
+    {
+      "code": "icl-allocate-bank-console",
+      "id": "icl-allocate-bank",
+      "route": "/apps/icl-allocate-bank",
+      "title": "View Pending ICL Requests & Allocate Bank",
+      "status": "scaffold",
+      "services": [],
+      "legacy": "legacy/ICL_Pending_Requests_Allocate_Bank_v10.html",
+      "note": "Legacy page never called an API — no fetch, no XMLHttpRequest. Converted as a UI-only React shell with its seed data quarantined in data.ts; SAP OData wiring is a follow-up once the entity is defined."
+    },
+    {
+      "code": "check-confirm-deposit-console",
+      "id": "check-confirm-deposit",
+      "route": "/apps/check-confirm-deposit",
+      "title": "Check & Confirm Deposit",
+      "status": "scaffold",
+      "services": [],
+      "legacy": "legacy/Check_Confirm_Deposit_v8.html",
+      "note": "Legacy page never called an API — no fetch, no XMLHttpRequest. Converted as a UI-only React shell with its seed data quarantined in data.ts; SAP OData wiring is a follow-up once the entity is defined."
+    },
+    {
+      "code": "check-confirm-discounting-loans-console",
+      "id": "check-confirm-discounting-loans",
+      "route": "/apps/check-confirm-discounting-loans",
+      "title": "Check & Confirm Discounting Loans",
+      "status": "scaffold",
+      "services": [],
+      "legacy": "legacy/check_confirm_Discounting_Loans_v3.html",
+      "note": "Legacy page never called an API — no fetch, no XMLHttpRequest. Converted as a UI-only React shell with its seed data quarantined in data.ts; SAP OData wiring is a follow-up once the entity is defined."
+    },
+    {
+      "code": "discounting-loans-irs-console",
+      "id": "discounting-loans-irs",
+      "route": "/apps/discounting-loans-irs",
+      "title": "View Discounting Loans & Create IRS",
+      "status": "scaffold",
+      "services": [],
+      "legacy": "legacy/discounting_loans_irs_v18.html",
+      "note": "Legacy page never called an API — no fetch, no XMLHttpRequest. Converted as a UI-only React shell with its seed data quarantined in data.ts; SAP OData wiring is a follow-up once the entity is defined."
+    },
+    {
+      "code": "check-confirm-prepayment-console",
+      "id": "check-confirm-prepayment",
+      "route": "/apps/check-confirm-prepayment",
+      "title": "Check & Confirm Prepayment",
+      "status": "scaffold",
+      "services": [],
+      "legacy": "legacy/Check_Confirm_Prepayment_Modern_v2 (3).html",
+      "note": "Legacy page never called an API — no fetch, no XMLHttpRequest. Converted as a UI-only React shell with its seed data quarantined in data.ts; SAP OData wiring is a follow-up once the entity is defined."
+    },
+    {
+      "code": "check-confirm-irs-console",
+      "id": "check-confirm-irs",
+      "route": "/apps/check-confirm-irs",
+      "title": "Check & Confirm IRS",
+      "status": "scaffold",
+      "services": [],
+      "legacy": "legacy/Check_Confirm_IRS_Modern_v6 (1).html",
+      "note": "Legacy page never called an API — no fetch, no XMLHttpRequest. Converted as a UI-only React shell with its seed data quarantined in data.ts; SAP OData wiring is a follow-up once the entity is defined."
+    },
+    {
+      "code": "check-confirm-lc-issued-console",
+      "id": "check-confirm-lc-issued",
+      "route": "/apps/check-confirm-lc-issued",
+      "title": "Check & Confirm LC Issued",
+      "status": "scaffold",
+      "services": [],
+      "legacy": "legacy/Check_Confirm_LC_Issued_Modern_v3 (1).html",
+      "note": "Legacy page never called an API — no fetch, no XMLHttpRequest. Converted as a UI-only React shell with its seed data quarantined in data.ts; SAP OData wiring is a follow-up once the entity is defined."
+    },
+    {
+      "code": "maintain-limits-console",
+      "id": "maintain-limits",
+      "route": "/apps/maintain-limits",
+      "title": "Maintain Limits",
+      "status": "scaffold",
+      "services": [],
+      "legacy": "legacy/Maintain_Limits_v9.html",
+      "note": "Legacy page never called an API — no fetch, no XMLHttpRequest. Converted as a UI-only React shell with its seed data quarantined in data.ts; SAP OData wiring is a follow-up once the entity is defined."
+    },
+    {
+      "code": "sblc-create-request-console",
+      "id": "sblc-create-request",
+      "route": "/apps/sblc-create-request",
+      "title": "Create SBLC Request",
+      "status": "scaffold",
+      "services": [],
+      "legacy": "legacy/Create_SBLC_Request_Modern_v5.html",
+      "note": "Legacy page never called an API — no fetch, no XMLHttpRequest. Converted as a UI-only React shell with its seed data quarantined in data.ts; SAP OData wiring is a follow-up once the entity is defined."
+    },
+    {
+      "code": "sblc-terminate-console",
+      "id": "sblc-terminate",
+      "route": "/apps/sblc-terminate",
+      "title": "SBLC: Initiate Termination",
+      "status": "scaffold",
+      "services": [],
+      "legacy": "legacy/SBLC_Initiate_Termination_Modern_v4.html",
+      "note": "Legacy page never called an API — no fetch, no XMLHttpRequest. Converted as a UI-only React shell with its seed data quarantined in data.ts; SAP OData wiring is a follow-up once the entity is defined."
+    },
+    {
+      "code": "sblc-allocate-bank-console",
+      "id": "sblc-allocate-bank",
+      "route": "/apps/sblc-allocate-bank",
+      "title": "View Pending SBLC Requests & Allocate Bank",
+      "status": "scaffold",
+      "services": [],
+      "legacy": "legacy/view_pending_sblc_requests_allocate_bank_v8.html",
+      "note": "Legacy page never called an API — no fetch, no XMLHttpRequest. Converted as a UI-only React shell with its seed data quarantined in data.ts; SAP OData wiring is a follow-up once the entity is defined."
     }
   ]
 }

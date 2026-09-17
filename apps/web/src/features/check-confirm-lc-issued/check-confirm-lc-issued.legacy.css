@@ -1,0 +1,748 @@
+/* Original stylesheet of Check_Confirm_LC_Issued_Modern_v3 (1).html, scoped under .cclcissued.
+ * Generated — every declaration is byte-identical to the legacy page; only selectors are
+ * prefixed and @keyframes renamed, so each converted app keeps its exact original look
+ * while several can coexist in one SPA. Do not hand-edit; re-run tools/scope-css.mjs.
+ */
+.cclcissued {
+  margin:0;
+  width:100%;
+  height:100%;
+  background:#fbfdff;
+  color:#1d2d3e;
+  font-family:"Inter","Segoe UI",Arial,sans-serif;
+  font-size:12px;
+}
+.cclcissued *, .cclcissued {box-sizing:border-box}
+.cclcissued button, .cclcissued input, .cclcissued select, .cclcissued table, .cclcissued th, .cclcissued td, .cclcissued div, .cclcissued span, .cclcissued label {
+  font-family:"Inter","Segoe UI",Arial,sans-serif;
+}
+.cclcissued button {cursor:pointer}
+.cclcissued button:disabled {cursor:default;opacity:.55}
+.cclcissued .shell {
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  background:#fbfdff;
+}
+.cclcissued .topbar {
+  height:48px;
+  flex:0 0 48px;
+  background:#fff;
+  border-bottom:1px solid #d9d9d9;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);
+}
+.cclcissued .topbar-inner {
+  height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+}
+.cclcissued .title {
+  font-size:16px;
+  font-weight:600;
+  color:#1d2d3e;
+}
+.cclcissued .content {
+  flex:1 1 auto;
+  min-height:0;
+  padding:10px 14px 28px;
+  overflow:hidden;
+}
+.cclcissued .screen {
+  max-width:1600px;
+  height:100%;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+}
+.cclcissued .card {
+  margin-bottom:10px;
+  background:#fff;
+  border:1px solid #e1e6ea;
+  border-radius:8px;
+  box-shadow:0 1px 4px rgba(29,45,62,.04);
+}
+.cclcissued .card-head {
+  min-height:34px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:7px 12px;
+  background:#fafcfe;
+  border-bottom:1px solid #e5e9ed;
+  border-radius:8px 8px 0 0;
+}
+.cclcissued .card-title {
+  font-size:12px;
+  font-weight:600;
+  color:#1d2d3e;
+}
+.cclcissued .card-meta {
+  font-size:11px;
+  color:#6a6d70;
+}
+.cclcissued .card-body {padding:12px}
+.cclcissued .selection-main-row {
+  display:flex;
+  align-items:flex-end;
+  gap:14px;
+  flex-wrap:wrap;
+}
+.cclcissued .field-inline {
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+.cclcissued .field-inline label {
+  color:#1d2d3e;
+  font-size:12px;
+  font-weight:400;
+  white-space:nowrap;
+}
+.cclcissued .required {color:#bb0000}
+.cclcissued .input, .cclcissued .select {
+  height:30px;
+  padding:4px 8px;
+  border:1px solid #b8b8b8;
+  border-radius:4px;
+  background:#fff;
+  color:#1d2d3e;
+  font-size:12px;
+}
+.cclcissued .input:focus, .cclcissued .select:focus {
+  outline:0;
+  border-color:#0a6ed1;
+  box-shadow:0 0 0 1px #0a6ed1;
+}
+.cclcissued .company-select {width:220px}
+.cclcissued .date-shell {
+  position:relative;
+  width:178px;
+}
+.cclcissued .date-input {
+  width:178px;
+  padding-right:34px;
+}
+.cclcissued .calendar-btn {
+  position:absolute;
+  right:1px;
+  top:1px;
+  width:29px;
+  height:28px;
+  padding:0;
+  border:0;
+  border-left:1px solid #d9d9d9;
+  background:#fff;
+}
+.cclcissued .calendar-btn:before {
+  content:"";
+  position:absolute;
+  left:8px;
+  top:8px;
+  width:12px;
+  height:11px;
+  border:1px solid #556b82;
+  border-radius:2px;
+}
+.cclcissued .calendar-btn:after {
+  content:"";
+  position:absolute;
+  left:8px;
+  top:11px;
+  width:14px;
+  height:1px;
+  background:#556b82;
+}
+.cclcissued .filter-icon-btn {
+  width:30px;
+  height:30px;
+  padding:0;
+  border:1px solid #b8b8b8;
+  border-radius:4px;
+  background:#fff;
+  position:relative;
+}
+.cclcissued .filter-icon-btn:hover {
+  background:#f7f8f9;
+  border-color:#0a6ed1;
+}
+.cclcissued .filter-icon-btn:before {
+  content:"";
+  position:absolute;
+  left:8px;
+  top:7px;
+  width:0;
+  height:0;
+  border-left:7px solid transparent;
+  border-right:7px solid transparent;
+  border-top:9px solid #556b82;
+}
+.cclcissued .filter-icon-btn:after {
+  content:"";
+  position:absolute;
+  left:13px;
+  top:14px;
+  width:3px;
+  height:7px;
+  background:#556b82;
+}
+.cclcissued .filter-body {
+  display:none;
+  margin:0;
+  padding:0;
+  border:0;
+}
+.cclcissued .filter-body.open {display:flex}
+.cclcissued .filter-grid {
+  display:flex;
+  align-items:flex-end;
+  gap:12px;
+  flex-wrap:nowrap;
+}
+.cclcissued .filter-item {
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:4px;
+  min-width:0;
+}
+.cclcissued .filter-item label {
+  color:#1d2d3e;
+  font-size:12px;
+  font-weight:400;
+  white-space:nowrap;
+}
+.cclcissued .transaction-filter {width:165px}
+.cclcissued .status-filter {width:170px}
+.cclcissued .combo-shell {
+  position:relative;
+  width:165px;
+}
+.cclcissued .combo-input {width:165px;padding-right:30px}
+.cclcissued .combo-btn {
+  position:absolute;
+  right:1px;
+  top:1px;
+  width:28px;
+  height:28px;
+  padding:0;
+  border:0;
+  border-left:1px solid #d9d9d9;
+  background:#fff;
+}
+.cclcissued .combo-btn:after {
+  content:"";
+  position:absolute;
+  left:9px;
+  top:11px;
+  width:0;
+  height:0;
+  border-left:5px solid transparent;
+  border-right:5px solid transparent;
+  border-top:6px solid #556b82;
+}
+.cclcissued .combo-list {
+  display:none;
+  position:absolute;
+  left:0;
+  right:0;
+  top:31px;
+  z-index:1700;
+  max-height:190px;
+  overflow:auto;
+  background:#fff;
+  border:1px solid #b8b8b8;
+  border-radius:4px;
+  box-shadow:0 4px 12px rgba(0,0,0,.12);
+}
+.cclcissued .combo-list.open {display:block}
+.cclcissued .combo-option {
+  width:100%;
+  min-height:30px;
+  padding:6px 8px;
+  border:0;
+  border-bottom:1px solid #edf0f2;
+  background:#fff;
+  color:#1d2d3e;
+  text-align:left;
+  font-size:12px;
+}
+.cclcissued .combo-option:hover {background:#f2f8fd}
+.cclcissued .combo-empty {
+  padding:8px;
+  color:#6a6d70;
+  font-size:11px;
+}
+.cclcissued .btn {
+  height:30px;
+  padding:0 12px;
+  border:1px solid #d1e8ff;
+  border-radius:4px;
+  background:#eaf3fc;
+  color:#004b93;
+  font-size:12px;
+  font-weight:600;
+}
+.cclcissued .btn:hover {
+  background:#d1e8ff;
+  border-color:#0a6ed1;
+  color:#0854a0;
+}
+.cclcissued .btn-primary {
+  background:#0a6ed1;
+  border-color:#0a6ed1;
+  color:#fff;
+}
+.cclcissued .btn-primary:hover {
+  background:#0854a0;
+  border-color:#0854a0;
+  color:#fff;
+}
+.cclcissued .btn-ghost {
+  background:#fff;
+  border-color:#d9d9d9;
+  color:#1d2d3e;
+}
+.cclcissued .btn-ghost:hover {
+  background:#f7f8f9;
+  border-color:#b8b8b8;
+  color:#1d2d3e;
+}
+.cclcissued #resultsArea {
+  display:none;
+  min-height:0;
+  flex:1 1 auto;
+  flex-direction:column;
+}
+.cclcissued #resultsArea.open {display:flex}
+.cclcissued .toolbar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  min-height:36px;
+  margin-bottom:8px;
+}
+.cclcissued .toolbar-left, .cclcissued .toolbar-right {
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.cclcissued .record-count {
+  color:#6a6d70;
+  font-size:11px;
+}
+.cclcissued .table-card {
+  overflow:hidden;
+  min-height:0;
+  flex:1 1 auto;
+  display:flex;
+  flex-direction:column;
+}
+.cclcissued .table-wrap {
+  width:100%;
+  min-height:0;
+  overflow:auto;
+  background:#fff;
+  flex:1 1 auto;
+}
+.cclcissued .data-table {
+  width:100%;
+  min-width:1540px;
+  border-collapse:separate;
+  border-spacing:0;
+  font-size:12px;
+}
+.cclcissued .data-table th {
+  position:sticky;
+  top:0;
+  z-index:2;
+  height:34px;
+  padding:6px 24px 6px 8px;
+  background:#f5f8fa;
+  color:#1d2d3e;
+  border-right:1px solid #d9d9d9;
+  border-bottom:1px solid #c7d4e0;
+  text-align:left;
+  font-weight:600;
+  white-space:nowrap;
+}
+.cclcissued .data-table td {
+  height:34px;
+  padding:4px 8px;
+  background:#fff;
+  border-right:1px solid #e7ebee;
+  border-bottom:1px solid #e7ebee;
+  white-space:nowrap;
+  color:#1d2d3e;
+}
+.cclcissued .data-table tbody tr:hover td {background:#f2f8fd}
+.cclcissued .data-table tbody tr.selected td {background:#eaf3fc}
+.cclcissued .data-table tbody tr.settled td {color:#556b82}
+.cclcissued .data-table tbody tr.settled.selected td {background:#eef5ef}
+.cclcissued .data-table .number {
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+.cclcissued .select-cell {text-align:center}
+.cclcissued .sort-arrows {
+  position:absolute;
+  top:9px;
+  right:8px;
+  width:8px;
+  height:15px;
+}
+.cclcissued .sort-up, .cclcissued .sort-down {
+  position:absolute;
+  left:0;
+  width:0;
+  height:0;
+  border-left:4px solid transparent;
+  border-right:4px solid transparent;
+}
+.cclcissued .sort-up {
+  top:0;
+  border-bottom:5px solid #9aa7b4;
+}
+.cclcissued .sort-down {
+  bottom:0;
+  border-top:5px solid #9aa7b4;
+}
+.cclcissued th.sort-asc .sort-up {border-bottom-color:#0a6ed1}
+.cclcissued th.sort-desc .sort-down {border-top-color:#0a6ed1}
+.cclcissued .pagination-bar {
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:5px;
+  min-height:44px;
+  padding:8px 10px;
+  background:#fff;
+  border-top:1px solid #e5e9ed;
+}
+.cclcissued .page-btn {
+  min-width:30px;
+  height:28px;
+  padding:0 8px;
+  border:1px solid #d9d9d9;
+  border-radius:4px;
+  background:#fff;
+  color:#1d2d3e;
+  font-size:11px;
+}
+.cclcissued .page-btn:hover {
+  background:#f7f8f9;
+  border-color:#b8b8b8;
+}
+.cclcissued .page-btn.active {
+  background:#eaf3fc;
+  border-color:#0a6ed1;
+  color:#004b93;
+  font-weight:600;
+}
+.cclcissued .page-btn:disabled {
+  background:#f7f8f9;
+  color:#9aa7b4;
+}
+.cclcissued .empty {
+  padding:28px!important;
+  text-align:center!important;
+  color:#6a6d70!important;
+}
+.cclcissued .modal-bg {
+  display:none;
+  position:fixed;
+  left:0;
+  top:0;
+  right:0;
+  bottom:0;
+  z-index:2000;
+  background:rgba(29,45,62,.30);
+  padding:28px 18px;
+  overflow:auto;
+}
+.cclcissued .modal-bg.open {display:block}
+.cclcissued .modal {
+  max-width:520px;
+  margin:12vh auto 0;
+  background:#fff;
+  border:1px solid #d9d9d9;
+  border-radius:8px;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
+  overflow:hidden;
+}
+.cclcissued .modal-head {
+  height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 14px;
+  background:#eaf3fc;
+  border-bottom:1px solid #d1e8ff;
+}
+.cclcissued .modal-title {
+  font-size:13px;
+  font-weight:600;
+}
+.cclcissued .modal-close {
+  width:28px;
+  height:28px;
+  border:1px solid #d9d9d9;
+  border-radius:4px;
+  background:#fff;
+  color:#556b82;
+}
+.cclcissued .modal-body {padding:14px}
+.cclcissued .modal-foot {
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:7px;
+  padding:10px 14px;
+  background:#f7f8f9;
+  border-top:1px solid #d9d9d9;
+}
+.cclcissued .confirm-copy {
+  line-height:18px;
+  color:#1d2d3e;
+}
+.cclcissued .edit-grid {
+  display:grid;
+  grid-template-columns:130px 1fr;
+  gap:10px 12px;
+  align-items:center;
+}
+.cclcissued .edit-grid label {color:#556b82}
+.cclcissued .edit-grid .input {width:100%}
+.cclcissued .toast-region {
+  position:fixed;
+  right:22px;
+  bottom:28px;
+  z-index:4000;
+  width:350px;
+  max-width:calc(100% - 44px);
+}
+.cclcissued .toast {
+  display:flex;
+  gap:10px;
+  margin-top:8px;
+  padding:12px 14px;
+  background:#f2f4f5;
+  border:1px solid #d9d9d9;
+  border-left:3px solid #107e3e;
+  border-radius:4px;
+  box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+.cclcissued .toast-icon {
+  width:24px;
+  height:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:#ebf5eb;
+  color:#107e3e;
+  font-weight:600;
+}
+.cclcissued .toast-title {
+  margin-bottom:2px;
+  font-size:12px;
+  font-weight:600;
+}
+.cclcissued .toast-message {
+  color:#556b82;
+  font-size:12px;
+  line-height:17px;
+}
+.cclcissued .statusbar {
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  height:20px;
+  display:flex;
+  align-items:center;
+  padding:0 12px;
+  background:#fff;
+  border-top:1px solid #e1e6ea;
+  color:#6a6d70;
+  font-size:11px;
+  z-index:900;
+}
+.cclcissued .status-dot {
+  width:7px;
+  height:7px;
+  margin-right:6px;
+  border-radius:50%;
+  background:#0a6ed1;
+}
+.cclcissued .calendar-popup {
+  display:none;
+  position:absolute;
+  z-index:1500;
+  top:34px;
+  right:0;
+  width:274px;
+  background:#fff;
+  border:1px solid #c8c8c8;
+  border-radius:2px;
+  box-shadow:0 4px 14px rgba(0,0,0,.16);
+  overflow:hidden;
+}
+.cclcissued .calendar-popup.open {display:block}
+.cclcissued .calendar-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:50px;
+  padding:0 10px 0 14px;
+  background:#fff;
+}
+.cclcissued .cal-title-btn {
+  position:relative;
+  height:32px;
+  padding:0 16px 0 0;
+  border:0;
+  background:#fff;
+  color:#111;
+  font-size:12px;
+  font-weight:600;
+  text-align:left;
+}
+.cclcissued .cal-title-btn:after {
+  content:"";
+  position:absolute;
+  right:3px;
+  top:14px;
+  width:0;
+  height:0;
+  border-left:4px solid transparent;
+  border-right:4px solid transparent;
+  border-top:5px solid #556b82;
+}
+.cclcissued .cal-navs {display:flex;align-items:center;gap:12px}
+.cclcissued .cal-nav {
+  position:relative;
+  width:26px;
+  height:30px;
+  padding:0;
+  border:0;
+  background:#fff;
+}
+.cclcissued .cal-nav:before {
+  content:"";
+  position:absolute;
+  left:8px;
+  width:10px;
+  height:10px;
+  border-left:1px solid #1d2d3e;
+}
+.cclcissued .cal-nav-up:before {
+  top:11px;
+  border-top:1px solid #1d2d3e;
+  transform:rotate(45deg);
+}
+.cclcissued .cal-nav-down:before {
+  top:7px;
+  border-bottom:1px solid #1d2d3e;
+  transform:rotate(-45deg);
+}
+.cclcissued .calendar-weekdays, .cclcissued .calendar-days {
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  padding:0 12px;
+}
+.cclcissued .calendar-weekdays span {
+  height:28px;
+  line-height:28px;
+  text-align:center;
+  color:#111;
+  font-size:11px;
+}
+.cclcissued .calendar-day {
+  height:36px;
+  border:0;
+  background:#fff;
+  color:#111;
+  font-size:11px;
+}
+.cclcissued .calendar-day:hover {background:#edf5fc}
+.cclcissued .calendar-day.other-month {color:#8a949e}
+.cclcissued .calendar-day.selected {
+  background:#6a6d70;
+  color:#fff;
+  border:1px solid #1d2d3e;
+}
+.cclcissued .calendar-foot {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:46px;
+  padding:0 14px;
+  border-top:1px solid #e5e9ed;
+}
+.cclcissued .cal-link {
+  border:0;
+  background:#fff;
+  color:#0a6ed1;
+  font-size:11px;
+  padding:4px 0;
+}
+.cclcissued .year-panel {
+  max-height:315px;
+  overflow-y:auto;
+  border-top:1px solid #edf0f2;
+}
+.cclcissued .year-row {
+  min-height:34px;
+  border-bottom:1px solid #d9d9d9;
+  background:#f4f4f4;
+}
+.cclcissued .year-btn {
+  width:100%;
+  height:34px;
+  padding:0 10px;
+  border:0;
+  background:#f4f4f4;
+  color:#1d2d3e;
+  text-align:left;
+  font-size:12px;
+}
+.cclcissued .year-row.active .year-btn {font-weight:600}
+.cclcissued .month-grid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  padding:4px 5px 8px;
+  background:#fff;
+}
+.cclcissued .month-btn {
+  height:36px;
+  border:0;
+  background:#fff;
+  color:#111;
+  font-size:11px;
+}
+.cclcissued .month-btn:hover {background:#edf5fc}
+.cclcissued .month-btn.selected {
+  background:#6a6d70;
+  color:#fff;
+  border:1px solid #1d2d3e;
+}
+@media screen and (max-width:1050px) {
+.cclcissued .selection-main-row {flex-wrap:wrap}
+.cclcissued .filter-grid {flex-wrap:wrap}
+.cclcissued .content {padding-left:8px;padding-right:8px}
+}
+@media screen and (max-width:720px) {
+.cclcissued .topbar-inner {padding:0 10px}
+.cclcissued .selection-main-row {align-items:flex-start}
+.cclcissued .field-inline {width:100%;justify-content:space-between}
+.cclcissued .company-select, .cclcissued .date-shell, .cclcissued .date-input {width:210px}
+.cclcissued .filter-body.open {width:100%}
+.cclcissued .filter-grid {width:100%;flex-direction:column;align-items:stretch}
+.cclcissued .filter-item {width:100%;align-items:stretch}
+.cclcissued .combo-shell, .cclcissued .combo-input, .cclcissued .transaction-filter, .cclcissued .status-filter {width:100%}
+.cclcissued .toolbar {align-items:flex-start;gap:6px;flex-direction:column}
+.cclcissued .toolbar-right {width:100%;justify-content:flex-end}
+}

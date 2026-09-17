@@ -1,0 +1,3643 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Create ICL Received</title>
+<style type="text/css">
+html,body{margin:0;width:100%;height:100%;background:#f5f7f9;color:#1d2d3e;font-family:"72","Segoe UI",Arial,sans-serif;font-size:13px}
+*{box-sizing:border-box}
+button,input,select,table,th,td,div,span,label{font-family:"72","Segoe UI",Arial,sans-serif}
+button{cursor:pointer}
+button:disabled{cursor:default;opacity:.45}
+.shell{height:100vh;display:flex;flex-direction:column;background:#f5f7f9}
+.topbar{height:48px;flex:0 0 48px;background:#fff;border-bottom:1px solid #d9d9d9;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.topbar-inner{height:48px;display:flex;align-items:center;padding:0 18px}
+.title{font-size:16px;font-weight:600;color:#1d2d3e}
+.content{flex:1 1 auto;min-height:0;padding:10px 14px 28px;overflow:hidden}
+.screen{max-width:1600px;height:100%;margin:0 auto;display:flex;flex-direction:column;min-height:0}
+.selection-panel{margin-bottom:8px;background:#fff;border:1px solid #e1e6ea;border-radius:8px;overflow:visible}
+.selection-row{display:flex;align-items:flex-end;min-height:62px;padding:9px 14px;white-space:nowrap;overflow:visible}
+.main-date-item{display:flex;align-items:flex-end;height:44px;flex:0 0 auto;margin-right:10px}
+.main-date-item label{height:30px;display:flex;align-items:center;margin-right:7px;color:#1d2d3e;font-size:12px}
+.inline-date-shell{position:relative;display:flex;align-items:center;width:142px;height:30px}
+.inline-date-input{width:142px;height:30px;padding:4px 32px 4px 8px;border:1px solid #b8b8b8;border-radius:4px;background:#fff;color:#1d2d3e}
+.inline-date-input:focus,.filter-input:focus{outline:0;border-color:#0a6ed1;box-shadow:0 0 0 1px #0a6ed1}
+.inline-calendar-btn{position:absolute;right:1px;top:1px;width:29px;height:28px;padding:0;border:0;border-left:1px solid #e1e6ea;background:#fff}
+.inline-calendar-btn:hover{background:#f7f8f9}
+.inline-calendar-btn:before{content:"";position:absolute;left:8px;top:6px;width:12px;height:13px;border:1px solid #0a6ed1;border-radius:2px}
+.inline-calendar-btn:after{content:"";position:absolute;left:10px;top:11px;width:8px;height:1px;background:#0a6ed1;box-shadow:0 4px #0a6ed1}
+.filter-icon-btn{width:36px;height:30px;margin-right:10px;padding:0;border:1px solid #8ea2b5;border-radius:4px;background:#fff;position:relative}
+.filter-icon-btn:hover{background:#f7f8f9;border-color:#0a6ed1}
+.filter-icon-btn:before{content:"";position:absolute;left:10px;top:7px;border-left:7px solid transparent;border-right:7px solid transparent;border-top:9px solid #556b82}
+.filter-icon-btn:after{content:"";position:absolute;left:15px;top:15px;width:4px;height:7px;background:#556b82}
+.filter-body{display:none;height:44px;overflow:visible}
+.filter-body.open{display:block}
+.filter-grid{display:flex;align-items:flex-end;height:44px;overflow:visible}
+.filter-item{height:44px;display:flex;flex-direction:column;justify-content:flex-end;margin-right:10px}
+.filter-item label{height:12px;line-height:12px;margin-bottom:2px;color:#6a6d70;font-size:10px}
+.filter-input{height:30px;padding:4px 8px;border:1px solid #b8b8b8;border-radius:4px;background:#fff;color:#1d2d3e;font-size:12px}
+.filter-txn{width:126px}.filter-request{width:110px}.filter-entity{width:82px}.filter-ottk{width:90px}.filter-date{width:132px}
+.combo-shell{position:relative;height:30px}
+.combo-shell .filter-input{width:100%;padding-right:28px}
+.combo-btn{position:absolute;right:1px;top:1px;width:26px;height:28px;padding:0;border:0;border-left:1px solid #e1e6ea;background:#fff}
+.combo-btn:after{content:"";position:absolute;left:9px;top:11px;border-left:4px solid transparent;border-right:4px solid transparent}
+.combo-btn:after{border-top:5px solid #556b82}
+.combo-btn:hover{background:#f7f8f9}
+.combo-list{display:none;position:absolute;left:0;top:31px;z-index:2850;width:100%;max-height:180px;overflow-y:auto;overflow-x:hidden}
+.combo-list{background:#fff;border:1px solid #9aa7b4;border-radius:4px;box-shadow:0 6px 16px rgba(29,45,62,.14)}
+.combo-list.open{display:block}
+.combo-option{display:block;width:100%;min-height:29px;padding:6px 8px;border:0;border-bottom:1px solid #eef1f3;background:#fff;text-align:left}
+.combo-option{color:#1d2d3e;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.combo-option:hover{background:#eaf3fc;color:#004b93}
+.combo-empty{padding:7px 8px;color:#6a6d70;font-size:11px}
+.btn{height:30px;margin-left:7px;padding:0 12px;border:1px solid #d1e8ff;border-radius:4px;background:#eaf3fc;color:#004b93;font-size:12px;font-weight:600}
+.btn:first-child{margin-left:0}
+.btn:hover{background:#d1e8ff;border-color:#0a6ed1;color:#0854a0}
+.btn-primary{background:#0a6ed1;border-color:#0a6ed1;color:#fff}
+.btn-primary:hover{background:#0854a0;border-color:#0854a0;color:#fff}
+.btn-ghost{background:#fff;border-color:#d9d9d9;color:#1d2d3e}
+.btn-ghost:hover{background:#f7f8f9;border-color:#b8b8b8;color:#1d2d3e}
+.toolbar{display:flex;align-items:center;justify-content:space-between;min-height:36px;margin-bottom:6px}
+.toolbar-left,.toolbar-right{display:flex;align-items:center}
+.record-count{color:#6a6d70;font-size:11px}
+.results{display:none;min-height:0;flex:1 1 auto;flex-direction:column}
+.results.open{display:flex}
+.card{background:#fff;border:1px solid #e1e6ea;border-radius:8px;box-shadow:0 1px 4px rgba(29,45,62,.04)}
+.table-card{min-height:0;flex:1 1 auto;display:flex;flex-direction:column;overflow:hidden}
+.card-head{min-height:34px;display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:#fafcfe;border-bottom:1px solid #e5e9ed}
+.card-title{font-size:12px;font-weight:600;color:#1d2d3e}
+.card-meta{font-size:11px;color:#6a6d70}
+.table-wrap{width:100%;min-height:0;flex:1 1 auto;overflow:auto;background:#fff}
+.data-table{width:auto;min-width:100%;border-collapse:separate;border-spacing:0;font-size:12px}
+.data-table th{position:sticky;top:0;z-index:2;height:34px;padding:6px 22px 6px 8px;background:#f5f8fa;color:#1d2d3e;border-right:1px solid #d9d9d9}
+.data-table th{border-bottom:1px solid #c7d4e0;text-align:left;font-weight:600;white-space:nowrap;cursor:pointer}
+.data-table td{height:34px;padding:4px 8px;background:#fff;border-right:1px solid #e7ebee;border-bottom:1px solid #e7ebee;white-space:nowrap;color:#1d2d3e}
+.data-table tbody tr:hover td{background:#f2f8fd}
+.data-table tbody tr.selected td{background:#eaf3fc}
+.data-table .number{text-align:right;font-variant-numeric:tabular-nums}
+.select-cell{text-align:center}
+.row-radio{width:14px;height:14px;margin:0;vertical-align:middle}
+.status-cell{text-align:center}
+.status-text{display:inline-block;min-width:48px;padding:4px 7px;border-radius:3px;font-size:12px;font-weight:600;text-align:center}
+.status-pending{background:#fff8e1;color:#b87500}
+.status-received{background:#e7f8ee;color:#107e3e}
+.status-rejected{background:#fff0f0;color:#bb0000}
+.sort-arrows{position:absolute;right:8px;top:8px;width:8px;height:17px}
+.sort-up,.sort-down{position:absolute;left:0;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent}
+.sort-up{top:0;border-bottom:5px solid #9aa7b4}.sort-down{bottom:0;border-top:5px solid #9aa7b4}
+th.sort-asc .sort-up{border-bottom-color:#0a6ed1}th.sort-desc .sort-down{border-top-color:#0a6ed1}
+.pagination{display:flex;align-items:center;justify-content:flex-end;min-height:42px;padding:7px 10px;background:#fff;border-top:1px solid #e5e9ed}
+.page-btn{min-width:30px;height:28px;margin-left:5px;padding:0 8px;border:1px solid #d9d9d9;border-radius:4px;background:#fff;color:#1d2d3e;font-size:11px}
+.page-btn:hover{background:#f7f8f9;border-color:#b8b8b8}.page-btn.active{background:#eaf3fc;border-color:#0a6ed1;color:#004b93;font-weight:600}
+.page-btn:disabled{background:#f7f8f9;color:#9aa7b4}
+.empty{padding:28px;text-align:center;color:#6a6d70}
+.modal-bg{display:none;position:fixed;top:0;right:0;bottom:0;left:0;z-index:2000;background:rgba(29,45,62,.30);padding:28px 18px;overflow:auto}
+.modal-bg.open{display:flex;align-items:center;justify-content:center}
+.modal{width:980px;max-width:calc(100% - 20px);background:#fff;border:1px solid #d9d9d9;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.18);overflow:hidden}
+.modal-head{height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:#eaf3fc;border-bottom:1px solid #d1e8ff}
+.modal-title{font-size:13px;font-weight:600}.modal-close{width:28px;height:28px;border:1px solid #d9d9d9;border-radius:4px;background:#fff;color:#556b82}
+.modal-body{padding:14px}.modal-foot{display:flex;align-items:center;justify-content:flex-end;padding:10px 14px;background:#f7f8f9;border-top:1px solid #d9d9d9}
+.dms-detail{display:flex;align-items:center;margin-bottom:12px;padding:9px 10px;background:#fafcfe;border:1px solid #e1e6ea;border-radius:5px}
+.dms-detail-label{width:116px;color:#556b82}.dms-detail-value{font-weight:600;color:#1d2d3e}
+.dms-table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px}
+.dms-table th{height:34px;padding:6px 8px;background:#f5f8fa;border-right:1px solid #d9d9d9;border-bottom:1px solid #c7d4e0;text-align:left;white-space:nowrap}
+.dms-table td{height:40px;padding:5px 8px;background:#fff;border-right:1px solid #e7ebee;border-bottom:1px solid #e7ebee;white-space:nowrap}
+.path-cell{min-width:250px;max-width:360px;height:30px;display:flex;align-items:center;padding:4px 8px;border:1px solid #b8b8b8;border-radius:4px;background:#fff;cursor:pointer}
+.path-cell span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.path-cell.disabled{background:#f7f8f9;color:#6a6d70;cursor:default}
+.action-btn{height:28px;min-width:72px;padding:0 10px;border:1px solid #d1e8ff;border-radius:4px;background:#eaf3fc;color:#004b93;font-size:11px;font-weight:600}
+.action-btn:hover{background:#d1e8ff;border-color:#0a6ed1}.action-btn:disabled{background:#f2f4f5;border-color:#e1e6ea;color:#9aa7b4}
+.toast-region{position:fixed;right:22px;bottom:28px;z-index:4000;width:360px;max-width:calc(100% - 44px)}
+.toast{display:flex;margin-top:8px;padding:12px 14px;background:#f2f4f5;border:1px solid #d9d9d9;border-left:3px solid #a8b3bd;border-radius:4px}
+.toast{box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.toast.success{border-left-color:#107e3e}.toast.warning{border-left-color:#e9730c}
+.toast-icon{width:24px;height:24px;flex:0 0 24px;display:flex;align-items:center;justify-content:center;margin-right:10px;border-radius:50%;background:#e5e8eb}
+.toast.success .toast-icon{background:#ebf5eb;color:#107e3e}.toast-title{margin-bottom:2px;font-size:12px;font-weight:600}
+.toast-message{color:#556b82;font-size:12px;line-height:17px}
+.statusbar{position:fixed;left:0;right:0;bottom:0;height:20px;display:flex;align-items:center;padding:0 12px;background:#fff;border-top:1px solid #e1e6ea;color:#6a6d70}
+.statusbar{font-size:11px;z-index:900}.status-dot{width:7px;height:7px;margin-right:6px;border-radius:50%;background:#0a6ed1}
+.calendar-popup{display:none;position:absolute;z-index:2600;top:34px;left:0;width:294px;border:1px solid #9aa7b4;border-radius:5px;background:#fff;overflow:hidden}
+.calendar-popup.open{display:block}.calendar-top{height:44px;display:flex;align-items:center;padding:0 12px;background:#fff}
+.calendar-title-btn{height:30px;padding:0 16px 0 0;border:0;background:#fff;color:#1d2d3e;font-size:12px;font-weight:600;position:relative}
+.calendar-title-btn:after{content:"";position:absolute;right:2px;top:13px;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #1d2d3e}
+.calendar-navs{margin-left:auto;display:flex}.calendar-nav{width:28px;height:28px;margin-left:2px;border:0;background:#fff;position:relative}
+.calendar-nav:hover{background:#f2f8fd}.calendar-nav.prev:before{content:"";position:absolute;left:9px;top:10px;border-right:7px solid #556b82;border-top:5px solid transparent}
+.calendar-nav.prev:before{border-bottom:5px solid transparent}.calendar-nav.next:before{content:"";position:absolute;left:11px;top:10px;border-left:7px solid #556b82}
+.calendar-nav.next:before{border-top:5px solid transparent;border-bottom:5px solid transparent}.calendar-week{display:flex;padding:0 12px}
+.calendar-week span{width:14.285%;height:26px;display:flex;align-items:center;justify-content:center;color:#556b82;font-size:10px;font-weight:600}
+.calendar-days{display:flex;flex-wrap:wrap;padding:0 12px 8px}.calendar-cell{width:14.285%;height:32px;border:0;border-radius:3px;background:#fff;color:#1d2d3e;font-size:11px}
+.calendar-cell:hover{background:#eaf3fc;color:#004b93}.calendar-cell.other{color:#8a9bad}.calendar-cell.selected{background:#eaf3fc;box-shadow:inset 0 0 0 2px #0a6ed1}
+.calendar-foot{height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-top:1px solid #e1e6ea}
+.calendar-foot-btn{border:0;background:#fff;color:#0a6ed1;font-size:11px;font-weight:600;padding:5px 0}
+.calendar-picker{padding:8px 10px 10px}.month-grid{display:flex;flex-wrap:wrap;padding-bottom:8px;border-bottom:1px solid #e1e6ea}
+.month-btn{width:24%;height:34px;margin:.5%;border:0;border-radius:3px;background:#f2f4f5;color:#1d2d3e;font-size:11px;font-weight:600}
+.month-btn:hover{background:#eaf3fc}.month-btn.selected{background:#0a6ed1;color:#fff}
+.year-list{display:block;width:100%;height:128px;margin-top:7px;overflow-y:auto;overflow-x:hidden}
+.year-btn{display:block;width:100%;height:31px;margin-bottom:2px;border:0;background:#f2f4f5;color:#1d2d3e;text-align:left;padding:0 8px;font-size:11px}
+.year-btn:hover{background:#eaf3fc}.year-btn.selected{background:#eaf3fc;color:#004b93;font-weight:600}
+@media screen and (max-width:1180px){.selection-row{overflow-x:auto}.content{padding-left:8px;padding-right:8px}}
+@media screen and (max-width:720px){.toolbar{align-items:flex-start}.toolbar-right{margin-left:10px}.modal{width:100%}.dms-table{min-width:760px}.modal-body{overflow:auto}}
+.title-wrap{display:flex;align-items:center;gap:10px}
+img.mark{width:28px;height:28px;flex:none;object-fit:contain}
+</style>
+</head>
+<body>
+<div class="shell">
+<div class="topbar"><div class="topbar-inner"><div class="title-wrap"><img class="mark" alt="Fourth Signal" src="https://raw.githubusercontent.com/ryannayak/fs-assets/e82f35a83e28689167b22b4300d4994a249acee0/fs-short-logo.png"/><div class="title">Create ICL Received</div></div></div></div>
+<div class="content">
+<div class="screen">
+<div class="selection-panel">
+<div class="selection-row">
+<div class="main-date-item">
+<label for="uptoRequestDate">Upto Request Date</label>
+<div class="inline-date-shell">
+<input id="uptoRequestDate" class="inline-date-input" type="text" placeholder="DD-MM-YYYY">
+<button id="uptoCalendarBtn" class="inline-calendar-btn" type="button" aria-label="Open calendar"></button>
+<div id="uptoCalendar" class="calendar-popup"></div>
+</div>
+</div>
+<button id="filterToggle" class="filter-icon-btn" type="button" title="Filters" aria-label="Filters"></button>
+<div id="filterBody" class="filter-body">
+<div class="filter-grid">
+<div class="filter-item">
+<label for="givenTxnFilter">ICL Given Txn No</label>
+<div class="combo-shell filter-txn">
+<input id="givenTxnFilter" class="filter-input combo-input" type="text" autocomplete="off">
+<button class="combo-btn" data-combo="givenTxnFilter" type="button" aria-label="Show ICL Given Txn No values"></button>
+<div id="givenTxnFilterList" class="combo-list"></div>
+</div>
+</div>
+<div class="filter-item">
+<label for="requestFilter">ICL Request No</label>
+<div class="combo-shell filter-request">
+<input id="requestFilter" class="filter-input combo-input" type="text" autocomplete="off">
+<button class="combo-btn" data-combo="requestFilter" type="button" aria-label="Show ICL Request No values"></button>
+<div id="requestFilterList" class="combo-list"></div>
+</div>
+</div>
+<div class="filter-item">
+<label for="entityFilter">Entity ID</label>
+<div class="combo-shell filter-entity">
+<input id="entityFilter" class="filter-input combo-input" type="text" autocomplete="off">
+<button class="combo-btn" data-combo="entityFilter" type="button" aria-label="Show Entity ID values"></button>
+<div id="entityFilterList" class="combo-list"></div>
+</div>
+</div>
+<div class="filter-item">
+<label for="ottkFilter">OTTK No</label>
+<div class="combo-shell filter-ottk">
+<input id="ottkFilter" class="filter-input combo-input" type="text" autocomplete="off">
+<button class="combo-btn" data-combo="ottkFilter" type="button" aria-label="Show OTTK No values"></button>
+<div id="ottkFilterList" class="combo-list"></div>
+</div>
+</div>
+<div class="filter-item">
+<label for="plannedDateFilter">Planned End Date</label>
+<div class="inline-date-shell filter-date">
+<input id="plannedDateFilter" class="inline-date-input filter-date" type="text" placeholder="DD-MM-YYYY">
+<button id="plannedCalendarBtn" class="inline-calendar-btn" type="button" aria-label="Open calendar"></button>
+<div id="plannedCalendar" class="calendar-popup"></div>
+</div>
+</div>
+<div class="filter-item"><label>&nbsp;</label><button id="clearFilters" class="btn btn-ghost" type="button">Clear filters</button></div>
+</div>
+</div>
+</div>
+</div>
+<div id="resultsArea" class="results">
+<div class="toolbar">
+<div class="toolbar-left"><span id="recordCount" class="record-count"></span></div>
+<div class="toolbar-right">
+<button id="createReceivedBtn" class="btn btn-primary" type="button" disabled="disabled">Create ICL Received Txn</button>
+<button id="dmsBtn" class="btn" type="button" disabled="disabled">DMS</button>
+</div>
+</div>
+<div class="card table-card">
+<div class="card-head"><div class="card-title">ICL Received Requests</div><div id="selectionCount" class="card-meta">No row selected</div></div>
+<div class="table-wrap"><table id="requestTable" class="data-table"><thead id="requestHead"></thead><tbody id="requestBody"></tbody></table></div>
+<div id="paginationBar" class="pagination"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="dmsModal" class="modal-bg">
+<div class="modal">
+<div class="modal-head"><div class="modal-title">DMS for ICL Request</div><button id="dmsClose" class="modal-close" type="button">X</button></div>
+<div class="modal-body">
+<div class="dms-detail"><div class="dms-detail-label">ICL Transaction</div><div id="dmsTransaction" class="dms-detail-value"></div></div>
+<div class="table-wrap">
+<table class="dms-table">
+<thead><tr><th>Doc Type</th><th>Doc Type Desc</th><th>Doc Date</th><th>File Path</th><th>DMS Code</th><th>Upload</th><th>Download</th><th>Edit</th></tr></thead>
+<tbody id="dmsBody"></tbody>
+</table>
+</div>
+<input id="dmsFileInput" type="file" style="display:none">
+</div>
+<div class="modal-foot">
+<button id="dmsCancel" class="btn btn-ghost" type="button">Close</button>
+<button id="dmsConfirm" class="btn btn-primary" type="button">Confirm</button>
+</div>
+</div>
+</div>
+<div id="toastRegion" class="toast-region" aria-live="polite"></div>
+<div class="statusbar"><span class="status-dot"></span><span id="statusText">Enter an Upto Request Date to load ICL requests</span></div>
+<script type="text/javascript">
+(function(){
+var HAS_EXTERNAL_PAYLOAD=typeof ICL_RECEIVED_PAYLOAD!=="undefined";
+var DEFAULT_PAYLOAD={
+  "settings": {
+    "pageSize": 12,
+    "nextReceivedTransaction": 2602001942,
+    "nextDmsCode": 6010000539,
+    "dateFormat": "DD-MM-YYYY"
+  },
+  "columns": [
+    {
+      "key": "statusCode",
+      "label": "Status",
+      "width": 62,
+      "type": "status"
+    },
+    {
+      "key": "client",
+      "label": "Client",
+      "width": 70
+    },
+    {
+      "key": "iclGivenCompanyCode",
+      "label": "ICL Given Co.Code",
+      "width": 118
+    },
+    {
+      "key": "iclRequestNo",
+      "label": "ICL Request No",
+      "width": 108
+    },
+    {
+      "key": "requestDate",
+      "label": "Request Date",
+      "width": 94,
+      "type": "date"
+    },
+    {
+      "key": "startDate",
+      "label": "Start Date",
+      "width": 92,
+      "type": "date"
+    },
+    {
+      "key": "endDate",
+      "label": "End Date",
+      "width": 92,
+      "type": "date"
+    },
+    {
+      "key": "plannedEndDate",
+      "label": "Planned End Date",
+      "width": 116,
+      "type": "date"
+    },
+    {
+      "key": "amount",
+      "label": "Amount",
+      "width": 116,
+      "type": "amount"
+    },
+    {
+      "key": "currency",
+      "label": "Currency",
+      "width": 72
+    },
+    {
+      "key": "dealId",
+      "label": "Deal ID",
+      "width": 86
+    },
+    {
+      "key": "iclReqStatus",
+      "label": "ICL Req Status",
+      "width": 96
+    },
+    {
+      "key": "ottkNo",
+      "label": "OTTK No",
+      "width": 82
+    },
+    {
+      "key": "slcStructure",
+      "label": "SLC Structure",
+      "width": 96
+    },
+    {
+      "key": "entityId",
+      "label": "Entity ID",
+      "width": 80
+    },
+    {
+      "key": "entityString",
+      "label": "Entity String",
+      "width": 176
+    },
+    {
+      "key": "iclRecCompanyCode",
+      "label": "ICL Rec Co.Code",
+      "width": 116
+    },
+    {
+      "key": "depositRequest",
+      "label": "Deposit Request",
+      "width": 110
+    },
+    {
+      "key": "houseBank",
+      "label": "House Bank",
+      "width": 92
+    },
+    {
+      "key": "accountId",
+      "label": "Account ID",
+      "width": 88
+    },
+    {
+      "key": "partnerBankId",
+      "label": "Partner Bank ID",
+      "width": 110
+    },
+    {
+      "key": "enteredBy",
+      "label": "Entered By",
+      "width": 112
+    },
+    {
+      "key": "enteredOn",
+      "label": "Entered On",
+      "width": 92,
+      "type": "date"
+    },
+    {
+      "key": "entryTime",
+      "label": "Entry Time",
+      "width": 82
+    },
+    {
+      "key": "requestedBy",
+      "label": "Requested By",
+      "width": 116
+    },
+    {
+      "key": "requestorCoCode",
+      "label": "Requestor Co Code",
+      "width": 118
+    },
+    {
+      "key": "requestorCoName",
+      "label": "Requestor Co Name",
+      "width": 182
+    },
+    {
+      "key": "requestorBank",
+      "label": "Requestor Bank",
+      "width": 106
+    },
+    {
+      "key": "requestorBankName",
+      "label": "Requestor Bank Name",
+      "width": 170
+    },
+    {
+      "key": "expectedDate",
+      "label": "Expected Date",
+      "width": 96,
+      "type": "date"
+    },
+    {
+      "key": "lcTenor",
+      "label": "LC Tenor",
+      "width": 82
+    },
+    {
+      "key": "businessArea",
+      "label": "Business Area",
+      "width": 98
+    },
+    {
+      "key": "ottkClassification",
+      "label": "OTTK Classification",
+      "width": 126
+    },
+    {
+      "key": "dttkNo",
+      "label": "DTTK No",
+      "width": 84
+    },
+    {
+      "key": "iclRequestStatusDescription",
+      "label": "ICL Request Status Description",
+      "width": 196
+    },
+    {
+      "key": "percentageRate",
+      "label": "Percentage Rate",
+      "width": 108,
+      "type": "rate"
+    },
+    {
+      "key": "fixing",
+      "label": "Fixing",
+      "width": 72
+    },
+    {
+      "key": "depositCompanyCode",
+      "label": "Deposit Co.Code",
+      "width": 112
+    },
+    {
+      "key": "depositTxn",
+      "label": "Deposit Txn",
+      "width": 94
+    },
+    {
+      "key": "wcdlCompanyCode",
+      "label": "WCDL Co.Code",
+      "width": 106
+    },
+    {
+      "key": "iclRecTxn",
+      "label": "ICL Rec Txn",
+      "width": 102
+    },
+    {
+      "key": "iclGivenTxn",
+      "label": "ICL Given Txn",
+      "width": 104
+    },
+    {
+      "key": "companyName",
+      "label": "Company Name",
+      "width": 180
+    },
+    {
+      "key": "activeStatus",
+      "label": "Active Status",
+      "width": 94
+    },
+    {
+      "key": "productType",
+      "label": "Product Type",
+      "width": 90
+    },
+    {
+      "key": "productTypeDescription",
+      "label": "Product Type Description",
+      "width": 176
+    },
+    {
+      "key": "transactionType",
+      "label": "Transaction Type",
+      "width": 106
+    },
+    {
+      "key": "transactionTypeDescription",
+      "label": "Transaction Type Description",
+      "width": 188
+    },
+    {
+      "key": "iclReceivedBank",
+      "label": "ICL Received Bank",
+      "width": 124
+    },
+    {
+      "key": "activeActivity",
+      "label": "Active Activity",
+      "width": 104
+    },
+    {
+      "key": "businessPartner",
+      "label": "Business Partner",
+      "width": 112
+    },
+    {
+      "key": "profitCenter",
+      "label": "Profit Center",
+      "width": 96
+    },
+    {
+      "key": "profitCenterDescription",
+      "label": "Profit Center Description",
+      "width": 174
+    },
+    {
+      "key": "businessAreaDescription",
+      "label": "Business Area Desc",
+      "width": 142
+    },
+    {
+      "key": "portfolio",
+      "label": "Portfolio",
+      "width": 86
+    },
+    {
+      "key": "accountingCategory",
+      "label": "Accounting Category",
+      "width": 130
+    },
+    {
+      "key": "iclGivenPrd",
+      "label": "ICL Given Prd",
+      "width": 100
+    },
+    {
+      "key": "iclGivenPrdDesc",
+      "label": "ICL Given Prd Desc",
+      "width": 168
+    },
+    {
+      "key": "iclRecPrd",
+      "label": "ICL Rec Prd",
+      "width": 96
+    },
+    {
+      "key": "iclRecPrdDesc",
+      "label": "ICL Rec Prd Desc",
+      "width": 168
+    }
+  ],
+  "rows": [
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001612",
+      "requestDate": "21-01-26",
+      "startDate": "21-01-26",
+      "endDate": "16-01-27",
+      "plannedEndDate": "31-01-26",
+      "amount": 2865.46,
+      "currency": "USD",
+      "dealId": "12001332",
+      "iclReqStatus": "03",
+      "ottkNo": "101183",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "ALOR",
+      "enteredOn": "21-01-26",
+      "entryTime": "11:400",
+      "requestedBy": "Treasury User",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "DBS03",
+      "requestorBankName": "DBS Bank Singapore",
+      "expectedDate": "31-01-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Direct",
+      "dttkNo": "200001",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Fixed",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000500",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010300",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001613",
+      "requestDate": "21-01-26",
+      "startDate": "21-01-26",
+      "endDate": "16-01-27",
+      "plannedEndDate": "31-01-26",
+      "amount": 5000.0,
+      "currency": "USD",
+      "dealId": "12001333",
+      "iclReqStatus": "03",
+      "ottkNo": "101182",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "TREASURY01",
+      "enteredOn": "21-01-26",
+      "entryTime": "11:401",
+      "requestedBy": "OIL Treasury",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "SCB01",
+      "requestorBankName": "Standard Chartered Singapore",
+      "expectedDate": "31-01-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Reference",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Float",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000501",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010301",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "RECEIVED",
+      "client": "300",
+      "iclGivenCompanyCode": "AE13",
+      "iclRequestNo": "22001486",
+      "requestDate": "01-12-25",
+      "startDate": "01-12-25",
+      "endDate": "26-11-27",
+      "plannedEndDate": "11-12-25",
+      "amount": 4783.99,
+      "currency": "USD",
+      "dealId": "",
+      "iclReqStatus": "04",
+      "ottkNo": "100910",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "SG03",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "TREASURY01",
+      "enteredOn": "01-12-25",
+      "entryTime": "11:402",
+      "requestedBy": "Treasury User",
+      "requestorCoCode": "AE13",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBank": "DBS03",
+      "requestorBankName": "DBS Bank Singapore",
+      "expectedDate": "11-12-25",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Reference",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Fixed",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "2602001941",
+      "iclGivenTxn": "2601000502",
+      "companyName": "Olam International DMCC",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010302",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "SG03",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "20-08-26",
+        "filePath": "C:\\Users\\alor\\Documents\\SAP\\ICL_Received_22001486.pdf",
+        "fileName": "ICL_Received_22001486.pdf",
+        "dmsCode": "6010000538",
+        "uploaded": true,
+        "finalized": true
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001635",
+      "requestDate": "03-02-26",
+      "startDate": "03-02-26",
+      "endDate": "04-01-26",
+      "plannedEndDate": "07-02-26",
+      "amount": 75000.0,
+      "currency": "USD",
+      "dealId": "14000539",
+      "iclReqStatus": "03",
+      "ottkNo": "400507",
+      "slcStructure": "ICFSI",
+      "entityId": "E103",
+      "entityString": "E103 - VEND-OAL-CUST",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "ALOR",
+      "enteredOn": "03-02-26",
+      "entryTime": "11:403",
+      "requestedBy": "OIL Treasury",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "SCB01",
+      "requestorBankName": "Standard Chartered Singapore",
+      "expectedDate": "07-02-26",
+      "lcTenor": "6M",
+      "businessArea": "TSF",
+      "ottkClassification": "Direct",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 4.75,
+      "fixing": "Float",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000503",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010303",
+      "profitCenter": "PC2000",
+      "profitCenterDescription": "Vendor Financing",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001624",
+      "requestDate": "28-01-26",
+      "startDate": "28-01-26",
+      "endDate": "23-01-27",
+      "plannedEndDate": "07-02-26",
+      "amount": 955153.99,
+      "currency": "USD",
+      "dealId": "12001348",
+      "iclReqStatus": "03",
+      "ottkNo": "101205",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "TREASURY01",
+      "enteredOn": "28-01-26",
+      "entryTime": "11:404",
+      "requestedBy": "Treasury User",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "DBS03",
+      "requestorBankName": "DBS Bank Singapore",
+      "expectedDate": "07-02-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Reference",
+      "dttkNo": "200005",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Fixed",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000504",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010304",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001625",
+      "requestDate": "28-01-26",
+      "startDate": "28-01-26",
+      "endDate": "23-01-27",
+      "plannedEndDate": "07-02-26",
+      "amount": 955153.99,
+      "currency": "USD",
+      "dealId": "12001349",
+      "iclReqStatus": "03",
+      "ottkNo": "101206",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "TREASURY01",
+      "enteredOn": "28-01-26",
+      "entryTime": "11:405",
+      "requestedBy": "OIL Treasury",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "SCB01",
+      "requestorBankName": "Standard Chartered Singapore",
+      "expectedDate": "07-02-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Reference",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Float",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000505",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010305",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001642",
+      "requestDate": "04-02-26",
+      "startDate": "04-02-26",
+      "endDate": "30-01-27",
+      "plannedEndDate": "14-02-26",
+      "amount": 1000000.0,
+      "currency": "USD",
+      "dealId": "12001369",
+      "iclReqStatus": "03",
+      "ottkNo": "101236",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "ALOR",
+      "enteredOn": "04-02-26",
+      "entryTime": "11:406",
+      "requestedBy": "Treasury User",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "DBS03",
+      "requestorBankName": "DBS Bank Singapore",
+      "expectedDate": "14-02-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Direct",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Fixed",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000506",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010306",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001643",
+      "requestDate": "04-02-26",
+      "startDate": "04-02-26",
+      "endDate": "30-01-27",
+      "plannedEndDate": "14-02-26",
+      "amount": 1000000.0,
+      "currency": "USD",
+      "dealId": "12001370",
+      "iclReqStatus": "03",
+      "ottkNo": "101237",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "TREASURY01",
+      "enteredOn": "04-02-26",
+      "entryTime": "11:407",
+      "requestedBy": "OIL Treasury",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "SCB01",
+      "requestorBankName": "Standard Chartered Singapore",
+      "expectedDate": "14-02-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Reference",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Float",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000507",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010307",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001623",
+      "requestDate": "28-01-26",
+      "startDate": "28-01-26",
+      "endDate": "23-01-27",
+      "plannedEndDate": "07-02-26",
+      "amount": 955153.99,
+      "currency": "USD",
+      "dealId": "12001347",
+      "iclReqStatus": "03",
+      "ottkNo": "101204",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "TREASURY01",
+      "enteredOn": "28-01-26",
+      "entryTime": "11:408",
+      "requestedBy": "Treasury User",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "DBS03",
+      "requestorBankName": "DBS Bank Singapore",
+      "expectedDate": "07-02-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Reference",
+      "dttkNo": "200009",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Fixed",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000508",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010308",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001674",
+      "requestDate": "20-02-26",
+      "startDate": "20-02-26",
+      "endDate": "16-12-26",
+      "plannedEndDate": "13-03-26",
+      "amount": 47252.78,
+      "currency": "USD",
+      "dealId": "12001446",
+      "iclReqStatus": "03",
+      "ottkNo": "101320",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "ALOR",
+      "enteredOn": "20-02-26",
+      "entryTime": "11:409",
+      "requestedBy": "OIL Treasury",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "SCB01",
+      "requestorBankName": "Standard Chartered Singapore",
+      "expectedDate": "13-03-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Direct",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Float",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000509",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010309",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001681",
+      "requestDate": "20-02-26",
+      "startDate": "20-02-26",
+      "endDate": "16-12-26",
+      "plannedEndDate": "02-03-26",
+      "amount": 945.06,
+      "currency": "USD",
+      "dealId": "12001448",
+      "iclReqStatus": "03",
+      "ottkNo": "101318",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "TREASURY01",
+      "enteredOn": "20-02-26",
+      "entryTime": "11:400",
+      "requestedBy": "Treasury User",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "DBS03",
+      "requestorBankName": "DBS Bank Singapore",
+      "expectedDate": "02-03-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Reference",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Fixed",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000510",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010310",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001695",
+      "requestDate": "03-03-26",
+      "startDate": "03-03-26",
+      "endDate": "14-12-26",
+      "plannedEndDate": "13-03-26",
+      "amount": 100.0,
+      "currency": "USD",
+      "dealId": "12001472",
+      "iclReqStatus": "03",
+      "ottkNo": "101348",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "TREASURY01",
+      "enteredOn": "03-03-26",
+      "entryTime": "11:401",
+      "requestedBy": "OIL Treasury",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "SCB01",
+      "requestorBankName": "Standard Chartered Singapore",
+      "expectedDate": "13-03-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Reference",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Float",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000511",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010311",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001641",
+      "requestDate": "04-02-26",
+      "startDate": "04-02-26",
+      "endDate": "30-01-27",
+      "plannedEndDate": "14-02-26",
+      "amount": 955153.99,
+      "currency": "USD",
+      "dealId": "12001368",
+      "iclReqStatus": "03",
+      "ottkNo": "101235",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "ALOR",
+      "enteredOn": "04-02-26",
+      "entryTime": "11:402",
+      "requestedBy": "Treasury User",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "DBS03",
+      "requestorBankName": "DBS Bank Singapore",
+      "expectedDate": "14-02-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Direct",
+      "dttkNo": "200013",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Fixed",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000512",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010312",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001680",
+      "requestDate": "20-02-26",
+      "startDate": "20-02-26",
+      "endDate": "16-12-26",
+      "plannedEndDate": "02-03-26",
+      "amount": 945.06,
+      "currency": "USD",
+      "dealId": "12001447",
+      "iclReqStatus": "03",
+      "ottkNo": "101319",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "TREASURY01",
+      "enteredOn": "20-02-26",
+      "entryTime": "11:403",
+      "requestedBy": "OIL Treasury",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "SCB01",
+      "requestorBankName": "Standard Chartered Singapore",
+      "expectedDate": "02-03-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Reference",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Float",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000513",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010313",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001721",
+      "requestDate": "20-03-26",
+      "startDate": "20-03-26",
+      "endDate": "13-01-27",
+      "plannedEndDate": "30-03-26",
+      "amount": 9450.56,
+      "currency": "USD",
+      "dealId": "12001549",
+      "iclReqStatus": "03",
+      "ottkNo": "101435",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "TREASURY01",
+      "enteredOn": "20-03-26",
+      "entryTime": "11:404",
+      "requestedBy": "Treasury User",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "DBS03",
+      "requestorBankName": "DBS Bank Singapore",
+      "expectedDate": "30-03-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Reference",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Fixed",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000514",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010314",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001722",
+      "requestDate": "20-03-26",
+      "startDate": "20-03-26",
+      "endDate": "13-01-27",
+      "plannedEndDate": "30-03-26",
+      "amount": 9450.56,
+      "currency": "USD",
+      "dealId": "12001550",
+      "iclReqStatus": "03",
+      "ottkNo": "101436",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "ALOR",
+      "enteredOn": "20-03-26",
+      "entryTime": "11:405",
+      "requestedBy": "OIL Treasury",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "SCB01",
+      "requestorBankName": "Standard Chartered Singapore",
+      "expectedDate": "30-03-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Direct",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Float",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000515",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010315",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001723",
+      "requestDate": "20-03-26",
+      "startDate": "20-03-26",
+      "endDate": "13-01-27",
+      "plannedEndDate": "30-03-26",
+      "amount": 9450.56,
+      "currency": "USD",
+      "dealId": "12001551",
+      "iclReqStatus": "03",
+      "ottkNo": "101437",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "TREASURY01",
+      "enteredOn": "20-03-26",
+      "entryTime": "11:406",
+      "requestedBy": "Treasury User",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "DBS03",
+      "requestorBankName": "DBS Bank Singapore",
+      "expectedDate": "30-03-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Reference",
+      "dttkNo": "200017",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Fixed",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000516",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010316",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001724",
+      "requestDate": "20-03-26",
+      "startDate": "20-03-26",
+      "endDate": "13-01-27",
+      "plannedEndDate": "30-03-26",
+      "amount": 9450.56,
+      "currency": "USD",
+      "dealId": "12001552",
+      "iclReqStatus": "03",
+      "ottkNo": "101438",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "TREASURY01",
+      "enteredOn": "20-03-26",
+      "entryTime": "11:407",
+      "requestedBy": "OIL Treasury",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "SCB01",
+      "requestorBankName": "Standard Chartered Singapore",
+      "expectedDate": "30-03-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Reference",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Float",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000517",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010317",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001725",
+      "requestDate": "20-03-26",
+      "startDate": "20-03-26",
+      "endDate": "13-01-27",
+      "plannedEndDate": "30-03-26",
+      "amount": 9450.56,
+      "currency": "USD",
+      "dealId": "12001553",
+      "iclReqStatus": "03",
+      "ottkNo": "101439",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "ALOR",
+      "enteredOn": "20-03-26",
+      "entryTime": "11:408",
+      "requestedBy": "Treasury User",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "DBS03",
+      "requestorBankName": "DBS Bank Singapore",
+      "expectedDate": "30-03-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Direct",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Fixed",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000518",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010318",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001727",
+      "requestDate": "20-03-26",
+      "startDate": "20-03-26",
+      "endDate": "15-03-27",
+      "plannedEndDate": "30-03-26",
+      "amount": 9345.79,
+      "currency": "USD",
+      "dealId": "12001555",
+      "iclReqStatus": "03",
+      "ottkNo": "101441",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "TREASURY01",
+      "enteredOn": "20-03-26",
+      "entryTime": "11:409",
+      "requestedBy": "OIL Treasury",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "SCB01",
+      "requestorBankName": "Standard Chartered Singapore",
+      "expectedDate": "30-03-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Reference",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Float",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000519",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010319",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001728",
+      "requestDate": "20-03-26",
+      "startDate": "20-03-26",
+      "endDate": "15-03-27",
+      "plannedEndDate": "30-03-26",
+      "amount": 9345.79,
+      "currency": "USD",
+      "dealId": "12001556",
+      "iclReqStatus": "03",
+      "ottkNo": "101442",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "TREASURY01",
+      "enteredOn": "20-03-26",
+      "entryTime": "11:400",
+      "requestedBy": "Treasury User",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "DBS03",
+      "requestorBankName": "DBS Bank Singapore",
+      "expectedDate": "30-03-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Reference",
+      "dttkNo": "200021",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Fixed",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000520",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010320",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001732",
+      "requestDate": "24-03-26",
+      "startDate": "24-03-26",
+      "endDate": "19-03-27",
+      "plannedEndDate": "03-04-26",
+      "amount": 9345.79,
+      "currency": "USD",
+      "dealId": "12001565",
+      "iclReqStatus": "03",
+      "ottkNo": "101459",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "ALOR",
+      "enteredOn": "24-03-26",
+      "entryTime": "11:401",
+      "requestedBy": "OIL Treasury",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "SCB01",
+      "requestorBankName": "Standard Chartered Singapore",
+      "expectedDate": "03-04-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Direct",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Float",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000521",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010321",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001733",
+      "requestDate": "24-03-26",
+      "startDate": "24-03-26",
+      "endDate": "19-03-27",
+      "plannedEndDate": "03-04-26",
+      "amount": 9345.79,
+      "currency": "USD",
+      "dealId": "12001566",
+      "iclReqStatus": "03",
+      "ottkNo": "101460",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "TREASURY01",
+      "enteredOn": "24-03-26",
+      "entryTime": "11:402",
+      "requestedBy": "Treasury User",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "DBS03",
+      "requestorBankName": "DBS Bank Singapore",
+      "expectedDate": "03-04-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Reference",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Fixed",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000522",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010322",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001734",
+      "requestDate": "24-03-26",
+      "startDate": "24-03-26",
+      "endDate": "19-03-27",
+      "plannedEndDate": "03-04-26",
+      "amount": 9345.79,
+      "currency": "USD",
+      "dealId": "12001567",
+      "iclReqStatus": "03",
+      "ottkNo": "101461",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "TREASURY01",
+      "enteredOn": "24-03-26",
+      "entryTime": "11:403",
+      "requestedBy": "OIL Treasury",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "SCB01",
+      "requestorBankName": "Standard Chartered Singapore",
+      "expectedDate": "03-04-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Reference",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Float",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000523",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010323",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001632",
+      "requestDate": "02-02-26",
+      "startDate": "01-12-25",
+      "endDate": "26-11-26",
+      "plannedEndDate": "11-12-25",
+      "amount": 47800.0,
+      "currency": "USD",
+      "dealId": "12001090",
+      "iclReqStatus": "03",
+      "ottkNo": "100912",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "ALOR",
+      "enteredOn": "02-02-26",
+      "entryTime": "11:404",
+      "requestedBy": "Treasury User",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "DBS03",
+      "requestorBankName": "DBS Bank Singapore",
+      "expectedDate": "11-12-25",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Direct",
+      "dttkNo": "200025",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Fixed",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000524",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010324",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001720",
+      "requestDate": "20-03-26",
+      "startDate": "20-03-26",
+      "endDate": "13-01-27",
+      "plannedEndDate": "30-03-26",
+      "amount": 9450.56,
+      "currency": "USD",
+      "dealId": "12001548",
+      "iclReqStatus": "03",
+      "ottkNo": "101434",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "TREASURY01",
+      "enteredOn": "20-03-26",
+      "entryTime": "11:405",
+      "requestedBy": "OIL Treasury",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "SCB01",
+      "requestorBankName": "Standard Chartered Singapore",
+      "expectedDate": "30-03-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Reference",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Float",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000525",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010325",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001735",
+      "requestDate": "24-03-26",
+      "startDate": "11-12-25",
+      "endDate": "06-12-26",
+      "plannedEndDate": "21-12-25",
+      "amount": 93457.94,
+      "currency": "USD",
+      "dealId": "",
+      "iclReqStatus": "03",
+      "ottkNo": "101462",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "TREASURY01",
+      "enteredOn": "24-03-26",
+      "entryTime": "11:406",
+      "requestedBy": "Treasury User",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "DBS03",
+      "requestorBankName": "DBS Bank Singapore",
+      "expectedDate": "21-12-25",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Reference",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Fixed",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000526",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010326",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001767",
+      "requestDate": "29-06-26",
+      "startDate": "08-06-26",
+      "endDate": "30-06-26",
+      "plannedEndDate": "30-06-26",
+      "amount": 9000.0,
+      "currency": "USD",
+      "dealId": "14000637",
+      "iclReqStatus": "03",
+      "ottkNo": "400632",
+      "slcStructure": "ICFSI",
+      "entityId": "E103",
+      "entityString": "E103 - VEND-OAL-CUST",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "ALOR",
+      "enteredOn": "29-06-26",
+      "entryTime": "11:407",
+      "requestedBy": "OIL Treasury",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "SCB01",
+      "requestorBankName": "Standard Chartered Singapore",
+      "expectedDate": "30-06-26",
+      "lcTenor": "6M",
+      "businessArea": "TSF",
+      "ottkClassification": "Direct",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 4.75,
+      "fixing": "Float",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000527",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010327",
+      "profitCenter": "PC2000",
+      "profitCenterDescription": "Vendor Financing",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001768",
+      "requestDate": "30-06-26",
+      "startDate": "08-06-26",
+      "endDate": "30-06-26",
+      "plannedEndDate": "30-06-26",
+      "amount": 9000.0,
+      "currency": "USD",
+      "dealId": "14000638",
+      "iclReqStatus": "03",
+      "ottkNo": "400633",
+      "slcStructure": "ICFSI",
+      "entityId": "E103",
+      "entityString": "E103 - VEND-OAL-CUST",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "TREASURY01",
+      "enteredOn": "30-06-26",
+      "entryTime": "11:408",
+      "requestedBy": "Treasury User",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "DBS03",
+      "requestorBankName": "DBS Bank Singapore",
+      "expectedDate": "30-06-26",
+      "lcTenor": "6M",
+      "businessArea": "TSF",
+      "ottkClassification": "Reference",
+      "dttkNo": "200029",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 4.75,
+      "fixing": "Fixed",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000528",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010328",
+      "profitCenter": "PC2000",
+      "profitCenterDescription": "Vendor Financing",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001736",
+      "requestDate": "24-03-26",
+      "startDate": "24-03-26",
+      "endDate": "19-03-27",
+      "plannedEndDate": "03-04-26",
+      "amount": 9345.79,
+      "currency": "USD",
+      "dealId": "",
+      "iclReqStatus": "03",
+      "ottkNo": "101463",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "TREASURY01",
+      "enteredOn": "24-03-26",
+      "entryTime": "11:409",
+      "requestedBy": "OIL Treasury",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "SCB01",
+      "requestorBankName": "Standard Chartered Singapore",
+      "expectedDate": "03-04-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Reference",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Float",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000529",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010329",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001737",
+      "requestDate": "24-03-26",
+      "startDate": "24-03-26",
+      "endDate": "19-03-27",
+      "plannedEndDate": "03-04-26",
+      "amount": 9345.79,
+      "currency": "USD",
+      "dealId": "",
+      "iclReqStatus": "03",
+      "ottkNo": "101464",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "ALOR",
+      "enteredOn": "24-03-26",
+      "entryTime": "11:400",
+      "requestedBy": "Treasury User",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "DBS03",
+      "requestorBankName": "DBS Bank Singapore",
+      "expectedDate": "03-04-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Direct",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Fixed",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000530",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010330",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001800",
+      "requestDate": "05-08-26",
+      "startDate": "24-03-26",
+      "endDate": "19-03-27",
+      "plannedEndDate": "03-04-26",
+      "amount": 9345.79,
+      "currency": "USD",
+      "dealId": "",
+      "iclReqStatus": "03",
+      "ottkNo": "101622",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "TREASURY01",
+      "enteredOn": "05-08-26",
+      "entryTime": "11:401",
+      "requestedBy": "OIL Treasury",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "SCB01",
+      "requestorBankName": "Standard Chartered Singapore",
+      "expectedDate": "03-04-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Reference",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Float",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000531",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010331",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001829",
+      "requestDate": "12-08-26",
+      "startDate": "11-08-26",
+      "endDate": "06-08-27",
+      "plannedEndDate": "21-08-26",
+      "amount": 9345.79,
+      "currency": "USD",
+      "dealId": "",
+      "iclReqStatus": "03",
+      "ottkNo": "101696",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "TREASURY01",
+      "enteredOn": "12-08-26",
+      "entryTime": "11:402",
+      "requestedBy": "Treasury User",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "DBS03",
+      "requestorBankName": "DBS Bank Singapore",
+      "expectedDate": "21-08-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Reference",
+      "dttkNo": "200033",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Fixed",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000532",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010332",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    },
+    {
+      "statusCode": "PENDING",
+      "client": "300",
+      "iclGivenCompanyCode": "SG03",
+      "iclRequestNo": "22001830",
+      "requestDate": "12-08-26",
+      "startDate": "11-08-26",
+      "endDate": "06-08-27",
+      "plannedEndDate": "21-08-26",
+      "amount": 9345.79,
+      "currency": "USD",
+      "dealId": "",
+      "iclReqStatus": "03",
+      "ottkNo": "101697",
+      "slcStructure": "DSX",
+      "entityId": "E021",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "iclRecCompanyCode": "",
+      "depositRequest": "",
+      "houseBank": "",
+      "accountId": "",
+      "partnerBankId": "",
+      "enteredBy": "ALOR",
+      "enteredOn": "12-08-26",
+      "entryTime": "11:403",
+      "requestedBy": "OIL Treasury",
+      "requestorCoCode": "SG03",
+      "requestorCoName": "Olam Global Agri Pte. Ltd",
+      "requestorBank": "SCB01",
+      "requestorBankName": "Standard Chartered Singapore",
+      "expectedDate": "21-08-26",
+      "lcTenor": "12M",
+      "businessArea": "TSF",
+      "ottkClassification": "Direct",
+      "dttkNo": "",
+      "iclRequestStatusDescription": "03 - Approved for ICL Received",
+      "percentageRate": 5.25,
+      "fixing": "Float",
+      "depositCompanyCode": "",
+      "depositTxn": "",
+      "wcdlCompanyCode": "",
+      "iclRecTxn": "",
+      "iclGivenTxn": "2601000533",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "activeStatus": "Active",
+      "productType": "26A",
+      "productTypeDescription": "Inter-Co Loan Given",
+      "transactionType": "100",
+      "transactionTypeDescription": "ICL Given",
+      "iclReceivedBank": "",
+      "activeActivity": "Create",
+      "businessPartner": "BP010333",
+      "profitCenter": "PC1000",
+      "profitCenterDescription": "Treasury Finance",
+      "businessAreaDescription": "Trade Structured Finance",
+      "portfolio": "PF01",
+      "accountingCategory": "AC01",
+      "iclGivenPrd": "26A",
+      "iclGivenPrdDesc": "Inter-Co Loan Given",
+      "iclRecPrd": "26B",
+      "iclRecPrdDesc": "Inter-Co Loan Received",
+      "targetReceivedCompanyCode": "AE13",
+      "dms": {
+        "docType": "D01",
+        "docTypeDesc": "ICL Received Slip",
+        "docDate": "",
+        "filePath": "",
+        "fileName": "",
+        "dmsCode": "",
+        "uploaded": false,
+        "finalized": false
+      }
+    }
+  ]
+};
+var DATA=HAS_EXTERNAL_PAYLOAD?ICL_RECEIVED_PAYLOAD:DEFAULT_PAYLOAD;
+var state={page:1,pageSize:Number(DATA.settings.pageSize)||12,selectedIndex:-1,activeRows:[],calendar:null,sort:{index:-1,direction:""}};
+var activeDmsIndex=-1;
+var pendingFile=null;
+var editMode=false;
+var activeCombo="";
+var comboConfig={
+  "givenTxnFilter":{"key":"iclGivenTxn","list":"givenTxnFilterList"},
+  "requestFilter":{"key":"iclRequestNo","list":"requestFilterList"},
+  "entityFilter":{"key":"entityId","list":"entityFilterList"},
+  "ottkFilter":{"key":"ottkNo","list":"ottkFilterList"}
+};
+function byId(id){return document.getElementById(id)}
+function esc(value){
+var text=String(value==null?"":value);
+text=text.replace(/&/g,"&amp;");
+text=text.replace(/</g,"&lt;");
+text=text.replace(/>/g,"&gt;");
+return text.replace(/"/g,"&quot;")
+}
+function pad2(value){return ("0"+value).slice(-2)}
+function parseDate(text){
+var match=String(text||"").match(/^(\d{2})[-.](\d{2})[-.](\d{2}|\d{4})$/);
+var year;
+var date;
+if(!match){return null}
+year=Number(match[3]);
+if(year<100){year+=2000}
+date=new Date(year,Number(match[2])-1,Number(match[1]));
+if(date.getFullYear()!==year||date.getMonth()!==Number(match[2])-1||date.getDate()!==Number(match[1])){return null}
+return date
+}
+function formatDate(date){return pad2(date.getDate())+"-"+pad2(date.getMonth()+1)+"-"+date.getFullYear()}
+function normalizeDate(id){var input=byId(id);var date=parseDate(input.value);if(date){input.value=formatDate(date)}return date}
+function money(value){
+var n=Number(value||0);
+var parts=n.toFixed(2).split(".");
+parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,",");
+return parts.join(".")
+}
+function setStatus(text){byId("statusText").innerHTML=esc(text)}
+function toast(message,kind){
+var region=byId("toastRegion");
+var box=document.createElement("div");
+var icon=document.createElement("div");
+var body=document.createElement("div");
+var title=kind==="success"?"Success":kind==="warning"?"Warning":"Information";
+box.className="toast "+(kind||"");
+icon.className="toast-icon";
+icon.innerHTML=kind==="success"?"OK":"i";
+body.innerHTML='<div class="toast-title">'+title+'</div><div class="toast-message">'+esc(message)+'</div>';
+box.appendChild(icon);
+box.appendChild(body);
+region.appendChild(box);
+window.setTimeout(function(){if(box.parentNode){box.parentNode.removeChild(box)}},4200)
+}
+function statusHtml(status){
+if(status==="RECEIVED"){return '<span class="status-text status-received" title="ICL Received">Received</span>'}
+if(status==="REJECTED"){return '<span class="status-text status-rejected" title="Rejected">Rejected</span>'}
+return '<span class="status-text status-pending" title="Pending">Pending</span>'
+}
+function valueText(row,column){
+var value=row[column.key];
+var date;
+if(column.type==="amount"){return money(value)}
+if(column.type==="rate"&&value!==""&&value!=null){return Number(value).toFixed(4)}
+if(column.type==="date"){date=parseDate(value);return date?formatDate(date):String(value==null?"":value)}
+return String(value==null?"":value)
+}
+function getFilteredRows(){
+var upTo=parseDate(byId("uptoRequestDate").value);
+var givenTxn=String(byId("givenTxnFilter").value||"").toLowerCase();
+var requestNo=String(byId("requestFilter").value||"").toLowerCase();
+var entity=String(byId("entityFilter").value||"").toLowerCase();
+var ottk=String(byId("ottkFilter").value||"").toLowerCase();
+var planned=String(byId("plannedDateFilter").value||"");
+var rows=[];
+var i;
+var row;
+var requestDate;
+if(!upTo){return rows}
+for(i=0;i<DATA.rows.length;i++){
+row=DATA.rows[i];
+requestDate=parseDate(row.requestDate);
+if(!requestDate||requestDate>upTo){continue}
+if(givenTxn&&String(row.iclGivenTxn||"").toLowerCase().indexOf(givenTxn)<0){continue}
+if(requestNo&&String(row.iclRequestNo||"").toLowerCase().indexOf(requestNo)<0){continue}
+if(entity&&String(row.entityId||"").toLowerCase().indexOf(entity)<0){continue}
+if(ottk&&String(row.ottkNo||"").toLowerCase().indexOf(ottk)<0){continue}
+if(planned){
+var plannedInput=parseDate(planned);
+var plannedRow=parseDate(row.plannedEndDate);
+if(!plannedInput||!plannedRow||plannedInput.getTime()!==plannedRow.getTime()){continue}
+}
+rows.push({row:row,index:i})
+}
+return rows
+}
+function sortValue(item,column){
+var value=item.row[column.key];
+var date;
+if(column.type==="amount"||column.type==="rate"){return Number(value||0)}
+if(column.type==="date"){date=parseDate(value);return date?date.getTime():0}
+return String(value||"").toLowerCase()
+}
+function applySort(rows){
+var index=state.sort.index;
+var direction=state.sort.direction;
+var column;
+if(index<0||!direction||!DATA.columns[index]){return rows}
+column=DATA.columns[index];
+rows.sort(function(a,b){
+var av=sortValue(a,column);
+var bv=sortValue(b,column);
+if(av<bv){return direction==="asc"?-1:1}
+if(av>bv){return direction==="asc"?1:-1}
+return 0
+});
+return rows
+}
+function renderHeader(){
+var html='<tr><th class="select-cell" style="min-width:64px;cursor:default">Select</th>';
+var i;
+var column;
+var cls;
+for(i=0;i<DATA.columns.length;i++){
+column=DATA.columns[i];
+cls=state.sort.index===i?(state.sort.direction==="asc"?"sort-asc":"sort-desc"):"";
+html+='<th class="'+cls+'" data-sort="'+i+'" style="min-width:'+column.width+'px">'+esc(column.label);
+html+='<span class="sort-arrows"><span class="sort-up"></span><span class="sort-down"></span></span></th>'
+}
+html+="</tr>";
+byId("requestHead").innerHTML=html;
+var totalWidth=0;
+for(i=0;i<DATA.columns.length;i++){totalWidth+=Number(DATA.columns[i].width)||100}
+totalWidth+=64;
+byId("requestTable").style.minWidth=totalWidth+"px"
+}
+function renderPagination(totalRows){
+var bar=byId("paginationBar");
+var pages=Math.max(1,Math.ceil(totalRows/state.pageSize));
+var html="";
+var start;
+var end;
+var p;
+if(state.page>pages){state.page=pages}
+html+='<button class="page-btn" data-page="prev" type="button"'+(state.page===1?' disabled="disabled"':'')+'>Previous</button>';
+start=Math.max(1,state.page-1);
+end=Math.min(pages,start+2);
+start=Math.max(1,end-2);
+for(p=start;p<=end;p++){
+html+='<button class="page-btn'+(p===state.page?' active':'')+'" data-page="'+p+'" type="button">'+p+'</button>'
+}
+html+='<button class="page-btn" data-page="next" type="button"'+(state.page===pages?' disabled="disabled"':'')+'>Next</button>';
+bar.innerHTML=html
+}
+function renderTable(){
+var rows=applySort(getFilteredRows());
+var start=(state.page-1)*state.pageSize;
+var end=Math.min(start+state.pageSize,rows.length);
+var pageRows=rows.slice(start,end);
+var html="";
+var i;
+var j;
+var item;
+var row;
+var column;
+var cls;
+state.activeRows=rows;
+renderHeader();
+for(i=0;i<pageRows.length;i++){
+item=pageRows[i];
+row=item.row;
+cls=item.index===state.selectedIndex?"selected":"";
+html+='<tr class="'+cls+'" data-index="'+item.index+'">';
+html+='<td class="select-cell"><input class="row-radio" type="radio" name="iclRowSelect"';
+html+=(item.index===state.selectedIndex?' checked="checked"':'')+'></td>';
+for(j=0;j<DATA.columns.length;j++){
+column=DATA.columns[j];
+if(column.type==="status"){html+='<td class="status-cell">'+statusHtml(row.statusCode)+'</td>'}
+else if(column.type==="amount"||column.type==="rate"){html+='<td class="number">'+esc(valueText(row,column))+'</td>'}
+else{html+='<td>'+esc(valueText(row,column))+'</td>'}
+}
+html+="</tr>"
+}
+if(!html){
+html='<tr><td class="empty" colspan="'+(DATA.columns.length+1)+'">No ICL requests match the current selection.</td></tr>'
+}
+byId("requestBody").innerHTML=html;
+byId("recordCount").innerHTML=rows.length+" request"+(rows.length===1?"":"s")+" found";
+renderPagination(rows.length);
+updateActions()
+}
+function updateActions(){
+var row=state.selectedIndex>=0?DATA.rows[state.selectedIndex]:null;
+byId("selectionCount").innerHTML=row?"ICL Request "+esc(row.iclRequestNo)+" selected":"No row selected";
+byId("createReceivedBtn").disabled=!row||row.statusCode==="RECEIVED";
+byId("dmsBtn").disabled=!row
+}
+function refreshFromInputs(){
+var raw=byId("uptoRequestDate").value;
+var date=parseDate(raw);
+state.page=1;
+state.selectedIndex=-1;
+if(!raw){byId("resultsArea").className="results";setStatus("Enter an Upto Request Date to load ICL requests");return}
+if(!date){
+byId("resultsArea").className="results";
+toast("Enter the date in DD-MM-YYYY format.","warning");
+setStatus("Invalid Upto Request Date");
+return
+}
+byId("uptoRequestDate").value=formatDate(date);
+normalizeDate("plannedDateFilter");
+byId("resultsArea").className="results open";
+renderTable();
+setStatus("ICL requests loaded")
+}
+function refreshFilters(){
+if(!parseDate(byId("uptoRequestDate").value)){return}
+state.page=1;
+state.selectedIndex=-1;
+normalizeDate("plannedDateFilter");
+renderTable()
+}
+function clearFilters(){
+byId("givenTxnFilter").value="";
+byId("requestFilter").value="";
+byId("entityFilter").value="";
+byId("ottkFilter").value="";
+byId("plannedDateFilter").value="";
+refreshFilters()
+}
+function comboValues(key,query){
+var seen={};
+var values=[];
+var q=String(query||"").toLowerCase();
+var i;
+var value;
+for(i=0;i<DATA.rows.length;i++){
+value=String(DATA.rows[i][key]||"");
+if(!value||seen[value]){continue}
+if(q&&value.toLowerCase().indexOf(q)<0){continue}
+seen[value]=true;
+values.push(value)
+}
+values.sort();
+return values
+}
+function closeCombo(){
+if(activeCombo&&comboConfig[activeCombo]){byId(comboConfig[activeCombo].list).className="combo-list"}
+activeCombo=""
+}
+function renderCombo(inputId){
+var cfg=comboConfig[inputId];
+var list;
+var values;
+var html="";
+var i;
+if(!cfg){return}
+if(activeCombo&&activeCombo!==inputId){closeCombo()}
+activeCombo=inputId;
+list=byId(cfg.list);
+values=comboValues(cfg.key,byId(inputId).value);
+for(i=0;i<values.length;i++){
+html+='<button class="combo-option" data-combo-value="'+esc(values[i])+'" type="button">'+esc(values[i])+"</button>"
+}
+if(!html){html='<div class="combo-empty">No matching values</div>'}
+list.innerHTML=html;
+list.className="combo-list open"
+}
+function chooseCombo(inputId,value){
+byId(inputId).value=value;
+closeCombo();
+refreshFilters()
+}
+function bindCombo(inputId){
+var cfg=comboConfig[inputId];
+var input=byId(inputId);
+var list=byId(cfg.list);
+var buttons=document.querySelectorAll('[data-combo="'+inputId+'"]');
+var i;
+input.oninput=function(){refreshFilters();renderCombo(inputId)};
+input.onfocus=function(){renderCombo(inputId)};
+for(i=0;i<buttons.length;i++){
+buttons[i].onclick=function(e){
+if(e&&e.stopPropagation){e.stopPropagation()}
+if(activeCombo===inputId){closeCombo()}else{renderCombo(inputId)}
+}
+}
+list.onclick=function(e){
+var target=e.target||e.srcElement;
+var value=target.getAttribute&&target.getAttribute("data-combo-value");
+if(value!==null&&value!==undefined){chooseCombo(inputId,value)}
+}
+}
+function createReceived(){
+var row=state.selectedIndex>=0?DATA.rows[state.selectedIndex]:null;
+var txn;
+if(!row){toast("Select one ICL request first.","warning");return}
+if(row.statusCode==="RECEIVED"){toast("ICL Received transaction already exists for this request.","warning");return}
+txn=String(Number(DATA.settings.nextReceivedTransaction)||2602001942);
+DATA.settings.nextReceivedTransaction=Number(txn)+1;
+row.statusCode="RECEIVED";
+row.iclRecCompanyCode=row.targetReceivedCompanyCode||"";
+row.iclRecTxn=txn;
+row.activeActivity="Received";
+if(row.dms&&row.dms.uploaded){row.dms.finalized=true}
+renderTable();
+toast("ICL Received Transaction "+txn+" created successfully.","success");
+setStatus("ICL Received Transaction "+txn+" created successfully")
+}
+function dmsRow(){return activeDmsIndex>=0?DATA.rows[activeDmsIndex]:null}
+function dmsDoc(){var row=dmsRow();return row?row.dms:null}
+function dmsFilePath(doc){
+if(!doc){return "Select file"}
+if(doc.filePath){return doc.filePath}
+if(doc.fileName){return doc.fileName}
+return "Select file"
+}
+function renderDms(){
+var row=dmsRow();
+var doc=dmsDoc();
+var locked;
+var pathClass;
+var docDate;
+var html="";
+if(!row||!doc){return}
+locked=row.statusCode==="RECEIVED";
+pathClass=locked||doc.finalized?"path-cell disabled":"path-cell";
+docDate=parseDate(doc.docDate);
+byId("dmsTransaction").innerHTML=esc(row.iclRecTxn||row.iclGivenTxn||"");
+html+="<tr>";
+html+="<td>"+esc(doc.docType)+"</td>";
+html+="<td>"+esc(doc.docTypeDesc)+"</td>";
+html+="<td>"+esc(docDate?formatDate(docDate):doc.docDate)+"</td>";
+html+='<td><div id="filePathCell" class="'+pathClass+'" title="'+esc(dmsFilePath(doc))+'"><span>'+esc(dmsFilePath(doc))+"</span></div></td>";
+html+="<td>"+esc(doc.dmsCode)+"</td>";
+html+='<td><button id="uploadBtn" class="action-btn" type="button">Upload</button></td>';
+html+='<td><button id="downloadBtn" class="action-btn" type="button">Download</button></td>';
+html+='<td><button id="editBtn" class="action-btn" type="button">Edit</button></td>';
+html+="</tr>";
+byId("dmsBody").innerHTML=html;
+byId("uploadBtn").disabled=locked||doc.finalized||doc.uploaded||!pendingFile;
+byId("downloadBtn").disabled=!doc.uploaded;
+byId("editBtn").disabled=locked||doc.finalized||!doc.uploaded;
+byId("dmsConfirm").disabled=locked||doc.finalized||!doc.uploaded;
+byId("filePathCell").onclick=function(){
+if(!locked&&!doc.finalized){editMode=false;byId("dmsFileInput").click()}
+};
+byId("uploadBtn").onclick=uploadDms;
+byId("downloadBtn").onclick=downloadDms;
+byId("editBtn").onclick=function(){
+if(!locked&&!doc.finalized&&doc.uploaded){editMode=true;byId("dmsFileInput").click()}
+}
+}
+function openDms(){
+var row=state.selectedIndex>=0?DATA.rows[state.selectedIndex]:null;
+if(!row){toast("Select one ICL request first.","warning");return}
+activeDmsIndex=state.selectedIndex;
+pendingFile=null;
+editMode=false;
+if(!row.dms.docDate){row.dms.docDate=formatDate(new Date())}
+renderDms();
+byId("dmsModal").className="modal-bg open"
+}
+function closeDms(){byId("dmsModal").className="modal-bg";pendingFile=null;editMode=false;byId("dmsFileInput").value=""}
+function fileSelected(){
+var input=byId("dmsFileInput");
+var doc=dmsDoc();
+var file=input.files&&input.files.length?input.files[0]:null;
+if(!doc||!file){return}
+pendingFile=file;
+doc.fileName=file.name||"Selected file";
+doc.filePath=input.value||doc.fileName;
+if(editMode){doc.uploaded=false}
+renderDms()
+}
+function uploadDms(){
+var doc=dmsDoc();
+if(!doc||doc.finalized){return}
+if(!pendingFile){toast("Select a file from File Path first.","warning");return}
+doc.fileObject=pendingFile;
+doc.uploaded=true;
+if(!doc.dmsCode){doc.dmsCode=String(Number(DATA.settings.nextDmsCode)||6010000539);DATA.settings.nextDmsCode=Number(doc.dmsCode)+1}
+pendingFile=null;
+editMode=false;
+renderDms();
+toast("Document uploaded. DMS Code "+doc.dmsCode+" generated.","success")
+}
+function downloadDms(){
+var doc=dmsDoc();
+var file;
+var url;
+var link;
+if(!doc||!doc.uploaded){return}
+file=doc.fileObject;
+if(file&&window.navigator&&window.navigator.msSaveOrOpenBlob){window.navigator.msSaveOrOpenBlob(file,doc.fileName||"ICL_Document");return}
+if(file&&window.URL&&window.URL.createObjectURL){
+url=window.URL.createObjectURL(file);
+link=document.createElement("a");
+link.href=url;
+link.download=doc.fileName||"ICL_Document";
+document.body.appendChild(link);
+link.click();
+document.body.removeChild(link);
+window.setTimeout(function(){window.URL.revokeObjectURL(url)},1000);
+return
+}
+toast("The uploaded document is available from SAP DMS in the integrated screen.","warning")
+}
+function confirmDms(){
+var doc=dmsDoc();
+if(!doc||doc.finalized){return}
+if(!doc.uploaded){toast("Upload the document before confirming.","warning");return}
+doc.finalized=true;
+renderDms();
+toast("Document Uploaded Successfully. Doc No: "+doc.dmsCode,"success");
+setStatus("Document Uploaded Successfully. Doc No: "+doc.dmsCode)
+}
+var CAL_MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
+var CAL_DAYS=["Su","Mo","Tu","We","Th","Fr","Sa"];
+function sameDate(a,b){return !!a&&!!b&&a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate()}
+function calendarIso(date){return date.getFullYear()+"-"+pad2(date.getMonth()+1)+"-"+pad2(date.getDate())}
+function calendarFromIso(text){
+var m=String(text||"").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+if(!m){return null}
+return new Date(Number(m[1]),Number(m[2])-1,Number(m[3]))
+}
+function calendarHeader(c){
+var html='<div class="calendar-top"><button class="calendar-title-btn" data-cal-action="picker" type="button">';
+html+=esc(CAL_MONTHS[c.month]+" "+c.year)+"</button><div class=\"calendar-navs\">";
+html+='<button class="calendar-nav prev" data-cal-action="prev" type="button"></button>';
+html+='<button class="calendar-nav next" data-cal-action="next" type="button"></button></div></div>';
+return html
+}
+function calendarDayView(c){
+var selected=parseDate(byId(c.targetId).value);
+var today=new Date();
+var first=new Date(c.year,c.month,1);
+var start=new Date(c.year,c.month,1-first.getDay());
+var html=calendarHeader(c);
+var i;
+var d;
+var cls;
+html+='<div class="calendar-week">';
+for(i=0;i<CAL_DAYS.length;i++){html+="<span>"+CAL_DAYS[i]+"</span>"}
+html+='</div><div class="calendar-days">';
+for(i=0;i<42;i++){
+d=new Date(start.getFullYear(),start.getMonth(),start.getDate()+i);
+cls="calendar-cell";
+if(d.getMonth()!==c.month){cls+=" other"}
+if(sameDate(d,selected)){cls+=" selected"}
+html+='<button class="'+cls+'" data-cal-action="day" data-date="'+calendarIso(d)+'" type="button">'+d.getDate()+"</button>"
+}
+html+='</div><div class="calendar-foot">';
+html+='<button class="calendar-foot-btn" data-cal-action="clear" type="button">Clear</button>';
+html+='<button class="calendar-foot-btn" data-cal-action="today" type="button">Today</button></div>';
+return html
+}
+function calendarPickerView(c){
+var html=calendarHeader(c);
+var i;
+var startYear=c.year-6;
+var endYear=c.year+10;
+html+='<div class="calendar-picker"><div class="month-grid">';
+for(i=0;i<12;i++){
+html+='<button class="month-btn'+(i===c.month?' selected':'')+'" data-cal-action="month" data-month="'+i+'" type="button">';
+html+=CAL_MONTHS[i].substr(0,3)+"</button>"
+}
+html+='</div><div class="year-list">';
+for(i=startYear;i<=endYear;i++){
+html+='<button class="year-btn'+(i===c.year?' selected':'')+'" data-cal-action="year" data-year="'+i+'" type="button">'+i+"</button>"
+}
+html+="</div></div>";
+return html
+}
+function renderCalendar(){
+var c=state.calendar;
+var popup;
+if(!c){return}
+popup=byId(c.popupId);
+popup.innerHTML=c.view==="picker"?calendarPickerView(c):calendarDayView(c);
+popup.className="calendar-popup open";
+popup.onclick=calendarClick
+}
+function calendarApply(targetId){if(targetId==="uptoRequestDate"){refreshFromInputs()}else{normalizeDate(targetId);refreshFilters()}}
+function calendarClick(e){
+var target=e.target||e.srcElement;
+var action=target.getAttribute&&target.getAttribute("data-cal-action");
+var c=state.calendar;
+var date;
+if(!c||!action){return}
+e.stopPropagation();
+if(action==="picker"){c.view=c.view==="picker"?"days":"picker";renderCalendar();return}
+if(action==="prev"||action==="next"){
+date=new Date(c.year,c.month+(action==="prev"?-1:1),1);
+c.month=date.getMonth();c.year=date.getFullYear();c.view="days";renderCalendar();return
+}
+if(action==="month"){c.month=parseInt(target.getAttribute("data-month"),10)||0;renderCalendar();return}
+if(action==="year"){c.year=parseInt(target.getAttribute("data-year"),10)||c.year;c.view="days";renderCalendar();return}
+if(action==="day"){
+date=calendarFromIso(target.getAttribute("data-date"));
+if(!date){return}
+byId(c.targetId).value=formatDate(date);byId(c.popupId).className="calendar-popup";state.calendar=null;calendarApply(c.targetId);return
+}
+if(action==="clear"){
+byId(c.targetId).value="";byId(c.popupId).className="calendar-popup";state.calendar=null;calendarApply(c.targetId);return
+}
+if(action==="today"){
+byId(c.targetId).value=formatDate(new Date());byId(c.popupId).className="calendar-popup";state.calendar=null;calendarApply(c.targetId)
+}
+}
+function toggleCalendar(buttonId,targetId,popupId,e){
+var current=parseDate(byId(targetId).value)||new Date();
+e.stopPropagation();
+if(state.calendar&&state.calendar.popupId===popupId){byId(popupId).className="calendar-popup";state.calendar=null;return}
+if(state.calendar){byId(state.calendar.popupId).className="calendar-popup"}
+state.calendar={buttonId:buttonId,targetId:targetId,popupId:popupId,month:current.getMonth(),year:current.getFullYear(),view:"days"};
+renderCalendar()
+}
+byId("uptoCalendarBtn").onclick=function(e){toggleCalendar("uptoCalendarBtn","uptoRequestDate","uptoCalendar",e)};
+byId("plannedCalendarBtn").onclick=function(e){toggleCalendar("plannedCalendarBtn","plannedDateFilter","plannedCalendar",e)};
+byId("filterToggle").onclick=function(){var body=byId("filterBody");body.className=body.className.indexOf("open")>=0?"filter-body":"filter-body open"};
+byId("uptoRequestDate").onchange=refreshFromInputs;
+bindCombo("givenTxnFilter");
+bindCombo("requestFilter");
+bindCombo("entityFilter");
+bindCombo("ottkFilter");
+byId("plannedDateFilter").onchange=refreshFilters;
+byId("clearFilters").onclick=clearFilters;
+byId("requestHead").onclick=function(e){
+var target=e.target||e.srcElement;
+var th=target;
+var index;
+while(th&&th.tagName&&th.tagName.toLowerCase()!=="th"){th=th.parentNode}
+if(!th||th.getAttribute("data-sort")===null){return}
+index=parseInt(th.getAttribute("data-sort"),10);
+if(isNaN(index)){return}
+if(state.sort.index===index){state.sort.direction=state.sort.direction==="asc"?"desc":"asc"}
+else{state.sort.index=index;state.sort.direction="asc"}
+state.page=1;renderTable()
+};
+byId("requestBody").onclick=function(e){
+var target=e.target||e.srcElement;
+var tr=target;
+var index;
+while(tr&&tr.tagName&&tr.tagName.toLowerCase()!=="tr"){tr=tr.parentNode}
+if(!tr||tr.getAttribute("data-index")===null){return}
+index=parseInt(tr.getAttribute("data-index"),10);
+if(isNaN(index)){return}
+state.selectedIndex=index;renderTable()
+};
+byId("paginationBar").onclick=function(e){
+var target=e.target||e.srcElement;
+var page=target.getAttribute&&target.getAttribute("data-page");
+var pages=Math.max(1,Math.ceil(state.activeRows.length/state.pageSize));
+if(!page||target.disabled){return}
+if(page==="prev"){state.page=Math.max(1,state.page-1)}
+else if(page==="next"){state.page=Math.min(pages,state.page+1)}
+else{state.page=parseInt(page,10)||1}
+renderTable()
+};
+byId("createReceivedBtn").onclick=createReceived;
+byId("dmsBtn").onclick=openDms;
+byId("dmsClose").onclick=closeDms;
+byId("dmsCancel").onclick=closeDms;
+byId("dmsConfirm").onclick=confirmDms;
+byId("dmsFileInput").onchange=fileSelected;
+document.onclick=function(e){
+var target=e.target||e.srcElement;
+var popup;
+var btn;
+var shell=target;
+if(state.calendar){
+popup=byId(state.calendar.popupId);
+btn=byId(state.calendar.buttonId);
+if(target!==btn&&!popup.contains(target)){popup.className="calendar-popup";state.calendar=null}
+}
+if(activeCombo){
+while(shell&&shell.className&&String(shell.className).indexOf("combo-shell")<0){shell=shell.parentNode}
+if(!shell){closeCombo()}
+}
+};
+document.onkeydown=function(e){
+var event=e||window.event;
+if(event.keyCode===27){closeDms();byId("uptoCalendar").className="calendar-popup";byId("plannedCalendar").className="calendar-popup";state.calendar=null}
+return true
+};
+})();
+</script>
+</body>
+</html>

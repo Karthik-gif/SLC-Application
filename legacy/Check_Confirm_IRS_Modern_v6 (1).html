@@ -1,0 +1,2667 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Check &amp; Confirm IRS</title>
+<style type="text/css">
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  background:#f5f7f9;
+  color:#1d2d3e;
+  font-family:"72","Segoe UI",Arial,sans-serif;
+  font-size:13px;
+}
+*{box-sizing:border-box}
+button,input,select,table,th,td,div,span,label{
+  font-family:"72","Segoe UI",Arial,sans-serif;
+}
+button{cursor:pointer}
+button:disabled{cursor:default;opacity:.55}
+.required{color:#bb0000}
+.shell{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  background:#f5f7f9;
+}
+.topbar{
+  height:48px;
+  flex:0 0 48px;
+  background:#fff;
+  border-bottom:1px solid #d9d9d9;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);
+}
+.topbar-inner{
+  height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+}
+.title{
+  font-size:16px;
+  font-weight:600;
+  color:#1d2d3e;
+}
+.content{
+  flex:1 1 auto;
+  min-height:0;
+  padding:10px 14px 28px;
+  overflow:hidden;
+}
+.screen{
+  max-width:1600px;
+  height:100%;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+}
+.card{
+  margin-bottom:10px;
+  background:#fff;
+  border:1px solid #e1e6ea;
+  border-radius:8px;
+  box-shadow:0 1px 4px rgba(29,45,62,.04);
+}
+.card-head{
+  min-height:34px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:7px 12px;
+  background:#fafcfe;
+  border-bottom:1px solid #e5e9ed;
+  border-radius:8px 8px 0 0;
+}
+.card-title{
+  font-size:12px;
+  font-weight:600;
+  color:#1d2d3e;
+}
+.card-meta{
+  font-size:11px;
+  color:#6a6d70;
+}
+.card-body{padding:12px}
+.selection-main-row{
+  display:flex;
+  align-items:flex-end;
+  gap:14px;
+  flex-wrap:nowrap;
+}
+.field-inline{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  flex:0 0 auto;
+}
+.field-inline label{
+  color:#1d2d3e;
+  font-size:12px;
+  font-weight:400;
+  white-space:nowrap;
+}
+.input,.select{
+  height:30px;
+  padding:4px 8px;
+  border:1px solid #b8b8b8;
+  border-radius:4px;
+  background:#fff;
+  color:#1d2d3e;
+  font-size:12px;
+}
+.input:focus,.select:focus{
+  outline:0;
+  border-color:#0a6ed1;
+  box-shadow:0 0 0 1px #0a6ed1;
+}
+.company-select{width:220px}
+.date-shell{
+  position:relative;
+  width:178px;
+}
+.date-input{
+  width:178px;
+  padding-right:34px;
+}
+.calendar-btn{
+  position:absolute;
+  right:1px;
+  top:1px;
+  width:29px;
+  height:28px;
+  padding:0;
+  border:0;
+  border-left:1px solid #d9d9d9;
+  background:#fff;
+}
+.calendar-btn:before{
+  content:"";
+  position:absolute;
+  left:8px;
+  top:7px;
+  width:13px;
+  height:13px;
+  border:1px solid #556b82;
+  border-radius:2px;
+}
+.calendar-btn:after{
+  content:"";
+  position:absolute;
+  left:10px;
+  top:5px;
+  width:9px;
+  height:5px;
+  border-left:2px solid #556b82;
+  border-right:2px solid #556b82;
+  border-bottom:1px solid #556b82;
+}
+.filter-icon-btn{
+  width:30px;
+  height:30px;
+  padding:0;
+  border:1px solid #b8b8b8;
+  border-radius:4px;
+  background:#fff;
+  position:relative;
+  flex:0 0 30px;
+}
+.filter-icon-btn:hover{
+  background:#f7f8f9;
+  border-color:#0a6ed1;
+}
+.filter-icon-btn:before{
+  content:"";
+  position:absolute;
+  left:8px;
+  top:7px;
+  width:0;
+  height:0;
+  border-left:7px solid transparent;
+  border-right:7px solid transparent;
+  border-top:9px solid #556b82;
+}
+.filter-icon-btn:after{
+  content:"";
+  position:absolute;
+  left:13px;
+  top:14px;
+  width:3px;
+  height:7px;
+  background:#556b82;
+}
+.filter-body{
+  display:none;
+  margin:0;
+  padding:0;
+  border:0;
+  min-width:0;
+}
+.filter-body.open{display:flex}
+.filter-grid{
+  display:flex;
+  align-items:flex-end;
+  gap:12px;
+  flex-wrap:nowrap;
+  min-width:0;
+}
+.filter-item{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:4px;
+  min-width:0;
+}
+.filter-item label{
+  color:#1d2d3e;
+  font-size:12px;
+  font-weight:400;
+  white-space:nowrap;
+}
+.status-filter{width:170px}
+.combo-shell{
+  position:relative;
+  width:165px;
+}
+.combo-input{
+  width:165px;
+  padding-right:30px;
+}
+.combo-btn{
+  position:absolute;
+  right:1px;
+  top:1px;
+  width:28px;
+  height:28px;
+  padding:0;
+  border:0;
+  border-left:1px solid #d9d9d9;
+  background:#fff;
+}
+.combo-btn:after{
+  content:"";
+  position:absolute;
+  left:9px;
+  top:11px;
+  width:0;
+  height:0;
+  border-left:5px solid transparent;
+  border-right:5px solid transparent;
+  border-top:6px solid #556b82;
+}
+.combo-list{
+  display:none;
+  position:absolute;
+  left:0;
+  right:0;
+  top:31px;
+  z-index:1700;
+  max-height:190px;
+  overflow:auto;
+  background:#fff;
+  border:1px solid #b8b8b8;
+  border-radius:4px;
+  box-shadow:0 4px 12px rgba(0,0,0,.12);
+}
+.combo-list.open{display:block}
+.combo-option{
+  width:100%;
+  min-height:30px;
+  padding:6px 8px;
+  border:0;
+  border-bottom:1px solid #edf0f2;
+  background:#fff;
+  color:#1d2d3e;
+  text-align:left;
+  font-size:12px;
+}
+.combo-option:hover{background:#f2f8fd}
+.combo-empty{
+  padding:8px;
+  color:#6a6d70;
+  font-size:11px;
+}
+.btn{
+  height:30px;
+  padding:0 12px;
+  border:1px solid #d1e8ff;
+  border-radius:4px;
+  background:#eaf3fc;
+  color:#004b93;
+  font-size:12px;
+  font-weight:600;
+}
+.btn:hover{
+  background:#d1e8ff;
+  border-color:#0a6ed1;
+  color:#0854a0;
+}
+.btn-primary{
+  background:#0a6ed1;
+  border-color:#0a6ed1;
+  color:#fff;
+}
+.btn-primary:hover{
+  background:#0854a0;
+  border-color:#0854a0;
+  color:#fff;
+}
+.btn-ghost{
+  background:#fff;
+  border-color:#d9d9d9;
+  color:#1d2d3e;
+}
+.btn-ghost:hover{
+  background:#f7f8f9;
+  border-color:#b8b8b8;
+  color:#1d2d3e;
+}
+#resultsArea{
+  display:none;
+  min-height:0;
+  flex:1 1 auto;
+  flex-direction:column;
+}
+#resultsArea.open{display:flex}
+.toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  min-height:36px;
+  margin-bottom:8px;
+}
+.toolbar-left,.toolbar-right{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.record-count{
+  color:#6a6d70;
+  font-size:11px;
+}
+.table-card{
+  overflow:hidden;
+  min-height:0;
+  flex:1 1 auto;
+  display:flex;
+  flex-direction:column;
+}
+.table-wrap{
+  width:100%;
+  min-height:0;
+  overflow:auto;
+  background:#fff;
+  flex:1 1 auto;
+}
+.data-table{
+  width:100%;
+  min-width:3260px;
+  border-collapse:separate;
+  border-spacing:0;
+  font-size:12px;
+}
+.data-table th{
+  position:sticky;
+  top:0;
+  z-index:2;
+  height:34px;
+  padding:6px 24px 6px 8px;
+  background:#f5f8fa;
+  color:#1d2d3e;
+  border-right:1px solid #d9d9d9;
+  border-bottom:1px solid #c7d4e0;
+  text-align:left;
+  font-weight:600;
+  white-space:nowrap;
+}
+.data-table td{
+  height:34px;
+  padding:4px 8px;
+  background:#fff;
+  border-right:1px solid #e7ebee;
+  border-bottom:1px solid #e7ebee;
+  white-space:nowrap;
+  color:#1d2d3e;
+}
+.data-table tbody tr[data-id]{cursor:pointer}
+.data-table tbody tr:hover td{background:#f2f8fd}
+.data-table tbody tr.selected td{background:#eaf3fc}
+.data-table tbody tr.settled td{color:#556b82}
+.data-table tbody tr.settled.selected td{background:#eef5ef}
+.data-table .number{
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+.select-cell{text-align:center}
+.view-cell{text-align:left}
+.cashflow-link{
+  padding:0;
+  border:0;
+  background:transparent;
+  color:#0a6ed1;
+  font-size:12px;
+  font-weight:400;
+  text-decoration:none;
+}
+.cashflow-link:hover{text-decoration:underline}
+
+.cashflow-modal{
+  width:96vw;
+  max-width:1380px;
+  max-height:90vh;
+  margin:0;
+  background:#f5f7f9;
+  border:1px solid #d9d9d9;
+  border-radius:8px;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
+  overflow:hidden;
+  position:relative;
+}
+.cashflow-close{
+  position:absolute;
+  right:10px;
+  top:9px;
+  z-index:5;
+  width:28px;
+  height:28px;
+  border:1px solid #d9d9d9;
+  border-radius:4px;
+  background:#fff;
+  color:#556b82;
+}
+.cashflow-scroll{
+  max-height:90vh;
+  padding:10px;
+  overflow:auto;
+}
+.display-section{
+  margin-bottom:10px;
+  background:#fff;
+  border:1px solid #dfe5ea;
+  border-radius:8px;
+  overflow:hidden;
+}
+.display-section:last-child{margin-bottom:0}
+.display-section-head{
+  min-height:34px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:7px 44px 7px 12px;
+  background:#fafcfe;
+  border-bottom:1px solid #e5e9ed;
+}
+.display-section-title{
+  font-size:12px;
+  font-weight:600;
+  color:#1d2d3e;
+}
+.display-section-meta{
+  font-size:11px;
+  color:#6a6d70;
+}
+.display-grid{
+  display:grid;
+  grid-template-columns:repeat(9,minmax(90px,1fr));
+  gap:14px 18px;
+  padding:12px;
+}
+.irs-display-grid{
+  grid-template-columns:repeat(6,minmax(140px,1fr));
+}
+.display-item{
+  min-width:0;
+}
+.display-label{
+  margin-bottom:4px;
+  color:#556b82;
+  font-size:11px;
+  white-space:nowrap;
+}
+.display-value{
+  color:#1d2d3e;
+  font-size:12px;
+  font-weight:600;
+  line-height:17px;
+  word-break:break-word;
+}
+.display-pair{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  min-height:34px;
+}
+.display-pair-part{
+  flex:1 1 0;
+  min-width:0;
+}
+.display-pair-part .display-label{
+  white-space:nowrap;
+}
+.cashflow-table-wrap{
+  width:100%;
+  overflow-x:auto;
+  background:#fff;
+}
+.cashflow-table{
+  width:100%;
+  min-width:980px;
+  border-collapse:collapse;
+  table-layout:auto;
+  font-size:12px;
+}
+.cashflow-table th{
+  height:34px;
+  padding:6px 8px;
+  background:#f5f8fa;
+  color:#1d2d3e;
+  border-right:0;
+  border-bottom:1px solid #c7d4e0;
+  text-align:left;
+  font-weight:600;
+  white-space:nowrap;
+}
+.cashflow-table td{
+  height:34px;
+  padding:6px 8px;
+  background:#fff;
+  color:#1d2d3e;
+  border-right:0;
+  border-bottom:1px solid #e7ebee;
+  white-space:nowrap;
+}
+.cashflow-table .cash-number{
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+.cashflow-table th:nth-child(3),
+.cashflow-table th:nth-child(4),
+.cashflow-table th:nth-child(5),
+.cashflow-table th:nth-child(8){
+  text-align:right;
+}
+.cashflow-table th:nth-child(9),
+.cashflow-table td:nth-child(9){
+  text-align:left;
+}
+.cash-pos{
+  color:#107e3e!important;
+  font-weight:600;
+}
+.cash-neg{
+  color:#bb0000!important;
+  font-weight:600;
+}
+@media screen and (max-width:1180px){
+  .display-grid{grid-template-columns:repeat(4,minmax(130px,1fr))}
+  .irs-display-grid{grid-template-columns:repeat(3,minmax(150px,1fr))}
+}
+@media screen and (max-width:720px){
+  .cashflow-modal{width:98vw;max-height:94vh}
+  .cashflow-scroll{max-height:94vh;padding:8px}
+  .display-grid,.irs-display-grid{
+    grid-template-columns:repeat(2,minmax(120px,1fr));
+  }
+}
+.sort-arrows{
+  position:absolute;
+  top:9px;
+  right:8px;
+  width:8px;
+  height:15px;
+}
+.sort-up,.sort-down{
+  position:absolute;
+  left:0;
+  width:0;
+  height:0;
+  border-left:4px solid transparent;
+  border-right:4px solid transparent;
+}
+.sort-up{
+  top:0;
+  border-bottom:5px solid #9aa7b4;
+}
+.sort-down{
+  bottom:0;
+  border-top:5px solid #9aa7b4;
+}
+th.sort-asc .sort-up{border-bottom-color:#0a6ed1}
+th.sort-desc .sort-down{border-top-color:#0a6ed1}
+.pagination-bar{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:5px;
+  min-height:44px;
+  padding:8px 10px;
+  background:#fff;
+  border-top:1px solid #e5e9ed;
+}
+.page-btn{
+  min-width:30px;
+  height:28px;
+  padding:0 8px;
+  border:1px solid #d9d9d9;
+  border-radius:4px;
+  background:#fff;
+  color:#1d2d3e;
+  font-size:11px;
+}
+.page-btn:hover{
+  background:#f7f8f9;
+  border-color:#b8b8b8;
+}
+.page-btn.active{
+  background:#eaf3fc;
+  border-color:#0a6ed1;
+  color:#004b93;
+  font-weight:600;
+}
+.page-btn:disabled{
+  background:#f7f8f9;
+  color:#9aa7b4;
+}
+.empty{
+  padding:28px!important;
+  text-align:center!important;
+  color:#6a6d70!important;
+}
+.modal-bg{
+  display:none;
+  position:fixed;
+  left:0;
+  top:0;
+  right:0;
+  bottom:0;
+  z-index:2000;
+  background:rgba(29,45,62,.30);
+  padding:18px;
+  overflow:auto;
+}
+.modal-bg.open{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.modal{
+  width:100%;
+  max-width:500px;
+  margin:0;
+  background:#fff;
+  border:1px solid #d9d9d9;
+  border-radius:8px;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
+  overflow:hidden;
+}
+.modal-head{
+  height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 14px;
+  background:#eaf3fc;
+  border-bottom:1px solid #d1e8ff;
+}
+.modal-title{
+  font-size:13px;
+  font-weight:600;
+}
+.modal-close{
+  width:28px;
+  height:28px;
+  border:1px solid #d9d9d9;
+  border-radius:4px;
+  background:#fff;
+  color:#556b82;
+}
+.modal-body{padding:14px}
+.modal-foot{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:7px;
+  padding:10px 14px;
+  background:#f7f8f9;
+  border-top:1px solid #d9d9d9;
+}
+.confirm-copy{
+  line-height:18px;
+  color:#1d2d3e;
+}
+.toast-region{
+  position:fixed;
+  right:22px;
+  bottom:28px;
+  z-index:4000;
+  width:350px;
+  max-width:calc(100% - 44px);
+}
+.toast{
+  display:flex;
+  gap:10px;
+  margin-top:8px;
+  padding:12px 14px;
+  background:#f2f4f5;
+  border:1px solid #d9d9d9;
+  border-left:3px solid #107e3e;
+  border-radius:4px;
+  box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+.toast-icon{
+  width:24px;
+  height:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:#ebf5eb;
+  color:#107e3e;
+  font-weight:600;
+}
+.toast-title{
+  margin-bottom:2px;
+  font-size:12px;
+  font-weight:600;
+}
+.toast-message{
+  color:#556b82;
+  font-size:12px;
+  line-height:17px;
+}
+.statusbar{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  height:20px;
+  display:flex;
+  align-items:center;
+  padding:0 12px;
+  background:#fff;
+  border-top:1px solid #e1e6ea;
+  color:#6a6d70;
+  font-size:11px;
+  z-index:900;
+}
+.status-dot{
+  width:7px;
+  height:7px;
+  margin-right:6px;
+  border-radius:50%;
+  background:#0a6ed1;
+}
+.calendar-popup{
+  display:none;
+  position:absolute;
+  z-index:1500;
+  top:34px;
+  right:0;
+  width:274px;
+  background:#fff;
+  border:1px solid #c8c8c8;
+  border-radius:2px;
+  box-shadow:0 4px 14px rgba(0,0,0,.16);
+  overflow:hidden;
+}
+.calendar-popup.open{display:block}
+.calendar-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:50px;
+  padding:0 10px 0 14px;
+  background:#fff;
+}
+.cal-title-btn{
+  position:relative;
+  height:32px;
+  padding:0 16px 0 0;
+  border:0;
+  background:#fff;
+  color:#111;
+  font-size:12px;
+  font-weight:600;
+  text-align:left;
+}
+.cal-title-btn:after{
+  content:"";
+  position:absolute;
+  right:3px;
+  top:14px;
+  width:0;
+  height:0;
+  border-left:4px solid transparent;
+  border-right:4px solid transparent;
+  border-top:5px solid #556b82;
+}
+.cal-navs{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.cal-nav{
+  position:relative;
+  width:26px;
+  height:30px;
+  padding:0;
+  border:0;
+  background:#fff;
+}
+.cal-nav:before{
+  content:"";
+  position:absolute;
+  left:8px;
+  width:10px;
+  height:10px;
+  border-left:1px solid #1d2d3e;
+}
+.cal-nav-up:before{
+  top:11px;
+  border-top:1px solid #1d2d3e;
+  transform:rotate(45deg);
+}
+.cal-nav-down:before{
+  top:7px;
+  border-bottom:1px solid #1d2d3e;
+  transform:rotate(-45deg);
+}
+.calendar-weekdays,.calendar-days{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  padding:0 12px;
+}
+.calendar-weekdays span{
+  height:28px;
+  line-height:28px;
+  text-align:center;
+  color:#111;
+  font-size:11px;
+}
+.calendar-day{
+  height:36px;
+  border:0;
+  background:#fff;
+  color:#111;
+  font-size:11px;
+}
+.calendar-day:hover{background:#edf5fc}
+.calendar-day.other-month{color:#8a949e}
+.calendar-day.selected{
+  background:#6a6d70;
+  color:#fff;
+  border:1px solid #1d2d3e;
+}
+.calendar-foot{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:46px;
+  padding:0 14px;
+  border-top:1px solid #e5e9ed;
+}
+.cal-link{
+  border:0;
+  background:#fff;
+  color:#0a6ed1;
+  font-size:11px;
+  padding:4px 0;
+}
+.year-panel{
+  max-height:315px;
+  overflow-y:auto;
+  border-top:1px solid #edf0f2;
+}
+.year-row{
+  min-height:34px;
+  border-bottom:1px solid #d9d9d9;
+  background:#f4f4f4;
+}
+.year-btn{
+  width:100%;
+  height:34px;
+  padding:0 10px;
+  border:0;
+  background:#f4f4f4;
+  color:#1d2d3e;
+  text-align:left;
+  font-size:12px;
+}
+.year-row.active .year-btn{font-weight:600}
+.month-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  padding:4px 5px 8px;
+  background:#fff;
+}
+.month-btn{
+  height:36px;
+  border:0;
+  background:#fff;
+  color:#111;
+  font-size:11px;
+}
+.month-btn:hover{background:#edf5fc}
+.month-btn.selected{
+  background:#6a6d70;
+  color:#fff;
+  border:1px solid #1d2d3e;
+}
+@media screen and (max-width:1320px){
+  .selection-main-row{flex-wrap:wrap}
+  .filter-grid{flex-wrap:wrap}
+}
+@media screen and (max-width:720px){
+  .content{padding-left:8px;padding-right:8px}
+  .topbar-inner{padding:0 10px}
+  .selection-main-row{align-items:flex-start}
+  .field-inline{width:100%;justify-content:space-between}
+  .company-select,.date-shell,.date-input{width:210px}
+  .filter-body.open{width:100%}
+  .filter-grid{width:100%;flex-direction:column;align-items:stretch}
+  .filter-item{width:100%;align-items:stretch}
+  .combo-shell,.combo-input,.status-filter{width:100%}
+  .toolbar{align-items:flex-start;gap:6px;flex-direction:column}
+  .toolbar-right{width:100%;justify-content:flex-end}
+}
+.title-wrap{display:flex;align-items:center;gap:10px}
+img.mark{width:28px;height:28px;flex:none;object-fit:contain}
+</style>
+</head>
+<body>
+<script id="irsPayload" type="application/json">
+{
+  "statuses":[
+    {"code":"CONTRACT","label":"Contract","settled":false},
+    {"code":"SETTLED","label":"Contract Settlement","settled":true}
+  ],
+  "columns":[
+    {"key":"companyNameDisplay","label":"Company Name","width":220,"type":"text"},
+    {"key":"productTypeDescription","label":"Product Type Description","width":175,"type":"text"},
+    {"key":"transactionTypeDescription","label":"Transaction Type Description","width":225,"type":"text"},
+    {"key":"dealNo","label":"Deal No","width":110,"type":"text"},
+    {"key":"startDate","label":"Start Date","width":110,"type":"date"},
+    {"key":"endDate","label":"End Date","width":110,"type":"date"},
+    {"key":"bankName","label":"Bank Name","width":300,"type":"text"},
+    {"key":"irsId","label":"IRS ID","width":120,"type":"text"},
+    {"key":"transaction","label":"Transaction","width":120,"type":"text"},
+    {"key":"incomingAmount","label":"Incoming Amount","width":135,"type":"number"},
+    {"key":"inRefIntRate","label":"In.Ref.Int.Rate","width":120,"type":"rate"},
+    {"key":"incSpreadRate","label":"Inc Spread Rate","width":120,"type":"rate"},
+    {"key":"outgoingInterestRate","label":"Outgoing Interest Rate","width":145,"type":"rate"},
+    {"key":"businessArea","label":"Business Area","width":110,"type":"text"},
+    {"key":"contractDate","label":"Contract Date","width":115,"type":"date"},
+    {"key":"discLoanTxn","label":"Disc Loan Txn","width":125,"type":"text"},
+    {"key":"irsRefNo","label":"IRS Ref. No","width":125,"type":"text"},
+    {"key":"discLoanCompCode","label":"Disc Loan Comp Code","width":145,"type":"text"},
+    {"key":"dttkNo","label":"DTTK No","width":105,"type":"text"},
+    {"key":"ottkNo","label":"OTTK No","width":105,"type":"text"},
+    {"key":"outRefIntRate","label":"Out.Ref.Int.Rate","width":125,"type":"rate"},
+    {"key":"outgoingAmount","label":"Outgoing Amount","width":140,"type":"number"},
+    {"key":"profitCenter","label":"Profit Center","width":120,"type":"text"}
+  ],
+  "records":[
+    {
+      "id":1,
+      "companyCode":"SG03",
+      "companyName":"Olam Global Agri Pte. Ltd.",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001773",
+      "startDate":"18-06-2026",
+      "endDate":"13-06-2027",
+      "bankName":"0660013455 - BANCO CONTINENTAL S.A.E.C.A",
+      "irsId":"720000017",
+      "transaction":"2604001701",
+      "incomingAmount":7500000.00,
+      "inRefIntRate":"5.1840%",
+      "incSpreadRate":"0.2500%",
+      "outgoingInterestRate":"5.3100%",
+      "businessArea":"OGA",
+      "contractDate":"16-06-2026",
+      "discLoanTxn":"3605001001",
+      "irsRefNo":"IRSREF2026001",
+      "discLoanCompCode":"SG03",
+      "dttkNo":"200001",
+      "ottkNo":"100001",
+      "outRefIntRate":"5.0600%",
+      "outgoingAmount":7486500.00,
+      "profitCenter":"PC-OGA-01",
+      "settled":false
+    },
+    {
+      "id":2,
+      "companyCode":"SG03",
+      "companyName":"Olam Global Agri Pte. Ltd.",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001722",
+      "startDate":"05-07-2026",
+      "endDate":"10-06-2027",
+      "bankName":"0660013175 - STANDARD CHARTERED BANK",
+      "irsId":"720000102",
+      "transaction":"2604001702",
+      "incomingAmount":1600000.00,
+      "inRefIntRate":"4.9950%",
+      "incSpreadRate":"0.2000%",
+      "outgoingInterestRate":"5.1850%",
+      "businessArea":"PAN",
+      "contractDate":"03-07-2026",
+      "discLoanTxn":"3605001002",
+      "irsRefNo":"IRSREF2026002",
+      "discLoanCompCode":"SG03",
+      "dttkNo":"200002",
+      "ottkNo":"100002",
+      "outRefIntRate":"5.0420%",
+      "outgoingAmount":1589500.00,
+      "profitCenter":"PC-PAN-01",
+      "settled":false
+    },
+    {
+      "id":3,
+      "companyCode":"SG03",
+      "companyName":"Olam Global Agri Pte. Ltd.",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001723",
+      "startDate":"07-08-2026",
+      "endDate":"13-07-2027",
+      "bankName":"0660012956 - Westpac Banking Corporation",
+      "irsId":"720000103",
+      "transaction":"2604001703",
+      "incomingAmount":1775000.00,
+      "inRefIntRate":"5.0675%",
+      "incSpreadRate":"0.2250%",
+      "outgoingInterestRate":"5.2525%",
+      "businessArea":"DMCC",
+      "contractDate":"05-08-2026",
+      "discLoanTxn":"3605001003",
+      "irsRefNo":"IRSREF2026003",
+      "discLoanCompCode":"SG03",
+      "dttkNo":"200003",
+      "ottkNo":"100003",
+      "outRefIntRate":"5.1030%",
+      "outgoingAmount":1763000.00,
+      "profitCenter":"PC-DMCC-01",
+      "settled":false
+    },
+    {
+      "id":4,
+      "companyCode":"SG03",
+      "companyName":"Olam Global Agri Pte. Ltd.",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001724",
+      "startDate":"09-06-2026",
+      "endDate":"16-08-2027",
+      "bankName":"0660013412 - QATAR NATIONAL BANK (QPSC)",
+      "irsId":"720000104",
+      "transaction":"2604001704",
+      "incomingAmount":1950000.00,
+      "inRefIntRate":"5.1400%",
+      "incSpreadRate":"0.2500%",
+      "outgoingInterestRate":"5.3200%",
+      "businessArea":"OGA",
+      "contractDate":"07-06-2026",
+      "discLoanTxn":"3605001004",
+      "irsRefNo":"IRSREF2026004",
+      "discLoanCompCode":"SG03",
+      "dttkNo":"200004",
+      "ottkNo":"100004",
+      "outRefIntRate":"5.1640%",
+      "outgoingAmount":1936500.00,
+      "profitCenter":"PC-OGA-01",
+      "settled":true
+    },
+    {
+      "id":5,
+      "companyCode":"SG03",
+      "companyName":"Olam Global Agri Pte. Ltd.",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001725",
+      "startDate":"11-07-2026",
+      "endDate":"19-09-2027",
+      "bankName":"0660014662 - Itau CorpBanca",
+      "irsId":"720000105",
+      "transaction":"2604001705",
+      "incomingAmount":2125000.00,
+      "inRefIntRate":"5.2125%",
+      "incSpreadRate":"0.1500%",
+      "outgoingInterestRate":"5.3875%",
+      "businessArea":"PAN",
+      "contractDate":"09-07-2026",
+      "discLoanTxn":"3605001005",
+      "irsRefNo":"IRSREF2026005",
+      "discLoanCompCode":"SG03",
+      "dttkNo":"200005",
+      "ottkNo":"100005",
+      "outRefIntRate":"5.2250%",
+      "outgoingAmount":2110000.00,
+      "profitCenter":"PC-PAN-01",
+      "settled":false
+    },
+    {
+      "id":6,
+      "companyCode":"SG03",
+      "companyName":"Olam Global Agri Pte. Ltd.",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001726",
+      "startDate":"13-08-2026",
+      "endDate":"22-10-2027",
+      "bankName":"0660013411 - THE COMMERCIAL BANK OF QATAR",
+      "irsId":"720000106",
+      "transaction":"2604001706",
+      "incomingAmount":2300000.00,
+      "inRefIntRate":"5.2850%",
+      "incSpreadRate":"0.1750%",
+      "outgoingInterestRate":"5.0500%",
+      "businessArea":"DMCC",
+      "contractDate":"11-08-2026",
+      "discLoanTxn":"3605001006",
+      "irsRefNo":"IRSREF2026006",
+      "discLoanCompCode":"SG03",
+      "dttkNo":"200006",
+      "ottkNo":"100006",
+      "outRefIntRate":"5.2860%",
+      "outgoingAmount":2283500.00,
+      "profitCenter":"PC-DMCC-01",
+      "settled":false
+    },
+    {
+      "id":7,
+      "companyCode":"SG03",
+      "companyName":"Olam Global Agri Pte. Ltd.",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001727",
+      "startDate":"15-06-2026",
+      "endDate":"25-11-2027",
+      "bankName":"0660013455 - BANCO CONTINENTAL S.A.E.C.A",
+      "irsId":"720000107",
+      "transaction":"2604001707",
+      "incomingAmount":2475000.00,
+      "inRefIntRate":"4.8500%",
+      "incSpreadRate":"0.2000%",
+      "outgoingInterestRate":"5.1175%",
+      "businessArea":"OGA",
+      "contractDate":"13-06-2026",
+      "discLoanTxn":"3605001007",
+      "irsRefNo":"IRSREF2026007",
+      "discLoanCompCode":"SG03",
+      "dttkNo":"200007",
+      "ottkNo":"100007",
+      "outRefIntRate":"4.9200%",
+      "outgoingAmount":2457000.00,
+      "profitCenter":"PC-OGA-01",
+      "settled":false
+    },
+    {
+      "id":8,
+      "companyCode":"SG03",
+      "companyName":"Olam Global Agri Pte. Ltd.",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001728",
+      "startDate":"17-07-2026",
+      "endDate":"05-05-2027",
+      "bankName":"0660013175 - STANDARD CHARTERED BANK",
+      "irsId":"720000108",
+      "transaction":"2604001708",
+      "incomingAmount":2650000.00,
+      "inRefIntRate":"4.9225%",
+      "incSpreadRate":"0.2250%",
+      "outgoingInterestRate":"5.1850%",
+      "businessArea":"PAN",
+      "contractDate":"15-07-2026",
+      "discLoanTxn":"3605001008",
+      "irsRefNo":"IRSREF2026008",
+      "discLoanCompCode":"SG03",
+      "dttkNo":"200008",
+      "ottkNo":"100008",
+      "outRefIntRate":"4.9810%",
+      "outgoingAmount":2630500.00,
+      "profitCenter":"PC-PAN-01",
+      "settled":true
+    },
+    {
+      "id":9,
+      "companyCode":"SG03",
+      "companyName":"Olam Global Agri Pte. Ltd.",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001729",
+      "startDate":"19-08-2026",
+      "endDate":"08-06-2027",
+      "bankName":"0660012956 - Westpac Banking Corporation",
+      "irsId":"720000109",
+      "transaction":"2604001709",
+      "incomingAmount":2825000.00,
+      "inRefIntRate":"4.9950%",
+      "incSpreadRate":"0.2500%",
+      "outgoingInterestRate":"5.2525%",
+      "businessArea":"DMCC",
+      "contractDate":"17-08-2026",
+      "discLoanTxn":"3605001009",
+      "irsRefNo":"IRSREF2026009",
+      "discLoanCompCode":"SG03",
+      "dttkNo":"200009",
+      "ottkNo":"100009",
+      "outRefIntRate":"5.0420%",
+      "outgoingAmount":2804000.00,
+      "profitCenter":"PC-DMCC-01",
+      "settled":false
+    },
+    {
+      "id":10,
+      "companyCode":"AE11",
+      "companyName":"Olam Global Agri LLC",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001730",
+      "startDate":"21-06-2026",
+      "endDate":"11-07-2027",
+      "bankName":"0660013412 - QATAR NATIONAL BANK (QPSC)",
+      "irsId":"720000110",
+      "transaction":"2604001710",
+      "incomingAmount":3000000.00,
+      "inRefIntRate":"5.0675%",
+      "incSpreadRate":"0.1500%",
+      "outgoingInterestRate":"5.3200%",
+      "businessArea":"OGA",
+      "contractDate":"19-06-2026",
+      "discLoanTxn":"3605001010",
+      "irsRefNo":"IRSREF2026010",
+      "discLoanCompCode":"AE11",
+      "dttkNo":"200010",
+      "ottkNo":"100001",
+      "outRefIntRate":"5.1030%",
+      "outgoingAmount":2977500.00,
+      "profitCenter":"PC-OGA-01",
+      "settled":false
+    },
+    {
+      "id":11,
+      "companyCode":"AE11",
+      "companyName":"Olam Global Agri LLC",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001731",
+      "startDate":"23-07-2026",
+      "endDate":"14-08-2027",
+      "bankName":"0660014662 - Itau CorpBanca",
+      "irsId":"720000111",
+      "transaction":"2604001711",
+      "incomingAmount":3175000.00,
+      "inRefIntRate":"5.1400%",
+      "incSpreadRate":"0.1750%",
+      "outgoingInterestRate":"5.3875%",
+      "businessArea":"PAN",
+      "contractDate":"21-07-2026",
+      "discLoanTxn":"3605001011",
+      "irsRefNo":"IRSREF2026011",
+      "discLoanCompCode":"AE11",
+      "dttkNo":"200011",
+      "ottkNo":"100002",
+      "outRefIntRate":"5.1640%",
+      "outgoingAmount":3151000.00,
+      "profitCenter":"PC-PAN-01",
+      "settled":false
+    },
+    {
+      "id":12,
+      "companyCode":"AE11",
+      "companyName":"Olam Global Agri LLC",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001732",
+      "startDate":"25-08-2026",
+      "endDate":"17-09-2027",
+      "bankName":"0660013411 - THE COMMERCIAL BANK OF QATAR",
+      "irsId":"720000112",
+      "transaction":"2604001712",
+      "incomingAmount":3350000.00,
+      "inRefIntRate":"5.2125%",
+      "incSpreadRate":"0.2000%",
+      "outgoingInterestRate":"5.0500%",
+      "businessArea":"DMCC",
+      "contractDate":"23-08-2026",
+      "discLoanTxn":"3605001012",
+      "irsRefNo":"IRSREF2026012",
+      "discLoanCompCode":"AE11",
+      "dttkNo":"200012",
+      "ottkNo":"100003",
+      "outRefIntRate":"5.2250%",
+      "outgoingAmount":3324500.00,
+      "profitCenter":"PC-DMCC-01",
+      "settled":true
+    },
+    {
+      "id":13,
+      "companyCode":"AE11",
+      "companyName":"Olam Global Agri LLC",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001733",
+      "startDate":"01-06-2026",
+      "endDate":"20-10-2027",
+      "bankName":"0660013455 - BANCO CONTINENTAL S.A.E.C.A",
+      "irsId":"720000113",
+      "transaction":"2604001713",
+      "incomingAmount":3525000.00,
+      "inRefIntRate":"5.2850%",
+      "incSpreadRate":"0.2250%",
+      "outgoingInterestRate":"5.1175%",
+      "businessArea":"OGA",
+      "contractDate":"01-06-2026",
+      "discLoanTxn":"3605001013",
+      "irsRefNo":"IRSREF2026013",
+      "discLoanCompCode":"AE11",
+      "dttkNo":"200013",
+      "ottkNo":"100004",
+      "outRefIntRate":"5.2860%",
+      "outgoingAmount":3498000.00,
+      "profitCenter":"PC-OGA-01",
+      "settled":false
+    },
+    {
+      "id":14,
+      "companyCode":"AE11",
+      "companyName":"Olam Global Agri LLC",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001734",
+      "startDate":"03-07-2026",
+      "endDate":"23-11-2027",
+      "bankName":"0660013175 - STANDARD CHARTERED BANK",
+      "irsId":"720000114",
+      "transaction":"2604001714",
+      "incomingAmount":3700000.00,
+      "inRefIntRate":"4.8500%",
+      "incSpreadRate":"0.2500%",
+      "outgoingInterestRate":"5.1850%",
+      "businessArea":"PAN",
+      "contractDate":"01-07-2026",
+      "discLoanTxn":"3605001014",
+      "irsRefNo":"IRSREF2026014",
+      "discLoanCompCode":"AE11",
+      "dttkNo":"200014",
+      "ottkNo":"100005",
+      "outRefIntRate":"4.9200%",
+      "outgoingAmount":3671500.00,
+      "profitCenter":"PC-PAN-01",
+      "settled":false
+    },
+    {
+      "id":15,
+      "companyCode":"AE11",
+      "companyName":"Olam Global Agri LLC",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001735",
+      "startDate":"05-08-2026",
+      "endDate":"26-05-2027",
+      "bankName":"0660012956 - Westpac Banking Corporation",
+      "irsId":"720000115",
+      "transaction":"2604001715",
+      "incomingAmount":3875000.00,
+      "inRefIntRate":"4.9225%",
+      "incSpreadRate":"0.1500%",
+      "outgoingInterestRate":"5.2525%",
+      "businessArea":"DMCC",
+      "contractDate":"03-08-2026",
+      "discLoanTxn":"3605001015",
+      "irsRefNo":"IRSREF2026015",
+      "discLoanCompCode":"AE11",
+      "dttkNo":"200015",
+      "ottkNo":"100006",
+      "outRefIntRate":"4.9810%",
+      "outgoingAmount":3845000.00,
+      "profitCenter":"PC-DMCC-01",
+      "settled":false
+    },
+    {
+      "id":16,
+      "companyCode":"AE11",
+      "companyName":"Olam Global Agri LLC",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001736",
+      "startDate":"07-06-2026",
+      "endDate":"06-06-2027",
+      "bankName":"0660013412 - QATAR NATIONAL BANK (QPSC)",
+      "irsId":"720000116",
+      "transaction":"2604001716",
+      "incomingAmount":4050000.00,
+      "inRefIntRate":"4.9950%",
+      "incSpreadRate":"0.1750%",
+      "outgoingInterestRate":"5.3200%",
+      "businessArea":"OGA",
+      "contractDate":"05-06-2026",
+      "discLoanTxn":"3605001016",
+      "irsRefNo":"IRSREF2026016",
+      "discLoanCompCode":"AE11",
+      "dttkNo":"200016",
+      "ottkNo":"100007",
+      "outRefIntRate":"5.0420%",
+      "outgoingAmount":4018500.00,
+      "profitCenter":"PC-OGA-01",
+      "settled":false
+    },
+    {
+      "id":17,
+      "companyCode":"AE11",
+      "companyName":"Olam Global Agri LLC",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001737",
+      "startDate":"09-07-2026",
+      "endDate":"09-07-2027",
+      "bankName":"0660014662 - Itau CorpBanca",
+      "irsId":"720000117",
+      "transaction":"2604001717",
+      "incomingAmount":4225000.00,
+      "inRefIntRate":"5.0675%",
+      "incSpreadRate":"0.2000%",
+      "outgoingInterestRate":"5.3875%",
+      "businessArea":"PAN",
+      "contractDate":"07-07-2026",
+      "discLoanTxn":"3605001017",
+      "irsRefNo":"IRSREF2026017",
+      "discLoanCompCode":"AE11",
+      "dttkNo":"200017",
+      "ottkNo":"100008",
+      "outRefIntRate":"5.1030%",
+      "outgoingAmount":4192000.00,
+      "profitCenter":"PC-PAN-01",
+      "settled":true
+    },
+    {
+      "id":18,
+      "companyCode":"AE11",
+      "companyName":"Olam Global Agri LLC",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001738",
+      "startDate":"11-08-2026",
+      "endDate":"12-08-2027",
+      "bankName":"0660013411 - THE COMMERCIAL BANK OF QATAR",
+      "irsId":"720000118",
+      "transaction":"2604001718",
+      "incomingAmount":4400000.00,
+      "inRefIntRate":"5.1400%",
+      "incSpreadRate":"0.2250%",
+      "outgoingInterestRate":"5.0500%",
+      "businessArea":"DMCC",
+      "contractDate":"09-08-2026",
+      "discLoanTxn":"3605001018",
+      "irsRefNo":"IRSREF2026018",
+      "discLoanCompCode":"AE11",
+      "dttkNo":"200018",
+      "ottkNo":"100009",
+      "outRefIntRate":"5.1640%",
+      "outgoingAmount":4365500.00,
+      "profitCenter":"PC-DMCC-01",
+      "settled":false
+    },
+    {
+      "id":19,
+      "companyCode":"AE13",
+      "companyName":"Olam International DMCC",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001739",
+      "startDate":"13-06-2026",
+      "endDate":"15-09-2027",
+      "bankName":"0660013455 - BANCO CONTINENTAL S.A.E.C.A",
+      "irsId":"720000119",
+      "transaction":"2604001719",
+      "incomingAmount":4575000.00,
+      "inRefIntRate":"5.2125%",
+      "incSpreadRate":"0.2500%",
+      "outgoingInterestRate":"5.1175%",
+      "businessArea":"OGA",
+      "contractDate":"11-06-2026",
+      "discLoanTxn":"3605001019",
+      "irsRefNo":"IRSREF2026019",
+      "discLoanCompCode":"AE13",
+      "dttkNo":"200019",
+      "ottkNo":"100001",
+      "outRefIntRate":"5.2250%",
+      "outgoingAmount":4539000.00,
+      "profitCenter":"PC-OGA-01",
+      "settled":false
+    },
+    {
+      "id":20,
+      "companyCode":"AE13",
+      "companyName":"Olam International DMCC",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001740",
+      "startDate":"15-07-2026",
+      "endDate":"18-10-2027",
+      "bankName":"0660013175 - STANDARD CHARTERED BANK",
+      "irsId":"720000120",
+      "transaction":"2604001720",
+      "incomingAmount":4750000.00,
+      "inRefIntRate":"5.2850%",
+      "incSpreadRate":"0.1500%",
+      "outgoingInterestRate":"5.1850%",
+      "businessArea":"PAN",
+      "contractDate":"13-07-2026",
+      "discLoanTxn":"3605001020",
+      "irsRefNo":"IRSREF2026020",
+      "discLoanCompCode":"AE13",
+      "dttkNo":"200020",
+      "ottkNo":"100002",
+      "outRefIntRate":"5.2860%",
+      "outgoingAmount":4712500.00,
+      "profitCenter":"PC-PAN-01",
+      "settled":false
+    },
+    {
+      "id":21,
+      "companyCode":"AE13",
+      "companyName":"Olam International DMCC",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001741",
+      "startDate":"17-08-2026",
+      "endDate":"21-11-2027",
+      "bankName":"0660012956 - Westpac Banking Corporation",
+      "irsId":"720000121",
+      "transaction":"2604001721",
+      "incomingAmount":4925000.00,
+      "inRefIntRate":"4.8500%",
+      "incSpreadRate":"0.1750%",
+      "outgoingInterestRate":"5.2525%",
+      "businessArea":"DMCC",
+      "contractDate":"15-08-2026",
+      "discLoanTxn":"3605001021",
+      "irsRefNo":"IRSREF2026021",
+      "discLoanCompCode":"AE13",
+      "dttkNo":"200021",
+      "ottkNo":"100003",
+      "outRefIntRate":"4.9200%",
+      "outgoingAmount":4886000.00,
+      "profitCenter":"PC-DMCC-01",
+      "settled":true
+    },
+    {
+      "id":22,
+      "companyCode":"AE13",
+      "companyName":"Olam International DMCC",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001742",
+      "startDate":"19-06-2026",
+      "endDate":"24-05-2027",
+      "bankName":"0660013412 - QATAR NATIONAL BANK (QPSC)",
+      "irsId":"720000122",
+      "transaction":"2604001722",
+      "incomingAmount":5100000.00,
+      "inRefIntRate":"4.9225%",
+      "incSpreadRate":"0.2000%",
+      "outgoingInterestRate":"5.3200%",
+      "businessArea":"OGA",
+      "contractDate":"17-06-2026",
+      "discLoanTxn":"3605001022",
+      "irsRefNo":"IRSREF2026022",
+      "discLoanCompCode":"AE13",
+      "dttkNo":"200022",
+      "ottkNo":"100004",
+      "outRefIntRate":"4.9810%",
+      "outgoingAmount":5059500.00,
+      "profitCenter":"PC-OGA-01",
+      "settled":false
+    },
+    {
+      "id":23,
+      "companyCode":"AE13",
+      "companyName":"Olam International DMCC",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001743",
+      "startDate":"21-07-2026",
+      "endDate":"04-06-2027",
+      "bankName":"0660014662 - Itau CorpBanca",
+      "irsId":"720000123",
+      "transaction":"2604001723",
+      "incomingAmount":5275000.00,
+      "inRefIntRate":"4.9950%",
+      "incSpreadRate":"0.2250%",
+      "outgoingInterestRate":"5.3875%",
+      "businessArea":"PAN",
+      "contractDate":"19-07-2026",
+      "discLoanTxn":"3605001023",
+      "irsRefNo":"IRSREF2026023",
+      "discLoanCompCode":"AE13",
+      "dttkNo":"200023",
+      "ottkNo":"100005",
+      "outRefIntRate":"5.0420%",
+      "outgoingAmount":5233000.00,
+      "profitCenter":"PC-PAN-01",
+      "settled":false
+    },
+    {
+      "id":24,
+      "companyCode":"AE13",
+      "companyName":"Olam International DMCC",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001744",
+      "startDate":"23-08-2026",
+      "endDate":"07-07-2027",
+      "bankName":"0660013411 - THE COMMERCIAL BANK OF QATAR",
+      "irsId":"720000124",
+      "transaction":"2604001724",
+      "incomingAmount":5450000.00,
+      "inRefIntRate":"5.0675%",
+      "incSpreadRate":"0.2500%",
+      "outgoingInterestRate":"5.0500%",
+      "businessArea":"DMCC",
+      "contractDate":"21-08-2026",
+      "discLoanTxn":"3605001024",
+      "irsRefNo":"IRSREF2026024",
+      "discLoanCompCode":"AE13",
+      "dttkNo":"200024",
+      "ottkNo":"100006",
+      "outRefIntRate":"5.1030%",
+      "outgoingAmount":5406500.00,
+      "profitCenter":"PC-DMCC-01",
+      "settled":false
+    },
+    {
+      "id":25,
+      "companyCode":"AE13",
+      "companyName":"Olam International DMCC",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001745",
+      "startDate":"25-06-2026",
+      "endDate":"10-08-2027",
+      "bankName":"0660013455 - BANCO CONTINENTAL S.A.E.C.A",
+      "irsId":"720000125",
+      "transaction":"2604001725",
+      "incomingAmount":5625000.00,
+      "inRefIntRate":"5.1400%",
+      "incSpreadRate":"0.1500%",
+      "outgoingInterestRate":"5.1175%",
+      "businessArea":"OGA",
+      "contractDate":"23-06-2026",
+      "discLoanTxn":"3605001025",
+      "irsRefNo":"IRSREF2026025",
+      "discLoanCompCode":"AE13",
+      "dttkNo":"200025",
+      "ottkNo":"100007",
+      "outRefIntRate":"5.1640%",
+      "outgoingAmount":5580000.00,
+      "profitCenter":"PC-OGA-01",
+      "settled":false
+    },
+    {
+      "id":26,
+      "companyCode":"AE13",
+      "companyName":"Olam International DMCC",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001746",
+      "startDate":"01-07-2026",
+      "endDate":"13-09-2027",
+      "bankName":"0660013175 - STANDARD CHARTERED BANK",
+      "irsId":"720000126",
+      "transaction":"2604001726",
+      "incomingAmount":5800000.00,
+      "inRefIntRate":"5.2125%",
+      "incSpreadRate":"0.1750%",
+      "outgoingInterestRate":"5.1850%",
+      "businessArea":"PAN",
+      "contractDate":"01-07-2026",
+      "discLoanTxn":"3605001026",
+      "irsRefNo":"IRSREF2026026",
+      "discLoanCompCode":"AE13",
+      "dttkNo":"200026",
+      "ottkNo":"100008",
+      "outRefIntRate":"5.2250%",
+      "outgoingAmount":5753500.00,
+      "profitCenter":"PC-PAN-01",
+      "settled":true
+    },
+    {
+      "id":27,
+      "companyCode":"AE13",
+      "companyName":"Olam International DMCC",
+      "productTypeDescription":"23F - SLC - IRS",
+      "transactionTypeDescription":"100 - SLC IRS-End of Period",
+      "dealNo":"12001747",
+      "startDate":"03-08-2026",
+      "endDate":"16-10-2027",
+      "bankName":"0660012956 - Westpac Banking Corporation",
+      "irsId":"720000127",
+      "transaction":"2604001727",
+      "incomingAmount":5975000.00,
+      "inRefIntRate":"5.2850%",
+      "incSpreadRate":"0.2000%",
+      "outgoingInterestRate":"5.2525%",
+      "businessArea":"DMCC",
+      "contractDate":"01-08-2026",
+      "discLoanTxn":"3605001027",
+      "irsRefNo":"IRSREF2026027",
+      "discLoanCompCode":"AE13",
+      "dttkNo":"200027",
+      "ottkNo":"100009",
+      "outRefIntRate":"5.2860%",
+      "outgoingAmount":5927000.00,
+      "profitCenter":"PC-DMCC-01",
+      "settled":false
+    }
+  ]
+}
+</script>
+<div class="shell">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="title-wrap">
+        <img class="mark" alt="Fourth Signal" src="https://raw.githubusercontent.com/ryannayak/fs-assets/e82f35a83e28689167b22b4300d4994a249acee0/fs-short-logo.png"/>
+        <div class="title">Check &amp; Confirm IRS</div>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="screen">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">Basic Selection</div>
+        </div>
+        <div class="card-body">
+          <div class="selection-main-row">
+            <div class="field-inline">
+              <label for="companyCode">Company Code <span class="required">*</span></label>
+              <select id="companyCode" class="select company-select" required="required"></select>
+            </div>
+            <div class="field-inline">
+              <label for="keyDate">Key Date <span class="required">*</span></label>
+              <div class="date-shell">
+                <input id="keyDate" class="input date-input" type="text" placeholder="DD-MM-YYYY" required="required">
+                <button id="calendarBtn" class="calendar-btn" type="button" title="Open calendar"></button>
+                <div id="calendarPopup" class="calendar-popup"></div>
+              </div>
+            </div>
+            <button id="filterToggle" class="filter-icon-btn" type="button" title="Filters" aria-label="Filters"></button>
+            <div id="filterBody" class="filter-body">
+              <div class="filter-grid">
+                <div class="filter-item">
+                  <label for="transactionFilter">Transaction No</label>
+                  <div class="combo-shell">
+                    <input id="transactionFilter" class="input combo-input" type="text" placeholder="Transaction No">
+                    <button id="transactionDropBtn" class="combo-btn" type="button" aria-label="Transaction list"></button>
+                    <div id="transactionList" class="combo-list"></div>
+                  </div>
+                </div>
+                <div class="filter-item">
+                  <label for="dealFilter">Deal ID</label>
+                  <div class="combo-shell">
+                    <input id="dealFilter" class="input combo-input" type="text" placeholder="Deal ID">
+                    <button id="dealDropBtn" class="combo-btn" type="button" aria-label="Deal list"></button>
+                    <div id="dealList" class="combo-list"></div>
+                  </div>
+                </div>
+                <div class="filter-item">
+                  <label for="statusFilter">Status Selection</label>
+                  <select id="statusFilter" class="select status-filter"></select>
+                </div>
+                <div class="filter-item">
+                  <button id="clearFilters" class="btn btn-ghost" type="button">Clear filters</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="resultsArea">
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <span id="recordCount" class="record-count"></span>
+          </div>
+          <div class="toolbar-right">
+            <button id="editBtn" class="btn" type="button" disabled="disabled">Edit</button>
+            <button id="settleBtn" class="btn btn-primary" type="button" disabled="disabled">Confirm / Settle</button>
+          </div>
+        </div>
+        <div class="card table-card">
+          <div class="card-head">
+            <div class="card-title">IRS Contracts</div>
+            <div id="selectionMeta" class="card-meta">Select one line item</div>
+          </div>
+          <div class="table-wrap">
+            <table id="irsTable" class="data-table">
+              <thead id="irsHead"></thead>
+              <tbody id="irsBody"></tbody>
+            </table>
+          </div>
+          <div id="paginationBar" class="pagination-bar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="cashflowModal" class="modal-bg">
+  <div class="cashflow-modal">
+    <button id="cashflowClose" class="cashflow-close" type="button">X</button>
+    <div class="cashflow-scroll">
+      <div class="display-section">
+        <div class="display-section-head">
+          <div class="display-section-title">Discounting Loan Details</div>
+          <div class="display-section-meta">Selected Record</div>
+        </div>
+        <div id="discountingLoanDetails" class="display-grid"></div>
+      </div>
+      <div class="display-section">
+        <div class="display-section-head">
+          <div class="display-section-title">IRS Details</div>
+        </div>
+        <div id="irsDisplayDetails" class="display-grid irs-display-grid"></div>
+      </div>
+      <div class="display-section">
+        <div class="display-section-head">
+          <div class="display-section-title">Cashflow Details</div>
+          <div id="cashflowCount" class="display-section-meta"></div>
+        </div>
+        <div class="cashflow-table-wrap">
+          <table class="cashflow-table">
+            <thead>
+              <tr>
+                <th>Payment Date</th>
+                <th>Description</th>
+                <th>Disc Loan</th>
+                <th>IRS Incoming</th>
+                <th>IRS Outgoing</th>
+                <th>Curr</th>
+                <th>Int. Fix. Date</th>
+                <th>Percentage Rate</th>
+                <th>Int. Rate Adj. Status</th>
+              </tr>
+            </thead>
+            <tbody id="cashflowBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="settleModal" class="modal-bg">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Confirm Settlement</div>
+      <button id="settleClose" class="modal-close" type="button">X</button>
+    </div>
+    <div class="modal-body">
+      <div id="settleText" class="confirm-copy"></div>
+    </div>
+    <div class="modal-foot">
+      <button id="settleNo" class="btn btn-ghost" type="button">No</button>
+      <button id="settleYes" class="btn btn-primary" type="button">Yes</button>
+    </div>
+  </div>
+</div>
+<div id="toastRegion" class="toast-region" aria-live="polite"></div>
+<div class="statusbar">
+  <span class="status-dot"></span>
+  <span id="statusText">Select Company Code and enter Key Date</span>
+</div>
+<script type="text/javascript">
+(function(){
+var MODEL=JSON.parse(document.getElementById("irsPayload").innerHTML);
+var DATA=MODEL.records;
+var columns=MODEL.columns;
+var di;
+for(di=0;di<DATA.length;di++){
+  DATA[di].companyNameDisplay=DATA[di].companyCode+" - "+DATA[di].companyName
+}
+var statuses=MODEL.statuses;
+var state={
+  page:1,pageSize:15,selectedId:null,sortIndex:-1,sortDirection:"asc",
+  calendarDate:new Date(2026,8,18),calendarMode:"days",calendarYear:2026
+};
+function byId(id){return document.getElementById(id)}
+function esc(value){
+  var text=String(value==null?"":value);
+  text=text.replace(/&/g,"&amp;");
+  text=text.replace(/</g,"&lt;");
+  text=text.replace(/>/g,"&gt;");
+  return text.replace(/"/g,"&quot;")
+}
+function money(value){
+  var number=Number(value||0);
+  var parts=number.toFixed(2).split(".");
+  parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,",");
+  return parts.join(".")
+}
+function parseDate(text){
+  var match=String(text||"").match(/^(\d{2})-(\d{2})-(\d{4})$/);
+  var date;
+  if(!match){return null}
+  date=new Date(Number(match[3]),Number(match[2])-1,Number(match[1]));
+  if(date.getFullYear()!==Number(match[3])){return null}
+  if(date.getMonth()!==Number(match[2])-1){return null}
+  if(date.getDate()!==Number(match[1])){return null}
+  return date
+}
+function formatDate(date){
+  var day=("0"+date.getDate()).slice(-2);
+  var month=("0"+(date.getMonth()+1)).slice(-2);
+  return day+"-"+month+"-"+date.getFullYear()
+}
+function isValidDate(text){return parseDate(text)!==null}
+function setStatus(text){byId("statusText").innerHTML=esc(text)}
+function toast(message){
+  var region=byId("toastRegion");
+  var box=document.createElement("div");
+  var icon=document.createElement("div");
+  var body=document.createElement("div");
+  box.className="toast";
+  icon.className="toast-icon";
+  icon.innerHTML="OK";
+  body.innerHTML='<div class="toast-title">Success</div>';
+  body.innerHTML+='<div class="toast-message">'+esc(message)+'</div>';
+  box.appendChild(icon);
+  box.appendChild(body);
+  region.appendChild(box);
+  window.setTimeout(function(){
+    if(box.parentNode){box.parentNode.removeChild(box)}
+  },4200)
+}
+function uniqueCompanies(){
+  var seen={};
+  var list=[];
+  var i,row;
+  for(i=0;i<DATA.length;i++){
+    row=DATA[i];
+    if(!seen[row.companyCode]){
+      seen[row.companyCode]=true;
+      list.push({code:row.companyCode,name:row.companyName})
+    }
+  }
+  return list
+}
+function renderCompanyOptions(){
+  var list=uniqueCompanies();
+  var html='<option value="">Select Company Code</option>';
+  var i;
+  for(i=0;i<list.length;i++){
+    html+='<option value="'+esc(list[i].code)+'">';
+    html+=esc(list[i].code)+" - "+esc(list[i].name)+"</option>"
+  }
+  byId("companyCode").innerHTML=html
+}
+function renderStatusOptions(){
+  var html="";
+  var i;
+  for(i=0;i<statuses.length;i++){
+    html+='<option value="'+esc(statuses[i].code)+'">';
+    html+=esc(statuses[i].label)+"</option>"
+  }
+  byId("statusFilter").innerHTML=html
+}
+function statusSettledValue(code){
+  var i;
+  for(i=0;i<statuses.length;i++){
+    if(statuses[i].code===code){return !!statuses[i].settled}
+  }
+  return false
+}
+function readyToLoad(){
+  return byId("companyCode").value!==""&&isValidDate(byId("keyDate").value)
+}
+function rowMatchesKeyDate(row,keyDate){
+  var start=parseDate(row.startDate);
+  var end=parseDate(row.endDate);
+  if(!keyDate){return true}
+  if(start&&keyDate<start){return false}
+  if(end&&keyDate>end){return false}
+  return true
+}
+function getFilteredRows(){
+  var company=byId("companyCode").value;
+  var transaction=byId("transactionFilter").value.toLowerCase();
+  var deal=byId("dealFilter").value.toLowerCase();
+  var settled=statusSettledValue(byId("statusFilter").value);
+  var keyDate=parseDate(byId("keyDate").value);
+  var rows=[];
+  var i,row;
+  for(i=0;i<DATA.length;i++){
+    row=DATA[i];
+    if(company&&row.companyCode!==company){continue}
+    if(transaction&&String(row.transaction).toLowerCase().indexOf(transaction)<0){continue}
+    if(deal&&String(row.dealNo).toLowerCase().indexOf(deal)<0){continue}
+    if(!!row.settled!==settled){continue}
+    if(!rowMatchesKeyDate(row,keyDate)){continue}
+    rows.push(row)
+  }
+  if(state.sortIndex>=0){sortRows(rows,state.sortIndex,state.sortDirection)}
+  return rows
+}
+function sortRows(rows,index,direction){
+  var column=columns[index];
+  rows.sort(function(a,b){
+    var av=a[column.key];
+    var bv=b[column.key];
+    if(column.type==="number"){
+      av=Number(av||0);
+      bv=Number(bv||0)
+    }else if(column.type==="date"){
+      av=parseDate(av);
+      bv=parseDate(bv)
+    }else{
+      av=String(av||"").toLowerCase();
+      bv=String(bv||"").toLowerCase()
+    }
+    if(av<bv){return direction==="asc"?-1:1}
+    if(av>bv){return direction==="asc"?1:-1}
+    return 0
+  })
+}
+function headerHtml(){
+  var html='<tr><th style="width:64px">Select</th>';
+  html+='<th style="width:95px">View</th>';
+  var i,column,cls;
+  for(i=0;i<columns.length;i++){
+    column=columns[i];
+    cls="";
+    if(state.sortIndex===i){
+      cls=state.sortDirection==="asc"?"sort-asc":"sort-desc"
+    }
+    html+='<th class="'+cls+'" data-index="'+i+'" style="width:';
+    html+=column.width+'px">'+esc(column.label);
+    html+='<span class="sort-arrows"><span class="sort-up"></span>';
+    html+='<span class="sort-down"></span></span></th>'
+  }
+  return html+"</tr>"
+}
+function renderTable(){
+  var rows=getFilteredRows();
+  var start=(state.page-1)*state.pageSize;
+  var pages=Math.max(1,Math.ceil(rows.length/state.pageSize));
+  var end,i,j,row,column,html="",pageRows,value,cls;
+  if(state.page>pages){
+    state.page=pages;
+    start=(state.page-1)*state.pageSize
+  }
+  end=Math.min(start+state.pageSize,rows.length);
+  pageRows=rows.slice(start,end);
+  byId("irsHead").innerHTML=headerHtml();
+  for(i=0;i<pageRows.length;i++){
+    row=pageRows[i];
+    cls=row.settled?"settled":"";
+    if(String(row.id)===String(state.selectedId)){
+      cls+=(cls?" ":"")+"selected"
+    }
+    html+='<tr data-id="'+row.id+'" class="'+cls+'">';
+    html+='<td class="select-cell"><input type="radio" name="irsPick" ';
+    html+='value="'+row.id+'"';
+    if(String(row.id)===String(state.selectedId)){
+      html+=' checked="checked"'
+    }
+    html+='></td>';
+    html+='<td class="view-cell">';
+    html+='<button class="cashflow-link" data-cashflow="'+row.id+'" type="button">&#8595; Cashflow</button>';
+    html+='</td>';
+    for(j=0;j<columns.length;j++){
+      column=columns[j];
+      value=row[column.key];
+      html+='<td class="'+((column.type==="number"||column.type==="rate")?"number":"")+'">';
+      if(column.type==="number"){html+=esc(money(value))}
+      else{html+=esc(value)}
+      html+="</td>"
+    }
+    html+="</tr>"
+  }
+  if(!html){
+    html='<tr><td colspan="'+(columns.length+2)+'" class="empty">';
+    html+="No IRS records match the current selection.</td></tr>"
+  }
+  byId("irsBody").innerHTML=html;
+  byId("recordCount").innerHTML=rows.length+" record"+(rows.length===1?"":"s");
+  renderPagination(rows.length);
+  updateActionState();
+  bindHeaderSort()
+}
+function renderPagination(total){
+  var bar=byId("paginationBar");
+  var pages=Math.max(1,Math.ceil(total/state.pageSize));
+  var html='<button class="page-btn" data-page="prev" type="button"';
+  var p,startPage,endPage;
+  html+=state.page===1?' disabled="disabled"':'';
+  html+='>&lt;</button>';
+  startPage=Math.max(1,state.page-1);
+  endPage=Math.min(pages,startPage+2);
+  startPage=Math.max(1,endPage-2);
+  for(p=startPage;p<=endPage;p++){
+    html+='<button class="page-btn'+(p===state.page?' active':'')+'" ';
+    html+='data-page="'+p+'" type="button">'+p+'</button>'
+  }
+  html+='<button class="page-btn" data-page="next" type="button"';
+  html+=state.page===pages?' disabled="disabled"':'';
+  html+='>&gt;</button>';
+  bar.innerHTML=html
+}
+function findRowById(id){
+  var i;
+  for(i=0;i<DATA.length;i++){
+    if(String(DATA[i].id)===String(id)){return DATA[i]}
+  }
+  return null
+}
+function selectedRow(){return findRowById(state.selectedId)}
+function clearSelection(){
+  state.selectedId=null;
+  byId("editBtn").disabled=true;
+  byId("settleBtn").disabled=true;
+  byId("selectionMeta").innerHTML="Select one line item"
+}
+function updateActionState(){
+  var row=selectedRow();
+  if(!row){
+    byId("editBtn").disabled=true;
+    byId("settleBtn").disabled=true;
+    byId("selectionMeta").innerHTML="Select one line item";
+    return
+  }
+  byId("editBtn").disabled=false;
+  byId("settleBtn").disabled=!!row.settled;
+  byId("selectionMeta").innerHTML=row.settled?
+    "Selected IRS is already settled":"1 line item selected"
+}
+function loadResults(){
+  if(!readyToLoad()){
+    byId("resultsArea").className="";
+    clearSelection();
+    setStatus("Select Company Code and enter Key Date in DD-MM-YYYY format");
+    return
+  }
+  state.page=1;
+  clearSelection();
+  byId("resultsArea").className="open";
+  renderTable();
+  setStatus("IRS records loaded")
+}
+function refreshFilters(){
+  if(!readyToLoad()){loadResults();return}
+  state.page=1;
+  clearSelection();
+  renderTable()
+}
+function bindHeaderSort(){
+  var headers=byId("irsHead").getElementsByTagName("th");
+  var i;
+  for(i=0;i<headers.length;i++){
+    headers[i].onclick=function(){
+      var index=parseInt(this.getAttribute("data-index"),10);
+      if(isNaN(index)){return}
+      if(state.sortIndex===index){
+        state.sortDirection=state.sortDirection==="asc"?"desc":"asc"
+      }else{
+        state.sortIndex=index;
+        state.sortDirection="asc"
+      }
+      state.page=1;
+      clearSelection();
+      renderTable()
+    }
+  }
+}
+
+function displayItem(label,value){
+  var html='<div class="display-item">';
+  html+='<div class="display-label">'+esc(label)+'</div>';
+  html+='<div class="display-value">'+esc(value)+'</div>';
+  return html+"</div>"
+}
+function displayPairItem(label1,value1,label2,value2){
+  var html='<div class="display-item">';
+  html+='<div class="display-pair">';
+  html+='<div class="display-pair-part">';
+  html+='<div class="display-label">'+esc(label1)+'</div>';
+  html+='<div class="display-value">'+esc(value1)+'</div></div>';
+  html+='<div class="display-pair-part">';
+  html+='<div class="display-label">'+esc(label2)+'</div>';
+  html+='<div class="display-value">'+esc(value2)+'</div></div>';
+  html+='</div></div>';
+  return html
+}
+function bankDisplayName(value){
+  var text=String(value||"");
+  var pos=text.indexOf(" - ");
+  return pos>=0?text.substring(pos+3):text
+}
+function rateNumber(value){
+  var number=parseFloat(String(value||"").replace("%",""));
+  return isNaN(number)?0:number
+}
+function shiftDate(text,months){
+  var date=parseDate(text);
+  if(!date){return text}
+  var day=date.getDate();
+  date.setDate(1);
+  date.setMonth(date.getMonth()+months);
+  var last=new Date(date.getFullYear(),date.getMonth()+1,0).getDate();
+  date.setDate(Math.min(day,last));
+  return formatDate(date)
+}
+function signedMoney(value){
+  var number=Number(value||0);
+  return (number>=0?"+":"-")+money(Math.abs(number))
+}
+function cashAmount(value){
+  var cls=Number(value||0)>=0?"cash-pos":"cash-neg";
+  return '<span class="'+cls+'">'+esc(signedMoney(value))+"</span>"
+}
+function buildCashflows(row){
+  var flows=[];
+  var principal=Number(row.incomingAmount||0);
+  var outPrincipal=Number(row.outgoingAmount||0);
+  var rate=rateNumber(row.outgoingInterestRate);
+  var interest=Math.max(1,principal*(rate/100)/12);
+  var outInterest=Math.max(1,outPrincipal*(rate/100)/12);
+  var i;
+  flows.push({
+    date:row.startDate,description:"Principal",disc:principal,
+    incoming:principal,outgoing:-outPrincipal,fixDate:row.startDate,
+    percentage:"0.0000",status:"Fixed"
+  });
+  for(i=1;i<=5;i++){
+    flows.push({
+      date:shiftDate(row.startDate,i),description:"IRS Interest",
+      disc:-interest,incoming:interest,outgoing:-outInterest,
+      fixDate:shiftDate(row.startDate,i),percentage:rate.toFixed(4),
+      status:"Not fixed"
+    })
+  }
+  flows.push({
+    date:row.endDate,description:"Principal",disc:-principal,
+    incoming:principal,outgoing:-outPrincipal,fixDate:row.endDate,
+    percentage:"100.0000",status:"Fixed"
+  });
+  return flows
+}
+function renderCashflowPopup(row){
+  var variable=(Number(row.id)%3===0);
+  var frequency=variable?"Monthly":"Quarterly";
+  var accounting=variable?"Manual":"Automatic";
+  var special=variable?"DTY Interest":"Differential LIBOR";
+  var category=variable?"Variable":"Fixed";
+  var html="";
+  var irsHtml="";
+  var flows=buildCashflows(row);
+  var i,flow,tableHtml="";
+  html+=displayItem("Deal ID",row.dealNo);
+  html+=displayItem("Transaction No.",row.discLoanTxn);
+  html+=displayItem("BP Name",bankDisplayName(row.bankName));
+  html+=displayItem("Start Date",row.startDate);
+  html+=displayItem("End Date",row.endDate);
+  html+=displayItem("Ref. Int. Rate",row.inRefIntRate);
+  html+=displayItem("Reset Frequency",frequency);
+  html+=displayItem("Accounting Type",accounting);
+  html+=displayItem("Special Case",special);
+  byId("discountingLoanDetails").innerHTML=html;
+  irsHtml+=displayItem("IRS Co Code",row.companyCode);
+  irsHtml+=displayItem("IRS Transaction",row.irsId);
+  irsHtml+=displayItem("IRS BP",bankDisplayName(row.bankName));
+  irsHtml+=displayItem("Start Date",row.startDate);
+  irsHtml+=displayItem("End Date",row.endDate);
+  irsHtml+=displayItem("Incoming Int Ref",row.inRefIntRate);
+  irsHtml+=displayItem("Incoming Spread Rate",row.incSpreadRate);
+  irsHtml+=displayItem("Outgoing Int Cat",category);
+  if(variable){
+    irsHtml+=displayPairItem("Outgoing Int Rate",row.outRefIntRate,"Outgoing Spread Rate",row.incSpreadRate)
+  }else{
+    irsHtml+=displayItem("Outgoing Int Rate",row.outgoingInterestRate)
+  }
+  irsHtml+=displayItem("Outgoing Int Frq",frequency);
+  irsHtml+=displayItem("Interest Payment Date",variable?"Start of Period":"End of Period");
+  irsHtml+=displayItem("Special Case",special);
+  byId("irsDisplayDetails").innerHTML=irsHtml;
+  for(i=0;i<flows.length;i++){
+    flow=flows[i];
+    tableHtml+="<tr>";
+    tableHtml+="<td>"+esc(flow.date)+"</td>";
+    tableHtml+="<td>"+esc(flow.description)+"</td>";
+    tableHtml+='<td class="cash-number">'+cashAmount(flow.disc)+"</td>";
+    tableHtml+='<td class="cash-number">'+cashAmount(flow.incoming)+"</td>";
+    tableHtml+='<td class="cash-number">'+cashAmount(flow.outgoing)+"</td>";
+    tableHtml+="<td>USD</td>";
+    tableHtml+="<td>"+esc(flow.fixDate)+"</td>";
+    tableHtml+='<td class="cash-number">'+esc(flow.percentage)+"</td>";
+    tableHtml+="<td>"+esc(flow.status)+"</td>";
+    tableHtml+="</tr>"
+  }
+  byId("cashflowBody").innerHTML=tableHtml;
+  byId("cashflowCount").innerHTML=flows.length+" row(s)";
+  byId("cashflowModal").className="modal-bg open";
+  setStatus("Cashflow details displayed for IRS ID "+row.irsId)
+}
+function closeCashflowModal(){
+  byId("cashflowModal").className="modal-bg"
+}
+function openSettleModal(){
+  var row=selectedRow();
+  if(!row||row.settled){return}
+  byId("settleText").innerHTML="Are you sure you want to settle IRS Transaction <b>";
+  byId("settleText").innerHTML+=esc(row.transaction)+"</b>?";
+  byId("settleModal").className="modal-bg open"
+}
+function closeSettleModal(){byId("settleModal").className="modal-bg"}
+function settleSelected(){
+  var row=selectedRow();
+  var transaction;
+  if(!row||row.settled){closeSettleModal();return}
+  transaction=row.transaction;
+  row.settled=true;
+  closeSettleModal();
+  toast("IRS Transaction "+transaction+" settled successfully.");
+  setStatus("IRS Transaction "+transaction+" settled successfully");
+  clearSelection();
+  renderTable()
+}
+function monthNames(){
+  return ["January","February","March","April","May","June","July",
+    "August","September","October","November","December"]
+}
+function shortMonthNames(){
+  return ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep",
+    "Oct","Nov","Dec"]
+}
+function renderCalendar(){
+  if(state.calendarMode==="years"){renderYearPanel();return}
+  renderDayPanel()
+}
+function renderDayPanel(){
+  var target=state.calendarDate;
+  var year=target.getFullYear();
+  var month=target.getMonth();
+  var selected=parseDate(byId("keyDate").value);
+  var first=new Date(year,month,1);
+  var firstCell=new Date(year,month,1-first.getDay());
+  var names=monthNames();
+  var week=["Su","Mo","Tu","We","Th","Fr","Sa"];
+  var html='<div class="calendar-head">';
+  var i,cell,cls;
+  html+='<button class="cal-title-btn" data-cal="title" type="button">';
+  html+=names[month]+" "+year+"</button>";
+  html+='<div class="cal-navs">';
+  html+='<button class="cal-nav cal-nav-up" data-cal="prev" type="button" ';
+  html+='aria-label="Previous month"></button>';
+  html+='<button class="cal-nav cal-nav-down" data-cal="next" type="button" ';
+  html+='aria-label="Next month"></button>';
+  html+="</div></div><div class=\"calendar-weekdays\">";
+  for(i=0;i<week.length;i++){html+="<span>"+week[i]+"</span>"}
+  html+='</div><div class="calendar-days">';
+  for(i=0;i<42;i++){
+    cell=new Date(firstCell.getFullYear(),firstCell.getMonth(),firstCell.getDate()+i);
+    cls="calendar-day";
+    if(cell.getMonth()!==month){cls+=" other-month"}
+    if(selected&&sameDate(selected,cell)){cls+=" selected"}
+    html+='<button class="'+cls+'" data-date="'+formatDate(cell)+'" type="button">';
+    html+=cell.getDate()+"</button>"
+  }
+  html+='</div><div class="calendar-foot">';
+  html+='<button class="cal-link" data-cal="clear" type="button">Clear</button>';
+  html+='<button class="cal-link" data-cal="today" type="button">Today</button>';
+  html+="</div>";
+  byId("calendarPopup").innerHTML=html
+}
+function renderYearPanel(){
+  var names=monthNames();
+  var shortNames=shortMonthNames();
+  var selected=parseDate(byId("keyDate").value);
+  var month=state.calendarDate.getMonth();
+  var year=state.calendarYear;
+  var html='<div class="calendar-head">';
+  var y,m,cls;
+  html+='<button class="cal-title-btn" data-cal="title" type="button">';
+  html+=names[month]+" "+year+"</button>";
+  html+='<div class="cal-navs"></div></div>';
+  html+='<div id="yearPanel" class="year-panel">';
+  for(y=2022;y<=2034;y++){
+    html+='<div class="year-row'+(y===year?' active':'')+'">';
+    html+='<button class="year-btn" data-year="'+y+'" type="button">';
+    html+=y+"</button>";
+    if(y===year){
+      html+='<div class="month-grid">';
+      for(m=0;m<12;m++){
+        cls="month-btn";
+        if(selected&&selected.getFullYear()===y&&selected.getMonth()===m){
+          cls+=" selected"
+        }
+        html+='<button class="'+cls+'" data-month="'+m+'" type="button">';
+        html+=shortNames[m]+"</button>"
+      }
+      html+="</div>"
+    }
+    html+="</div>"
+  }
+  html+="</div>";
+  byId("calendarPopup").innerHTML=html;
+  window.setTimeout(scrollActiveYear,0)
+}
+function scrollActiveYear(){
+  var panel=byId("yearPanel");
+  var active;
+  if(!panel){return}
+  active=panel.querySelector?panel.querySelector(".year-row.active"):null;
+  if(active){panel.scrollTop=Math.max(0,active.offsetTop-34)}
+}
+function sameDate(a,b){
+  return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&
+    a.getDate()===b.getDate()
+}
+function openCalendar(){
+  var parsed=parseDate(byId("keyDate").value);
+  if(parsed){
+    state.calendarDate=parsed;
+    state.calendarYear=parsed.getFullYear()
+  }
+  state.calendarMode="days";
+  renderCalendar();
+  byId("calendarPopup").className="calendar-popup open"
+}
+function closeCalendar(){
+  state.calendarMode="days";
+  byId("calendarPopup").className="calendar-popup"
+}
+function buildComboList(kind){
+  var listId=kind==="txn"?"transactionList":"dealList";
+  var inputId=kind==="txn"?"transactionFilter":"dealFilter";
+  var key=kind==="txn"?"transaction":"dealNo";
+  var list=byId(listId);
+  var company=byId("companyCode").value;
+  var settled=statusSettledValue(byId("statusFilter").value);
+  var typed=byId(inputId).value.toLowerCase();
+  var keyDate=parseDate(byId("keyDate").value);
+  var seen={};
+  var html="";
+  var i,row,value;
+  for(i=0;i<DATA.length;i++){
+    row=DATA[i];
+    if(company&&row.companyCode!==company){continue}
+    if(!!row.settled!==settled){continue}
+    if(!rowMatchesKeyDate(row,keyDate)){continue}
+    value=String(row[key]);
+    if(typed&&value.toLowerCase().indexOf(typed)<0){continue}
+    if(seen[value]){continue}
+    seen[value]=true;
+    html+='<button class="combo-option" data-value="'+esc(value)+'" type="button">';
+    html+=esc(value)+"</button>"
+  }
+  if(!html){html='<div class="combo-empty">No matching values</div>'}
+  list.innerHTML=html
+}
+function openCombo(kind){
+  var listId=kind==="txn"?"transactionList":"dealList";
+  buildComboList(kind);
+  closeCombo(kind==="txn"?"deal":"txn");
+  byId(listId).className="combo-list open"
+}
+function closeCombo(kind){
+  var listId=kind==="txn"?"transactionList":"dealList";
+  byId(listId).className="combo-list"
+}
+function closeAllCombos(){
+  closeCombo("txn");
+  closeCombo("deal")
+}
+renderCompanyOptions();
+renderStatusOptions();
+byId("companyCode").onchange=function(){
+  byId("transactionFilter").value="";
+  byId("dealFilter").value="";
+  closeAllCombos();
+  loadResults()
+};
+byId("keyDate").onchange=loadResults;
+byId("keyDate").onkeyup=function(){
+  if(String(this.value).length===10){loadResults()}
+};
+byId("filterToggle").onclick=function(){
+  var body=byId("filterBody");
+  var open=body.className.indexOf("open")>=0;
+  body.className=open?"filter-body":"filter-body open"
+};
+byId("transactionFilter").onkeyup=function(){
+  refreshFilters();
+  openCombo("txn")
+};
+byId("transactionFilter").onclick=function(){openCombo("txn")};
+byId("transactionDropBtn").onclick=function(){
+  var list=byId("transactionList");
+  if(list.className.indexOf("open")>=0){closeCombo("txn")}
+  else{openCombo("txn")}
+};
+byId("dealFilter").onkeyup=function(){
+  refreshFilters();
+  openCombo("deal")
+};
+byId("dealFilter").onclick=function(){openCombo("deal")};
+byId("dealDropBtn").onclick=function(){
+  var list=byId("dealList");
+  if(list.className.indexOf("open")>=0){closeCombo("deal")}
+  else{openCombo("deal")}
+};
+function handleComboClick(kind,event){
+  var target=event.target||event.srcElement;
+  var value=target.getAttribute("data-value");
+  var inputId=kind==="txn"?"transactionFilter":"dealFilter";
+  if(!value){return}
+  byId(inputId).value=value;
+  closeCombo(kind);
+  refreshFilters()
+}
+byId("transactionList").onclick=function(e){handleComboClick("txn",e)};
+byId("dealList").onclick=function(e){handleComboClick("deal",e)};
+byId("statusFilter").onchange=function(){
+  byId("transactionFilter").value="";
+  byId("dealFilter").value="";
+  closeAllCombos();
+  refreshFilters()
+};
+byId("clearFilters").onclick=function(){
+  byId("transactionFilter").value="";
+  byId("dealFilter").value="";
+  closeAllCombos();
+  if(statuses.length){byId("statusFilter").value=statuses[0].code}
+  refreshFilters()
+};
+byId("irsBody").onclick=function(e){
+  var target=e.target||e.srcElement;
+  var cashflowId=target.getAttribute("data-cashflow");
+  var cashflowRow;
+  var row=target;
+  var id;
+  if(cashflowId){
+    cashflowRow=findRowById(cashflowId);
+    if(cashflowRow){renderCashflowPopup(cashflowRow)}
+    return
+  }
+  while(row&&row.tagName&&row.tagName.toLowerCase()!=="tr"){
+    row=row.parentNode
+  }
+  if(!row){return}
+  id=row.getAttribute("data-id");
+  if(!id){return}
+  state.selectedId=id;
+  renderTable()
+};
+byId("paginationBar").onclick=function(e){
+  var target=e.target||e.srcElement;
+  var page=target.getAttribute("data-page");
+  var rows,pages;
+  if(!page||target.disabled){return}
+  rows=getFilteredRows();
+  pages=Math.max(1,Math.ceil(rows.length/state.pageSize));
+  if(page==="prev"){state.page=Math.max(1,state.page-1)}
+  else if(page==="next"){state.page=Math.min(pages,state.page+1)}
+  else{state.page=parseInt(page,10)||1}
+  clearSelection();
+  renderTable()
+};
+byId("editBtn").onclick=function(){
+  var row=selectedRow();
+  if(!row){return}
+  setStatus("Edit selected for IRS ID "+row.irsId)
+};
+byId("settleBtn").onclick=openSettleModal;
+byId("cashflowClose").onclick=closeCashflowModal;
+byId("cashflowModal").onclick=function(e){
+  var target=e.target||e.srcElement;
+  if(target===this){closeCashflowModal()}
+};
+byId("settleClose").onclick=closeSettleModal;
+byId("settleNo").onclick=closeSettleModal;
+byId("settleYes").onclick=settleSelected;
+byId("calendarBtn").onclick=function(){
+  if(byId("calendarPopup").className.indexOf("open")>=0){closeCalendar()}
+  else{openCalendar()}
+};
+byId("calendarPopup").onclick=function(e){
+  var target=e.target||e.srcElement;
+  var nav=target.getAttribute("data-cal");
+  var date=target.getAttribute("data-date");
+  var year=target.getAttribute("data-year");
+  var month=target.getAttribute("data-month");
+  if(nav==="prev"){
+    state.calendarDate.setMonth(state.calendarDate.getMonth()-1);
+    state.calendarYear=state.calendarDate.getFullYear();
+    renderCalendar();
+    return
+  }
+  if(nav==="next"){
+    state.calendarDate.setMonth(state.calendarDate.getMonth()+1);
+    state.calendarYear=state.calendarDate.getFullYear();
+    renderCalendar();
+    return
+  }
+  if(nav==="title"){
+    state.calendarMode=state.calendarMode==="days"?"years":"days";
+    state.calendarYear=state.calendarDate.getFullYear();
+    renderCalendar();
+    return
+  }
+  if(nav==="clear"){
+    byId("keyDate").value="";
+    closeCalendar();
+    loadResults();
+    return
+  }
+  if(nav==="today"){
+    var today=new Date();
+    byId("keyDate").value=formatDate(today);
+    state.calendarDate=today;
+    state.calendarYear=today.getFullYear();
+    closeCalendar();
+    loadResults();
+    return
+  }
+  if(year!==null&&year!==""){
+    state.calendarYear=Number(year);
+    state.calendarDate.setFullYear(state.calendarYear);
+    state.calendarMode="years";
+    renderCalendar();
+    return
+  }
+  if(month!==null&&month!==""){
+    state.calendarDate=new Date(state.calendarYear,Number(month),1);
+    state.calendarMode="days";
+    renderCalendar();
+    return
+  }
+  if(date){
+    byId("keyDate").value=date;
+    state.calendarDate=parseDate(date);
+    state.calendarYear=state.calendarDate.getFullYear();
+    closeCalendar();
+    loadResults()
+  }
+};
+document.onkeydown=function(e){
+  var event=e||window.event;
+  if(event.keyCode===27){
+    closeSettleModal();
+    closeCashflowModal();
+    closeCalendar();
+    closeAllCombos()
+  }
+  return true
+};
+renderCalendar();
+})();
+</script>
+</body>
+</html>

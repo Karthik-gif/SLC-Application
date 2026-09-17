@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Check and Confirm Deposit</title>
+<style type="text/css">
+html,body{margin:0;width:100%;height:100%;background:#f5f7f9;color:#1d2d3e;font-family:"72","Segoe UI",Arial,sans-serif;font-size:13px}
+*{box-sizing:border-box}
+button,input,select,table,th,td,div,span,label{font-family:"72","Segoe UI",Arial,sans-serif}
+button{cursor:pointer}
+button:disabled{cursor:default;opacity:.55}
+.shell{height:100vh;display:flex;flex-direction:column;background:#f5f7f9}
+.topbar{height:48px;flex:0 0 48px;background:#fff;border-bottom:1px solid #d9d9d9;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.topbar-inner{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 18px}
+.refresh-btn{border:1px solid #8996a1;background:#ffffff;color:#475e75;border-radius:4px;height:32px;padding:0 11px;
+font-size:12px;font-weight:400;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.refresh-btn:hover{background:#f2f4f5;color:#1d2d3e}
+.refresh-btn:active{transform:translateY(1px)}
+.title{font-size:16px;font-weight:600;color:#1d2d3e}
+.content{flex:1 1 auto;min-height:0;padding:10px 14px 28px;overflow:auto}
+.card{margin-bottom:10px;background:#fff;border:1px solid #e1e6ea;border-radius:8px;box-shadow:0 1px 4px rgba(29,45,62,.04)}
+.card-head{min-height:34px;display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:#fafcfe;
+border-bottom:1px solid #e5e9ed;border-radius:8px 8px 0 0}
+.card-title{font-size:12px;font-weight:600;color:#1d2d3e}
+.card-meta{font-size:11px;color:#6a6d70}
+.card-body{padding:12px}
+.field{display:grid;grid-template-columns:150px minmax(0,1fr);align-items:center;gap:10px}
+.field label{color:#1d2d3e;font-size:12px;font-weight:400}
+.input,.select{height:30px;width:100%;max-width:310px;padding:4px 8px;border:1px solid #b8b8b8;border-radius:4px;background:#fff;
+color:#1d2d3e;font-size:12px}
+.input:focus,.select:focus{outline:0;border-color:#0a6ed1;box-shadow:0 0 0 1px #0a6ed1}
+.selection-main-row{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.structure-field{width:auto;grid-template-columns:150px 230px;gap:10px}
+.structure-field .select,.structure-field .input{width:230px;max-width:230px}
+.cc-field{grid-template-columns:max-content auto;gap:6px}
+.cc-field .select{width:248px;max-width:248px;text-overflow:clip}
+.date-field{grid-template-columns:max-content auto;gap:6px}
+.date-field .date-input-wrap{width:115px;max-width:115px}
+.date-input-wrap{position:relative;width:230px;max-width:230px}
+.date-input-wrap .input{width:100%;max-width:none;padding-right:26px}
+.calendar-btn-wrap{position:absolute;right:5px;top:50%;transform:translateY(-50%);width:16px;height:16px}
+.calendar-btn{width:16px;height:16px;padding:0;border:1px solid #0a6ed1;border-radius:2px;position:relative;
+background:linear-gradient(#0a6ed1,#0a6ed1) top/100% 4px no-repeat,
+repeating-linear-gradient(90deg,#cfe3fb 0 2px,transparent 2px 4px) 2px 6px/11px 7px no-repeat,
+repeating-linear-gradient(0deg,#cfe3fb 0 2px,transparent 2px 4px) 2px 6px/11px 7px no-repeat,#ffffff}
+.calendar-btn:before{content:"";position:absolute;top:-2px;left:3px;width:2px;height:2px;background:#0a6ed1;border-radius:1px}
+.calendar-btn:after{content:"";position:absolute;top:-2px;right:3px;width:2px;height:2px;background:#0a6ed1;border-radius:1px}
+.calendar-btn-wrap:hover .calendar-btn{border-color:#0854a0}
+.calendar-native{position:absolute;inset:0;opacity:0;width:100%;height:100%;border:0;padding:0;margin:0;cursor:pointer}
+.filter-icon-btn{width:30px;height:30px;padding:0;border:1px solid #b8b8b8;border-radius:4px;background:#fff;position:relative}
+.filter-icon-btn:hover{background:#f7f8f9;border-color:#0a6ed1}
+.filter-icon-btn:before{content:"";position:absolute;left:8px;top:7px;width:0;height:0;border-left:7px solid transparent;
+border-right:7px solid transparent;border-top:9px solid #556b82}
+.filter-icon-btn:after{content:"";position:absolute;left:13px;top:14px;width:3px;height:7px;background:#556b82}
+.filter-body{display:none}
+.filter-body.open{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.filter-item{display:flex;align-items:center;gap:6px}
+.compact-filter{width:150px;max-width:150px}
+.medium-filter{width:180px;max-width:180px}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.toolbar-left,.toolbar-right{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+#resultsArea .toolbar{justify-content:flex-end}
+.table-card{overflow:hidden}
+.table-wrap{width:100%;overflow:auto;background:#fff}
+.data-table{width:100%;min-width:1600px;border-collapse:separate;border-spacing:0;font-size:12px}
+.data-table th{position:sticky;top:0;z-index:2;height:34px;padding:6px 24px 6px 8px;background:#f5f8fa;color:#1d2d3e;
+border-right:1px solid #d9d9d9;border-bottom:1px solid #c7d4e0;text-align:left;font-weight:600;white-space:nowrap}
+.data-table td{height:34px;padding:4px 8px;background:#fff;border-right:1px solid #e7ebee;border-bottom:1px solid #e7ebee;
+white-space:nowrap;color:#1d2d3e}
+.data-table tbody tr:hover td{background:#f2f8fd}
+.data-table tbody tr.selected td{background:#eaf3fc}
+.data-table .number{text-align:right;font-variant-numeric:tabular-nums}
+.sort-arrows{position:absolute;top:9px;right:8px;width:8px;height:15px}
+.sort-up,.sort-down{position:absolute;left:0;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent}
+.sort-up{top:0;border-bottom:5px solid #9aa7b4}
+.sort-down{bottom:0;border-top:5px solid #9aa7b4}
+th.sort-asc .sort-up{border-bottom-color:#0a6ed1}
+th.sort-desc .sort-down{border-top-color:#0a6ed1}
+.money{text-align:right;font-variant-numeric:tabular-nums}
+.badge{display:inline-block;padding:3px 7px;border-radius:10px;font-size:10px;font-weight:600}
+.badge-open{background:#fff4e5;color:#8d4f00}
+.badge-created{background:#eaf3fc;color:#004b93}
+.badge-closed{background:#ebf5eb;color:#107e3e}
+.actions{display:flex;align-items:center;justify-content:flex-end;gap:7px;margin-top:14px}
+.btn{height:30px;padding:0 12px;border:1px solid #d1e8ff;border-radius:4px;background:#eaf3fc;color:#004b93;font-size:12px;
+font-weight:600}
+.btn:hover{background:#d1e8ff;border-color:#0a6ed1;color:#0854a0}
+.btn-primary{background:#0a6ed1;border-color:#0a6ed1;color:#fff}
+.btn-primary:hover{background:#0854a0;border-color:#0854a0;color:#fff}
+.btn-ghost{background:#fff;border-color:#d9d9d9;color:#1d2d3e}
+.btn-ghost:hover{background:#f7f8f9;border-color:#b8b8b8;color:#1d2d3e}
+.btn-icon{width:30px;height:30px;padding:0;border:1px solid #d1e8ff;border-radius:4px;background:#eaf3fc;color:#004b93;
+font-size:14px;font-weight:700}
+.btn-icon:hover{background:#d1e8ff;border-color:#0a6ed1}
+.pagination-bar{display:flex;align-items:center;justify-content:flex-end;gap:5px;padding:8px 10px;background:#fff;
+border-top:1px solid #e5e9ed}
+.page-btn{min-width:30px;height:28px;padding:0 8px;border:1px solid #d9d9d9;border-radius:4px;background:#fff;color:#1d2d3e;
+font-size:11px}
+.page-btn:hover{background:#f7f8f9;border-color:#b8b8b8}
+.page-btn.active{background:#eaf3fc;border-color:#0a6ed1;color:#004b93;font-weight:600}
+.page-btn:disabled{background:#f7f8f9;color:#9aa7b4}
+.empty{padding:28px;text-align:center;color:#6a6d70}
+.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(320px,1fr));gap:10px 34px}
+.detail-line{display:grid;grid-template-columns:150px minmax(0,1fr);align-items:center;gap:8px;min-height:28px}
+.detail-label{color:#556b82}
+.detail-value{min-height:28px;display:flex;align-items:center;gap:8px;padding:4px 8px;border:1px solid #e1e6ea;
+background:#f8fafc;border-radius:4px;overflow:hidden}
+.code{font-weight:600;color:#1d2d3e}
+.description{color:#556b82;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.detail-readonly-select:disabled{background:#f8fafc;color:#1d2d3e;opacity:1;border-color:#e1e6ea;-webkit-text-fill-color:#1d2d3e}
+.detail-readonly-input{background:#f8fafc!important;color:#1d2d3e!important;border-color:#e1e6ea}
+.detail-value.size-xs{width:150px;max-width:100%}
+.detail-value.size-sm{width:220px;max-width:100%}
+.detail-value.size-md{width:300px;max-width:100%}
+.detail-value.size-lg{width:390px;max-width:100%}
+.detail-control-xs{width:110px!important;max-width:110px!important}
+.detail-control-sm{width:160px!important;max-width:160px!important}
+.detail-control-md{width:230px!important;max-width:230px!important}
+.edit-table{width:100%;min-width:900px;border-collapse:separate;border-spacing:0;font-size:12px}
+.edit-table th{position:sticky;top:0;z-index:2;height:34px;padding:6px 24px 6px 8px;background:#f5f8fa;color:#1d2d3e;
+border-right:1px solid #d9d9d9;border-bottom:1px solid #c7d4e0;text-align:left;font-weight:600;white-space:nowrap}
+.edit-table td{height:38px;padding:4px 6px;background:#f7f8f9;border-right:1px solid #e7ebee;border-bottom:1px solid #e7ebee;
+white-space:nowrap}
+.edit-table td.editable{background:#fff}
+.cell-input,.cell-select{width:100%;min-width:90px;height:28px;padding:3px 6px;border:1px solid transparent;border-radius:3px;
+background:#fff;color:#1d2d3e;font-size:12px}
+.cell-input:hover,.cell-select:hover{border-color:#b8b8b8}
+.cell-input:focus,.cell-select:focus{outline:0;border-color:#0a6ed1;box-shadow:0 0 0 1px #0a6ed1}
+.cell-input[readonly]{background:transparent;color:#556b82}
+.icon-cell{text-align:center}
+.link-button{border:0;background:transparent;color:#0a6ed1;text-decoration:underline;padding:0;font-size:12px;font-weight:600}
+.modal-bg{display:none;position:fixed;inset:0;z-index:2000;background:rgba(29,45,62,.30);padding:28px 18px;overflow:auto}
+.modal-bg.open{display:block}
+#confirmModal.open{display:flex;align-items:center;justify-content:center}
+#confirmModal .modal{margin:0;width:400px;max-width:90vw}
+.confirm-text{font-size:13px;color:#1d2d3e;line-height:18px;white-space:nowrap;padding:6px 0}
+.modal{max-width:940px;margin:0 auto;background:#fff;border:1px solid #d9d9d9;border-radius:8px;
+box-shadow:0 8px 24px rgba(0,0,0,.18);overflow:hidden}
+.modal.small{max-width:540px}
+.modal.large{max-width:1180px}
+.modal-head{height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:#eaf3fc;
+border-bottom:1px solid #d1e8ff}
+.modal-title{font-size:13px;font-weight:600}
+.modal-close{width:28px;height:28px;border:1px solid #d9d9d9;border-radius:4px;background:#fff;color:#556b82}
+.modal-body{padding:14px;max-height:76vh;overflow:auto}
+.modal-foot{display:flex;align-items:center;justify-content:flex-end;gap:7px;padding:10px 14px;background:#f7f8f9;
+border-top:1px solid #d9d9d9}
+.toast-region{position:fixed;right:22px;bottom:28px;z-index:4000;width:350px;max-width:calc(100% - 44px)}
+.toast{display:flex;gap:10px;margin-top:8px;padding:12px 14px;background:#f2f4f5;border:1px solid #d9d9d9;
+border-left:3px solid #a8b3bd;border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.toast.success{border-left-color:#107e3e}.toast.error{border-left-color:#bb0000}.toast.warning{border-left-color:#e9730c}
+.toast-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#e5e8eb;
+color:#556b82;font-weight:600}
+.toast.success .toast-icon{background:#ebf5eb;color:#107e3e}
+.toast-title{margin-bottom:2px;font-size:12px;font-weight:600}
+.toast-message{color:#556b82;font-size:12px;line-height:17px}
+.statusbar{position:fixed;left:0;right:0;bottom:0;height:20px;display:flex;align-items:center;padding:0 12px;background:#fff;
+border-top:1px solid #e1e6ea;color:#6a6d70;font-size:11px;z-index:900}
+.status-dot{width:7px;height:7px;margin-right:6px;border-radius:50%;background:#0a6ed1}
+@media screen and (max-width:980px){
+.detail-grid{grid-template-columns:1fr}.content{padding-left:8px;padding-right:8px}
+.field{grid-template-columns:130px minmax(0,1fr)}
+}
+@media screen and (max-width:640px){
+.topbar-inner{padding:0 10px}.content{padding-top:8px}
+.field,.detail-line{grid-template-columns:1fr;gap:3px}.input,.select{max-width:none}.actions{justify-content:stretch}
+.detail-value.size-xs,.detail-value.size-sm,.detail-value.size-md,.detail-value.size-lg{width:100%}
+.detail-control-xs,.detail-control-sm,.detail-control-md{width:100%!important;max-width:none!important}
+.actions .btn{flex:1}.toolbar{align-items:flex-start}.toolbar-left,.toolbar-right{width:100%}
+}
+.title-wrap{display:flex;align-items:center;gap:10px}
+img.mark{width:28px;height:28px;flex:none;object-fit:contain}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="title-wrap">
+        <img class="mark" alt="Fourth Signal" src="https://raw.githubusercontent.com/ryannayak/fs-assets/e82f35a83e28689167b22b4300d4994a249acee0/fs-short-logo.png"/>
+        <div class="title">Check and Confirm Deposit</div>
+      </div>
+      <button id="refreshBtn" class="refresh-btn" type="button">&#8635; Refresh</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">Basic Selection</div>
+        <div class="card-meta">Required</div>
+      </div>
+      <div class="card-body">
+        <div class="selection-main-row">
+          <div class="field structure-field cc-field">
+            <label for="ccCompanyCode">Company Code</label>
+            <select id="ccCompanyCode" class="select"></select>
+          </div>
+          <div class="field structure-field date-field">
+            <label for="ccKeyDate">Key Date</label>
+            <div class="date-input-wrap">
+              <input id="ccKeyDate" class="input" type="text" placeholder="DD-MM-YYYY">
+              <div class="calendar-btn-wrap">
+                <button class="calendar-btn" type="button" tabindex="-1" aria-hidden="true"></button>
+                <input id="ccKeyDateNative" class="calendar-native" type="date" aria-label="Open calendar">
+              </div>
+            </div>
+          </div>
+          <button id="filterToggle" class="filter-icon-btn" type="button" title="Filters" aria-label="Filters"></button>
+          <div id="filterBody" class="filter-body">
+            <div class="filter-item">
+              <select id="txnNoFilter" class="select compact-filter"></select>
+            </div>
+            <div class="filter-item">
+              <select id="statusFilter" class="select medium-filter"></select>
+            </div>
+            <button id="clearFilters" class="btn btn-ghost" type="button">Clear filters</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="resultsArea" style="display:none">
+      <div class="toolbar">
+        <div class="toolbar-right">
+          <button id="settleBtn" class="btn btn-primary" type="button" disabled>Confirm/Settle</button>
+          <button id="editBtn" class="btn btn-ghost" type="button" disabled>Edit</button>
+          <button id="viewCalcBtn" class="btn btn-ghost" type="button" disabled>View Deposit Calculation</button>
+          <button id="approvalBtn" class="btn btn-ghost" type="button" disabled>Send for Approval</button>
+        </div>
+      </div>
+      <div class="card table-card">
+        <div class="card-head">
+          <div class="card-title">Deposit Overview</div>
+          <div class="card-meta" id="rowCountMeta"></div>
+        </div>
+        <div class="table-wrap">
+          <table id="mainTable" class="data-table">
+            <thead id="mainHead"></thead>
+            <tbody id="mainBody"></tbody>
+          </table>
+        </div>
+        <div id="paginationBar" class="pagination-bar"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="editModal" class="modal-bg">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Edit Deposit</div>
+      <button id="editClose" class="modal-close" type="button">X</button>
+    </div>
+    <div class="modal-body">
+      <div class="card">
+        <div class="card-head"><div class="card-title">Deposit Details</div><div class="card-meta">Selected Record</div></div>
+        <div id="editSummary" class="card-body"></div>
+      </div>
+      <div class="card table-card">
+        <div class="card-head"><div class="card-title">Editable Values</div></div>
+        <div class="table-wrap">
+          <table id="editTable" class="edit-table">
+            <thead id="editHead"></thead>
+            <tbody id="editBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button id="editCancel" class="btn btn-ghost" type="button">Cancel</button>
+      <button id="editSave" class="btn btn-primary" type="button">Save</button>
+    </div>
+  </div>
+</div>
+
+<div id="calcModal" class="modal-bg">
+  <div class="modal small">
+    <div class="modal-head">
+      <div class="modal-title">View Deposit Calculation</div>
+      <button id="calcClose" class="modal-close" type="button">X</button>
+    </div>
+    <div class="modal-body">
+      <div id="calcBody" class="card-body"></div>
+    </div>
+    <div class="modal-foot">
+      <button id="calcOkay" class="btn btn-primary" type="button">Okay</button>
+    </div>
+  </div>
+</div>
+
+<div id="confirmModal" class="modal-bg">
+  <div class="modal small">
+    <div class="modal-head">
+      <div class="modal-title">Confirm Action</div>
+      <button id="confirmClose" class="modal-close" type="button">X</button>
+    </div>
+    <div class="modal-body">
+      <div id="confirmMessage"></div>
+    </div>
+    <div class="modal-foot">
+      <button id="confirmNo" class="btn btn-ghost" type="button">No</button>
+      <button id="confirmYes" class="btn btn-primary" type="button">Yes</button>
+    </div>
+  </div>
+</div>
+
+<div id="toastRegion" class="toast-region" aria-live="polite"></div>
+<div class="statusbar"><span class="status-dot"></span><span id="statusText">Ready</span></div>
+
+<script type="text/javascript">
+(function(){
+var VERSION="v8";
+var HAS_EXTERNAL_PAYLOAD=typeof CHECK_CONFIRM_PAYLOAD!=="undefined";
+var DEFAULT_DATA={
+  companyCodes:[
+    {code:"AE13",name:"Olam International DMCC"},
+    {code:"AE11",name:"Olam Global Agri Pte. Ltd"},
+    {code:"SG03",name:"Olam Global Agri Pte. Ltd"}
+  ],
+  statuses:["Contract","Contract Settlement"],
+  records:[
+    {companyCode:"AE13",companyName:"Olam International DMCC",activityCatName:"Money Market Deposit",
+      transactionTypeDesc:"Deposit Creation",iclRequestNo:"22001595",ottkNo:"102934",transactionNo:"TXN100234",
+      dealId:"12002126",startDate:"11-07-2024",noOfDays:180,tradeValue:1000000,currency:"USD",
+      bankName:"ABU DHABI COMMERCIAL BANK DUBAI",houseBank:"BA104",accountId:"000002312123",partnerBank:"EUR1",
+      entityId:"E021",client:"100",activeActivity:"Yes",activityCategory:"MMDP",productType:"Deposit",
+      refInterestRate:0.85,spreadRate:0.15,status:"Contract"},
+    {companyCode:"AE13",companyName:"Olam International DMCC",activityCatName:"Money Market Deposit",
+      transactionTypeDesc:"Deposit Creation",iclRequestNo:"22001596",ottkNo:"102951",transactionNo:"TXN100241",
+      dealId:"12002144",startDate:"14-07-2024",noOfDays:150,tradeValue:850000,currency:"USD",
+      bankName:"ABU DHABI COMMERCIAL BANK DUBAI",houseBank:"BA104",accountId:"000002312123",partnerBank:"EUR1",
+      entityId:"E022",client:"100",activeActivity:"Yes",activityCategory:"MMDP",productType:"Deposit",
+      refInterestRate:1.00,spreadRate:0.15,status:"Contract"},
+    {companyCode:"AE13",companyName:"Olam International DMCC",activityCatName:"Money Market Deposit",
+      transactionTypeDesc:"Deposit Settlement",iclRequestNo:"22001560",ottkNo:"103002",transactionNo:"TXN100271",
+      dealId:"12002195",startDate:"08-04-2024",noOfDays:120,tradeValue:525000,currency:"USD",
+      bankName:"THE COMMERCIAL BANK OF QATAR",houseBank:"CB102",accountId:"110011494728",partnerBank:"",
+      entityId:"E029",client:"100",activeActivity:"Yes",activityCategory:"MMDP",productType:"Deposit",
+      refInterestRate:0.95,spreadRate:0.15,status:"Contract Settlement"},
+    {companyCode:"AE11",companyName:"Olam Global Agri Pte. Ltd",activityCatName:"Money Market Deposit",
+      transactionTypeDesc:"Deposit Creation",iclRequestNo:"22001580",ottkNo:"102988",transactionNo:"TXN100266",
+      dealId:"12002181",startDate:"15-05-2024",noOfDays:90,tradeValue:398000,currency:"USD",
+      bankName:"WESTPAC BANKING CORPORATION",houseBank:"DBS01",accountId:"0720028210",partnerBank:"USD1",
+      entityId:"E025",client:"100",activeActivity:"Yes",activityCategory:"MMDP",productType:"Deposit",
+      refInterestRate:0.80,spreadRate:0.15,status:"Contract"},
+    {companyCode:"AE11",companyName:"Olam Global Agri Pte. Ltd",activityCatName:"Money Market Deposit",
+      transactionTypeDesc:"Deposit Settlement",iclRequestNo:"22001581",ottkNo:"102979",transactionNo:"TXN100260",
+      dealId:"12002170",startDate:"02-08-2024",noOfDays:180,tradeValue:1215000,currency:"USD",
+      bankName:"BANESCO (PANAMA) S.A.",houseBank:"CHAUS",accountId:"816659236",partnerBank:"MUL1",
+      entityId:"E024",client:"100",activeActivity:"Yes",activityCategory:"MMDP",productType:"Deposit",
+      refInterestRate:1.05,spreadRate:0.15,status:"Contract Settlement"},
+    {companyCode:"SG03",companyName:"Olam Global Agri Pte. Ltd",activityCatName:"Money Market Deposit",
+      transactionTypeDesc:"Deposit Creation",iclRequestNo:"22001597",ottkNo:"103018",transactionNo:"TXN100279",
+      dealId:"12002203",startDate:"19-08-2024",noOfDays:180,tradeValue:762000,currency:"USD",
+      bankName:"ABU DHABI COMMERCIAL BANK DUBAI",houseBank:"SCB01",accountId:"0105944491",partnerBank:"USD1",
+      entityId:"E021",client:"100",activeActivity:"Yes",activityCategory:"MMDP",productType:"Deposit",
+      refInterestRate:0.93,spreadRate:0.15,status:"Contract"},
+    {companyCode:"SG03",companyName:"Olam Global Agri Pte. Ltd",activityCatName:"Money Market Deposit",
+      transactionTypeDesc:"Deposit Creation",iclRequestNo:"22001598",ottkNo:"103027",transactionNo:"TXN100284",
+      dealId:"12002211",startDate:"05-09-2024",noOfDays:120,tradeValue:915000,currency:"USD",
+      bankName:"QATAR NATIONAL BANK (QPSC)",houseBank:"JPM01",accountId:"6581117386",partnerBank:"",
+      entityId:"E023",client:"100",activeActivity:"Yes",activityCategory:"MMDP",productType:"Deposit",
+      refInterestRate:0.88,spreadRate:0.15,status:"Contract"}
+  ]
+};
+var DATA=HAS_EXTERNAL_PAYLOAD?CHECK_CONFIRM_PAYLOAD:DEFAULT_DATA;
+var state={selectedTxn:"",listPage:1,pageSize:12,sort:{index:-1,direction:""},editTxn:""};
+var MAIN_COLUMNS=[
+  {key:"companyCode",label:"Company Code",width:100},
+  {key:"activityCatName",label:"Activity Cat. Name",width:150},
+  {key:"transactionTypeDesc",label:"Transaction Type Description",width:170},
+  {key:"iclRequestNo",label:"ICL Request No",width:120},
+  {key:"ottkNo",label:"OTTK No",width:100},
+  {key:"startDate",label:"Start Date",width:105},
+  {key:"endDate",label:"End Date",width:105,compute:function(r){return addDaysDMY(r.startDate,r.noOfDays)}},
+  {key:"transactionNo",label:"Transaction",width:110},
+  {key:"tradeValue",label:"Trade Value",width:120,number:true},
+  {key:"currency",label:"Currency",width:80},
+  {key:"bankName",label:"Bank Name",width:220},
+  {key:"netDepositAmt",label:"Net Deposit Amt",width:130,number:true,compute:function(r){return calcNetDeposit(r)}},
+  {key:"refInterestRate",label:"Ref. Interest Rate",width:120,number:true,rate:true},
+  {key:"interestRate",label:"Interest Rate",width:105,number:true,rate:true,compute:function(r){return calcInterestRate(r)}},
+  {key:"spreadRate",label:"Spread Rate",width:105,number:true,rate:true},
+  {key:"totalInterestAmount",label:"Total Interest Amount",width:150,number:true,compute:function(r){return calcTotalInterest(r)}},
+  {key:"dealId",label:"Deal ID",width:100},
+  {key:"status",label:"Status",width:150,compute:function(r){return r.status},badge:true}
+];
+function byId(id){return document.getElementById(id)}
+function esc(value){
+  var t=String(value==null?"":value);
+  return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")
+}
+function money(value){
+  var n=Number(value||0);
+  var p=n.toFixed(2).split(".");
+  p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,",");
+  return p.join(".")
+}
+function rateFmt(value){var n=Number(value||0);return n.toFixed(4)}
+function setStatus(text){byId("statusText").innerHTML=esc(text)}
+function toast(message,kind){
+  var region=byId("toastRegion"),box=document.createElement("div"),icon=document.createElement("div");
+  var body=document.createElement("div");
+  box.className="toast "+(kind||"");
+  icon.className="toast-icon";
+  icon.innerHTML=kind==="success"?"OK":"i";
+  body.innerHTML='<div class="toast-title">'+(kind==="success"?"Success":kind==="warning"?"Warning":"Information")+
+    '</div><div class="toast-message">'+esc(message)+'</div>';
+  box.appendChild(icon);
+  box.appendChild(body);
+  region.appendChild(box);
+  window.setTimeout(function(){if(box.parentNode){box.parentNode.removeChild(box)}},4200)
+}
+function pad2(n){return (n<10?"0":"")+n}
+function parseDMY(s){
+  var m=String(s||"").match(/^(\d{2})-(\d{2})-(\d{4})$/);
+  if(!m){return null}
+  return new Date(Number(m[3]),Number(m[2])-1,Number(m[1]))
+}
+function formatDMY(d){return pad2(d.getDate())+"-"+pad2(d.getMonth()+1)+"-"+d.getFullYear()}
+function addDaysDMY(s,days){
+  var d=parseDMY(s);
+  if(!d){return s}
+  d.setDate(d.getDate()+Number(days||0));
+  return formatDMY(d)
+}
+function isoToDMY(iso){
+  var m=String(iso||"").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(!m){return iso||""}
+  return m[3]+"-"+m[2]+"-"+m[1]
+}
+function calcInterestRate(r){return (Number(r.refInterestRate)||0)+(Number(r.spreadRate)||0)}
+function calcTotalInterest(r){
+  var rate=calcInterestRate(r),days=Number(r.noOfDays)||0,val=Number(r.tradeValue)||0;
+  return val*rate*days/36000
+}
+function calcNetDeposit(r){return (Number(r.tradeValue)||0)-calcTotalInterest(r)}
+function statusBadgeClass(status){
+  if(status==="Contract Settlement"){return "badge badge-closed"}
+  return "badge badge-open"
+}
+function headerHtml(columns){
+  var html="<tr>",i,c;
+  for(i=0;i<columns.length;i++){
+    c=columns[i];
+    html+='<th data-index="'+i+'" style="width:'+(c.width||110)+'px">'+esc(c.label)+
+      '<span class="sort-arrows"><span class="sort-up"></span><span class="sort-down"></span></span></th>'
+  }
+  return html+"</tr>"
+}
+function bindTableSort(){
+  var ths=document.querySelectorAll("th[data-index]"),i;
+  for(i=0;i<ths.length;i++){
+    ths[i].onclick=function(){sortData(parseInt(this.getAttribute("data-index"),10))}
+  }
+}
+function applySortClass(index,direction){
+  var ths=document.querySelectorAll("th[data-index]"),i;
+  for(i=0;i<ths.length;i++){ths[i].className=""}
+  if(ths[index]){ths[index].className=direction==="asc"?"sort-asc":"sort-desc"}
+}
+function sortData(index){
+  var col=MAIN_COLUMNS[index],direction;
+  direction=state.sort.index===index&&state.sort.direction==="asc"?"desc":"asc";
+  state.sort={index:index,direction:direction};
+  DATA.records.sort(function(a,b){
+    var av=col.compute?col.compute(a):a[col.key],bv=col.compute?col.compute(b):b[col.key];
+    if(col.number){av=Number(av||0);bv=Number(bv||0)}
+    else{av=String(av||"").toLowerCase();bv=String(bv||"").toLowerCase()}
+    if(av<bv){return direction==="asc"?-1:1}
+    if(av>bv){return direction==="asc"?1:-1}
+    return 0
+  });
+  state.listPage=1;
+  renderMainList();
+  applySortClass(index,direction)
+}
+function initSelections(){
+  var cc=byId("ccCompanyCode"),html='<option value="">Select Company Code</option>',i;
+  for(i=0;i<DATA.companyCodes.length;i++){
+    html+='<option value="'+esc(DATA.companyCodes[i].code)+'">'+esc(DATA.companyCodes[i].code)+' - '+
+      esc(DATA.companyCodes[i].name)+'</option>'
+  }
+  cc.innerHTML=html;
+  cc.onchange=onBasicSelectionChange;
+  byId("ccKeyDate").onchange=onBasicSelectionChange;
+  byId("ccKeyDateNative").onchange=function(){
+    if(this.value){byId("ccKeyDate").value=isoToDMY(this.value);onBasicSelectionChange()}
+  }
+}
+function onBasicSelectionChange(){
+  if(byId("ccCompanyCode").value&&byId("ccKeyDate").value){
+    byId("resultsArea").style.display="block";
+    state.listPage=1;
+    renderFilterOptions();
+    renderMainList();
+    setStatus("Records loaded for "+byId("ccCompanyCode").value+" as of "+byId("ccKeyDate").value)
+  }else{
+    byId("resultsArea").style.display="none";
+    state.selectedTxn="";
+    disableActionButtons();
+    setStatus("Enter Company Code and Key Date")
+  }
+}
+function disableActionButtons(){
+  byId("settleBtn").disabled=true;
+  byId("editBtn").disabled=true;
+  byId("viewCalcBtn").disabled=true;
+  byId("approvalBtn").disabled=true
+}
+function baseRowsForCompany(){
+  var cc=byId("ccCompanyCode").value,rows=[],i;
+  for(i=0;i<DATA.records.length;i++){if(DATA.records[i].companyCode===cc){rows.push(DATA.records[i])}}
+  return rows
+}
+function renderFilterOptions(){
+  var rows=baseRowsForCompany();
+  fillDropdown("txnNoFilter",rows,"transactionNo","Transaction No.");
+  fillStatusDropdown()
+}
+function fillDropdown(id,rows,key,placeholder){
+  var sel=byId(id),current=sel.value,seen={},items=[],i,v,html='<option value="">'+esc(placeholder)+'</option>';
+  for(i=0;i<rows.length;i++){v=String(rows[i][key]||"");if(v&&!seen[v]){seen[v]=true;items.push(v)}}
+  items.sort();
+  for(i=0;i<items.length;i++){html+='<option value="'+esc(items[i])+'">'+esc(items[i])+'</option>'}
+  sel.innerHTML=html;
+  if(items.indexOf(current)>=0){sel.value=current}
+}
+function fillStatusDropdown(){
+  var sel=byId("statusFilter"),current=sel.value,html='<option value="">Status</option>',i;
+  for(i=0;i<DATA.statuses.length;i++){html+='<option value="'+esc(DATA.statuses[i])+'">'+esc(DATA.statuses[i])+'</option>'}
+  sel.innerHTML=html;
+  if(DATA.statuses.indexOf(current)>=0){sel.value=current}
+}
+function getFilteredRows(){
+  var rows=baseRowsForCompany();
+  var txn=byId("txnNoFilter").value,status=byId("statusFilter").value,out=[],i,r;
+  var effectiveStatus=status||"Contract";
+  for(i=0;i<rows.length;i++){
+    r=rows[i];
+    if(txn&&r.transactionNo!==txn){continue}
+    if(r.status!==effectiveStatus){continue}
+    out.push(r)
+  }
+  return out
+}
+function renderPagination(totalRows){
+  var bar=byId("paginationBar"),pages=Math.max(1,Math.ceil(totalRows/state.pageSize)),html="",startPage,endPage,p;
+  if(state.listPage>pages){state.listPage=pages}
+  html+='<button class="page-btn" data-page="prev" type="button"'+(state.listPage===1?' disabled="disabled"':'')+
+    '>Previous</button>';
+  startPage=Math.max(1,state.listPage-1);
+  endPage=Math.min(pages,startPage+2);
+  startPage=Math.max(1,endPage-2);
+  for(p=startPage;p<=endPage;p++){
+    html+='<button class="page-btn'+(p===state.listPage?' active':'')+'" data-page="'+p+'" type="button">'+p+'</button>'
+  }
+  html+='<button class="page-btn" data-page="next" type="button"'+(state.listPage===pages?' disabled="disabled"':'')+
+    '>Next</button>';
+  bar.innerHTML=html;
+  bar.onclick=function(e){
+    var target=e.target||e.srcElement,page=target.getAttribute("data-page");
+    if(!page||target.disabled){return}
+    if(page==="prev"){state.listPage-=1}
+    else if(page==="next"){state.listPage+=1}
+    else{state.listPage=parseInt(page,10)||1}
+    renderMainList()
+  }
+}
+function selectedRecord(){
+  var i;
+  for(i=0;i<DATA.records.length;i++){if(DATA.records[i].transactionNo===state.selectedTxn){return DATA.records[i]}}
+  return null
+}
+function renderMainList(){
+  var rows=getFilteredRows(),body=byId("mainBody"),html="",i,j,r,c,val,display,start,end,pageRows;
+  byId("mainHead").innerHTML='<tr><th style="width:42px">Select</th>'+
+    headerHtml(MAIN_COLUMNS).replace(/^<tr>/,"").replace(/<\/tr>$/,"")+"</tr>";
+  start=(state.listPage-1)*state.pageSize;
+  end=Math.min(start+state.pageSize,rows.length);
+  pageRows=rows.slice(start,end);
+  for(i=0;i<pageRows.length;i++){
+    r=pageRows[i];
+    html+='<tr data-record="'+esc(r.transactionNo)+'"'+(r.transactionNo===state.selectedTxn?' class="selected"':'')+'>'+
+      '<td><input type="radio" name="recordPick" value="'+esc(r.transactionNo)+'"'+
+      (r.transactionNo===state.selectedTxn?' checked':'')+'></td>';
+    for(j=0;j<MAIN_COLUMNS.length;j++){
+      c=MAIN_COLUMNS[j];
+      val=c.compute?c.compute(r):r[c.key];
+      if(c.badge){display='<span class="'+statusBadgeClass(val)+'">'+esc(val)+'</span>'}
+      else if(c.rate){display=esc(rateFmt(val))}
+      else if(c.number){display=esc(money(val))}
+      else{display=esc(val)}
+      html+='<td class="'+(c.number?"number":"")+'">'+display+'</td>'
+    }
+    html+="</tr>"
+  }
+  if(!html){html='<tr><td colspan="'+(MAIN_COLUMNS.length+1)+'" class="empty">No records match the current filters.</td></tr>'}
+  body.innerHTML=html;
+  byId("rowCountMeta").innerHTML=esc(rows.length+" record(s)");
+  if(!selectedRecord()){state.selectedTxn="";disableActionButtons()}
+  renderPagination(rows.length);
+  bindTableSort()
+}
+byId("filterToggle").onclick=function(){
+  var body=byId("filterBody"),open=body.className.indexOf("open")>=0;
+  body.className=open?"filter-body":"filter-body open"
+};
+function refreshFromFilters(){
+  if(!byId("ccCompanyCode").value||!byId("ccKeyDate").value){return}
+  state.listPage=1;
+  renderMainList()
+}
+byId("txnNoFilter").onchange=refreshFromFilters;
+byId("statusFilter").onchange=refreshFromFilters;
+byId("clearFilters").onclick=function(){
+  byId("txnNoFilter").value="";
+  byId("statusFilter").value="";
+  refreshFromFilters()
+};
+byId("mainBody").onclick=function(e){
+  var target=e.target||e.srcElement,row=target;
+  while(row&&row.tagName&&row.tagName.toLowerCase()!=="tr"){row=row.parentNode}
+  if(!row){return}
+  var txn=row.getAttribute("data-record");
+  if(!txn){return}
+  state.selectedTxn=txn;
+  var trs=byId("mainBody").getElementsByTagName("tr"),i,radio;
+  for(i=0;i<trs.length;i++){trs[i].className=""}
+  row.className="selected";
+  radio=row.getElementsByTagName("input")[0];
+  if(radio){radio.checked=true}
+  byId("settleBtn").disabled=false;
+  byId("editBtn").disabled=false;
+  byId("viewCalcBtn").disabled=false;
+  byId("approvalBtn").disabled=!!selectedRecord().sentForApproval
+};
+byId("settleBtn").onclick=function(){
+  var r=selectedRecord();
+  if(!r){return}
+  if(r.status==="Contract Settlement"){toast("This deposit is already settled.","warning");return}
+  byId("confirmMessage").innerHTML='<div class="confirm-text">Are you sure you want to confirm/settle this deposit?</div>';
+  byId("confirmModal").className="modal-bg open"
+};
+byId("confirmClose").onclick=function(){byId("confirmModal").className="modal-bg"};
+byId("confirmNo").onclick=function(){byId("confirmModal").className="modal-bg"};
+byId("confirmYes").onclick=function(){
+  var r=selectedRecord();
+  byId("confirmModal").className="modal-bg";
+  if(!r){return}
+  r.status="Contract Settlement";
+  toast("Deposit "+r.transactionNo+" has been settled successfully.","success");
+  setStatus("Deposit "+r.transactionNo+" settled");
+  state.selectedTxn="";
+  disableActionButtons();
+  renderMainList()
+};
+byId("viewCalcBtn").onclick=function(){
+  var r=selectedRecord();
+  if(!r){return}
+  byId("calcBody").innerHTML='<div class="detail-grid">'+
+    calcRow("Transaction",r.transactionNo)+
+    calcRow("Trade Value",money(r.tradeValue)+" "+r.currency)+
+    calcRow("Ref. Interest Rate",rateFmt(r.refInterestRate)+" %")+
+    calcRow("Spread Rate",rateFmt(r.spreadRate)+" %")+
+    calcRow("Interest Rate",rateFmt(calcInterestRate(r))+" %")+
+    calcRow("No Of Days",String(r.noOfDays))+
+    calcRow("Total Interest Amount",money(calcTotalInterest(r))+" "+r.currency)+
+    calcRow("Net Deposit Amt",money(calcNetDeposit(r))+" "+r.currency)+
+    '</div>';
+  byId("calcModal").className="modal-bg open"
+};
+function calcRow(label,value){
+  return '<div class="detail-line"><div class="detail-label">'+esc(label)+'</div>'+
+    '<div class="detail-value size-md"><span class="code">'+esc(value)+'</span></div></div>'
+}
+byId("calcClose").onclick=function(){byId("calcModal").className="modal-bg"};
+byId("calcOkay").onclick=function(){byId("calcModal").className="modal-bg"};
+byId("approvalBtn").onclick=function(){
+  var r=selectedRecord();
+  if(!r){return}
+  r.sentForApproval=true;
+  byId("approvalBtn").disabled=true;
+  toast("Approval request for "+r.transactionNo+" has been sent to the approver.","success");
+  setStatus("Approval requested for "+r.transactionNo)
+};
+byId("editBtn").onclick=function(){
+  var r=selectedRecord();
+  if(!r){return}
+  state.editTxn=r.transactionNo;
+  renderEditModal(r);
+  byId("editModal").className="modal-bg open"
+};
+function renderEditModal(r){
+  byId("editSummary").innerHTML='<div class="detail-grid">'+
+    calcRow("Transaction",r.transactionNo)+
+    calcRow("Company Code",r.companyCode)+
+    calcRow("Bank Name",r.bankName)+
+    calcRow("Currency",r.currency)+
+    '</div>';
+  byId("editHead").innerHTML=headerHtml([
+    {label:"Trade Value",width:130},{label:"Start Date",width:110},{label:"Ref. Interest Rate",width:130},
+    {label:"Spread Rate",width:110},{label:"No Of Days",width:100},{label:"Net Deposit Amt",width:140}
+  ]);
+  byId("editBody").innerHTML='<tr>'+
+    '<td class="editable"><input id="editTradeValue" class="cell-input money" type="text" value="'+money(r.tradeValue)+'"></td>'+
+    '<td class="editable"><input id="editStartDate" class="cell-input" type="text" value="'+esc(r.startDate)+'"></td>'+
+    '<td class="editable"><input id="editRefRate" class="cell-input money" type="text" value="'+rateFmt(r.refInterestRate)+'"></td>'+
+    '<td class="editable"><input id="editSpreadRate" class="cell-input money" type="text" value="'+rateFmt(r.spreadRate)+'"></td>'+
+    '<td class="editable"><input id="editNoOfDays" class="cell-input" type="text" value="'+esc(r.noOfDays)+'"></td>'+
+    '<td id="editNetDeposit" class="money">'+money(calcNetDeposit(r))+'</td></tr>';
+  var ids=["editTradeValue","editRefRate","editSpreadRate","editNoOfDays"],i;
+  for(i=0;i<ids.length;i++){byId(ids[i]).onchange=recalcEditRow}
+}
+function recalcEditRow(){
+  var trade=Number(byId("editTradeValue").value.replace(/,/g,""))||0;
+  var ref=Number(byId("editRefRate").value)||0;
+  var spread=Number(byId("editSpreadRate").value)||0;
+  var days=Number(byId("editNoOfDays").value)||0;
+  var temp={tradeValue:trade,refInterestRate:ref,spreadRate:spread,noOfDays:days};
+  byId("editNetDeposit").innerHTML=money(calcNetDeposit(temp))
+}
+byId("editClose").onclick=function(){byId("editModal").className="modal-bg"};
+byId("editCancel").onclick=function(){byId("editModal").className="modal-bg"};
+byId("editSave").onclick=function(){
+  var r=selectedRecord();
+  if(!r){return}
+  r.tradeValue=Number(byId("editTradeValue").value.replace(/,/g,""))||0;
+  r.refInterestRate=Number(byId("editRefRate").value)||0;
+  r.spreadRate=Number(byId("editSpreadRate").value)||0;
+  r.noOfDays=Number(byId("editNoOfDays").value)||0;
+  var iso=byId("editStartDate").value;
+  if(parseDMY(iso)){r.startDate=iso}
+  byId("editModal").className="modal-bg";
+  toast("Deposit "+r.transactionNo+" details updated successfully.","success");
+  setStatus("Deposit "+r.transactionNo+" updated");
+  renderMainList()
+};
+document.onkeydown=function(e){
+  var x=e||window.event;
+  if(x.keyCode===27){
+    byId("editModal").className="modal-bg";
+    byId("calcModal").className="modal-bg";
+    byId("confirmModal").className="modal-bg"
+  }
+  return true
+};
+byId("refreshBtn").onclick=function(){location.reload()};
+initSelections();
+byId("statusText").innerHTML="Ready - "+VERSION;
+})();
+</script>
+</body>
+</html>

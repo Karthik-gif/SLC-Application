@@ -1,0 +1,759 @@
+/* Original stylesheet of Check_Confirm_Prepayment_Modern_v2 (3).html, scoped under .ccprepayment.
+ * Generated — every declaration is byte-identical to the legacy page; only selectors are
+ * prefixed and @keyframes renamed, so each converted app keeps its exact original look
+ * while several can coexist in one SPA. Do not hand-edit; re-run tools/scope-css.mjs.
+ */
+.ccprepayment {
+  margin:0;
+  width:100%;
+  height:100%;
+  background:#fbfdff;
+  color:#1d2d3e;
+  font-family:"Inter","Segoe UI",Arial,sans-serif;
+  font-size:12px;
+}
+.ccprepayment *, .ccprepayment {box-sizing:border-box}
+.ccprepayment button, .ccprepayment input, .ccprepayment select, .ccprepayment table, .ccprepayment th, .ccprepayment td, .ccprepayment div, .ccprepayment span, .ccprepayment label {
+  font-family:"Inter","Segoe UI",Arial,sans-serif;
+}
+.ccprepayment button {cursor:pointer}
+.ccprepayment button:disabled {cursor:default;opacity:.55}
+.ccprepayment .required {color:#bb0000}
+.ccprepayment .shell {
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  background:#fbfdff;
+}
+.ccprepayment .topbar {
+  height:48px;
+  flex:0 0 48px;
+  background:#fff;
+  border-bottom:1px solid #d9d9d9;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);
+}
+.ccprepayment .topbar-inner {
+  height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+}
+.ccprepayment .title {
+  font-size:16px;
+  font-weight:600;
+  color:#1d2d3e;
+}
+.ccprepayment .content {
+  flex:1 1 auto;
+  min-height:0;
+  padding:10px 14px 28px;
+  overflow:hidden;
+}
+.ccprepayment .screen {
+  max-width:1600px;
+  height:100%;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+}
+.ccprepayment .card {
+  margin-bottom:10px;
+  background:#fff;
+  border:1px solid #e1e6ea;
+  border-radius:8px;
+  box-shadow:0 1px 4px rgba(29,45,62,.04);
+}
+.ccprepayment .card-head {
+  min-height:34px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:7px 12px;
+  background:#fafcfe;
+  border-bottom:1px solid #e5e9ed;
+  border-radius:8px 8px 0 0;
+}
+.ccprepayment .card-title {
+  font-size:12px;
+  font-weight:600;
+  color:#1d2d3e;
+}
+.ccprepayment .card-meta {
+  font-size:11px;
+  color:#6a6d70;
+}
+.ccprepayment .card-body {padding:12px}
+.ccprepayment .selection-main-row {
+  display:flex;
+  align-items:flex-end;
+  gap:14px;
+  flex-wrap:nowrap;
+}
+.ccprepayment .field-inline {
+  display:flex;
+  align-items:center;
+  gap:9px;
+  flex:0 0 auto;
+}
+.ccprepayment .field-inline label {
+  color:#1d2d3e;
+  font-size:12px;
+  font-weight:400;
+  white-space:nowrap;
+}
+.ccprepayment .input, .ccprepayment .select {
+  height:30px;
+  padding:4px 8px;
+  border:1px solid #b8b8b8;
+  border-radius:4px;
+  background:#fff;
+  color:#1d2d3e;
+  font-size:12px;
+}
+.ccprepayment .input:focus, .ccprepayment .select:focus {
+  outline:0;
+  border-color:#0a6ed1;
+  box-shadow:0 0 0 1px #0a6ed1;
+}
+.ccprepayment .company-select {width:220px}
+.ccprepayment .date-shell {
+  position:relative;
+  width:178px;
+}
+.ccprepayment .date-input {
+  width:178px;
+  padding-right:34px;
+}
+.ccprepayment .calendar-btn {
+  position:absolute;
+  right:1px;
+  top:1px;
+  width:29px;
+  height:28px;
+  padding:0;
+  border:0;
+  border-left:1px solid #d9d9d9;
+  background:#fff;
+}
+.ccprepayment .calendar-btn:before {
+  content:"";
+  position:absolute;
+  left:8px;
+  top:7px;
+  width:13px;
+  height:13px;
+  border:1px solid #556b82;
+  border-radius:2px;
+}
+.ccprepayment .calendar-btn:after {
+  content:"";
+  position:absolute;
+  left:10px;
+  top:5px;
+  width:9px;
+  height:5px;
+  border-left:2px solid #556b82;
+  border-right:2px solid #556b82;
+  border-bottom:1px solid #556b82;
+}
+.ccprepayment .filter-icon-btn {
+  width:30px;
+  height:30px;
+  padding:0;
+  border:1px solid #b8b8b8;
+  border-radius:4px;
+  background:#fff;
+  position:relative;
+  flex:0 0 30px;
+}
+.ccprepayment .filter-icon-btn:hover {
+  background:#f7f8f9;
+  border-color:#0a6ed1;
+}
+.ccprepayment .filter-icon-btn:before {
+  content:"";
+  position:absolute;
+  left:8px;
+  top:7px;
+  width:0;
+  height:0;
+  border-left:7px solid transparent;
+  border-right:7px solid transparent;
+  border-top:9px solid #556b82;
+}
+.ccprepayment .filter-icon-btn:after {
+  content:"";
+  position:absolute;
+  left:13px;
+  top:14px;
+  width:3px;
+  height:7px;
+  background:#556b82;
+}
+.ccprepayment .filter-body {
+  display:none;
+  margin:0;
+  padding:0;
+  border:0;
+  min-width:0;
+}
+.ccprepayment .filter-body.open {display:flex}
+.ccprepayment .filter-grid {
+  display:flex;
+  align-items:flex-end;
+  gap:12px;
+  flex-wrap:nowrap;
+  min-width:0;
+}
+.ccprepayment .filter-item {
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:4px;
+  min-width:0;
+}
+.ccprepayment .filter-item label {
+  color:#1d2d3e;
+  font-size:12px;
+  font-weight:400;
+  white-space:nowrap;
+}
+.ccprepayment .transaction-filter {width:165px}
+.ccprepayment .status-filter {width:170px}
+.ccprepayment .combo-shell {
+  position:relative;
+  width:165px;
+}
+.ccprepayment .combo-input {
+  width:165px;
+  padding-right:30px;
+}
+.ccprepayment .combo-btn {
+  position:absolute;
+  right:1px;
+  top:1px;
+  width:28px;
+  height:28px;
+  padding:0;
+  border:0;
+  border-left:1px solid #d9d9d9;
+  background:#fff;
+}
+.ccprepayment .combo-btn:after {
+  content:"";
+  position:absolute;
+  left:9px;
+  top:11px;
+  width:0;
+  height:0;
+  border-left:5px solid transparent;
+  border-right:5px solid transparent;
+  border-top:6px solid #556b82;
+}
+.ccprepayment .combo-list {
+  display:none;
+  position:absolute;
+  left:0;
+  right:0;
+  top:31px;
+  z-index:1700;
+  max-height:190px;
+  overflow:auto;
+  background:#fff;
+  border:1px solid #b8b8b8;
+  border-radius:4px;
+  box-shadow:0 4px 12px rgba(0,0,0,.12);
+}
+.ccprepayment .combo-list.open {display:block}
+.ccprepayment .combo-option {
+  width:100%;
+  min-height:30px;
+  padding:6px 8px;
+  border:0;
+  border-bottom:1px solid #edf0f2;
+  background:#fff;
+  color:#1d2d3e;
+  text-align:left;
+  font-size:12px;
+}
+.ccprepayment .combo-option:hover {background:#f2f8fd}
+.ccprepayment .combo-empty {
+  padding:8px;
+  color:#6a6d70;
+  font-size:11px;
+}
+.ccprepayment .btn {
+  height:30px;
+  padding:0 12px;
+  border:1px solid #d1e8ff;
+  border-radius:4px;
+  background:#eaf3fc;
+  color:#004b93;
+  font-size:12px;
+  font-weight:600;
+}
+.ccprepayment .btn:hover {
+  background:#d1e8ff;
+  border-color:#0a6ed1;
+  color:#0854a0;
+}
+.ccprepayment .btn-primary {
+  background:#0a6ed1;
+  border-color:#0a6ed1;
+  color:#fff;
+}
+.ccprepayment .btn-primary:hover {
+  background:#0854a0;
+  border-color:#0854a0;
+  color:#fff;
+}
+.ccprepayment .btn-ghost {
+  background:#fff;
+  border-color:#d9d9d9;
+  color:#1d2d3e;
+}
+.ccprepayment .btn-ghost:hover {
+  background:#f7f8f9;
+  border-color:#b8b8b8;
+  color:#1d2d3e;
+}
+.ccprepayment #resultsArea {
+  display:none;
+  min-height:0;
+  flex:1 1 auto;
+  flex-direction:column;
+}
+.ccprepayment #resultsArea.open {display:flex}
+.ccprepayment .toolbar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  min-height:36px;
+  margin-bottom:8px;
+}
+.ccprepayment .toolbar-left, .ccprepayment .toolbar-right {
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.ccprepayment .record-count {
+  color:#6a6d70;
+  font-size:11px;
+}
+.ccprepayment .table-card {
+  overflow:hidden;
+  min-height:0;
+  flex:1 1 auto;
+  display:flex;
+  flex-direction:column;
+}
+.ccprepayment .table-wrap {
+  width:100%;
+  min-height:0;
+  overflow:auto;
+  background:#fff;
+  flex:1 1 auto;
+}
+.ccprepayment .data-table {
+  width:100%;
+  min-width:1420px;
+  border-collapse:separate;
+  border-spacing:0;
+  font-size:12px;
+}
+.ccprepayment .data-table th {
+  position:sticky;
+  top:0;
+  z-index:2;
+  height:34px;
+  padding:6px 24px 6px 8px;
+  background:#f5f8fa;
+  color:#1d2d3e;
+  border-right:1px solid #d9d9d9;
+  border-bottom:1px solid #c7d4e0;
+  text-align:left;
+  font-weight:600;
+  white-space:nowrap;
+}
+.ccprepayment .data-table td {
+  height:34px;
+  padding:4px 8px;
+  background:#fff;
+  border-right:1px solid #e7ebee;
+  border-bottom:1px solid #e7ebee;
+  white-space:nowrap;
+  color:#1d2d3e;
+}
+.ccprepayment .data-table tbody tr[data-id] {cursor:pointer}
+.ccprepayment .data-table tbody tr:hover td {background:#f2f8fd}
+.ccprepayment .data-table tbody tr.selected td {background:#eaf3fc}
+.ccprepayment .data-table tbody tr.settled td {color:#556b82}
+.ccprepayment .data-table tbody tr.settled.selected td {background:#eef5ef}
+.ccprepayment .data-table .number {
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+.ccprepayment .select-cell {text-align:center}
+.ccprepayment .sort-arrows {
+  position:absolute;
+  top:9px;
+  right:8px;
+  width:8px;
+  height:15px;
+}
+.ccprepayment .sort-up, .ccprepayment .sort-down {
+  position:absolute;
+  left:0;
+  width:0;
+  height:0;
+  border-left:4px solid transparent;
+  border-right:4px solid transparent;
+}
+.ccprepayment .sort-up {
+  top:0;
+  border-bottom:5px solid #9aa7b4;
+}
+.ccprepayment .sort-down {
+  bottom:0;
+  border-top:5px solid #9aa7b4;
+}
+.ccprepayment th.sort-asc .sort-up {border-bottom-color:#0a6ed1}
+.ccprepayment th.sort-desc .sort-down {border-top-color:#0a6ed1}
+.ccprepayment .pagination-bar {
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:5px;
+  min-height:44px;
+  padding:8px 10px;
+  background:#fff;
+  border-top:1px solid #e5e9ed;
+}
+.ccprepayment .page-btn {
+  min-width:30px;
+  height:28px;
+  padding:0 8px;
+  border:1px solid #d9d9d9;
+  border-radius:4px;
+  background:#fff;
+  color:#1d2d3e;
+  font-size:11px;
+}
+.ccprepayment .page-btn:hover {
+  background:#f7f8f9;
+  border-color:#b8b8b8;
+}
+.ccprepayment .page-btn.active {
+  background:#eaf3fc;
+  border-color:#0a6ed1;
+  color:#004b93;
+  font-weight:600;
+}
+.ccprepayment .page-btn:disabled {
+  background:#f7f8f9;
+  color:#9aa7b4;
+}
+.ccprepayment .empty {
+  padding:28px!important;
+  text-align:center!important;
+  color:#6a6d70!important;
+}
+.ccprepayment .modal-bg {
+  display:none;
+  position:fixed;
+  left:0;
+  top:0;
+  right:0;
+  bottom:0;
+  z-index:2000;
+  background:rgba(29,45,62,.30);
+  padding:18px;
+  overflow:auto;
+}
+.ccprepayment .modal-bg.open {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.ccprepayment .modal {
+  width:100%;
+  max-width:500px;
+  margin:0;
+  background:#fff;
+  border:1px solid #d9d9d9;
+  border-radius:8px;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
+  overflow:hidden;
+}
+.ccprepayment .modal-head {
+  height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 14px;
+  background:#eaf3fc;
+  border-bottom:1px solid #d1e8ff;
+}
+.ccprepayment .modal-title {
+  font-size:13px;
+  font-weight:600;
+}
+.ccprepayment .modal-close {
+  width:28px;
+  height:28px;
+  border:1px solid #d9d9d9;
+  border-radius:4px;
+  background:#fff;
+  color:#556b82;
+}
+.ccprepayment .modal-body {padding:14px}
+.ccprepayment .modal-foot {
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:7px;
+  padding:10px 14px;
+  background:#f7f8f9;
+  border-top:1px solid #d9d9d9;
+}
+.ccprepayment .confirm-copy {
+  line-height:18px;
+  color:#1d2d3e;
+}
+.ccprepayment .toast-region {
+  position:fixed;
+  right:22px;
+  bottom:28px;
+  z-index:4000;
+  width:350px;
+  max-width:calc(100% - 44px);
+}
+.ccprepayment .toast {
+  display:flex;
+  gap:10px;
+  margin-top:8px;
+  padding:12px 14px;
+  background:#f2f4f5;
+  border:1px solid #d9d9d9;
+  border-left:3px solid #107e3e;
+  border-radius:4px;
+  box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+.ccprepayment .toast-icon {
+  width:24px;
+  height:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:#ebf5eb;
+  color:#107e3e;
+  font-weight:600;
+}
+.ccprepayment .toast-title {
+  margin-bottom:2px;
+  font-size:12px;
+  font-weight:600;
+}
+.ccprepayment .toast-message {
+  color:#556b82;
+  font-size:12px;
+  line-height:17px;
+}
+.ccprepayment .statusbar {
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  height:20px;
+  display:flex;
+  align-items:center;
+  padding:0 12px;
+  background:#fff;
+  border-top:1px solid #e1e6ea;
+  color:#6a6d70;
+  font-size:11px;
+  z-index:900;
+}
+.ccprepayment .status-dot {
+  width:7px;
+  height:7px;
+  margin-right:6px;
+  border-radius:50%;
+  background:#0a6ed1;
+}
+.ccprepayment .calendar-popup {
+  display:none;
+  position:absolute;
+  z-index:1500;
+  top:34px;
+  right:0;
+  width:274px;
+  background:#fff;
+  border:1px solid #c8c8c8;
+  border-radius:2px;
+  box-shadow:0 4px 14px rgba(0,0,0,.16);
+  overflow:hidden;
+}
+.ccprepayment .calendar-popup.open {display:block}
+.ccprepayment .calendar-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:50px;
+  padding:0 10px 0 14px;
+  background:#fff;
+}
+.ccprepayment .cal-title-btn {
+  position:relative;
+  height:32px;
+  padding:0 16px 0 0;
+  border:0;
+  background:#fff;
+  color:#111;
+  font-size:12px;
+  font-weight:600;
+  text-align:left;
+}
+.ccprepayment .cal-title-btn:after {
+  content:"";
+  position:absolute;
+  right:3px;
+  top:14px;
+  width:0;
+  height:0;
+  border-left:4px solid transparent;
+  border-right:4px solid transparent;
+  border-top:5px solid #556b82;
+}
+.ccprepayment .cal-navs {
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.ccprepayment .cal-nav {
+  position:relative;
+  width:26px;
+  height:30px;
+  padding:0;
+  border:0;
+  background:#fff;
+}
+.ccprepayment .cal-nav:before {
+  content:"";
+  position:absolute;
+  left:8px;
+  width:10px;
+  height:10px;
+  border-left:1px solid #1d2d3e;
+}
+.ccprepayment .cal-nav-up:before {
+  top:11px;
+  border-top:1px solid #1d2d3e;
+  transform:rotate(45deg);
+}
+.ccprepayment .cal-nav-down:before {
+  top:7px;
+  border-bottom:1px solid #1d2d3e;
+  transform:rotate(-45deg);
+}
+.ccprepayment .calendar-weekdays, .ccprepayment .calendar-days {
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  padding:0 12px;
+}
+.ccprepayment .calendar-weekdays span {
+  height:28px;
+  line-height:28px;
+  text-align:center;
+  color:#111;
+  font-size:11px;
+}
+.ccprepayment .calendar-day {
+  height:36px;
+  border:0;
+  background:#fff;
+  color:#111;
+  font-size:11px;
+}
+.ccprepayment .calendar-day:hover {background:#edf5fc}
+.ccprepayment .calendar-day.other-month {color:#8a949e}
+.ccprepayment .calendar-day.selected {
+  background:#6a6d70;
+  color:#fff;
+  border:1px solid #1d2d3e;
+}
+.ccprepayment .calendar-foot {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:46px;
+  padding:0 14px;
+  border-top:1px solid #e5e9ed;
+}
+.ccprepayment .cal-link {
+  border:0;
+  background:#fff;
+  color:#0a6ed1;
+  font-size:11px;
+  padding:4px 0;
+}
+.ccprepayment .year-panel {
+  max-height:315px;
+  overflow-y:auto;
+  border-top:1px solid #edf0f2;
+}
+.ccprepayment .year-row {
+  min-height:34px;
+  border-bottom:1px solid #d9d9d9;
+  background:#f4f4f4;
+}
+.ccprepayment .year-btn {
+  width:100%;
+  height:34px;
+  padding:0 10px;
+  border:0;
+  background:#f4f4f4;
+  color:#1d2d3e;
+  text-align:left;
+  font-size:12px;
+}
+.ccprepayment .year-row.active .year-btn {font-weight:600}
+.ccprepayment .month-grid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  padding:4px 5px 8px;
+  background:#fff;
+}
+.ccprepayment .month-btn {
+  height:36px;
+  border:0;
+  background:#fff;
+  color:#111;
+  font-size:11px;
+}
+.ccprepayment .month-btn:hover {background:#edf5fc}
+.ccprepayment .month-btn.selected {
+  background:#6a6d70;
+  color:#fff;
+  border:1px solid #1d2d3e;
+}
+@media screen and (max-width:1180px) {
+.ccprepayment .selection-main-row {flex-wrap:wrap}
+.ccprepayment .filter-grid {flex-wrap:wrap}
+}
+@media screen and (max-width:720px) {
+.ccprepayment .content {padding-left:8px;padding-right:8px}
+.ccprepayment .topbar-inner {padding:0 10px}
+.ccprepayment .selection-main-row {align-items:flex-start}
+.ccprepayment .field-inline {width:100%;justify-content:space-between}
+.ccprepayment .company-select, .ccprepayment .date-shell, .ccprepayment .date-input {width:210px}
+.ccprepayment .filter-body.open {width:100%}
+.ccprepayment .filter-grid {width:100%;flex-direction:column;align-items:stretch}
+.ccprepayment .filter-item {width:100%;align-items:stretch}
+.ccprepayment .combo-shell, .ccprepayment .combo-input, .ccprepayment .transaction-filter, .ccprepayment .status-filter {width:100%}
+.ccprepayment .toolbar {align-items:flex-start;gap:6px;flex-direction:column}
+.ccprepayment .toolbar-right {width:100%;justify-content:flex-end}
+}

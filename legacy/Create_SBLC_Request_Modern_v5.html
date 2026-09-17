@@ -1,0 +1,4068 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Create SBLC Request</title>
+<style type="text/css">
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  background:#f5f7f9;
+  color:#1d2d3e;
+  font-family:"72","Segoe UI",Arial,sans-serif;
+  font-size:13px;
+}
+*{box-sizing:border-box}
+button,input,select,table,th,td,div,span,label{
+  font-family:"72","Segoe UI",Arial,sans-serif;
+}
+button{cursor:pointer}
+button:disabled{cursor:default;opacity:.55}
+.required{color:#bb0000}
+.shell{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  background:#f5f7f9;
+}
+.topbar{
+  height:48px;
+  flex:0 0 48px;
+  background:#fff;
+  border-bottom:1px solid #d9d9d9;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);
+}
+.topbar-inner{
+  height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+}
+.title{
+  font-size:16px;
+  font-weight:600;
+  color:#1d2d3e;
+}
+.content{
+  flex:1 1 auto;
+  min-height:0;
+  padding:10px 14px 28px;
+  overflow:hidden;
+}
+.screen{
+  max-width:1600px;
+  height:100%;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+}
+.card{
+  margin-bottom:10px;
+  background:#fff;
+  border:1px solid #e1e6ea;
+  border-radius:8px;
+  box-shadow:0 1px 4px rgba(29,45,62,.04);
+}
+.card-head{
+  min-height:34px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:7px 12px;
+  background:#fafcfe;
+  border-bottom:1px solid #e5e9ed;
+  border-radius:8px 8px 0 0;
+}
+.card-title{
+  font-size:12px;
+  font-weight:600;
+  color:#1d2d3e;
+}
+.card-meta{
+  font-size:11px;
+  color:#6a6d70;
+}
+.card-body{padding:12px}
+.selection-main-row{
+  display:flex;
+  align-items:flex-end;
+  gap:14px;
+  flex-wrap:nowrap;
+}
+.field-inline{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  flex:0 0 auto;
+}
+.field-inline label{
+  color:#1d2d3e;
+  font-size:12px;
+  font-weight:400;
+  white-space:nowrap;
+}
+.input,.select{
+  height:30px;
+  padding:4px 8px;
+  border:1px solid #b8b8b8;
+  border-radius:4px;
+  background:#fff;
+  color:#1d2d3e;
+  font-size:12px;
+}
+.input:focus,.select:focus{
+  outline:0;
+  border-color:#0a6ed1;
+  box-shadow:0 0 0 1px #0a6ed1;
+}
+.structure-select{width:190px}
+.ottk-select{width:170px}
+.filter-icon-btn{
+  width:30px;
+  height:30px;
+  padding:0;
+  border:1px solid #b8b8b8;
+  border-radius:4px;
+  background:#fff;
+  position:relative;
+  flex:0 0 30px;
+}
+.filter-icon-btn:hover{
+  background:#f7f8f9;
+  border-color:#0a6ed1;
+}
+.filter-icon-btn:before{
+  content:"";
+  position:absolute;
+  left:8px;
+  top:7px;
+  width:0;
+  height:0;
+  border-left:7px solid transparent;
+  border-right:7px solid transparent;
+  border-top:9px solid #556b82;
+}
+.filter-icon-btn:after{
+  content:"";
+  position:absolute;
+  left:13px;
+  top:14px;
+  width:3px;
+  height:7px;
+  background:#556b82;
+}
+.filter-body{
+  display:none;
+  margin:0;
+  padding:0;
+  border:0;
+  min-width:0;
+}
+.filter-body.open{display:flex}
+.filter-grid{
+  display:flex;
+  align-items:flex-end;
+  gap:12px;
+  flex-wrap:nowrap;
+  min-width:0;
+}
+.filter-item{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:4px;
+  min-width:0;
+}
+.filter-item label{
+  color:#1d2d3e;
+  font-size:12px;
+  font-weight:400;
+  white-space:nowrap;
+}
+.status-filter{width:195px}
+.status-combo{width:255px}
+.status-combo .combo-input{width:100%}
+.status-combo .combo-list{
+  width:255px;
+  right:auto;
+  overflow-x:hidden;
+  overflow-y:auto;
+}
+.status-combo .combo-option{white-space:nowrap}
+.combo-shell{
+  position:relative;
+  width:150px;
+}
+.combo-input{
+  width:150px;
+  padding-right:30px;
+}
+.combo-btn{
+  position:absolute;
+  right:1px;
+  top:1px;
+  width:28px;
+  height:28px;
+  padding:0;
+  border:0;
+  border-left:1px solid #d9d9d9;
+  background:#fff;
+}
+.combo-btn:after{
+  content:"";
+  position:absolute;
+  left:9px;
+  top:11px;
+  width:0;
+  height:0;
+  border-left:5px solid transparent;
+  border-right:5px solid transparent;
+  border-top:6px solid #556b82;
+}
+.combo-list{
+  display:none;
+  position:absolute;
+  left:0;
+  right:0;
+  top:31px;
+  z-index:1700;
+  max-height:190px;
+  overflow:auto;
+  background:#fff;
+  border:1px solid #b8b8b8;
+  border-radius:4px;
+  box-shadow:0 4px 12px rgba(0,0,0,.12);
+}
+.combo-list.open{display:block}
+.combo-option{
+  width:100%;
+  min-height:30px;
+  padding:6px 8px;
+  border:0;
+  border-bottom:1px solid #edf0f2;
+  background:#fff;
+  color:#1d2d3e;
+  text-align:left;
+  font-size:12px;
+}
+.combo-option:hover{background:#f2f8fd}
+.combo-empty{
+  padding:8px;
+  color:#6a6d70;
+  font-size:11px;
+}
+.btn{
+  height:30px;
+  padding:0 12px;
+  border:1px solid #d1e8ff;
+  border-radius:4px;
+  background:#eaf3fc;
+  color:#004b93;
+  font-size:12px;
+  font-weight:600;
+}
+.btn:hover{
+  background:#d1e8ff;
+  border-color:#0a6ed1;
+  color:#0854a0;
+}
+.btn-primary{
+  background:#0a6ed1;
+  border-color:#0a6ed1;
+  color:#fff;
+}
+.btn-primary:hover{
+  background:#0854a0;
+  border-color:#0854a0;
+  color:#fff;
+}
+.btn-ghost{
+  background:#fff;
+  border-color:#d9d9d9;
+  color:#1d2d3e;
+}
+.btn-ghost:hover{
+  background:#f7f8f9;
+  border-color:#b8b8b8;
+  color:#1d2d3e;
+}
+#resultsArea{
+  display:none;
+  min-height:0;
+  flex:1 1 auto;
+  flex-direction:column;
+}
+#resultsArea.open{display:flex}
+.toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  min-height:36px;
+  margin-bottom:8px;
+}
+.toolbar-left,.toolbar-right{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.record-count{
+  color:#6a6d70;
+  font-size:11px;
+}
+.table-card{
+  overflow:hidden;
+  min-height:0;
+  flex:1 1 auto;
+  display:flex;
+  flex-direction:column;
+}
+.table-wrap{
+  width:100%;
+  min-height:0;
+  overflow:auto;
+  background:#fff;
+  flex:1 1 auto;
+}
+.data-table{
+  width:100%;
+  min-width:1850px;
+  border-collapse:separate;
+  border-spacing:0;
+  font-size:12px;
+}
+.data-table th{
+  position:sticky;
+  top:0;
+  z-index:2;
+  height:34px;
+  padding:6px 24px 6px 8px;
+  background:#f5f8fa;
+  color:#1d2d3e;
+  border-right:1px solid #d9d9d9;
+  border-bottom:1px solid #c7d4e0;
+  text-align:left;
+  font-weight:600;
+  white-space:nowrap;
+}
+.data-table td{
+  height:34px;
+  padding:4px 8px;
+  background:#fff;
+  border-right:1px solid #e7ebee;
+  border-bottom:1px solid #e7ebee;
+  white-space:nowrap;
+  color:#1d2d3e;
+}
+.data-table tbody tr[data-id]{cursor:pointer}
+.data-table tbody tr:hover td{background:#f2f8fd}
+.data-table tbody tr.selected td{background:#eaf3fc}
+.data-table .number{
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+.select-cell{text-align:center}
+.sort-arrows{
+  position:absolute;
+  top:9px;
+  right:8px;
+  width:8px;
+  height:15px;
+}
+.sort-up,.sort-down{
+  position:absolute;
+  left:0;
+  width:0;
+  height:0;
+  border-left:4px solid transparent;
+  border-right:4px solid transparent;
+}
+.sort-up{
+  top:0;
+  border-bottom:5px solid #9aa7b4;
+}
+.sort-down{
+  bottom:0;
+  border-top:5px solid #9aa7b4;
+}
+th.sort-asc .sort-up{border-bottom-color:#0a6ed1}
+th.sort-desc .sort-down{border-top-color:#0a6ed1}
+.pagination-bar{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:5px;
+  min-height:44px;
+  padding:8px 10px;
+  background:#fff;
+  border-top:1px solid #e5e9ed;
+}
+.page-btn{
+  min-width:30px;
+  height:28px;
+  padding:0 8px;
+  border:1px solid #d9d9d9;
+  border-radius:4px;
+  background:#fff;
+  color:#1d2d3e;
+  font-size:11px;
+}
+.page-btn:hover{
+  background:#f7f8f9;
+  border-color:#b8b8b8;
+}
+.page-btn.active{
+  background:#eaf3fc;
+  border-color:#0a6ed1;
+  color:#004b93;
+  font-weight:600;
+}
+.page-btn:disabled{
+  background:#f7f8f9;
+  color:#9aa7b4;
+}
+.empty{
+  padding:28px!important;
+  text-align:center!important;
+  color:#6a6d70!important;
+}
+.modal-bg{
+  display:none;
+  position:fixed;
+  left:0;
+  top:0;
+  right:0;
+  bottom:0;
+  z-index:2000;
+  background:rgba(29,45,62,.30);
+  padding:18px;
+  overflow:auto;
+}
+.modal-bg.open{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.request-modal{
+  width:100%;
+  max-width:1260px;
+  max-height:calc(100vh - 36px);
+  margin:0;
+  background:#fff;
+  border:1px solid #d9d9d9;
+  border-radius:8px;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.modal-head{
+  height:42px;
+  flex:0 0 42px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 14px;
+  background:#eaf3fc;
+  border-bottom:1px solid #d1e8ff;
+}
+.modal-title{
+  font-size:13px;
+  font-weight:600;
+}
+.modal-close{
+  width:28px;
+  height:28px;
+  border:1px solid #d9d9d9;
+  border-radius:4px;
+  background:#fff;
+  color:#556b82;
+}
+.modal-body{
+  padding:12px;
+  overflow:auto;
+  min-height:0;
+}
+.modal-foot{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:7px;
+  padding:10px 14px;
+  background:#f7f8f9;
+  border-top:1px solid #d9d9d9;
+}
+.basic-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px 28px;
+}
+.basic-item{
+  min-width:320px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.basic-label{
+  width:92px;
+  flex:0 0 92px;
+  color:#556b82;
+}
+.basic-value{
+  min-width:95px;
+  height:28px;
+  display:flex;
+  align-items:center;
+  padding:0 8px;
+  border:1px solid #d9d9d9;
+  border-radius:4px;
+  background:#f7f8f9;
+}
+.basic-name{
+  min-width:190px;
+  color:#1d2d3e;
+}
+.request-table{
+  width:100%;
+  min-width:1190px;
+  border-collapse:separate;
+  border-spacing:0;
+  font-size:12px;
+}
+.request-table th{
+  height:34px;
+  padding:6px 8px;
+  background:#f5f8fa;
+  color:#1d2d3e;
+  border-right:1px solid #d9d9d9;
+  border-bottom:1px solid #c7d4e0;
+  text-align:left;
+  font-weight:600;
+  white-space:nowrap;
+}
+.request-table td{
+  height:36px;
+  padding:4px 8px;
+  background:#fff;
+  border-right:1px solid #e7ebee;
+  border-bottom:1px solid #e7ebee;
+  white-space:nowrap;
+}
+.request-table .number{
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+.request-select{
+  width:142px;
+  height:28px;
+  padding:3px 6px;
+  border:1px solid #b8b8b8;
+  border-radius:4px;
+  background:#fff;
+  color:#1d2d3e;
+  font-size:12px;
+}
+.request-input{
+  width:100%;
+  height:28px;
+  padding:3px 6px;
+  border:1px solid #b8b8b8;
+  border-radius:4px;
+  background:#fff;
+  color:#1d2d3e;
+  font-size:12px;
+}
+.request-input:focus{
+  outline:0;
+  border-color:#0a6ed1;
+  box-shadow:0 0 0 1px #0a6ed1;
+}
+.request-amount{
+  min-width:132px;
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+.request-date-shell{
+  position:relative;
+  width:100%;
+  min-width:112px;
+}
+.request-date-input{
+  padding-right:30px;
+}
+.request-calendar-btn{
+  position:absolute;
+  top:1px;
+  right:1px;
+  width:28px;
+  height:26px;
+  padding:0;
+  border:0;
+  border-left:1px solid #d9d9d9;
+  background:#fff;
+}
+.request-calendar-btn:before{
+  content:"";
+  position:absolute;
+  left:8px;
+  top:6px;
+  width:12px;
+  height:12px;
+  border:1px solid #0a6ed1;
+  border-radius:2px;
+}
+.request-calendar-btn:after{
+  content:"";
+  position:absolute;
+  left:10px;
+  top:4px;
+  width:8px;
+  height:5px;
+  border-left:2px solid #0a6ed1;
+  border-right:2px solid #0a6ed1;
+  border-bottom:1px solid #0a6ed1;
+}
+.request-calendar{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:3600;
+  width:274px;
+  background:#fff;
+  border:1px solid #c8c8c8;
+  border-radius:2px;
+  box-shadow:0 4px 14px rgba(0,0,0,.16);
+}
+.request-calendar.open{display:block}
+.calendar-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:50px;
+  padding:0 10px 0 14px;
+}
+.cal-title-btn{
+  position:relative;
+  height:32px;
+  padding:0 16px 0 0;
+  border:0;
+  background:#fff;
+  color:#111;
+  font-size:12px;
+  font-weight:600;
+}
+.cal-title-btn:after{
+  content:"";
+  position:absolute;
+  right:3px;
+  top:14px;
+  width:0;
+  height:0;
+  border-left:4px solid transparent;
+  border-right:4px solid transparent;
+  border-top:5px solid #556b82;
+}
+.cal-navs{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.cal-nav{
+  position:relative;
+  width:26px;
+  height:30px;
+  padding:0;
+  border:0;
+  background:#fff;
+}
+.cal-nav:before{
+  content:"";
+  position:absolute;
+  left:8px;
+  width:10px;
+  height:10px;
+  border-left:1px solid #1d2d3e;
+}
+.cal-nav-up:before{
+  top:11px;
+  border-top:1px solid #1d2d3e;
+  transform:rotate(45deg);
+}
+.cal-nav-down:before{
+  top:7px;
+  border-bottom:1px solid #1d2d3e;
+  transform:rotate(-45deg);
+}
+.calendar-weekdays,.calendar-days{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  padding:0 12px;
+}
+.calendar-weekdays span{
+  height:28px;
+  line-height:28px;
+  text-align:center;
+  color:#111;
+  font-size:11px;
+}
+.calendar-day{
+  height:36px;
+  border:0;
+  background:#fff;
+  color:#111;
+  font-size:11px;
+}
+.calendar-day:hover{background:#edf5fc}
+.calendar-day.other-month{color:#8a949e}
+.calendar-day.selected{
+  background:#6a6d70;
+  color:#fff;
+  border:1px solid #1d2d3e;
+}
+.calendar-foot{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:46px;
+  padding:0 14px;
+  border-top:1px solid #e5e9ed;
+}
+.cal-link{
+  border:0;
+  background:#fff;
+  color:#0a6ed1;
+  font-size:11px;
+  padding:4px 0;
+}
+.year-panel{
+  max-height:284px;
+  overflow-y:auto;
+  border-top:1px solid #edf0f2;
+}
+.year-row{
+  min-height:34px;
+  border-bottom:1px solid #d9d9d9;
+  background:#f4f4f4;
+}
+.year-btn{
+  width:100%;
+  height:34px;
+  padding:0 10px;
+  border:0;
+  background:#f4f4f4;
+  color:#1d2d3e;
+  text-align:left;
+  font-size:12px;
+}
+.year-row.active .year-btn{font-weight:600}
+.month-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  padding:4px 5px 8px;
+  background:#fff;
+}
+.month-btn{
+  height:36px;
+  border:0;
+  background:#fff;
+  color:#111;
+  font-size:11px;
+}
+.month-btn:hover{background:#edf5fc}
+.month-btn.selected{
+  background:#6a6d70;
+  color:#fff;
+  border:1px solid #1d2d3e;
+}
+.request-head-left{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.request-add-btn{
+  width:26px;
+  height:26px;
+  padding:0;
+  border:1px solid #d9d9d9;
+  border-radius:4px;
+  background:#fff;
+  color:#004b93;
+  font-size:16px;
+  line-height:24px;
+}
+.request-add-btn:hover{
+  background:#f7f8f9;
+  border-color:#0a6ed1;
+}
+.request-no{
+  font-weight:600;
+  color:#0854a0;
+}
+.inline-create{
+  height:28px;
+  min-width:72px;
+  padding:0 10px;
+}
+.toast-region{
+  position:fixed;
+  right:22px;
+  bottom:28px;
+  z-index:4000;
+  width:350px;
+  max-width:calc(100% - 44px);
+}
+.toast{
+  display:flex;
+  gap:10px;
+  margin-top:8px;
+  padding:12px 14px;
+  background:#f2f4f5;
+  border:1px solid #d9d9d9;
+  border-left:3px solid #107e3e;
+  border-radius:4px;
+  box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+.toast-icon{
+  width:24px;
+  height:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:#ebf5eb;
+  color:#107e3e;
+  font-weight:600;
+}
+.toast-title{
+  margin-bottom:2px;
+  font-size:12px;
+  font-weight:600;
+}
+.toast-message{
+  color:#556b82;
+  font-size:12px;
+  line-height:17px;
+}
+.statusbar{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  height:20px;
+  display:flex;
+  align-items:center;
+  padding:0 12px;
+  background:#fff;
+  border-top:1px solid #e1e6ea;
+  color:#6a6d70;
+  font-size:11px;
+  z-index:900;
+}
+.status-dot{
+  width:7px;
+  height:7px;
+  margin-right:6px;
+  border-radius:50%;
+  background:#0a6ed1;
+}
+@media screen and (max-width:1180px){
+  .selection-main-row{flex-wrap:wrap}
+  .filter-grid{flex-wrap:wrap}
+}
+@media screen and (max-width:760px){
+  .content{padding-left:8px;padding-right:8px}
+  .topbar-inner{padding:0 10px}
+  .selection-main-row{align-items:flex-start}
+  .field-inline{width:100%;justify-content:space-between}
+  .structure-select,.ottk-select{width:210px}
+  .filter-body.open{width:100%}
+  .filter-grid{width:100%;flex-direction:column;align-items:stretch}
+  .filter-item{width:100%;align-items:stretch}
+  .combo-shell,.combo-input,.status-filter,.status-combo,.status-combo .combo-input{width:100%}
+  .toolbar{align-items:flex-start;gap:6px;flex-direction:column}
+  .toolbar-right{width:100%;justify-content:flex-end}
+  .basic-item{min-width:100%;flex-wrap:wrap}
+  .basic-label{width:100%;flex-basis:100%}
+  .basic-name{min-width:0}
+}
+.title-wrap{display:flex;align-items:center;gap:10px}
+img.mark{width:28px;height:28px;flex:none;object-fit:contain}
+</style>
+</head>
+<body>
+<script id="sblcPayload" type="application/json">
+{
+  "requestTypes": [
+    "SBLC Treasury",
+    "SBLC TSF"
+  ],
+  "requestNumber": {
+    "start": 26000571,
+    "step": 1
+  },
+  "columns": [
+    {
+      "key": "slcStructure",
+      "label": "SLC Structure",
+      "width": 120,
+      "type": "text"
+    },
+    {
+      "key": "entityString",
+      "label": "Entity String",
+      "width": 170,
+      "type": "text"
+    },
+    {
+      "key": "ottkBankDesc",
+      "label": "OTTK Bank Desc",
+      "width": 295,
+      "type": "text"
+    },
+    {
+      "key": "ottkNo",
+      "label": "OTTK No",
+      "width": 95,
+      "type": "text"
+    },
+    {
+      "key": "ottkValue",
+      "label": "OTTK Value",
+      "width": 125,
+      "type": "number"
+    },
+    {
+      "key": "ottkCurr",
+      "label": "OTTK Curr",
+      "width": 90,
+      "type": "text"
+    },
+    {
+      "key": "trader",
+      "label": "Trader",
+      "width": 110,
+      "type": "text"
+    },
+    {
+      "key": "ottkStatDesc",
+      "label": "OTTK Stat Desc",
+      "width": 205,
+      "type": "text"
+    },
+    {
+      "key": "dealId",
+      "label": "Deal ID",
+      "width": 105,
+      "type": "text"
+    },
+    {
+      "key": "dttkNo",
+      "label": "DTTK No",
+      "width": 95,
+      "type": "text"
+    },
+    {
+      "key": "proposedSblcAmt",
+      "label": "Proposed SBLC Amt",
+      "width": 145,
+      "type": "number"
+    },
+    {
+      "key": "sblcTxn",
+      "label": "SBLC Txn",
+      "width": 115,
+      "type": "text"
+    },
+    {
+      "key": "sblcAmt",
+      "label": "SBLC Amt",
+      "width": 125,
+      "type": "number"
+    }
+  ],
+  "requestColumns": [
+    {
+      "key": "startDate",
+      "label": "Start Date",
+      "width": 105,
+      "type": "date"
+    },
+    {
+      "key": "endDate",
+      "label": "End Date",
+      "width": 105,
+      "type": "date"
+    },
+    {
+      "key": "expEndDate",
+      "label": "Exp. End Date",
+      "width": 110,
+      "type": "date"
+    },
+    {
+      "key": "amount",
+      "label": "Amount",
+      "width": 155,
+      "type": "number"
+    },
+    {
+      "key": "requestType",
+      "label": "SBLC Request Type",
+      "width": 155,
+      "type": "requestType"
+    },
+    {
+      "key": "companyCode",
+      "label": "Co.Code",
+      "width": 90,
+      "type": "text"
+    },
+    {
+      "key": "beneficiary",
+      "label": "Beneficiary",
+      "width": 115,
+      "type": "text"
+    },
+    {
+      "key": "beneficiaryName",
+      "label": "Beneficiary Name",
+      "width": 235,
+      "type": "text"
+    },
+    {
+      "key": "requestNo",
+      "label": "Request No",
+      "width": 115,
+      "type": "text"
+    },
+    {
+      "key": "create",
+      "label": "Create",
+      "width": 95,
+      "type": "action"
+    }
+  ],
+  "records": [
+    {
+      "id": 1,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "entityId": "E021",
+      "ottkBankDesc": "0660013385 - GULF BANK KSCP",
+      "ottkNo": "100486",
+      "ottkValue": 30000000,
+      "ottkCurr": "USD",
+      "trader": "Rahul Yadav",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000691",
+      "dttkNo": "200540",
+      "proposedSblcAmt": 30000000,
+      "sblcTxn": "5153400000",
+      "sblcAmt": 30000000.0,
+      "companyCode": "AE13",
+      "companyName": "Olam International DMCC",
+      "businessArea": "0615",
+      "businessAreaName": "OLAM INTERNATIONAL DMCC",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 29989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE13",
+          "beneficiary": "0660013385",
+          "beneficiaryName": "GULF BANK KSCP",
+          "requestNo": "26000571",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 29989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE13",
+              "beneficiary": "0660013385",
+              "beneficiaryName": "GULF BANK KSCP",
+              "requestNo": "26000571"
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 12600000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE13",
+              "beneficiary": "0660013385",
+              "beneficiaryName": "GULF BANK KSCP",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": "26000571"
+    },
+    {
+      "id": 2,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E022 - OGA-SG",
+      "entityId": "E022",
+      "ottkBankDesc": "0660013368 - BANESCO (PANAMA) S.A.",
+      "ottkNo": "100487",
+      "ottkValue": 10000000,
+      "ottkCurr": "USD",
+      "trader": "Ignacio",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000692",
+      "dttkNo": "200541",
+      "proposedSblcAmt": 10000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "AE13",
+      "companyName": "Olam International DMCC",
+      "businessArea": "0615",
+      "businessAreaName": "OLAM INTERNATIONAL DMCC",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 9989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE13",
+          "beneficiary": "0660013368",
+          "beneficiaryName": "BANESCO (PANAMA) S.A.",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 9989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE13",
+              "beneficiary": "0660013368",
+              "beneficiaryName": "BANESCO (PANAMA) S.A.",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 4200000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE13",
+              "beneficiary": "0660013368",
+              "beneficiaryName": "BANESCO (PANAMA) S.A.",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 3,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E023 - OGA-CT",
+      "entityId": "E023",
+      "ottkBankDesc": "0660013362 - ITAU UNIBANCO S.A., NASSAU BRANCH",
+      "ottkNo": "100488",
+      "ottkValue": 50000000,
+      "ottkCurr": "USD",
+      "trader": "Riccardo R",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000693",
+      "dttkNo": "200542",
+      "proposedSblcAmt": 50000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "SG03",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "businessArea": "0630",
+      "businessAreaName": "OLAM GLOBAL AGRI PTE. LTD",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 49989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "SG03",
+          "beneficiary": "0660013362",
+          "beneficiaryName": "ITAU UNIBANCO S.A., NASSAU BRANCH",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 49989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "SG03",
+              "beneficiary": "0660013362",
+              "beneficiaryName": "ITAU UNIBANCO S.A., NASSAU BRANCH",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 21000000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "SG03",
+              "beneficiary": "0660013362",
+              "beneficiaryName": "ITAU UNIBANCO S.A., NASSAU BRANCH",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 4,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "entityId": "E021",
+      "ottkBankDesc": "0660013462 - GLOBAL BANK CORPORATION AND SUBSIDI",
+      "ottkNo": "100489",
+      "ottkValue": 25000000,
+      "ottkCurr": "USD",
+      "trader": "Omer Khan",
+      "ottkStatDesc": "04 - Partially Assigned",
+      "ottkStatus": "04",
+      "dealId": "12000694",
+      "dttkNo": "200543",
+      "proposedSblcAmt": 25000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "AE11",
+      "companyName": "Olam Global Agri",
+      "businessArea": "0605",
+      "businessAreaName": "OLAM GLOBAL AGRI",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 24989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE11",
+          "beneficiary": "0660013462",
+          "beneficiaryName": "GLOBAL BANK CORPORATION AND SUBSIDI",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 24989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE11",
+              "beneficiary": "0660013462",
+              "beneficiaryName": "GLOBAL BANK CORPORATION AND SUBSIDI",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 10500000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE11",
+              "beneficiary": "0660013462",
+              "beneficiaryName": "GLOBAL BANK CORPORATION AND SUBSIDI",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 5,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E022 - OGA-SG",
+      "entityId": "E022",
+      "ottkBankDesc": "0660013379 - BANCO ABC BRASIL S.A.",
+      "ottkNo": "100490",
+      "ottkValue": 20000000,
+      "ottkCurr": "USD",
+      "trader": "Andre",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000695",
+      "dttkNo": "200544",
+      "proposedSblcAmt": 20000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "AE13",
+      "companyName": "Olam International DMCC",
+      "businessArea": "0615",
+      "businessAreaName": "OLAM INTERNATIONAL DMCC",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 19989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE13",
+          "beneficiary": "0660013379",
+          "beneficiaryName": "BANCO ABC BRASIL S.A.",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 19989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE13",
+              "beneficiary": "0660013379",
+              "beneficiaryName": "BANCO ABC BRASIL S.A.",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 8400000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE13",
+              "beneficiary": "0660013379",
+              "beneficiaryName": "BANCO ABC BRASIL S.A.",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 6,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E023 - OGA-CT",
+      "entityId": "E023",
+      "ottkBankDesc": "0660013457 - BANCO DE BOGOTA S.A.",
+      "ottkNo": "100491",
+      "ottkValue": 8000000,
+      "ottkCurr": "USD",
+      "trader": "Akshay M",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000696",
+      "dttkNo": "200545",
+      "proposedSblcAmt": 8000000,
+      "sblcTxn": "5153400095",
+      "sblcAmt": 7999098.9,
+      "companyCode": "AE13",
+      "companyName": "Olam International DMCC",
+      "businessArea": "0615",
+      "businessAreaName": "OLAM INTERNATIONAL DMCC",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 7989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE13",
+          "beneficiary": "0660013457",
+          "beneficiaryName": "BANCO DE BOGOTA S.A.",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 7989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE13",
+              "beneficiary": "0660013457",
+              "beneficiaryName": "BANCO DE BOGOTA S.A.",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 3360000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE13",
+              "beneficiary": "0660013457",
+              "beneficiaryName": "BANCO DE BOGOTA S.A.",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 7,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "entityId": "E021",
+      "ottkBankDesc": "0660013365 - BANCO SAFRA S.A.",
+      "ottkNo": "100492",
+      "ottkValue": 15000000,
+      "ottkCurr": "USD",
+      "trader": "Rahul Yadav",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000697",
+      "dttkNo": "200546",
+      "proposedSblcAmt": 15000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "SG03",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "businessArea": "0630",
+      "businessAreaName": "OLAM GLOBAL AGRI PTE. LTD",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 14989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "SG03",
+          "beneficiary": "0660013365",
+          "beneficiaryName": "BANCO SAFRA S.A.",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 14989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "SG03",
+              "beneficiary": "0660013365",
+              "beneficiaryName": "BANCO SAFRA S.A.",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 6300000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "SG03",
+              "beneficiary": "0660013365",
+              "beneficiaryName": "BANCO SAFRA S.A.",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 8,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E022 - OGA-SG",
+      "entityId": "E022",
+      "ottkBankDesc": "0660013464 - BANCO DO BRASIL S.A.",
+      "ottkNo": "100493",
+      "ottkValue": 40000000,
+      "ottkCurr": "USD",
+      "trader": "Ignacio",
+      "ottkStatDesc": "04 - Partially Assigned",
+      "ottkStatus": "04",
+      "dealId": "12000698",
+      "dttkNo": "200547",
+      "proposedSblcAmt": 40000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "AE11",
+      "companyName": "Olam Global Agri",
+      "businessArea": "0605",
+      "businessAreaName": "OLAM GLOBAL AGRI",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 39989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE11",
+          "beneficiary": "0660013464",
+          "beneficiaryName": "BANCO DO BRASIL S.A.",
+          "requestNo": "26000592",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 39989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE11",
+              "beneficiary": "0660013464",
+              "beneficiaryName": "BANCO DO BRASIL S.A.",
+              "requestNo": "26000592"
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 16800000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE11",
+              "beneficiary": "0660013464",
+              "beneficiaryName": "BANCO DO BRASIL S.A.",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": "26000592"
+    },
+    {
+      "id": 9,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E023 - OGA-CT",
+      "entityId": "E023",
+      "ottkBankDesc": "0660013377 - BANCO BRADESCO S.A.",
+      "ottkNo": "100494",
+      "ottkValue": 100000000,
+      "ottkCurr": "USD",
+      "trader": "Riccardo R",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000699",
+      "dttkNo": "200548",
+      "proposedSblcAmt": 100000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "AE13",
+      "companyName": "Olam International DMCC",
+      "businessArea": "0615",
+      "businessAreaName": "OLAM INTERNATIONAL DMCC",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 99989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE13",
+          "beneficiary": "0660013377",
+          "beneficiaryName": "BANCO BRADESCO S.A.",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 99989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE13",
+              "beneficiary": "0660013377",
+              "beneficiaryName": "BANCO BRADESCO S.A.",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 42000000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE13",
+              "beneficiary": "0660013377",
+              "beneficiaryName": "BANCO BRADESCO S.A.",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 10,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "entityId": "E021",
+      "ottkBankDesc": "0660013455 - BANCO CONTINENTAL S.A.E.C.A",
+      "ottkNo": "100495",
+      "ottkValue": 30000000,
+      "ottkCurr": "USD",
+      "trader": "Omer Khan",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000700",
+      "dttkNo": "200549",
+      "proposedSblcAmt": 30000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "AE13",
+      "companyName": "Olam International DMCC",
+      "businessArea": "0615",
+      "businessAreaName": "OLAM INTERNATIONAL DMCC",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 29989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE13",
+          "beneficiary": "0660013455",
+          "beneficiaryName": "BANCO CONTINENTAL S.A.E.C.A",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 29989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE13",
+              "beneficiary": "0660013455",
+              "beneficiaryName": "BANCO CONTINENTAL S.A.E.C.A",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 12600000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE13",
+              "beneficiary": "0660013455",
+              "beneficiaryName": "BANCO CONTINENTAL S.A.E.C.A",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 11,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E022 - OGA-SG",
+      "entityId": "E022",
+      "ottkBankDesc": "0660013680 - BANCO DO BRASIL S A",
+      "ottkNo": "100496",
+      "ottkValue": 10000000,
+      "ottkCurr": "USD",
+      "trader": "Andre",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000701",
+      "dttkNo": "200550",
+      "proposedSblcAmt": 10000000,
+      "sblcTxn": "5153400190",
+      "sblcAmt": 9999549.45,
+      "companyCode": "SG03",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "businessArea": "0630",
+      "businessAreaName": "OLAM GLOBAL AGRI PTE. LTD",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 9989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "SG03",
+          "beneficiary": "0660013680",
+          "beneficiaryName": "BANCO DO BRASIL S A",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 9989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "SG03",
+              "beneficiary": "0660013680",
+              "beneficiaryName": "BANCO DO BRASIL S A",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 4200000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "SG03",
+              "beneficiary": "0660013680",
+              "beneficiaryName": "BANCO DO BRASIL S A",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 12,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E023 - OGA-CT",
+      "entityId": "E023",
+      "ottkBankDesc": "0660015668 - BANK OF SHANGHAI, SHANGHAI",
+      "ottkNo": "100497",
+      "ottkValue": 50000000,
+      "ottkCurr": "USD",
+      "trader": "Akshay M",
+      "ottkStatDesc": "04 - Partially Assigned",
+      "ottkStatus": "04",
+      "dealId": "12000702",
+      "dttkNo": "200551",
+      "proposedSblcAmt": 50000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "AE11",
+      "companyName": "Olam Global Agri",
+      "businessArea": "0605",
+      "businessAreaName": "OLAM GLOBAL AGRI",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 49989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE11",
+          "beneficiary": "0660015668",
+          "beneficiaryName": "BANK OF SHANGHAI, SHANGHAI",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 49989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE11",
+              "beneficiary": "0660015668",
+              "beneficiaryName": "BANK OF SHANGHAI, SHANGHAI",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 21000000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE11",
+              "beneficiary": "0660015668",
+              "beneficiaryName": "BANK OF SHANGHAI, SHANGHAI",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 13,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "entityId": "E021",
+      "ottkBankDesc": "0660014519 - BANCO DAYCOVAL S.A.",
+      "ottkNo": "100498",
+      "ottkValue": 25000000,
+      "ottkCurr": "USD",
+      "trader": "Rahul Yadav",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000703",
+      "dttkNo": "200552",
+      "proposedSblcAmt": 25000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "AE13",
+      "companyName": "Olam International DMCC",
+      "businessArea": "0615",
+      "businessAreaName": "OLAM INTERNATIONAL DMCC",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 24989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE13",
+          "beneficiary": "0660014519",
+          "beneficiaryName": "BANCO DAYCOVAL S.A.",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 24989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE13",
+              "beneficiary": "0660014519",
+              "beneficiaryName": "BANCO DAYCOVAL S.A.",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 10500000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE13",
+              "beneficiary": "0660014519",
+              "beneficiaryName": "BANCO DAYCOVAL S.A.",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 14,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E022 - OGA-SG",
+      "entityId": "E022",
+      "ottkBankDesc": "0660013376 - BANCO SANTANDER (BRASIL) S.A.",
+      "ottkNo": "100499",
+      "ottkValue": 20000000,
+      "ottkCurr": "USD",
+      "trader": "Ignacio",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000704",
+      "dttkNo": "200553",
+      "proposedSblcAmt": 20000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "AE13",
+      "companyName": "Olam International DMCC",
+      "businessArea": "0615",
+      "businessAreaName": "OLAM INTERNATIONAL DMCC",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 19989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE13",
+          "beneficiary": "0660013376",
+          "beneficiaryName": "BANCO SANTANDER (BRASIL) S.A.",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 19989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE13",
+              "beneficiary": "0660013376",
+              "beneficiaryName": "BANCO SANTANDER (BRASIL) S.A.",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 8400000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE13",
+              "beneficiary": "0660013376",
+              "beneficiaryName": "BANCO SANTANDER (BRASIL) S.A.",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 15,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E023 - OGA-CT",
+      "entityId": "E023",
+      "ottkBankDesc": "0660013385 - GULF BANK KSCP",
+      "ottkNo": "100500",
+      "ottkValue": 8000000,
+      "ottkCurr": "USD",
+      "trader": "Riccardo R",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000705",
+      "dttkNo": "200554",
+      "proposedSblcAmt": 8000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "SG03",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "businessArea": "0630",
+      "businessAreaName": "OLAM GLOBAL AGRI PTE. LTD",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 7989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "SG03",
+          "beneficiary": "0660013385",
+          "beneficiaryName": "GULF BANK KSCP",
+          "requestNo": "26000613",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 7989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "SG03",
+              "beneficiary": "0660013385",
+              "beneficiaryName": "GULF BANK KSCP",
+              "requestNo": "26000613"
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 3360000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "SG03",
+              "beneficiary": "0660013385",
+              "beneficiaryName": "GULF BANK KSCP",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": "26000613"
+    },
+    {
+      "id": 16,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "entityId": "E021",
+      "ottkBankDesc": "0660013368 - BANESCO (PANAMA) S.A.",
+      "ottkNo": "100501",
+      "ottkValue": 15000000,
+      "ottkCurr": "USD",
+      "trader": "Omer Khan",
+      "ottkStatDesc": "04 - Partially Assigned",
+      "ottkStatus": "04",
+      "dealId": "12000706",
+      "dttkNo": "200555",
+      "proposedSblcAmt": 15000000,
+      "sblcTxn": "5153400285",
+      "sblcAmt": 15000000.0,
+      "companyCode": "AE11",
+      "companyName": "Olam Global Agri",
+      "businessArea": "0605",
+      "businessAreaName": "OLAM GLOBAL AGRI",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 14989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE11",
+          "beneficiary": "0660013368",
+          "beneficiaryName": "BANESCO (PANAMA) S.A.",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 14989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE11",
+              "beneficiary": "0660013368",
+              "beneficiaryName": "BANESCO (PANAMA) S.A.",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 6300000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE11",
+              "beneficiary": "0660013368",
+              "beneficiaryName": "BANESCO (PANAMA) S.A.",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 17,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E022 - OGA-SG",
+      "entityId": "E022",
+      "ottkBankDesc": "0660013362 - ITAU UNIBANCO S.A., NASSAU BRANCH",
+      "ottkNo": "100502",
+      "ottkValue": 40000000,
+      "ottkCurr": "USD",
+      "trader": "Andre",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000707",
+      "dttkNo": "200556",
+      "proposedSblcAmt": 40000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "AE13",
+      "companyName": "Olam International DMCC",
+      "businessArea": "0615",
+      "businessAreaName": "OLAM INTERNATIONAL DMCC",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 39989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE13",
+          "beneficiary": "0660013362",
+          "beneficiaryName": "ITAU UNIBANCO S.A., NASSAU BRANCH",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 39989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE13",
+              "beneficiary": "0660013362",
+              "beneficiaryName": "ITAU UNIBANCO S.A., NASSAU BRANCH",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 16800000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE13",
+              "beneficiary": "0660013362",
+              "beneficiaryName": "ITAU UNIBANCO S.A., NASSAU BRANCH",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 18,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E023 - OGA-CT",
+      "entityId": "E023",
+      "ottkBankDesc": "0660013462 - GLOBAL BANK CORPORATION AND SUBSIDI",
+      "ottkNo": "100503",
+      "ottkValue": 100000000,
+      "ottkCurr": "USD",
+      "trader": "Akshay M",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000708",
+      "dttkNo": "200557",
+      "proposedSblcAmt": 100000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "AE13",
+      "companyName": "Olam International DMCC",
+      "businessArea": "0615",
+      "businessAreaName": "OLAM INTERNATIONAL DMCC",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 99989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE13",
+          "beneficiary": "0660013462",
+          "beneficiaryName": "GLOBAL BANK CORPORATION AND SUBSIDI",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 99989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE13",
+              "beneficiary": "0660013462",
+              "beneficiaryName": "GLOBAL BANK CORPORATION AND SUBSIDI",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 42000000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE13",
+              "beneficiary": "0660013462",
+              "beneficiaryName": "GLOBAL BANK CORPORATION AND SUBSIDI",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 19,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "entityId": "E021",
+      "ottkBankDesc": "0660013379 - BANCO ABC BRASIL S.A.",
+      "ottkNo": "100504",
+      "ottkValue": 30000000,
+      "ottkCurr": "USD",
+      "trader": "Rahul Yadav",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000709",
+      "dttkNo": "200558",
+      "proposedSblcAmt": 30000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "SG03",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "businessArea": "0630",
+      "businessAreaName": "OLAM GLOBAL AGRI PTE. LTD",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 29989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "SG03",
+          "beneficiary": "0660013379",
+          "beneficiaryName": "BANCO ABC BRASIL S.A.",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 29989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "SG03",
+              "beneficiary": "0660013379",
+              "beneficiaryName": "BANCO ABC BRASIL S.A.",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 12600000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "SG03",
+              "beneficiary": "0660013379",
+              "beneficiaryName": "BANCO ABC BRASIL S.A.",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 20,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E022 - OGA-SG",
+      "entityId": "E022",
+      "ottkBankDesc": "0660013457 - BANCO DE BOGOTA S.A.",
+      "ottkNo": "100505",
+      "ottkValue": 10000000,
+      "ottkCurr": "USD",
+      "trader": "Ignacio",
+      "ottkStatDesc": "04 - Partially Assigned",
+      "ottkStatus": "04",
+      "dealId": "12000710",
+      "dttkNo": "200559",
+      "proposedSblcAmt": 10000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "AE11",
+      "companyName": "Olam Global Agri",
+      "businessArea": "0605",
+      "businessAreaName": "OLAM GLOBAL AGRI",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 9989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE11",
+          "beneficiary": "0660013457",
+          "beneficiaryName": "BANCO DE BOGOTA S.A.",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 9989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE11",
+              "beneficiary": "0660013457",
+              "beneficiaryName": "BANCO DE BOGOTA S.A.",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 4200000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE11",
+              "beneficiary": "0660013457",
+              "beneficiaryName": "BANCO DE BOGOTA S.A.",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 21,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E023 - OGA-CT",
+      "entityId": "E023",
+      "ottkBankDesc": "0660013365 - BANCO SAFRA S.A.",
+      "ottkNo": "100506",
+      "ottkValue": 50000000,
+      "ottkCurr": "USD",
+      "trader": "Riccardo R",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000711",
+      "dttkNo": "200560",
+      "proposedSblcAmt": 50000000,
+      "sblcTxn": "5153400380",
+      "sblcAmt": 49999098.9,
+      "companyCode": "AE13",
+      "companyName": "Olam International DMCC",
+      "businessArea": "0615",
+      "businessAreaName": "OLAM INTERNATIONAL DMCC",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 49989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE13",
+          "beneficiary": "0660013365",
+          "beneficiaryName": "BANCO SAFRA S.A.",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 49989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE13",
+              "beneficiary": "0660013365",
+              "beneficiaryName": "BANCO SAFRA S.A.",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 21000000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE13",
+              "beneficiary": "0660013365",
+              "beneficiaryName": "BANCO SAFRA S.A.",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 22,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "entityId": "E021",
+      "ottkBankDesc": "0660013464 - BANCO DO BRASIL S.A.",
+      "ottkNo": "100507",
+      "ottkValue": 25000000,
+      "ottkCurr": "USD",
+      "trader": "Omer Khan",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000712",
+      "dttkNo": "200561",
+      "proposedSblcAmt": 25000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "AE13",
+      "companyName": "Olam International DMCC",
+      "businessArea": "0615",
+      "businessAreaName": "OLAM INTERNATIONAL DMCC",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 24989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE13",
+          "beneficiary": "0660013464",
+          "beneficiaryName": "BANCO DO BRASIL S.A.",
+          "requestNo": "26000634",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 24989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE13",
+              "beneficiary": "0660013464",
+              "beneficiaryName": "BANCO DO BRASIL S.A.",
+              "requestNo": "26000634"
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 10500000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE13",
+              "beneficiary": "0660013464",
+              "beneficiaryName": "BANCO DO BRASIL S.A.",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": "26000634"
+    },
+    {
+      "id": 23,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E022 - OGA-SG",
+      "entityId": "E022",
+      "ottkBankDesc": "0660013377 - BANCO BRADESCO S.A.",
+      "ottkNo": "100508",
+      "ottkValue": 20000000,
+      "ottkCurr": "USD",
+      "trader": "Andre",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000713",
+      "dttkNo": "200562",
+      "proposedSblcAmt": 20000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "SG03",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "businessArea": "0630",
+      "businessAreaName": "OLAM GLOBAL AGRI PTE. LTD",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 19989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "SG03",
+          "beneficiary": "0660013377",
+          "beneficiaryName": "BANCO BRADESCO S.A.",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 19989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "SG03",
+              "beneficiary": "0660013377",
+              "beneficiaryName": "BANCO BRADESCO S.A.",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 8400000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "SG03",
+              "beneficiary": "0660013377",
+              "beneficiaryName": "BANCO BRADESCO S.A.",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 24,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E023 - OGA-CT",
+      "entityId": "E023",
+      "ottkBankDesc": "0660013455 - BANCO CONTINENTAL S.A.E.C.A",
+      "ottkNo": "100509",
+      "ottkValue": 8000000,
+      "ottkCurr": "USD",
+      "trader": "Akshay M",
+      "ottkStatDesc": "04 - Partially Assigned",
+      "ottkStatus": "04",
+      "dealId": "12000714",
+      "dttkNo": "200563",
+      "proposedSblcAmt": 8000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "AE11",
+      "companyName": "Olam Global Agri",
+      "businessArea": "0605",
+      "businessAreaName": "OLAM GLOBAL AGRI",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 7989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE11",
+          "beneficiary": "0660013455",
+          "beneficiaryName": "BANCO CONTINENTAL S.A.E.C.A",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 7989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE11",
+              "beneficiary": "0660013455",
+              "beneficiaryName": "BANCO CONTINENTAL S.A.E.C.A",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 3360000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE11",
+              "beneficiary": "0660013455",
+              "beneficiaryName": "BANCO CONTINENTAL S.A.E.C.A",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 25,
+      "tsfStructure": "Structured LCs",
+      "slcStructure": "LC Prepayment",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "entityId": "E021",
+      "ottkBankDesc": "0660013680 - BANCO DO BRASIL S A",
+      "ottkNo": "100510",
+      "ottkValue": 15000000,
+      "ottkCurr": "USD",
+      "trader": "Rahul Yadav",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000715",
+      "dttkNo": "200564",
+      "proposedSblcAmt": 15000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "AE13",
+      "companyName": "Olam International DMCC",
+      "businessArea": "0615",
+      "businessAreaName": "OLAM INTERNATIONAL DMCC",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 14989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE13",
+          "beneficiary": "0660013680",
+          "beneficiaryName": "BANCO DO BRASIL S A",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 14989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE13",
+              "beneficiary": "0660013680",
+              "beneficiaryName": "BANCO DO BRASIL S A",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 6300000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE13",
+              "beneficiary": "0660013680",
+              "beneficiaryName": "BANCO DO BRASIL S A",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 26,
+      "tsfStructure": "Corporate Trade",
+      "slcStructure": "Corporate Trade",
+      "entityString": "E022 - OGA-SG",
+      "entityId": "E022",
+      "ottkBankDesc": "0660015668 - BANK OF SHANGHAI, SHANGHAI",
+      "ottkNo": "100511",
+      "ottkValue": 40000000,
+      "ottkCurr": "USD",
+      "trader": "Ignacio",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000716",
+      "dttkNo": "200565",
+      "proposedSblcAmt": 40000000,
+      "sblcTxn": "5153400475",
+      "sblcAmt": 39999549.45,
+      "companyCode": "AE13",
+      "companyName": "Olam International DMCC",
+      "businessArea": "0615",
+      "businessAreaName": "OLAM INTERNATIONAL DMCC",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 39989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE13",
+          "beneficiary": "0660015668",
+          "beneficiaryName": "BANK OF SHANGHAI, SHANGHAI",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 39989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE13",
+              "beneficiary": "0660015668",
+              "beneficiaryName": "BANK OF SHANGHAI, SHANGHAI",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 16800000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE13",
+              "beneficiary": "0660015668",
+              "beneficiaryName": "BANK OF SHANGHAI, SHANGHAI",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 27,
+      "tsfStructure": "Corporate Trade",
+      "slcStructure": "Corporate Trade",
+      "entityString": "E023 - OGA-CT",
+      "entityId": "E023",
+      "ottkBankDesc": "0660014519 - BANCO DAYCOVAL S.A.",
+      "ottkNo": "100512",
+      "ottkValue": 100000000,
+      "ottkCurr": "USD",
+      "trader": "Riccardo R",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000717",
+      "dttkNo": "200566",
+      "proposedSblcAmt": 100000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "SG03",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "businessArea": "0630",
+      "businessAreaName": "OLAM GLOBAL AGRI PTE. LTD",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 99989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "SG03",
+          "beneficiary": "0660014519",
+          "beneficiaryName": "BANCO DAYCOVAL S.A.",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 99989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "SG03",
+              "beneficiary": "0660014519",
+              "beneficiaryName": "BANCO DAYCOVAL S.A.",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 42000000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "SG03",
+              "beneficiary": "0660014519",
+              "beneficiaryName": "BANCO DAYCOVAL S.A.",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 28,
+      "tsfStructure": "Corporate Trade",
+      "slcStructure": "Corporate Trade",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "entityId": "E021",
+      "ottkBankDesc": "0660013376 - BANCO SANTANDER (BRASIL) S.A.",
+      "ottkNo": "100513",
+      "ottkValue": 30000000,
+      "ottkCurr": "USD",
+      "trader": "Omer Khan",
+      "ottkStatDesc": "04 - Partially Assigned",
+      "ottkStatus": "04",
+      "dealId": "12000718",
+      "dttkNo": "200567",
+      "proposedSblcAmt": 30000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "AE11",
+      "companyName": "Olam Global Agri",
+      "businessArea": "0605",
+      "businessAreaName": "OLAM GLOBAL AGRI",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 29989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE11",
+          "beneficiary": "0660013376",
+          "beneficiaryName": "BANCO SANTANDER (BRASIL) S.A.",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 29989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE11",
+              "beneficiary": "0660013376",
+              "beneficiaryName": "BANCO SANTANDER (BRASIL) S.A.",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 12600000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE11",
+              "beneficiary": "0660013376",
+              "beneficiaryName": "BANCO SANTANDER (BRASIL) S.A.",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 29,
+      "tsfStructure": "Corporate Trade",
+      "slcStructure": "Corporate Trade",
+      "entityString": "E022 - OGA-SG",
+      "entityId": "E022",
+      "ottkBankDesc": "0660013385 - GULF BANK KSCP",
+      "ottkNo": "100514",
+      "ottkValue": 10000000,
+      "ottkCurr": "USD",
+      "trader": "Andre",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000719",
+      "dttkNo": "200568",
+      "proposedSblcAmt": 10000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "AE13",
+      "companyName": "Olam International DMCC",
+      "businessArea": "0615",
+      "businessAreaName": "OLAM INTERNATIONAL DMCC",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 9989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE13",
+          "beneficiary": "0660013385",
+          "beneficiaryName": "GULF BANK KSCP",
+          "requestNo": "26000655",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 9989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE13",
+              "beneficiary": "0660013385",
+              "beneficiaryName": "GULF BANK KSCP",
+              "requestNo": "26000655"
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 4200000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE13",
+              "beneficiary": "0660013385",
+              "beneficiaryName": "GULF BANK KSCP",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": "26000655"
+    },
+    {
+      "id": 30,
+      "tsfStructure": "Corporate Trade",
+      "slcStructure": "Corporate Trade",
+      "entityString": "E023 - OGA-CT",
+      "entityId": "E023",
+      "ottkBankDesc": "0660013368 - BANESCO (PANAMA) S.A.",
+      "ottkNo": "100515",
+      "ottkValue": 50000000,
+      "ottkCurr": "USD",
+      "trader": "Akshay M",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000720",
+      "dttkNo": "200569",
+      "proposedSblcAmt": 50000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "AE13",
+      "companyName": "Olam International DMCC",
+      "businessArea": "0615",
+      "businessAreaName": "OLAM INTERNATIONAL DMCC",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 49989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE13",
+          "beneficiary": "0660013368",
+          "beneficiaryName": "BANESCO (PANAMA) S.A.",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 49989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE13",
+              "beneficiary": "0660013368",
+              "beneficiaryName": "BANESCO (PANAMA) S.A.",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 21000000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE13",
+              "beneficiary": "0660013368",
+              "beneficiaryName": "BANESCO (PANAMA) S.A.",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 31,
+      "tsfStructure": "Corporate Trade",
+      "slcStructure": "Corporate Trade",
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "entityId": "E021",
+      "ottkBankDesc": "0660013362 - ITAU UNIBANCO S.A., NASSAU BRANCH",
+      "ottkNo": "100516",
+      "ottkValue": 25000000,
+      "ottkCurr": "USD",
+      "trader": "Rahul Yadav",
+      "ottkStatDesc": "06 - Fully Assigned to Deal ID",
+      "ottkStatus": "06",
+      "dealId": "12000721",
+      "dttkNo": "200570",
+      "proposedSblcAmt": 25000000,
+      "sblcTxn": "5153400570",
+      "sblcAmt": 25000000.0,
+      "companyCode": "SG03",
+      "companyName": "Olam Global Agri Pte. Ltd",
+      "businessArea": "0630",
+      "businessAreaName": "OLAM GLOBAL AGRI PTE. LTD",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 24989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "SG03",
+          "beneficiary": "0660013362",
+          "beneficiaryName": "ITAU UNIBANCO S.A., NASSAU BRANCH",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 24989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "SG03",
+              "beneficiary": "0660013362",
+              "beneficiaryName": "ITAU UNIBANCO S.A., NASSAU BRANCH",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 10500000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "SG03",
+              "beneficiary": "0660013362",
+              "beneficiaryName": "ITAU UNIBANCO S.A., NASSAU BRANCH",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    },
+    {
+      "id": 32,
+      "tsfStructure": "Corporate Trade",
+      "slcStructure": "Corporate Trade",
+      "entityString": "E022 - OGA-SG",
+      "entityId": "E022",
+      "ottkBankDesc": "0660013462 - GLOBAL BANK CORPORATION AND SUBSIDI",
+      "ottkNo": "100517",
+      "ottkValue": 20000000,
+      "ottkCurr": "USD",
+      "trader": "Ignacio",
+      "ottkStatDesc": "04 - Partially Assigned",
+      "ottkStatus": "04",
+      "dealId": "12000722",
+      "dttkNo": "200571",
+      "proposedSblcAmt": 20000000,
+      "sblcTxn": "",
+      "sblcAmt": "",
+      "companyCode": "AE11",
+      "companyName": "Olam Global Agri",
+      "businessArea": "0605",
+      "businessAreaName": "OLAM GLOBAL AGRI",
+      "requestRows": [
+        {
+          "startDate": "24-03-2025",
+          "endDate": "08-05-2025",
+          "expEndDate": "08-05-2025",
+          "amount": 19989856,
+          "requestType": "SBLC Treasury",
+          "companyCode": "AE11",
+          "beneficiary": "0660013462",
+          "beneficiaryName": "GLOBAL BANK CORPORATION AND SUBSIDI",
+          "requestNo": "",
+          "id": "A",
+          "variants": [
+            {
+              "startDate": "24-03-2025",
+              "endDate": "08-05-2025",
+              "expEndDate": "08-05-2025",
+              "amount": 19989856,
+              "requestType": "SBLC Treasury",
+              "companyCode": "AE11",
+              "beneficiary": "0660013462",
+              "beneficiaryName": "GLOBAL BANK CORPORATION AND SUBSIDI",
+              "requestNo": ""
+            },
+            {
+              "startDate": "09-05-2025",
+              "endDate": "23-06-2025",
+              "expEndDate": "23-06-2025",
+              "amount": 8400000.0,
+              "requestType": "SBLC TSF",
+              "companyCode": "AE11",
+              "beneficiary": "0660013462",
+              "beneficiaryName": "GLOBAL BANK CORPORATION AND SUBSIDI",
+              "requestNo": ""
+            }
+          ]
+        }
+      ],
+      "requestNo": ""
+    }
+  ],
+  "sblcTransaction": {
+    "start": 5153400000,
+    "step": 95
+  },
+  "amountMultipliers": {
+    "K": 1000,
+    "L": 100000,
+    "M": 1000000,
+    "CR": 10000000,
+    "B": 1000000000
+  }
+}
+</script>
+<div class="shell">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="title-wrap">
+        <img class="mark" alt="Fourth Signal" src="https://raw.githubusercontent.com/ryannayak/fs-assets/e82f35a83e28689167b22b4300d4994a249acee0/fs-short-logo.png"/>
+        <div class="title">Create SBLC Request</div>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="screen">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">Basic Selection</div>
+        </div>
+        <div class="card-body">
+          <div class="selection-main-row">
+            <div class="field-inline">
+              <label for="tsfStructure">TSF Structure <span class="required">*</span></label>
+              <select id="tsfStructure" class="select structure-select" required="required"></select>
+            </div>
+            <button id="filterToggle" class="filter-icon-btn" type="button" title="Filters" aria-label="Filters"></button>
+            <div id="filterBody" class="filter-body">
+              <div class="filter-grid">
+                <div class="filter-item">
+                  <label for="ottkFilter">OTTK No</label>
+                  <div class="combo-shell">
+                    <input id="ottkFilter" class="input combo-input" type="text" placeholder="OTTK No">
+                    <button id="ottkDropBtn" class="combo-btn" type="button" aria-label="OTTK No list"></button>
+                    <div id="ottkList" class="combo-list"></div>
+                  </div>
+                </div>
+                <div class="filter-item">
+                  <label for="entityFilter">Entity ID</label>
+                  <div class="combo-shell">
+                    <input id="entityFilter" class="input combo-input" type="text" placeholder="Entity ID">
+                    <button id="entityDropBtn" class="combo-btn" type="button" aria-label="Entity ID list"></button>
+                    <div id="entityList" class="combo-list"></div>
+                  </div>
+                </div>
+                <div class="filter-item">
+                  <label for="dealFilter">Deal ID</label>
+                  <div class="combo-shell">
+                    <input id="dealFilter" class="input combo-input" type="text" placeholder="Deal ID">
+                    <button id="dealDropBtn" class="combo-btn" type="button" aria-label="Deal ID list"></button>
+                    <div id="dealList" class="combo-list"></div>
+                  </div>
+                </div>
+                <div class="filter-item">
+                  <label for="statusFilter">OTTK Status</label>
+                  <div class="combo-shell status-combo">
+                    <input id="statusFilter" class="input combo-input" type="text" placeholder="OTTK Status">
+                    <button id="statusDropBtn" class="combo-btn" type="button" aria-label="OTTK Status list"></button>
+                    <div id="statusList" class="combo-list"></div>
+                  </div>
+                </div>
+                <div class="filter-item">
+                  <button id="clearFilters" class="btn btn-ghost" type="button">Clear filters</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="resultsArea">
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <span id="recordCount" class="record-count"></span>
+          </div>
+          <div class="toolbar-right">
+            <button id="createRequestBtn" class="btn btn-primary" type="button" disabled="disabled">Create SBLC Request</button>
+          </div>
+        </div>
+        <div class="card table-card">
+          <div class="card-head">
+            <div class="card-title">SBLC Request Records</div>
+            <div id="selectionMeta" class="card-meta">Select one line item</div>
+          </div>
+          <div class="table-wrap">
+            <table id="mainTable" class="data-table">
+              <thead id="mainHead"></thead>
+              <tbody id="mainBody"></tbody>
+            </table>
+          </div>
+          <div id="paginationBar" class="pagination-bar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="requestModal" class="modal-bg">
+  <div class="request-modal">
+    <div class="modal-head">
+      <div class="modal-title">Create SBLC Request</div>
+      <button id="requestClose" class="modal-close" type="button">X</button>
+    </div>
+    <div class="modal-body">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">Basic Details</div>
+        </div>
+        <div id="basicDetails" class="card-body basic-grid"></div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="request-head-left">
+            <div class="card-title">Create SBLC Request</div>
+            <button id="requestAddRow" class="request-add-btn" type="button" title="Add request line">+</button>
+          </div>
+          <div id="requestMeta" class="card-meta"></div>
+        </div>
+        <div class="table-wrap">
+          <table id="requestTable" class="request-table">
+            <thead id="requestHead"></thead>
+            <tbody id="requestBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button id="requestDone" class="btn btn-ghost" type="button">Close</button>
+    </div>
+  </div>
+</div>
+<div id="toastRegion" class="toast-region" aria-live="polite"></div>
+<div class="statusbar">
+  <span class="status-dot"></span>
+  <span id="statusText">Select TSF Structure</span>
+</div>
+<script type="text/javascript">
+(function(){
+var MODEL=JSON.parse(document.getElementById("sblcPayload").innerHTML);
+var DATA=MODEL.records;
+var columns=MODEL.columns;
+var requestColumns=MODEL.requestColumns;
+var state={
+  page:1,pageSize:15,selectedId:null,sortIndex:-1,sortDirection:"asc",activeRecordId:null,
+  requestDrafts:[],requestDraftSeq:1,calendarRowId:"",calendarField:"",calendarDate:new Date(),
+  calendarMode:"days",calendarYear:new Date().getFullYear()
+};
+function byId(id){return document.getElementById(id)}
+function esc(value){
+  var text=String(value==null?"":value);
+  text=text.replace(/&/g,"&amp;");
+  text=text.replace(/</g,"&lt;");
+  text=text.replace(/>/g,"&gt;");
+  return text.replace(/"/g,"&quot;")
+}
+function money(value){
+  if(value===""||value===null||typeof value==="undefined"){return ""}
+  var number=Number(value||0);
+  var parts=number.toFixed(2).split(".");
+  parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,",");
+  return parts.join(".")
+}
+function setStatus(text){byId("statusText").innerHTML=esc(text)}
+function toast(message,title,iconText){
+  var region=byId("toastRegion");
+  var box=document.createElement("div");
+  var icon=document.createElement("div");
+  var body=document.createElement("div");
+  box.className="toast";
+  icon.className="toast-icon";
+  icon.innerHTML=esc(iconText||"OK");
+  body.innerHTML='<div class="toast-title">'+esc(title||"Success")+'</div>';
+  body.innerHTML+='<div class="toast-message">'+esc(message)+"</div>";
+  box.appendChild(icon);
+  box.appendChild(body);
+  region.appendChild(box);
+  window.setTimeout(function(){
+    if(box.parentNode){box.parentNode.removeChild(box)}
+  },4200)
+}
+function uniqueValues(key,filterFn){
+  var seen={};
+  var list=[];
+  var i,row,value;
+  for(i=0;i<DATA.length;i++){
+    row=DATA[i];
+    if(filterFn&&!filterFn(row)){continue}
+    value=String(row[key]||"");
+    if(value&&!seen[value]){
+      seen[value]=true;
+      list.push(value)
+    }
+  }
+  list.sort();
+  return list
+}
+function renderStructureOptions(){
+  var list=uniqueValues("tsfStructure");
+  var html='<option value="">Select TSF Structure</option>';
+  var i;
+  for(i=0;i<list.length;i++){
+    html+='<option value="'+esc(list[i])+'">'+esc(list[i])+"</option>"
+  }
+  byId("tsfStructure").innerHTML=html
+}
+function readyToLoad(){
+  return byId("tsfStructure").value!==""
+}
+function ensureDisplayValues(){
+  var config=MODEL.sblcTransaction||{};
+  var start=Number(config.start||0);
+  var step=Number(config.step||1);
+  var i,row;
+  for(i=0;i<DATA.length;i++){
+    row=DATA[i];
+    if(!row.sblcTxn&&start){row.sblcTxn=String(start+(Number(row.id)-1)*step)}
+    if(row.sblcAmt===""||row.sblcAmt===null){row.sblcAmt=row.proposedSblcAmt}
+  }
+}
+function getFilteredRows(){
+  var structure=byId("tsfStructure").value;
+  var ottk=byId("ottkFilter").value.toLowerCase();
+  var entity=byId("entityFilter").value.toLowerCase();
+  var deal=byId("dealFilter").value.toLowerCase();
+  var status=byId("statusFilter").value.toLowerCase();
+  var rows=[];
+  var i,row;
+  for(i=0;i<DATA.length;i++){
+    row=DATA[i];
+    if(structure&&row.tsfStructure!==structure){continue}
+    if(ottk&&String(row.ottkNo).toLowerCase().indexOf(ottk)<0){continue}
+    if(entity&&String(row.entityId).toLowerCase().indexOf(entity)<0){continue}
+    if(deal&&String(row.dealId).toLowerCase().indexOf(deal)<0){continue}
+    if(status&&String(row.ottkStatDesc).toLowerCase().indexOf(status)<0){continue}
+    rows.push(row)
+  }
+  if(state.sortIndex>=0){sortRows(rows,state.sortIndex,state.sortDirection)}
+  return rows
+}
+function sortRows(rows,index,direction){
+  var column=columns[index];
+  rows.sort(function(a,b){
+    var av=a[column.key];
+    var bv=b[column.key];
+    if(column.type==="number"){
+      av=Number(av||0);
+      bv=Number(bv||0)
+    }else{
+      av=String(av||"").toLowerCase();
+      bv=String(bv||"").toLowerCase()
+    }
+    if(av<bv){return direction==="asc"?-1:1}
+    if(av>bv){return direction==="asc"?1:-1}
+    return 0
+  })
+}
+function headerHtml(){
+  var html='<tr><th style="width:64px">Select</th>';
+  var i,column,cls;
+  for(i=0;i<columns.length;i++){
+    column=columns[i];
+    cls="";
+    if(state.sortIndex===i){cls=state.sortDirection==="asc"?"sort-asc":"sort-desc"}
+    html+='<th class="'+cls+'" data-index="'+i+'" style="width:'+column.width+'px">';
+    html+=esc(column.label);
+    html+='<span class="sort-arrows"><span class="sort-up"></span><span class="sort-down"></span></span>';
+    html+="</th>"
+  }
+  return html+"</tr>"
+}
+function renderTable(){
+  var rows=getFilteredRows();
+  var start=(state.page-1)*state.pageSize;
+  var pages=Math.max(1,Math.ceil(rows.length/state.pageSize));
+  var end,i,j,row,column,html="",pageRows,value,cls;
+  if(state.page>pages){state.page=pages;start=(state.page-1)*state.pageSize}
+  end=Math.min(start+state.pageSize,rows.length);
+  pageRows=rows.slice(start,end);
+  byId("mainHead").innerHTML=headerHtml();
+  for(i=0;i<pageRows.length;i++){
+    row=pageRows[i];
+    cls=String(row.id)===String(state.selectedId)?"selected":"";
+    html+='<tr data-id="'+row.id+'" class="'+cls+'">';
+    html+='<td class="select-cell"><input type="radio" name="sblcPick" value="'+row.id+'"';
+    if(String(row.id)===String(state.selectedId)){html+=' checked="checked"'}
+    html+='></td>';
+    for(j=0;j<columns.length;j++){
+      column=columns[j];
+      value=row[column.key];
+      html+='<td class="'+(column.type==="number"?"number":"")+'">';
+      html+=column.type==="number"?esc(money(value)):esc(value);
+      html+="</td>"
+    }
+    html+="</tr>"
+  }
+  if(!html){
+    html='<tr><td colspan="'+(columns.length+1)+'" class="empty">';
+    html+="No SBLC request records match the current selection.</td></tr>"
+  }
+  byId("mainBody").innerHTML=html;
+  byId("recordCount").innerHTML=rows.length+" record"+(rows.length===1?"":"s");
+  renderPagination(rows.length);
+  updateActionState();
+  bindHeaderSort()
+}
+function renderPagination(total){
+  var bar=byId("paginationBar");
+  var pages=Math.max(1,Math.ceil(total/state.pageSize));
+  var html='<button class="page-btn" data-page="prev" type="button"';
+  var p,startPage,endPage;
+  html+=state.page===1?' disabled="disabled"':'';
+  html+='>&lt;</button>';
+  startPage=Math.max(1,state.page-1);
+  endPage=Math.min(pages,startPage+2);
+  startPage=Math.max(1,endPage-2);
+  for(p=startPage;p<=endPage;p++){
+    html+='<button class="page-btn'+(p===state.page?' active':'')+'" data-page="'+p+'" type="button">'+p+"</button>"
+  }
+  html+='<button class="page-btn" data-page="next" type="button"';
+  html+=state.page===pages?' disabled="disabled"':'';
+  html+='>&gt;</button>';
+  bar.innerHTML=html
+}
+function findRowById(id){
+  var i;
+  for(i=0;i<DATA.length;i++){
+    if(String(DATA[i].id)===String(id)){return DATA[i]}
+  }
+  return null
+}
+function selectedRow(){return findRowById(state.selectedId)}
+function clearSelection(){
+  state.selectedId=null;
+  byId("createRequestBtn").disabled=true;
+  byId("selectionMeta").innerHTML="Select one line item"
+}
+function recordHasRequest(row){
+  return !!(row&&row.requestNo)
+}
+function updateActionState(){
+  var row=selectedRow();
+  if(!row){
+    byId("createRequestBtn").disabled=true;
+    byId("selectionMeta").innerHTML="Select one line item";
+    return
+  }
+  byId("createRequestBtn").disabled=false;
+  byId("selectionMeta").innerHTML=recordHasRequest(row)?"Request already created":"1 line item selected"
+}
+function loadResults(){
+  if(!readyToLoad()){
+    byId("resultsArea").className="";
+    clearSelection();
+    setStatus("Select TSF Structure");
+    return
+  }
+  state.page=1;
+  clearSelection();
+  byId("resultsArea").className="open";
+  renderTable();
+  setStatus("SBLC request records loaded")
+}
+function refreshFilters(){
+  if(!readyToLoad()){loadResults();return}
+  state.page=1;
+  clearSelection();
+  renderTable()
+}
+function bindHeaderSort(){
+  var headers=byId("mainHead").getElementsByTagName("th");
+  var i;
+  for(i=0;i<headers.length;i++){
+    headers[i].onclick=function(){
+      var index=parseInt(this.getAttribute("data-index"),10);
+      if(isNaN(index)){return}
+      if(state.sortIndex===index){
+        state.sortDirection=state.sortDirection==="asc"?"desc":"asc"
+      }else{
+        state.sortIndex=index;
+        state.sortDirection="asc"
+      }
+      state.page=1;
+      clearSelection();
+      renderTable()
+    }
+  }
+}
+function buildComboList(inputId,listId,key){
+  var list=byId(listId);
+  var structure=byId("tsfStructure").value;
+  var typed=byId(inputId).value.toLowerCase();
+  var seen={};
+  var html="";
+  var i,row,value;
+  for(i=0;i<DATA.length;i++){
+    row=DATA[i];
+    if(structure&&row.tsfStructure!==structure){continue}
+    value=String(row[key]||"");
+    if(typed&&value.toLowerCase().indexOf(typed)<0){continue}
+    if(!value||seen[value]){continue}
+    seen[value]=true;
+    html+='<button class="combo-option" data-value="'+esc(value)+'" type="button">'+esc(value)+"</button>"
+  }
+  if(!html){html='<div class="combo-empty">No matching values</div>'}
+  list.innerHTML=html
+}
+function openCombo(inputId,listId,key){
+  buildComboList(inputId,listId,key);
+  byId(listId).className="combo-list open"
+}
+function closeCombo(listId){byId(listId).className="combo-list"}
+function closeAllCombos(){
+  closeCombo("ottkList");
+  closeCombo("entityList");
+  closeCombo("dealList");
+  closeCombo("statusList")
+}
+function requestHeaderHtml(){
+  var html="<tr>";
+  var i,column;
+  for(i=0;i<requestColumns.length;i++){
+    column=requestColumns[i];
+    html+='<th style="width:'+column.width+'px">'+esc(column.label)+"</th>"
+  }
+  return html+"</tr>"
+}
+function renderBasicDetails(record){
+  var html="";
+  html+='<div class="basic-item"><div class="basic-label">OTTK No</div>';
+  html+='<div class="basic-value">'+esc(record.ottkNo)+'</div></div>';
+  html+='<div class="basic-item"><div class="basic-label">Company Code</div>';
+  html+='<div class="basic-value">'+esc(record.companyCode)+'</div>';
+  html+='<div class="basic-name">'+esc(record.companyName)+'</div></div>';
+  html+='<div class="basic-item"><div class="basic-label">Business Area</div>';
+  html+='<div class="basic-value">'+esc(record.businessArea)+'</div>';
+  html+='<div class="basic-name">'+esc(record.businessAreaName)+'</div></div>';
+  byId("basicDetails").innerHTML=html
+}
+function draftById(rowId){
+  var i;
+  for(i=0;i<state.requestDrafts.length;i++){
+    if(String(state.requestDrafts[i].id)===String(rowId)){return state.requestDrafts[i]}
+  }
+  return null
+}
+function cloneRequestRow(row){
+  return {
+    id:row.id,startDate:row.startDate||"",endDate:row.endDate||"",expEndDate:row.expEndDate||"",
+    amount:row.amount==null?"":row.amount,requestType:row.requestType||MODEL.requestTypes[0]||"",
+    companyCode:row.companyCode||"",beneficiary:row.beneficiary||"",beneficiaryName:row.beneficiaryName||"",
+    requestNo:row.requestNo||""
+  }
+}
+function nextDraftId(){
+  var id="N"+state.requestDraftSeq;
+  state.requestDraftSeq+=1;
+  return id
+}
+function newRequestDraft(record){
+  var source=state.requestDrafts.length?state.requestDrafts[0]:record.requestRows[0]||{};
+  return {
+    id:nextDraftId(),startDate:"",endDate:"",expEndDate:"",amount:"",
+    requestType:MODEL.requestTypes[0]||"SBLC Treasury",companyCode:"",
+    beneficiary:source.beneficiary||"",beneficiaryName:source.beneficiaryName||"",requestNo:""
+  }
+}
+function renderRequestTable(){
+  var record=findRowById(state.activeRecordId);
+  var html="";
+  var i,j,row,column,value,options,k,disabled;
+  if(!record){return}
+  byId("requestHead").innerHTML=requestHeaderHtml();
+  for(i=0;i<state.requestDrafts.length;i++){
+    row=state.requestDrafts[i];
+    disabled=!!row.requestNo;
+    html+='<tr data-request-row="'+esc(row.id)+'">';
+    for(j=0;j<requestColumns.length;j++){
+      column=requestColumns[j];
+      value=row[column.key];
+      html+='<td class="'+(column.type==="number"?"number":"")+'">';
+      if(column.type==="date"){
+        html+=requestDateField(row.id,column.key,value,disabled)
+      }else if(column.key==="amount"){
+        html+=requestInput(row.id,column.key,value,"Enter amount",disabled,"request-amount")
+      }else if(column.type==="number"){
+        html+=esc(money(value))
+      }else if(column.type==="requestType"){
+        options="";
+        for(k=0;k<MODEL.requestTypes.length;k++){
+          options+='<option value="'+esc(MODEL.requestTypes[k])+'"';
+          if(MODEL.requestTypes[k]===row.requestType){options+=' selected="selected"'}
+          options+='>'+esc(MODEL.requestTypes[k])+"</option>"
+        }
+        html+='<select class="request-select" data-request-type="'+esc(row.id)+'"';
+        if(disabled){html+=' disabled="disabled"'}
+        html+='>'+options+"</select>"
+      }else if(column.type==="action"){
+        html+='<button class="btn inline-create" data-create-row="'+esc(row.id)+'" type="button"';
+        if(disabled){html+=' disabled="disabled"'}
+        html+='>Create</button>'
+      }else if(column.key==="requestNo"){
+        html+='<span class="request-no">'+esc(row.requestNo||"")+"</span>"
+      }else if(column.key==="companyCode"){
+        html+=requestInput(row.id,column.key,value,"Co.Code",disabled,"")
+      }else{
+        html+=esc(value)
+      }
+      html+="</td>"
+    }
+    html+="</tr>"
+  }
+  byId("requestBody").innerHTML=html;
+  byId("requestMeta").innerHTML=state.requestDrafts.length+" request line";
+  if(state.requestDrafts.length!==1){byId("requestMeta").innerHTML+="s"}
+}
+function requestInput(rowId,key,value,placeholder,disabled,extraClass){
+  var cls="request-input"+(extraClass?" "+extraClass:"");
+  var html='<input class="'+cls+'" data-row-id="'+esc(rowId)+'"';
+  html+=' data-request-field="'+esc(key)+'" type="text" value="'+esc(value||"")+'"';
+  html+=' placeholder="'+esc(placeholder)+'"';
+  if(disabled){html+=' disabled="disabled"'}
+  return html+">"
+}
+function requestDateField(rowId,key,value,disabled){
+  var html='<div class="request-date-shell">';
+  html+='<input class="request-input request-date-input" data-row-id="'+esc(rowId)+'"';
+  html+=' data-request-field="'+esc(key)+'" type="text" value="'+esc(value||"")+'" placeholder="DD-MM-YYYY"';
+  if(disabled){html+=' disabled="disabled"'}
+  html+='>';
+  html+='<button class="request-calendar-btn" data-row-id="'+esc(rowId)+'"';
+  html+=' data-calendar-field="'+esc(key)+'" type="button"';
+  if(disabled){html+=' disabled="disabled"'}
+  html+='></button>';
+  html+='<div class="request-calendar" data-row-id="'+esc(rowId)+'"';
+  html+=' data-calendar-popup="'+esc(key)+'"></div></div>';
+  return html
+}
+function parseDate(text){
+  var match=String(text||"").match(/^(\d{2})-(\d{2})-(\d{4})$/);
+  var date;
+  if(!match){return null}
+  date=new Date(Number(match[3]),Number(match[2])-1,Number(match[1]));
+  if(date.getFullYear()!==Number(match[3])){return null}
+  if(date.getMonth()!==Number(match[2])-1){return null}
+  if(date.getDate()!==Number(match[1])){return null}
+  return date
+}
+function formatDate(date){
+  var day=("0"+date.getDate()).slice(-2);
+  var month=("0"+(date.getMonth()+1)).slice(-2);
+  return day+"-"+month+"-"+date.getFullYear()
+}
+function monthNames(){
+  return ["January","February","March","April","May","June","July","August","September","October","November","December"]
+}
+function shortMonthNames(){
+  return ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+}
+function sameDate(a,b){
+  return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate()
+}
+function closeRequestCalendars(){
+  var nodes=byId("requestBody").getElementsByClassName("request-calendar");
+  var i;
+  for(i=0;i<nodes.length;i++){nodes[i].className="request-calendar"}
+  state.calendarRowId="";
+  state.calendarField=""
+}
+function calendarPopup(rowId,field){
+  var nodes=byId("requestBody").getElementsByClassName("request-calendar");
+  var i;
+  for(i=0;i<nodes.length;i++){
+    if(nodes[i].getAttribute("data-row-id")!==String(rowId)){continue}
+    if(nodes[i].getAttribute("data-calendar-popup")===field){return nodes[i]}
+  }
+  return null
+}
+function calendarButton(rowId,field){
+  var nodes=byId("requestBody").getElementsByClassName("request-calendar-btn");
+  var i;
+  for(i=0;i<nodes.length;i++){
+    if(nodes[i].getAttribute("data-row-id")!==String(rowId)){continue}
+    if(nodes[i].getAttribute("data-calendar-field")===field){return nodes[i]}
+  }
+  return null
+}
+function placeRequestCalendar(){
+  var popup=calendarPopup(state.calendarRowId,state.calendarField);
+  var button=calendarButton(state.calendarRowId,state.calendarField);
+  var rect,viewWidth,viewHeight,width,height,left,top;
+  if(!popup||!button||popup.className.indexOf("open")<0){return}
+  rect=button.getBoundingClientRect();
+  viewWidth=document.documentElement.clientWidth||document.body.clientWidth;
+  viewHeight=document.documentElement.clientHeight||document.body.clientHeight;
+  width=popup.offsetWidth||274;
+  height=popup.offsetHeight||360;
+  left=rect.left;
+  if(left+width>viewWidth-12){left=Math.max(12,viewWidth-width-12)}
+  top=rect.bottom+4;
+  if(top+height>viewHeight-12){top=Math.max(12,rect.top-height-4)}
+  popup.style.left=Math.round(left)+"px";
+  popup.style.top=Math.round(top)+"px"
+}
+function renderRequestCalendar(){
+  var popup=calendarPopup(state.calendarRowId,state.calendarField);
+  if(!popup){return}
+  if(state.calendarMode==="years"){renderRequestYears(popup)}
+  else{renderRequestDays(popup)}
+  placeRequestCalendar()
+}
+function renderRequestDays(popup){
+  var target=state.calendarDate;
+  var year=target.getFullYear();
+  var month=target.getMonth();
+  var draft=draftById(state.calendarRowId);
+  var selected=parseDate(draft?draft[state.calendarField]:"");
+  var first=new Date(year,month,1);
+  var firstCell=new Date(year,month,1-first.getDay());
+  var names=monthNames();
+  var week=["Su","Mo","Tu","We","Th","Fr","Sa"];
+  var html='<div class="calendar-head">';
+  var i,cell,cls;
+  html+='<button class="cal-title-btn" data-cal="title" type="button">'+names[month]+" "+year+"</button>";
+  html+='<div class="cal-navs">';
+  html+='<button class="cal-nav cal-nav-up" data-cal="prev" type="button"></button>';
+  html+='<button class="cal-nav cal-nav-down" data-cal="next" type="button"></button>';
+  html+='</div></div><div class="calendar-weekdays">';
+  for(i=0;i<week.length;i++){html+="<span>"+week[i]+"</span>"}
+  html+='</div><div class="calendar-days">';
+  for(i=0;i<42;i++){
+    cell=new Date(firstCell.getFullYear(),firstCell.getMonth(),firstCell.getDate()+i);
+    cls="calendar-day";
+    if(cell.getMonth()!==month){cls+=" other-month"}
+    if(selected&&sameDate(selected,cell)){cls+=" selected"}
+    html+='<button class="'+cls+'" data-date="'+formatDate(cell)+'" type="button">'+cell.getDate()+"</button>"
+  }
+  html+='</div><div class="calendar-foot">';
+  html+='<button class="cal-link" data-cal="clear" type="button">Clear</button>';
+  html+='<button class="cal-link" data-cal="today" type="button">Today</button></div>';
+  popup.innerHTML=html
+}
+function renderRequestYears(popup){
+  var names=monthNames();
+  var shortNames=shortMonthNames();
+  var draft=draftById(state.calendarRowId);
+  var selected=parseDate(draft?draft[state.calendarField]:"");
+  var month=state.calendarDate.getMonth();
+  var year=state.calendarYear;
+  var minYear=year-5;
+  var maxYear=year+8;
+  var html='<div class="calendar-head">';
+  var y,m,cls;
+  html+='<button class="cal-title-btn" data-cal="title" type="button">'+names[month]+" "+year+"</button>";
+  html+='<div class="cal-navs"></div></div><div class="year-panel">';
+  for(y=minYear;y<=maxYear;y++){
+    html+='<div class="year-row'+(y===year?' active':'')+'">';
+    html+='<button class="year-btn" data-year="'+y+'" type="button">'+y+"</button>";
+    if(y===year){
+      html+='<div class="month-grid">';
+      for(m=0;m<12;m++){
+        cls="month-btn";
+        if(selected&&selected.getFullYear()===y&&selected.getMonth()===m){cls+=" selected"}
+        html+='<button class="'+cls+'" data-month="'+m+'" type="button">'+shortNames[m]+"</button>"
+      }
+      html+="</div>"
+    }
+    html+="</div>"
+  }
+  popup.innerHTML=html;
+  scrollRequestYear(popup)
+}
+function scrollRequestYear(popup){
+  var panel=popup.getElementsByClassName("year-panel")[0];
+  var active=popup.getElementsByClassName("year-row active")[0];
+  if(panel&&active){panel.scrollTop=Math.max(0,active.offsetTop-34)}
+}
+function openRequestCalendar(rowId,field){
+  var draft=draftById(rowId);
+  var parsed=draft?parseDate(draft[field]):null;
+  var popup;
+  closeRequestCalendars();
+  state.calendarRowId=String(rowId);
+  state.calendarField=field;
+  if(parsed){state.calendarDate=parsed}
+  else{state.calendarDate=new Date()}
+  state.calendarYear=state.calendarDate.getFullYear();
+  state.calendarMode="days";
+  popup=calendarPopup(state.calendarRowId,field);
+  if(popup){popup.className="request-calendar open"}
+  renderRequestCalendar()
+}
+function setDraftField(rowId,key,value){
+  var draft=draftById(rowId);
+  if(draft&&!draft.requestNo){draft[key]=value}
+}
+function parseAmountValue(value){
+  var text=String(value==null?"":value).replace(/,/g,"").replace(/^\s+|\s+$/g,"");
+  var match=text.match(/^([+-]?(?:\d+(?:\.\d+)?|\.\d+))\s*(CR|K|L|M|B)?$/i);
+  var multipliers=MODEL.amountMultipliers||{};
+  var number,suffix,multiplier;
+  if(!match){return null}
+  number=Number(match[1]);
+  suffix=String(match[2]||"").toUpperCase();
+  multiplier=suffix?Number(multipliers[suffix]||0):1;
+  if(!multiplier){return null}
+  number=number*multiplier;
+  if(!isFinite(number)||number<=0){return null}
+  return number
+}
+function convertAmountInput(input){
+  var rowId=input.getAttribute("data-row-id");
+  var number=parseAmountValue(input.value);
+  if(number===null){return}
+  setDraftField(rowId,"amount",number);
+  input.value=money(number)
+}
+function applyRequestVariant(row,requestType){
+  row.requestType=requestType
+}
+function addRequestRow(){
+  var record=findRowById(state.activeRecordId);
+  if(!record){return}
+  closeRequestCalendars();
+  state.requestDrafts.push(newRequestDraft(record));
+  renderRequestTable()
+}
+function openRequestModal(){
+  var record=selectedRow();
+  var source,i,copy,added=false;
+  if(!record){return}
+  state.activeRecordId=record.id;
+  state.requestDrafts=[];
+  state.requestDraftSeq=1;
+  source=record.requestRows[0]||{};
+  if(recordHasRequest(record)){
+    for(i=0;i<record.requestRows.length;i++){
+      if(!record.requestRows[i].requestNo){continue}
+      copy=cloneRequestRow(record.requestRows[i]);
+      state.requestDrafts.push(copy);
+      added=true
+    }
+    if(!added){
+      copy=cloneRequestRow(source);
+      copy.requestNo=record.requestNo||copy.requestNo;
+      state.requestDrafts.push(copy)
+    }
+  }else{
+    state.requestDrafts.push(newRequestDraft(record))
+  }
+  renderBasicDetails(record);
+  renderRequestTable();
+  byId("requestModal").className="modal-bg open"
+}
+function closeRequestModal(){
+  closeRequestCalendars();
+  byId("requestModal").className="modal-bg";
+  state.activeRecordId=null;
+  state.requestDrafts=[]
+}
+function nextRequestNumber(){
+  var used={};
+  var i,j,row,variants,k;
+  var candidate=Number(MODEL.requestNumber.start||1);
+  var step=Number(MODEL.requestNumber.step||1);
+  for(i=0;i<DATA.length;i++){
+    if(DATA[i].requestNo){used[String(DATA[i].requestNo)]=true}
+    for(j=0;j<DATA[i].requestRows.length;j++){
+      row=DATA[i].requestRows[j];
+      if(row.requestNo){used[String(row.requestNo)]=true}
+      variants=row.variants||[];
+      for(k=0;k<variants.length;k++){
+        if(variants[k].requestNo){used[String(variants[k].requestNo)]=true}
+      }
+    }
+  }
+  while(used[String(candidate)]){candidate+=step}
+  return String(candidate)
+}
+function requiredFieldsMissing(row){
+  var missing=[];
+  if(!parseDate(row.startDate)){missing.push("Start Date")}
+  if(!parseDate(row.endDate)){missing.push("End Date")}
+  if(!parseDate(row.expEndDate)){missing.push("Exp. End Date")}
+  if(parseAmountValue(row.amount)===null){missing.push("Amount")}
+  if(!String(row.companyCode||"").replace(/^\s+|\s+$/g,"")){missing.push("Co.Code")}
+  return missing
+}
+function persistCreatedDraft(record,draft){
+  var saved=cloneRequestRow(draft);
+  var i,hasCreated=false;
+  for(i=0;i<record.requestRows.length;i++){
+    if(record.requestRows[i].requestNo){hasCreated=true;break}
+  }
+  if(!hasCreated){record.requestRows=[saved]}
+  else{record.requestRows.push(saved)}
+}
+function createRequest(rowId){
+  var record=findRowById(state.activeRecordId);
+  var draft=draftById(rowId);
+  var requestNo,missing,amount;
+  if(!record||!draft||draft.requestNo){return}
+  missing=requiredFieldsMissing(draft);
+  if(missing.length){
+    toast("Please fill "+missing.join(", ")+" before creating the request.","Information","i");
+    setStatus("Please fill all required request fields");
+    return
+  }
+  amount=parseAmountValue(draft.amount);
+  draft.amount=amount;
+  requestNo=nextRequestNumber();
+  draft.requestNo=requestNo;
+  persistCreatedDraft(record,draft);
+  if(!record.requestNo){record.requestNo=requestNo}
+  renderRequestTable();
+  renderTable();
+  toast("Request No "+requestNo+" created successfully.");
+  setStatus("Request No "+requestNo+" created successfully")
+}
+ensureDisplayValues();
+renderStructureOptions();
+byId("tsfStructure").onchange=function(){
+  byId("ottkFilter").value="";
+  byId("entityFilter").value="";
+  byId("dealFilter").value="";
+  byId("statusFilter").value="";
+  closeAllCombos();
+  loadResults()
+};
+byId("filterToggle").onclick=function(){
+  var body=byId("filterBody");
+  var open=body.className.indexOf("open")>=0;
+  body.className=open?"filter-body":"filter-body open"
+};
+byId("ottkFilter").onkeyup=function(){
+  refreshFilters();
+  openCombo("ottkFilter","ottkList","ottkNo")
+};
+byId("ottkFilter").onclick=function(){openCombo("ottkFilter","ottkList","ottkNo")};
+byId("ottkDropBtn").onclick=function(){
+  var list=byId("ottkList");
+  if(list.className.indexOf("open")>=0){closeCombo("ottkList")}
+  else{openCombo("ottkFilter","ottkList","ottkNo")}
+};
+byId("entityFilter").onkeyup=function(){
+  refreshFilters();
+  openCombo("entityFilter","entityList","entityId")
+};
+byId("entityFilter").onclick=function(){openCombo("entityFilter","entityList","entityId")};
+byId("entityDropBtn").onclick=function(){
+  var list=byId("entityList");
+  if(list.className.indexOf("open")>=0){closeCombo("entityList")}
+  else{openCombo("entityFilter","entityList","entityId")}
+};
+byId("dealFilter").onkeyup=function(){
+  refreshFilters();
+  openCombo("dealFilter","dealList","dealId")
+};
+byId("dealFilter").onclick=function(){openCombo("dealFilter","dealList","dealId")};
+byId("dealDropBtn").onclick=function(){
+  var list=byId("dealList");
+  if(list.className.indexOf("open")>=0){closeCombo("dealList")}
+  else{openCombo("dealFilter","dealList","dealId")}
+};
+function bindComboChoice(listId,inputId){
+  byId(listId).onclick=function(e){
+    var target=e.target||e.srcElement;
+    var value=target.getAttribute("data-value");
+    if(!value){return}
+    byId(inputId).value=value;
+    closeCombo(listId);
+    refreshFilters()
+  }
+}
+bindComboChoice("ottkList","ottkFilter");
+bindComboChoice("entityList","entityFilter");
+bindComboChoice("dealList","dealFilter");
+byId("statusFilter").onkeyup=function(){
+  refreshFilters();
+  openCombo("statusFilter","statusList","ottkStatDesc")
+};
+byId("statusFilter").onclick=function(){openCombo("statusFilter","statusList","ottkStatDesc")};
+byId("statusDropBtn").onclick=function(){
+  var list=byId("statusList");
+  if(list.className.indexOf("open")>=0){closeCombo("statusList")}
+  else{openCombo("statusFilter","statusList","ottkStatDesc")}
+};
+bindComboChoice("statusList","statusFilter");
+byId("clearFilters").onclick=function(){
+  byId("ottkFilter").value="";
+  byId("entityFilter").value="";
+  byId("dealFilter").value="";
+  byId("statusFilter").value="";
+  closeAllCombos();
+  refreshFilters()
+};
+byId("mainBody").onclick=function(e){
+  var target=e.target||e.srcElement;
+  var row=target;
+  var id;
+  while(row&&row.tagName&&row.tagName.toLowerCase()!=="tr"){row=row.parentNode}
+  if(!row){return}
+  id=row.getAttribute("data-id");
+  if(!id){return}
+  state.selectedId=id;
+  renderTable()
+};
+byId("paginationBar").onclick=function(e){
+  var target=e.target||e.srcElement;
+  var page=target.getAttribute("data-page");
+  var rows,pages;
+  if(!page||target.disabled){return}
+  rows=getFilteredRows();
+  pages=Math.max(1,Math.ceil(rows.length/state.pageSize));
+  if(page==="prev"){state.page=Math.max(1,state.page-1)}
+  else if(page==="next"){state.page=Math.min(pages,state.page+1)}
+  else{state.page=parseInt(page,10)||1}
+  clearSelection();
+  renderTable()
+};
+byId("createRequestBtn").onclick=openRequestModal;
+byId("requestAddRow").onclick=addRequestRow;
+byId("requestClose").onclick=closeRequestModal;
+byId("requestDone").onclick=closeRequestModal;
+byId("requestBody").onclick=function(e){
+  var target=e.target||e.srcElement;
+  var rowId=target.getAttribute("data-create-row");
+  var calendarRow=target.getAttribute("data-row-id");
+  var field=target.getAttribute("data-calendar-field");
+  var nav=target.getAttribute("data-cal");
+  var date=target.getAttribute("data-date");
+  var year=target.getAttribute("data-year");
+  var month=target.getAttribute("data-month");
+  if(rowId){createRequest(rowId);return}
+  if(field&&calendarRow){openRequestCalendar(calendarRow,field);return}
+  if(!state.calendarField||!state.calendarRowId){return}
+  if(nav==="prev"){
+    state.calendarDate.setMonth(state.calendarDate.getMonth()-1);
+    state.calendarYear=state.calendarDate.getFullYear();
+    renderRequestCalendar();
+    return
+  }
+  if(nav==="next"){
+    state.calendarDate.setMonth(state.calendarDate.getMonth()+1);
+    state.calendarYear=state.calendarDate.getFullYear();
+    renderRequestCalendar();
+    return
+  }
+  if(nav==="title"){
+    state.calendarMode=state.calendarMode==="days"?"years":"days";
+    state.calendarYear=state.calendarDate.getFullYear();
+    renderRequestCalendar();
+    return
+  }
+  if(nav==="clear"){
+    setDraftField(state.calendarRowId,state.calendarField,"");
+    closeRequestCalendars();
+    renderRequestTable();
+    return
+  }
+  if(nav==="today"){
+    setDraftField(state.calendarRowId,state.calendarField,formatDate(new Date()));
+    closeRequestCalendars();
+    renderRequestTable();
+    return
+  }
+  if(year!==null&&year!==""){
+    state.calendarYear=Number(year);
+    state.calendarDate.setFullYear(state.calendarYear);
+    state.calendarMode="years";
+    renderRequestCalendar();
+    return
+  }
+  if(month!==null&&month!==""){
+    state.calendarDate=new Date(state.calendarYear,Number(month),1);
+    state.calendarMode="days";
+    renderRequestCalendar();
+    return
+  }
+  if(date){
+    setDraftField(state.calendarRowId,state.calendarField,date);
+    closeRequestCalendars();
+    renderRequestTable()
+  }
+};
+byId("requestBody").onchange=function(e){
+  var target=e.target||e.srcElement;
+  var rowId=target.getAttribute("data-request-type");
+  var field=target.getAttribute("data-request-field");
+  var inputRow=target.getAttribute("data-row-id");
+  var draft;
+  if(rowId){
+    draft=draftById(rowId);
+    if(draft&&!draft.requestNo){applyRequestVariant(draft,target.value)}
+    return
+  }
+  if(field&&inputRow){setDraftField(inputRow,field,target.value)}
+};
+byId("requestBody").onkeyup=function(e){
+  var target=e.target||e.srcElement;
+  var field=target.getAttribute("data-request-field");
+  var rowId=target.getAttribute("data-row-id");
+  if(field&&rowId){setDraftField(rowId,field,target.value)}
+};
+byId("requestBody").onkeydown=function(e){
+  var event=e||window.event;
+  var target=event.target||event.srcElement;
+  if(event.keyCode===13&&target.getAttribute("data-request-field")==="amount"){
+    if(event.preventDefault){event.preventDefault()}
+    event.returnValue=false;
+    convertAmountInput(target);
+    return false
+  }
+  return true
+};
+document.onkeydown=function(e){
+  var event=e||window.event;
+  if(event.keyCode===27){
+    closeAllCombos();
+    closeRequestCalendars();
+    closeRequestModal()
+  }
+  return true
+};
+})();
+</script>
+</body>
+</html>

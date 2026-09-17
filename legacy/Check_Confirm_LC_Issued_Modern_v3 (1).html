@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Check &amp; Confirm LC Issued</title>
+<style type="text/css">
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  background:#f5f7f9;
+  color:#1d2d3e;
+  font-family:"72","Segoe UI",Arial,sans-serif;
+  font-size:13px;
+}
+*{box-sizing:border-box}
+button,input,select,table,th,td,div,span,label{
+  font-family:"72","Segoe UI",Arial,sans-serif;
+}
+button{cursor:pointer}
+button:disabled{cursor:default;opacity:.55}
+.shell{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  background:#f5f7f9;
+}
+.topbar{
+  height:48px;
+  flex:0 0 48px;
+  background:#fff;
+  border-bottom:1px solid #d9d9d9;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);
+}
+.topbar-inner{
+  height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+}
+.title{
+  font-size:16px;
+  font-weight:600;
+  color:#1d2d3e;
+}
+.content{
+  flex:1 1 auto;
+  min-height:0;
+  padding:10px 14px 28px;
+  overflow:hidden;
+}
+.screen{
+  max-width:1600px;
+  height:100%;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+}
+.card{
+  margin-bottom:10px;
+  background:#fff;
+  border:1px solid #e1e6ea;
+  border-radius:8px;
+  box-shadow:0 1px 4px rgba(29,45,62,.04);
+}
+.card-head{
+  min-height:34px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:7px 12px;
+  background:#fafcfe;
+  border-bottom:1px solid #e5e9ed;
+  border-radius:8px 8px 0 0;
+}
+.card-title{
+  font-size:12px;
+  font-weight:600;
+  color:#1d2d3e;
+}
+.card-meta{
+  font-size:11px;
+  color:#6a6d70;
+}
+.card-body{padding:12px}
+.selection-main-row{
+  display:flex;
+  align-items:flex-end;
+  gap:14px;
+  flex-wrap:wrap;
+}
+.field-inline{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+.field-inline label{
+  color:#1d2d3e;
+  font-size:12px;
+  font-weight:400;
+  white-space:nowrap;
+}
+.required{color:#bb0000}
+.input,.select{
+  height:30px;
+  padding:4px 8px;
+  border:1px solid #b8b8b8;
+  border-radius:4px;
+  background:#fff;
+  color:#1d2d3e;
+  font-size:12px;
+}
+.input:focus,.select:focus{
+  outline:0;
+  border-color:#0a6ed1;
+  box-shadow:0 0 0 1px #0a6ed1;
+}
+.company-select{width:220px}
+.date-shell{
+  position:relative;
+  width:178px;
+}
+.date-input{
+  width:178px;
+  padding-right:34px;
+}
+.calendar-btn{
+  position:absolute;
+  right:1px;
+  top:1px;
+  width:29px;
+  height:28px;
+  padding:0;
+  border:0;
+  border-left:1px solid #d9d9d9;
+  background:#fff;
+}
+.calendar-btn:before{
+  content:"";
+  position:absolute;
+  left:8px;
+  top:8px;
+  width:12px;
+  height:11px;
+  border:1px solid #556b82;
+  border-radius:2px;
+}
+.calendar-btn:after{
+  content:"";
+  position:absolute;
+  left:8px;
+  top:11px;
+  width:14px;
+  height:1px;
+  background:#556b82;
+}
+.filter-icon-btn{
+  width:30px;
+  height:30px;
+  padding:0;
+  border:1px solid #b8b8b8;
+  border-radius:4px;
+  background:#fff;
+  position:relative;
+}
+.filter-icon-btn:hover{
+  background:#f7f8f9;
+  border-color:#0a6ed1;
+}
+.filter-icon-btn:before{
+  content:"";
+  position:absolute;
+  left:8px;
+  top:7px;
+  width:0;
+  height:0;
+  border-left:7px solid transparent;
+  border-right:7px solid transparent;
+  border-top:9px solid #556b82;
+}
+.filter-icon-btn:after{
+  content:"";
+  position:absolute;
+  left:13px;
+  top:14px;
+  width:3px;
+  height:7px;
+  background:#556b82;
+}
+.filter-body{
+  display:none;
+  margin:0;
+  padding:0;
+  border:0;
+}
+.filter-body.open{display:flex}
+.filter-grid{
+  display:flex;
+  align-items:flex-end;
+  gap:12px;
+  flex-wrap:nowrap;
+}
+.filter-item{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:4px;
+  min-width:0;
+}
+.filter-item label{
+  color:#1d2d3e;
+  font-size:12px;
+  font-weight:400;
+  white-space:nowrap;
+}
+.transaction-filter{width:165px}
+.status-filter{width:170px}
+.combo-shell{
+  position:relative;
+  width:165px;
+}
+.combo-input{width:165px;padding-right:30px}
+.combo-btn{
+  position:absolute;
+  right:1px;
+  top:1px;
+  width:28px;
+  height:28px;
+  padding:0;
+  border:0;
+  border-left:1px solid #d9d9d9;
+  background:#fff;
+}
+.combo-btn:after{
+  content:"";
+  position:absolute;
+  left:9px;
+  top:11px;
+  width:0;
+  height:0;
+  border-left:5px solid transparent;
+  border-right:5px solid transparent;
+  border-top:6px solid #556b82;
+}
+.combo-list{
+  display:none;
+  position:absolute;
+  left:0;
+  right:0;
+  top:31px;
+  z-index:1700;
+  max-height:190px;
+  overflow:auto;
+  background:#fff;
+  border:1px solid #b8b8b8;
+  border-radius:4px;
+  box-shadow:0 4px 12px rgba(0,0,0,.12);
+}
+.combo-list.open{display:block}
+.combo-option{
+  width:100%;
+  min-height:30px;
+  padding:6px 8px;
+  border:0;
+  border-bottom:1px solid #edf0f2;
+  background:#fff;
+  color:#1d2d3e;
+  text-align:left;
+  font-size:12px;
+}
+.combo-option:hover{background:#f2f8fd}
+.combo-empty{
+  padding:8px;
+  color:#6a6d70;
+  font-size:11px;
+}
+.btn{
+  height:30px;
+  padding:0 12px;
+  border:1px solid #d1e8ff;
+  border-radius:4px;
+  background:#eaf3fc;
+  color:#004b93;
+  font-size:12px;
+  font-weight:600;
+}
+.btn:hover{
+  background:#d1e8ff;
+  border-color:#0a6ed1;
+  color:#0854a0;
+}
+.btn-primary{
+  background:#0a6ed1;
+  border-color:#0a6ed1;
+  color:#fff;
+}
+.btn-primary:hover{
+  background:#0854a0;
+  border-color:#0854a0;
+  color:#fff;
+}
+.btn-ghost{
+  background:#fff;
+  border-color:#d9d9d9;
+  color:#1d2d3e;
+}
+.btn-ghost:hover{
+  background:#f7f8f9;
+  border-color:#b8b8b8;
+  color:#1d2d3e;
+}
+#resultsArea{
+  display:none;
+  min-height:0;
+  flex:1 1 auto;
+  flex-direction:column;
+}
+#resultsArea.open{display:flex}
+.toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  min-height:36px;
+  margin-bottom:8px;
+}
+.toolbar-left,.toolbar-right{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.record-count{
+  color:#6a6d70;
+  font-size:11px;
+}
+.table-card{
+  overflow:hidden;
+  min-height:0;
+  flex:1 1 auto;
+  display:flex;
+  flex-direction:column;
+}
+.table-wrap{
+  width:100%;
+  min-height:0;
+  overflow:auto;
+  background:#fff;
+  flex:1 1 auto;
+}
+.data-table{
+  width:100%;
+  min-width:1540px;
+  border-collapse:separate;
+  border-spacing:0;
+  font-size:12px;
+}
+.data-table th{
+  position:sticky;
+  top:0;
+  z-index:2;
+  height:34px;
+  padding:6px 24px 6px 8px;
+  background:#f5f8fa;
+  color:#1d2d3e;
+  border-right:1px solid #d9d9d9;
+  border-bottom:1px solid #c7d4e0;
+  text-align:left;
+  font-weight:600;
+  white-space:nowrap;
+}
+.data-table td{
+  height:34px;
+  padding:4px 8px;
+  background:#fff;
+  border-right:1px solid #e7ebee;
+  border-bottom:1px solid #e7ebee;
+  white-space:nowrap;
+  color:#1d2d3e;
+}
+.data-table tbody tr:hover td{background:#f2f8fd}
+.data-table tbody tr.selected td{background:#eaf3fc}
+.data-table tbody tr.settled td{color:#556b82}
+.data-table tbody tr.settled.selected td{background:#eef5ef}
+.data-table .number{
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+.select-cell{text-align:center}
+.sort-arrows{
+  position:absolute;
+  top:9px;
+  right:8px;
+  width:8px;
+  height:15px;
+}
+.sort-up,.sort-down{
+  position:absolute;
+  left:0;
+  width:0;
+  height:0;
+  border-left:4px solid transparent;
+  border-right:4px solid transparent;
+}
+.sort-up{
+  top:0;
+  border-bottom:5px solid #9aa7b4;
+}
+.sort-down{
+  bottom:0;
+  border-top:5px solid #9aa7b4;
+}
+th.sort-asc .sort-up{border-bottom-color:#0a6ed1}
+th.sort-desc .sort-down{border-top-color:#0a6ed1}
+.pagination-bar{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:5px;
+  min-height:44px;
+  padding:8px 10px;
+  background:#fff;
+  border-top:1px solid #e5e9ed;
+}
+.page-btn{
+  min-width:30px;
+  height:28px;
+  padding:0 8px;
+  border:1px solid #d9d9d9;
+  border-radius:4px;
+  background:#fff;
+  color:#1d2d3e;
+  font-size:11px;
+}
+.page-btn:hover{
+  background:#f7f8f9;
+  border-color:#b8b8b8;
+}
+.page-btn.active{
+  background:#eaf3fc;
+  border-color:#0a6ed1;
+  color:#004b93;
+  font-weight:600;
+}
+.page-btn:disabled{
+  background:#f7f8f9;
+  color:#9aa7b4;
+}
+.empty{
+  padding:28px!important;
+  text-align:center!important;
+  color:#6a6d70!important;
+}
+.modal-bg{
+  display:none;
+  position:fixed;
+  left:0;
+  top:0;
+  right:0;
+  bottom:0;
+  z-index:2000;
+  background:rgba(29,45,62,.30);
+  padding:28px 18px;
+  overflow:auto;
+}
+.modal-bg.open{display:block}
+.modal{
+  max-width:520px;
+  margin:12vh auto 0;
+  background:#fff;
+  border:1px solid #d9d9d9;
+  border-radius:8px;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
+  overflow:hidden;
+}
+.modal-head{
+  height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 14px;
+  background:#eaf3fc;
+  border-bottom:1px solid #d1e8ff;
+}
+.modal-title{
+  font-size:13px;
+  font-weight:600;
+}
+.modal-close{
+  width:28px;
+  height:28px;
+  border:1px solid #d9d9d9;
+  border-radius:4px;
+  background:#fff;
+  color:#556b82;
+}
+.modal-body{padding:14px}
+.modal-foot{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:7px;
+  padding:10px 14px;
+  background:#f7f8f9;
+  border-top:1px solid #d9d9d9;
+}
+.confirm-copy{
+  line-height:18px;
+  color:#1d2d3e;
+}
+.edit-grid{
+  display:grid;
+  grid-template-columns:130px 1fr;
+  gap:10px 12px;
+  align-items:center;
+}
+.edit-grid label{color:#556b82}
+.edit-grid .input{width:100%}
+.toast-region{
+  position:fixed;
+  right:22px;
+  bottom:28px;
+  z-index:4000;
+  width:350px;
+  max-width:calc(100% - 44px);
+}
+.toast{
+  display:flex;
+  gap:10px;
+  margin-top:8px;
+  padding:12px 14px;
+  background:#f2f4f5;
+  border:1px solid #d9d9d9;
+  border-left:3px solid #107e3e;
+  border-radius:4px;
+  box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+.toast-icon{
+  width:24px;
+  height:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:#ebf5eb;
+  color:#107e3e;
+  font-weight:600;
+}
+.toast-title{
+  margin-bottom:2px;
+  font-size:12px;
+  font-weight:600;
+}
+.toast-message{
+  color:#556b82;
+  font-size:12px;
+  line-height:17px;
+}
+.statusbar{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  height:20px;
+  display:flex;
+  align-items:center;
+  padding:0 12px;
+  background:#fff;
+  border-top:1px solid #e1e6ea;
+  color:#6a6d70;
+  font-size:11px;
+  z-index:900;
+}
+.status-dot{
+  width:7px;
+  height:7px;
+  margin-right:6px;
+  border-radius:50%;
+  background:#0a6ed1;
+}
+.calendar-popup{
+  display:none;
+  position:absolute;
+  z-index:1500;
+  top:34px;
+  right:0;
+  width:274px;
+  background:#fff;
+  border:1px solid #c8c8c8;
+  border-radius:2px;
+  box-shadow:0 4px 14px rgba(0,0,0,.16);
+  overflow:hidden;
+}
+.calendar-popup.open{display:block}
+.calendar-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:50px;
+  padding:0 10px 0 14px;
+  background:#fff;
+}
+.cal-title-btn{
+  position:relative;
+  height:32px;
+  padding:0 16px 0 0;
+  border:0;
+  background:#fff;
+  color:#111;
+  font-size:12px;
+  font-weight:600;
+  text-align:left;
+}
+.cal-title-btn:after{
+  content:"";
+  position:absolute;
+  right:3px;
+  top:14px;
+  width:0;
+  height:0;
+  border-left:4px solid transparent;
+  border-right:4px solid transparent;
+  border-top:5px solid #556b82;
+}
+.cal-navs{display:flex;align-items:center;gap:12px}
+.cal-nav{
+  position:relative;
+  width:26px;
+  height:30px;
+  padding:0;
+  border:0;
+  background:#fff;
+}
+.cal-nav:before{
+  content:"";
+  position:absolute;
+  left:8px;
+  width:10px;
+  height:10px;
+  border-left:1px solid #1d2d3e;
+}
+.cal-nav-up:before{
+  top:11px;
+  border-top:1px solid #1d2d3e;
+  transform:rotate(45deg);
+}
+.cal-nav-down:before{
+  top:7px;
+  border-bottom:1px solid #1d2d3e;
+  transform:rotate(-45deg);
+}
+.calendar-weekdays,.calendar-days{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  padding:0 12px;
+}
+.calendar-weekdays span{
+  height:28px;
+  line-height:28px;
+  text-align:center;
+  color:#111;
+  font-size:11px;
+}
+.calendar-day{
+  height:36px;
+  border:0;
+  background:#fff;
+  color:#111;
+  font-size:11px;
+}
+.calendar-day:hover{background:#edf5fc}
+.calendar-day.other-month{color:#8a949e}
+.calendar-day.selected{
+  background:#6a6d70;
+  color:#fff;
+  border:1px solid #1d2d3e;
+}
+.calendar-foot{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:46px;
+  padding:0 14px;
+  border-top:1px solid #e5e9ed;
+}
+.cal-link{
+  border:0;
+  background:#fff;
+  color:#0a6ed1;
+  font-size:11px;
+  padding:4px 0;
+}
+.year-panel{
+  max-height:315px;
+  overflow-y:auto;
+  border-top:1px solid #edf0f2;
+}
+.year-row{
+  min-height:34px;
+  border-bottom:1px solid #d9d9d9;
+  background:#f4f4f4;
+}
+.year-btn{
+  width:100%;
+  height:34px;
+  padding:0 10px;
+  border:0;
+  background:#f4f4f4;
+  color:#1d2d3e;
+  text-align:left;
+  font-size:12px;
+}
+.year-row.active .year-btn{font-weight:600}
+.month-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  padding:4px 5px 8px;
+  background:#fff;
+}
+.month-btn{
+  height:36px;
+  border:0;
+  background:#fff;
+  color:#111;
+  font-size:11px;
+}
+.month-btn:hover{background:#edf5fc}
+.month-btn.selected{
+  background:#6a6d70;
+  color:#fff;
+  border:1px solid #1d2d3e;
+}
+@media screen and (max-width:1050px){
+  .selection-main-row{flex-wrap:wrap}
+  .filter-grid{flex-wrap:wrap}
+  .content{padding-left:8px;padding-right:8px}
+}
+@media screen and (max-width:720px){
+  .topbar-inner{padding:0 10px}
+  .selection-main-row{align-items:flex-start}
+  .field-inline{width:100%;justify-content:space-between}
+  .company-select,.date-shell,.date-input{width:210px}
+  .filter-body.open{width:100%}
+  .filter-grid{width:100%;flex-direction:column;align-items:stretch}
+  .filter-item{width:100%;align-items:stretch}
+  .combo-shell,.combo-input,.transaction-filter,.status-filter{width:100%}
+  .toolbar{align-items:flex-start;gap:6px;flex-direction:column}
+  .toolbar-right{width:100%;justify-content:flex-end}
+}
+.title-wrap{display:flex;align-items:center;gap:10px}
+img.mark{width:28px;height:28px;flex:none;object-fit:contain}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="title-wrap">
+        <img class="mark" alt="Fourth Signal" src="https://raw.githubusercontent.com/ryannayak/fs-assets/e82f35a83e28689167b22b4300d4994a249acee0/fs-short-logo.png"/>
+        <div class="title">Check &amp; Confirm LC Issued</div>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="screen">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">Basic Selection</div>
+          <div class="card-meta">Required</div>
+        </div>
+        <div class="card-body">
+          <div class="selection-main-row">
+            <div class="field-inline">
+              <label for="companyCode">Company Code <span class="required">*</span></label>
+              <select id="companyCode" class="select company-select">
+                <option value="">Select Company Code</option>
+                <option value="AE13">AE13 - Olam International DMCC</option>
+                <option value="AE11">AE11 - Olam Global Agri</option>
+                <option value="SG03">SG03 - Olam Global Agri Pte. Ltd</option>
+              </select>
+            </div>
+            <div class="field-inline">
+              <label for="keyDate">Key Date <span class="required">*</span></label>
+              <div class="date-shell">
+                <input id="keyDate" class="input date-input" type="text" placeholder="DD-MM-YYYY">
+                <button id="calendarBtn" class="calendar-btn" type="button" title="Open calendar"></button>
+                <div id="calendarPopup" class="calendar-popup"></div>
+              </div>
+            </div>
+            <button id="filterToggle" class="filter-icon-btn" type="button" title="Filters" aria-label="Filters"></button>
+            <div id="filterBody" class="filter-body">
+              <div class="filter-grid">
+                <div class="filter-item">
+                  <label for="transactionFilter">Transaction No</label>
+                  <div class="combo-shell">
+                    <input id="transactionFilter" class="input combo-input" type="text" placeholder="Transaction No">
+                    <button id="transactionDropBtn" class="combo-btn" type="button" aria-label="Transaction list"></button>
+                    <div id="transactionList" class="combo-list"></div>
+                  </div>
+                </div>
+                <div class="filter-item">
+                  <label for="statusFilter">Status Selection</label>
+                  <select id="statusFilter" class="select status-filter">
+                    <option value="CONTRACT">Contract</option>
+                    <option value="SETTLED">Contract Settlement</option>
+                  </select>
+                </div>
+                <div class="filter-item">
+                  <button id="clearFilters" class="btn btn-ghost" type="button">Clear filters</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="resultsArea">
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <span id="recordCount" class="record-count"></span>
+          </div>
+          <div class="toolbar-right">
+            <button id="settleBtn" class="btn btn-primary" type="button" disabled="disabled">Confirm / Settle</button>
+            <button id="editBtn" class="btn" type="button" disabled="disabled">Edit</button>
+          </div>
+        </div>
+        <div class="card table-card">
+          <div class="card-head">
+            <div class="card-title">LC Issued</div>
+            <div id="selectionMeta" class="card-meta">Select one line item</div>
+          </div>
+          <div class="table-wrap">
+            <table id="lcTable" class="data-table">
+              <thead id="lcHead"></thead>
+              <tbody id="lcBody"></tbody>
+            </table>
+          </div>
+          <div id="paginationBar" class="pagination-bar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="settleModal" class="modal-bg">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Confirm Settlement</div>
+      <button id="settleClose" class="modal-close" type="button">X</button>
+    </div>
+    <div class="modal-body">
+      <div id="settleText" class="confirm-copy"></div>
+    </div>
+    <div class="modal-foot">
+      <button id="settleNo" class="btn btn-ghost" type="button">No</button>
+      <button id="settleYes" class="btn btn-primary" type="button">Yes</button>
+    </div>
+  </div>
+</div>
+<div id="toastRegion" class="toast-region" aria-live="polite"></div>
+<div class="statusbar">
+  <span class="status-dot"></span>
+  <span id="statusText">Select Company Code and enter Key Date</span>
+</div>
+<script type="text/javascript">
+(function(){
+var DATA=[
+  {
+    id:1,companyCode:"AE13",activity:"Contract",applicant:"AE13 - Olam International DMCC",
+    dealId:"12000865",enteredOn:"26-08-2025",lcTxn:"2604001144",lcAmount:148,currency:"USD",
+    startDate:"06-09-2025",endDate:"14-08-2027",bank:"0660012956 - Westpac Banking Corporation",
+    totalAmount:148,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:2,companyCode:"AE13",activity:"Contract",applicant:"AE13 - Olam International DMCC",
+    dealId:"12001102",enteredOn:"10-12-2025",lcTxn:"2604001264",lcAmount:100000,currency:"USD",
+    startDate:"18-12-2025",endDate:"13-12-2026",bank:"0660014662 - Itau CorpBanca",
+    totalAmount:100000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:3,companyCode:"AE13",activity:"Contract",applicant:"AE13 - Olam International DMCC",
+    dealId:"12001169",enteredOn:"20-12-2025",lcTxn:"2604001291",lcAmount:116,currency:"USD",
+    startDate:"29-12-2025",endDate:"21-08-2027",bank:"0660013412 - QATAR NATIONAL BANK (QPSC)",
+    totalAmount:116,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:4,companyCode:"AE13",activity:"Contract",applicant:"AE13 - Olam International DMCC",
+    dealId:"12001329",enteredOn:"08-01-2026",lcTxn:"2604001416",lcAmount:600000,currency:"USD",
+    startDate:"16-01-2026",endDate:"11-01-2027",bank:"0660013412 - QATAR NATIONAL BANK (QPSC)",
+    totalAmount:600000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:5,companyCode:"AE13",activity:"Contract",applicant:"AE13 - Olam International DMCC",
+    dealId:"12001330",enteredOn:"09-01-2026",lcTxn:"2604001417",lcAmount:400000,currency:"USD",
+    startDate:"16-01-2026",endDate:"11-01-2027",bank:"0660013412 - QATAR NATIONAL BANK (QPSC)",
+    totalAmount:400000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:6,companyCode:"AE13",activity:"Contract",applicant:"AE13 - Olam International DMCC",
+    dealId:"12001137",enteredOn:"15-12-2025",lcTxn:"2604001520",lcAmount:1000000,currency:"USD",
+    startDate:"26-12-2025",endDate:"19-12-2026",bank:"0660014662 - Itau CorpBanca",
+    totalAmount:1000000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:7,companyCode:"AE13",activity:"Contract",applicant:"AE13 - Olam International DMCC",
+    dealId:"12001619",enteredOn:"04-05-2026",lcTxn:"2604001579",lcAmount:1000000,currency:"USD",
+    startDate:"13-05-2026",endDate:"08-05-2027",bank:"0660013175 - STANDARD CHARTERED BANK",
+    totalAmount:1000000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:8,companyCode:"AE13",activity:"Contract",applicant:"AE13 - Olam International DMCC",
+    dealId:"12001548",enteredOn:"14-03-2026",lcTxn:"2604001700",lcAmount:10000,currency:"USD",
+    startDate:"20-03-2026",endDate:"13-01-2027",bank:"0660013411 - THE COMMERCIAL BANK OF QATAR",
+    totalAmount:10000,beneficiary:"OLAM-OGA",settled:true
+  },
+  {
+    id:9,companyCode:"AE13",activity:"Contract",applicant:"AE13 - Olam International DMCC",
+    dealId:"12001672",enteredOn:"18-05-2026",lcTxn:"2604001612",lcAmount:250000,currency:"USD",
+    startDate:"25-05-2026",endDate:"19-05-2027",bank:"0660013412 - QATAR NATIONAL BANK (QPSC)",
+    totalAmount:250000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:10,companyCode:"AE13",activity:"Contract",applicant:"AE13 - Olam International DMCC",
+    dealId:"12001710",enteredOn:"01-06-2026",lcTxn:"2604001633",lcAmount:325000,currency:"USD",
+    startDate:"08-06-2026",endDate:"03-06-2027",bank:"0660012956 - Westpac Banking Corporation",
+    totalAmount:325000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:11,companyCode:"AE13",activity:"Contract",applicant:"AE13 - Olam International DMCC",
+    dealId:"12001754",enteredOn:"12-06-2026",lcTxn:"2604001654",lcAmount:780000,currency:"USD",
+    startDate:"18-06-2026",endDate:"13-06-2027",bank:"0660013175 - STANDARD CHARTERED BANK",
+    totalAmount:780000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:12,companyCode:"AE13",activity:"Contract",applicant:"AE13 - Olam International DMCC",
+    dealId:"12001790",enteredOn:"21-06-2026",lcTxn:"2604001678",lcAmount:95000,currency:"USD",
+    startDate:"28-06-2026",endDate:"23-06-2027",bank:"0660013411 - THE COMMERCIAL BANK OF QATAR",
+    totalAmount:95000,beneficiary:"OLAM-OGA",settled:true
+  },
+  {
+    id:13,companyCode:"AE11",activity:"Contract",applicant:"AE11 - Olam Global Agri",
+    dealId:"12001811",enteredOn:"08-07-2026",lcTxn:"2604001708",lcAmount:175000,currency:"USD",
+    startDate:"15-07-2026",endDate:"10-07-2027",bank:"0660013175 - STANDARD CHARTERED BANK",
+    totalAmount:175000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:36,companyCode:"AE11",activity:"Contract",applicant:"AE11 - Olam Global Agri",
+    dealId:"12001824",enteredOn:"15-07-2026",lcTxn:"2604001715",lcAmount:225000,currency:"USD",
+    startDate:"22-07-2026",endDate:"17-07-2027",bank:"0660012956 - Westpac Banking Corporation",
+    totalAmount:225000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:37,companyCode:"AE11",activity:"Contract",applicant:"AE11 - Olam Global Agri",
+    dealId:"12001837",enteredOn:"22-07-2026",lcTxn:"2604001722",lcAmount:310000,currency:"USD",
+    startDate:"29-07-2026",endDate:"24-07-2027",bank:"0660013411 - THE COMMERCIAL BANK OF QATAR",
+    totalAmount:310000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:38,companyCode:"AE11",activity:"Contract",applicant:"AE11 - Olam Global Agri",
+    dealId:"12001853",enteredOn:"01-08-2026",lcTxn:"2604001738",lcAmount:450000,currency:"USD",
+    startDate:"08-08-2026",endDate:"03-08-2027",bank:"0660013175 - STANDARD CHARTERED BANK",
+    totalAmount:450000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:39,companyCode:"AE11",activity:"Contract",applicant:"AE11 - Olam Global Agri",
+    dealId:"12001868",enteredOn:"10-08-2026",lcTxn:"2604001749",lcAmount:125000,currency:"USD",
+    startDate:"17-08-2026",endDate:"12-08-2027",bank:"0660014662 - Itau CorpBanca",
+    totalAmount:125000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:40,companyCode:"AE11",activity:"Contract",applicant:"AE11 - Olam Global Agri",
+    dealId:"12001882",enteredOn:"18-08-2026",lcTxn:"2604001758",lcAmount:575000,currency:"USD",
+    startDate:"25-08-2026",endDate:"20-08-2027",bank:"0660013412 - QATAR NATIONAL BANK (QPSC)",
+    totalAmount:575000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:41,companyCode:"AE11",activity:"Contract",applicant:"AE11 - Olam Global Agri",
+    dealId:"12001896",enteredOn:"26-08-2026",lcTxn:"2604001767",lcAmount:680000,currency:"USD",
+    startDate:"02-09-2026",endDate:"28-08-2027",bank:"0660012956 - Westpac Banking Corporation",
+    totalAmount:680000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:42,companyCode:"AE11",activity:"Contract",applicant:"AE11 - Olam Global Agri",
+    dealId:"12001911",enteredOn:"04-09-2026",lcTxn:"2604001776",lcAmount:340000,currency:"USD",
+    startDate:"11-09-2026",endDate:"06-09-2027",bank:"0660013175 - STANDARD CHARTERED BANK",
+    totalAmount:340000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:43,companyCode:"AE11",activity:"Contract",applicant:"AE11 - Olam Global Agri",
+    dealId:"12001926",enteredOn:"12-09-2026",lcTxn:"2604001785",lcAmount:790000,currency:"USD",
+    startDate:"19-09-2026",endDate:"14-09-2027",bank:"0660013411 - THE COMMERCIAL BANK OF QATAR",
+    totalAmount:790000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:44,companyCode:"AE11",activity:"Contract",applicant:"AE11 - Olam Global Agri",
+    dealId:"12001941",enteredOn:"20-09-2026",lcTxn:"2604001794",lcAmount:265000,currency:"USD",
+    startDate:"27-09-2026",endDate:"22-09-2027",bank:"0660014662 - Itau CorpBanca",
+    totalAmount:265000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:45,companyCode:"AE11",activity:"Contract",applicant:"AE11 - Olam Global Agri",
+    dealId:"12001956",enteredOn:"28-09-2026",lcTxn:"2604001803",lcAmount:920000,currency:"USD",
+    startDate:"05-10-2026",endDate:"30-09-2027",bank:"0660013412 - QATAR NATIONAL BANK (QPSC)",
+    totalAmount:920000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:46,companyCode:"AE11",activity:"Contract",applicant:"AE11 - Olam Global Agri",
+    dealId:"12001971",enteredOn:"06-10-2026",lcTxn:"2604001812",lcAmount:415000,currency:"USD",
+    startDate:"13-10-2026",endDate:"08-10-2027",bank:"0660012956 - Westpac Banking Corporation",
+    totalAmount:415000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:47,companyCode:"AE11",activity:"Contract",applicant:"AE11 - Olam Global Agri",
+    dealId:"12001986",enteredOn:"14-10-2026",lcTxn:"2604001821",lcAmount:155000,currency:"USD",
+    startDate:"21-10-2026",endDate:"16-10-2027",bank:"0660013175 - STANDARD CHARTERED BANK",
+    totalAmount:155000,beneficiary:"OLAM-OGA",settled:true
+  },
+  {
+    id:48,companyCode:"AE11",activity:"Contract",applicant:"AE11 - Olam Global Agri",
+    dealId:"12002001",enteredOn:"22-10-2026",lcTxn:"2604001830",lcAmount:505000,currency:"USD",
+    startDate:"29-10-2026",endDate:"24-10-2027",bank:"0660013411 - THE COMMERCIAL BANK OF QATAR",
+    totalAmount:505000,beneficiary:"OLAM-OGA",settled:true
+  },
+  {
+    id:14,companyCode:"SG03",activity:"Contract",applicant:"SG03 - Olam Global Agri Pte. Ltd",
+    dealId:"12001842",enteredOn:"19-07-2026",lcTxn:"2604001731",lcAmount:210000,currency:"USD",
+    startDate:"26-07-2026",endDate:"21-07-2027",bank:"0660012956 - Westpac Banking Corporation",
+    totalAmount:210000,beneficiary:"OLAM-OGA",settled:false
+  }  ,{
+    id:15,companyCode:"SG03",activity:"Contract",applicant:"SG03 - Olam Global Agri Pte. Ltd",
+    dealId:"12001861",enteredOn:"24-07-2026",lcTxn:"2604001745",lcAmount:185000,currency:"USD",
+    startDate:"01-08-2026",endDate:"27-07-2027",bank:"0660013411 - THE COMMERCIAL BANK OF QATAR",
+    totalAmount:185000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:16,companyCode:"SG03",activity:"Contract",applicant:"SG03 - Olam Global Agri Pte. Ltd",
+    dealId:"12001872",enteredOn:"02-08-2026",lcTxn:"2604001752",lcAmount:420000,currency:"USD",
+    startDate:"10-08-2026",endDate:"05-08-2027",bank:"0660013175 - STANDARD CHARTERED BANK",
+    totalAmount:420000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:17,companyCode:"SG03",activity:"Contract",applicant:"SG03 - Olam Global Agri Pte. Ltd",
+    dealId:"12001890",enteredOn:"08-08-2026",lcTxn:"2604001761",lcAmount:275000,currency:"USD",
+    startDate:"15-08-2026",endDate:"10-08-2027",bank:"0660012956 - Westpac Banking Corporation",
+    totalAmount:275000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:18,companyCode:"SG03",activity:"Contract",applicant:"SG03 - Olam Global Agri Pte. Ltd",
+    dealId:"12001904",enteredOn:"15-08-2026",lcTxn:"2604001770",lcAmount:510000,currency:"USD",
+    startDate:"22-08-2026",endDate:"17-08-2027",bank:"0660014662 - Itau CorpBanca",
+    totalAmount:510000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:19,companyCode:"SG03",activity:"Contract",applicant:"SG03 - Olam Global Agri Pte. Ltd",
+    dealId:"12001919",enteredOn:"22-08-2026",lcTxn:"2604001784",lcAmount:96000,currency:"USD",
+    startDate:"29-08-2026",endDate:"24-08-2027",bank:"0660013412 - QATAR NATIONAL BANK (QPSC)",
+    totalAmount:96000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:20,companyCode:"SG03",activity:"Contract",applicant:"SG03 - Olam Global Agri Pte. Ltd",
+    dealId:"12001933",enteredOn:"29-08-2026",lcTxn:"2604001793",lcAmount:650000,currency:"USD",
+    startDate:"05-09-2026",endDate:"31-08-2027",bank:"0660013175 - STANDARD CHARTERED BANK",
+    totalAmount:650000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:21,companyCode:"SG03",activity:"Contract",applicant:"SG03 - Olam Global Agri Pte. Ltd",
+    dealId:"12001947",enteredOn:"03-09-2026",lcTxn:"2604001801",lcAmount:330000,currency:"USD",
+    startDate:"10-09-2026",endDate:"05-09-2027",bank:"0660012956 - Westpac Banking Corporation",
+    totalAmount:330000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:22,companyCode:"SG03",activity:"Contract",applicant:"SG03 - Olam Global Agri Pte. Ltd",
+    dealId:"12001958",enteredOn:"05-09-2026",lcTxn:"2604001810",lcAmount:725000,currency:"USD",
+    startDate:"12-09-2026",endDate:"07-09-2027",bank:"0660013411 - THE COMMERCIAL BANK OF QATAR",
+    totalAmount:725000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:23,companyCode:"SG03",activity:"Contract",applicant:"SG03 - Olam Global Agri Pte. Ltd",
+    dealId:"12001969",enteredOn:"07-09-2026",lcTxn:"2604001819",lcAmount:125000,currency:"USD",
+    startDate:"14-09-2026",endDate:"09-09-2027",bank:"0660014662 - Itau CorpBanca",
+    totalAmount:125000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:24,companyCode:"SG03",activity:"Contract",applicant:"SG03 - Olam Global Agri Pte. Ltd",
+    dealId:"12001978",enteredOn:"09-09-2026",lcTxn:"2604001828",lcAmount:880000,currency:"USD",
+    startDate:"16-09-2026",endDate:"11-09-2027",bank:"0660013175 - STANDARD CHARTERED BANK",
+    totalAmount:880000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:25,companyCode:"SG03",activity:"Contract",applicant:"SG03 - Olam Global Agri Pte. Ltd",
+    dealId:"12001989",enteredOn:"11-09-2026",lcTxn:"2604001837",lcAmount:540000,currency:"USD",
+    startDate:"18-09-2026",endDate:"13-09-2027",bank:"0660013412 - QATAR NATIONAL BANK (QPSC)",
+    totalAmount:540000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:26,companyCode:"SG03",activity:"Contract",applicant:"SG03 - Olam Global Agri Pte. Ltd",
+    dealId:"12001997",enteredOn:"13-09-2026",lcTxn:"2604001846",lcAmount:310000,currency:"USD",
+    startDate:"20-09-2026",endDate:"15-09-2027",bank:"0660012956 - Westpac Banking Corporation",
+    totalAmount:310000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:27,companyCode:"SG03",activity:"Contract",applicant:"SG03 - Olam Global Agri Pte. Ltd",
+    dealId:"12002005",enteredOn:"15-09-2026",lcTxn:"2604001855",lcAmount:470000,currency:"USD",
+    startDate:"22-09-2026",endDate:"17-09-2027",bank:"0660013411 - THE COMMERCIAL BANK OF QATAR",
+    totalAmount:470000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:28,companyCode:"SG03",activity:"Contract",applicant:"SG03 - Olam Global Agri Pte. Ltd",
+    dealId:"12002013",enteredOn:"16-09-2026",lcTxn:"2604001864",lcAmount:205000,currency:"USD",
+    startDate:"23-09-2026",endDate:"18-09-2027",bank:"0660013175 - STANDARD CHARTERED BANK",
+    totalAmount:205000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:29,companyCode:"SG03",activity:"Contract",applicant:"SG03 - Olam Global Agri Pte. Ltd",
+    dealId:"12002022",enteredOn:"17-09-2026",lcTxn:"2604001873",lcAmount:990000,currency:"USD",
+    startDate:"24-09-2026",endDate:"19-09-2027",bank:"0660014662 - Itau CorpBanca",
+    totalAmount:990000,beneficiary:"OLAM-OGA",settled:true
+  },
+  {
+    id:30,companyCode:"SG03",activity:"Contract",applicant:"SG03 - Olam Global Agri Pte. Ltd",
+    dealId:"12002031",enteredOn:"18-09-2026",lcTxn:"2604001882",lcAmount:135000,currency:"USD",
+    startDate:"25-09-2026",endDate:"20-09-2027",bank:"0660013412 - QATAR NATIONAL BANK (QPSC)",
+    totalAmount:135000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:31,companyCode:"SG03",activity:"Contract",applicant:"SG03 - Olam Global Agri Pte. Ltd",
+    dealId:"12002040",enteredOn:"19-09-2026",lcTxn:"2604001891",lcAmount:760000,currency:"USD",
+    startDate:"26-09-2026",endDate:"21-09-2027",bank:"0660012956 - Westpac Banking Corporation",
+    totalAmount:760000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:32,companyCode:"SG03",activity:"Contract",applicant:"SG03 - Olam Global Agri Pte. Ltd",
+    dealId:"12002049",enteredOn:"20-09-2026",lcTxn:"2604001900",lcAmount:365000,currency:"USD",
+    startDate:"27-09-2026",endDate:"22-09-2027",bank:"0660013175 - STANDARD CHARTERED BANK",
+    totalAmount:365000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:33,companyCode:"SG03",activity:"Contract",applicant:"SG03 - Olam Global Agri Pte. Ltd",
+    dealId:"12002058",enteredOn:"21-09-2026",lcTxn:"2604001909",lcAmount:295000,currency:"USD",
+    startDate:"28-09-2026",endDate:"23-09-2027",bank:"0660013411 - THE COMMERCIAL BANK OF QATAR",
+    totalAmount:295000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:34,companyCode:"SG03",activity:"Contract",applicant:"SG03 - Olam Global Agri Pte. Ltd",
+    dealId:"12002067",enteredOn:"22-09-2026",lcTxn:"2604001918",lcAmount:610000,currency:"USD",
+    startDate:"29-09-2026",endDate:"24-09-2027",bank:"0660014662 - Itau CorpBanca",
+    totalAmount:610000,beneficiary:"OLAM-OGA",settled:false
+  },
+  {
+    id:35,companyCode:"SG03",activity:"Contract",applicant:"SG03 - Olam Global Agri Pte. Ltd",
+    dealId:"12002076",enteredOn:"23-09-2026",lcTxn:"2604001927",lcAmount:450000,currency:"USD",
+    startDate:"30-09-2026",endDate:"25-09-2027",bank:"0660013412 - QATAR NATIONAL BANK (QPSC)",
+    totalAmount:450000,beneficiary:"OLAM-OGA",settled:true
+  }
+];
+var columns=[
+  {key:"activity",label:"Actv.Cat.",width:100},
+  {key:"applicant",label:"LC Applicant",width:225},
+  {key:"dealId",label:"Deal ID",width:90},
+  {key:"enteredOn",label:"Entry Date",width:105,date:true},
+  {key:"lcTxn",label:"LC Txn",width:105},
+  {key:"lcAmount",label:"LC Amount",width:115,number:true},
+  {key:"currency",label:"Currency",width:90},
+  {key:"startDate",label:"Start Date",width:105,date:true},
+  {key:"endDate",label:"End Date",width:105,date:true},
+  {key:"bank",label:"LC Issuing Bank",width:300},
+  {key:"totalAmount",label:"Total LC Amount",width:130,number:true},
+  {key:"beneficiary",label:"LC Beneficiary",width:120}
+];
+var state={
+  page:1,pageSize:12,selectedId:null,sortIndex:-1,sortDirection:"asc",
+  calendarDate:new Date(2026,8,18),calendarMode:"days",calendarYear:2026
+};
+function byId(id){return document.getElementById(id)}
+function esc(value){
+  var text=String(value==null?"":value);
+  text=text.replace(/&/g,"&amp;");
+  text=text.replace(/</g,"&lt;");
+  text=text.replace(/>/g,"&gt;");
+  return text.replace(/"/g,"&quot;")
+}
+function money(value){
+  var number=Number(value||0);
+  var parts=number.toFixed(2).split(".");
+  parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,",");
+  return parts.join(".")
+}
+function parseDate(text){
+  var match=String(text||"").match(/^(\d{2})-(\d{2})-(\d{4})$/);
+  if(!match){return null}
+  return new Date(Number(match[3]),Number(match[2])-1,Number(match[1]))
+}
+function formatDate(date){
+  var day=("0"+date.getDate()).slice(-2);
+  var month=("0"+(date.getMonth()+1)).slice(-2);
+  return day+"-"+month+"-"+date.getFullYear()
+}
+function isValidDate(text){return parseDate(text)!==null}
+function setStatus(text){byId("statusText").innerHTML=esc(text)}
+function toast(message){
+  var region=byId("toastRegion");
+  var box=document.createElement("div");
+  var icon=document.createElement("div");
+  var body=document.createElement("div");
+  box.className="toast";
+  icon.className="toast-icon";
+  icon.innerHTML="OK";
+  body.innerHTML='<div class="toast-title">Success</div><div class="toast-message">'+esc(message)+'</div>';
+  box.appendChild(icon);
+  box.appendChild(body);
+  region.appendChild(box);
+  window.setTimeout(function(){
+    if(box.parentNode){box.parentNode.removeChild(box)}
+  },4200)
+}
+function readyToLoad(){
+  return byId("companyCode").value!==""&&isValidDate(byId("keyDate").value)
+}
+function getFilteredRows(){
+  var company=byId("companyCode").value;
+  var transaction=byId("transactionFilter").value.toLowerCase();
+  var status=byId("statusFilter").value;
+  var keyDate=parseDate(byId("keyDate").value);
+  var rows=[];
+  var i,row,start,end;
+  for(i=0;i<DATA.length;i++){
+    row=DATA[i];
+    if(company&&row.companyCode!==company){continue}
+    if(transaction&&String(row.lcTxn).toLowerCase().indexOf(transaction)<0){continue}
+    if(status==="CONTRACT"&&row.settled){continue}
+    if(status==="SETTLED"&&!row.settled){continue}
+    if(keyDate){
+      start=parseDate(row.startDate);
+      end=parseDate(row.endDate);
+      if(start&&keyDate<start){continue}
+      if(end&&keyDate>end){continue}
+    }
+    rows.push(row)
+  }
+  if(state.sortIndex>=0){sortRows(rows,state.sortIndex,state.sortDirection)}
+  return rows
+}
+function sortRows(rows,index,direction){
+  var column=columns[index];
+  rows.sort(function(a,b){
+    var av=a[column.key];
+    var bv=b[column.key];
+    if(column.number){
+      av=Number(av||0);
+      bv=Number(bv||0)
+    }else if(column.date){
+      av=parseDate(av);
+      bv=parseDate(bv)
+    }else{
+      av=String(av||"").toLowerCase();
+      bv=String(bv||"").toLowerCase()
+    }
+    if(av<bv){return direction==="asc"?-1:1}
+    if(av>bv){return direction==="asc"?1:-1}
+    return 0
+  })
+}
+function headerHtml(){
+  var html='<tr><th style="width:52px">Select</th>';
+  var i,column,cls;
+  for(i=0;i<columns.length;i++){
+    column=columns[i];
+    cls="";
+    if(state.sortIndex===i){cls=state.sortDirection==="asc"?"sort-asc":"sort-desc"}
+    html+='<th class="'+cls+'" data-index="'+i+'" style="width:'+column.width+'px">';
+    html+=esc(column.label);
+    html+='<span class="sort-arrows"><span class="sort-up"></span><span class="sort-down"></span></span>';
+    html+='</th>'
+  }
+  return html+'</tr>'
+}
+function renderTable(){
+  var rows=getFilteredRows();
+  var start=(state.page-1)*state.pageSize;
+  var pages=Math.max(1,Math.ceil(rows.length/state.pageSize));
+  var end,i,j,row,column,html="",pageRows;
+  if(state.page>pages){state.page=pages;start=(state.page-1)*state.pageSize}
+  end=Math.min(start+state.pageSize,rows.length);
+  pageRows=rows.slice(start,end);
+  byId("lcHead").innerHTML=headerHtml();
+  for(i=0;i<pageRows.length;i++){
+    row=pageRows[i];
+    html+='<tr data-id="'+row.id+'" class="'+(row.settled?"settled":"")+'">';
+    html+='<td class="select-cell"><input type="radio" name="lcPick" value="'+row.id+'"></td>';
+    for(j=0;j<columns.length;j++){
+      column=columns[j];
+      html+='<td class="'+(column.number?"number":"")+'">';
+      if(column.number){html+=esc(money(row[column.key]))}
+      else{html+=esc(row[column.key])}
+      html+='</td>'
+    }
+    html+='</tr>'
+  }
+  if(!html){
+    html='<tr><td colspan="13" class="empty">No LC issued records match the current selection.</td></tr>'
+  }
+  byId("lcBody").innerHTML=html;
+  byId("recordCount").innerHTML=rows.length+" record"+(rows.length===1?"":"s");
+  renderPagination(rows.length);
+  restoreSelection();
+  bindHeaderSort()
+}
+function renderPagination(total){
+  var bar=byId("paginationBar");
+  var pages=Math.max(1,Math.ceil(total/state.pageSize));
+  var html='<button class="page-btn" data-page="prev" type="button"';
+  html+=state.page===1?' disabled="disabled"':'';
+  html+='>&lt;</button>';
+  var p,startPage,endPage;
+  startPage=Math.max(1,state.page-1);
+  endPage=Math.min(pages,startPage+2);
+  startPage=Math.max(1,endPage-2);
+  for(p=startPage;p<=endPage;p++){
+    html+='<button class="page-btn'+(p===state.page?' active':'')+'" data-page="'+p+'" type="button">'+p+'</button>'
+  }
+  html+='<button class="page-btn" data-page="next" type="button"';
+  html+=state.page===pages?' disabled="disabled"':'';
+  html+='>&gt;</button>';
+  bar.innerHTML=html
+}
+function findRowById(id){
+  var i;
+  for(i=0;i<DATA.length;i++){
+    if(String(DATA[i].id)===String(id)){return DATA[i]}
+  }
+  return null
+}
+function selectedRow(){return findRowById(state.selectedId)}
+function clearSelection(){
+  state.selectedId=null;
+  byId("editBtn").disabled=true;
+  byId("settleBtn").disabled=true;
+  byId("selectionMeta").innerHTML="Select one line item"
+}
+function updateActionState(){
+  var row=selectedRow();
+  if(!row){clearSelection();return}
+  byId("editBtn").disabled=false;
+  byId("settleBtn").disabled=!!row.settled;
+  byId("selectionMeta").innerHTML=row.settled?"Selected LC is already settled":"1 line item selected"
+}
+function restoreSelection(){
+  var rows=byId("lcBody").getElementsByTagName("tr");
+  var i,id,radio;
+  for(i=0;i<rows.length;i++){
+    id=rows[i].getAttribute("data-id");
+    if(id&&String(id)===String(state.selectedId)){
+      rows[i].className=(findRowById(id).settled?"settled ":"")+"selected";
+      radio=rows[i].getElementsByTagName("input")[0];
+      if(radio){radio.checked=true}
+    }
+  }
+  updateActionState()
+}
+function loadResults(){
+  if(!readyToLoad()){
+    byId("resultsArea").className="";
+    clearSelection();
+    setStatus("Select Company Code and enter Key Date in DD-MM-YYYY format");
+    return
+  }
+  state.page=1;
+  clearSelection();
+  byId("resultsArea").className="open";
+  renderTable();
+  setStatus("LC issued records loaded")
+}
+function refreshFilters(){
+  if(!readyToLoad()){loadResults();return}
+  state.page=1;
+  clearSelection();
+  renderTable()
+}
+function bindHeaderSort(){
+  var headers=byId("lcHead").getElementsByTagName("th");
+  var i;
+  for(i=1;i<headers.length;i++){
+    headers[i].onclick=function(){
+      var index=parseInt(this.getAttribute("data-index"),10);
+      if(isNaN(index)){return}
+      if(state.sortIndex===index){
+        state.sortDirection=state.sortDirection==="asc"?"desc":"asc"
+      }else{
+        state.sortIndex=index;
+        state.sortDirection="asc"
+      }
+      state.page=1;
+      renderTable()
+    }
+  }
+}
+function openSettleModal(){
+  var row=selectedRow();
+  if(!row||row.settled){return}
+  byId("settleText").innerHTML='Are you sure you want to settle LC Transaction <b>'+esc(row.lcTxn)+'</b>?';
+  byId("settleModal").className="modal-bg open"
+}
+function closeSettleModal(){byId("settleModal").className="modal-bg"}
+function settleSelected(){
+  var row=selectedRow();
+  if(!row||row.settled){closeSettleModal();return}
+  row.settled=true;
+  closeSettleModal();
+  toast("LC Transaction "+row.lcTxn+" settled successfully.");
+  setStatus("LC Transaction "+row.lcTxn+" settled successfully");
+  if(byId("statusFilter").value==="CONTRACT"){
+    clearSelection()
+  }
+  renderTable()
+}
+function monthNames(){
+  return ["January","February","March","April","May","June","July","August","September","October","November","December"]
+}
+function shortMonthNames(){
+  return ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+}
+function renderCalendar(){
+  if(state.calendarMode==="years"){renderYearPanel();return}
+  renderDayPanel()
+}
+function renderDayPanel(){
+  var target=state.calendarDate;
+  var year=target.getFullYear();
+  var month=target.getMonth();
+  var selected=parseDate(byId("keyDate").value);
+  var first=new Date(year,month,1);
+  var firstCell=new Date(year,month,1-first.getDay());
+  var names=monthNames();
+  var week=["Su","Mo","Tu","We","Th","Fr","Sa"];
+  var html='<div class="calendar-head">';
+  var i,cell,cls;
+  html+='<button class="cal-title-btn" data-cal="title" type="button">'+names[month]+' '+year+'</button>';
+  html+='<div class="cal-navs">';
+  html+='<button class="cal-nav cal-nav-up" data-cal="prev" type="button" aria-label="Previous month"></button>';
+  html+='<button class="cal-nav cal-nav-down" data-cal="next" type="button" aria-label="Next month"></button>';
+  html+='</div></div><div class="calendar-weekdays">';
+  for(i=0;i<week.length;i++){html+='<span>'+week[i]+'</span>'}
+  html+='</div><div class="calendar-days">';
+  for(i=0;i<42;i++){
+    cell=new Date(firstCell.getFullYear(),firstCell.getMonth(),firstCell.getDate()+i);
+    cls="calendar-day";
+    if(cell.getMonth()!==month){cls+=" other-month"}
+    if(selected&&sameDate(selected,cell)){cls+=" selected"}
+    html+='<button class="'+cls+'" data-date="'+formatDate(cell)+'" type="button">'+cell.getDate()+'</button>'
+  }
+  html+='</div><div class="calendar-foot">';
+  html+='<button class="cal-link" data-cal="clear" type="button">Clear</button>';
+  html+='<button class="cal-link" data-cal="today" type="button">Today</button>';
+  html+='</div>';
+  byId("calendarPopup").innerHTML=html
+}
+function renderYearPanel(){
+  var names=monthNames();
+  var shortNames=shortMonthNames();
+  var selected=parseDate(byId("keyDate").value);
+  var month=state.calendarDate.getMonth();
+  var year=state.calendarYear;
+  var html='<div class="calendar-head">';
+  var y,m,cls;
+  html+='<button class="cal-title-btn" data-cal="title" type="button">'+names[month]+' '+year+'</button>';
+  html+='<div class="cal-navs"></div></div><div id="yearPanel" class="year-panel">';
+  for(y=2022;y<=2034;y++){
+    html+='<div class="year-row'+(y===year?' active':'')+'">';
+    html+='<button class="year-btn" data-year="'+y+'" type="button">'+y+'</button>';
+    if(y===year){
+      html+='<div class="month-grid">';
+      for(m=0;m<12;m++){
+        cls="month-btn";
+        if(selected&&selected.getFullYear()===y&&selected.getMonth()===m){cls+=" selected"}
+        html+='<button class="'+cls+'" data-month="'+m+'" type="button">'+shortNames[m]+'</button>'
+      }
+      html+='</div>'
+    }
+    html+='</div>'
+  }
+  html+='</div>';
+  byId("calendarPopup").innerHTML=html;
+  window.setTimeout(scrollActiveYear,0)
+}
+function scrollActiveYear(){
+  var panel=byId("yearPanel");
+  var active;
+  if(!panel){return}
+  active=panel.querySelector?panel.querySelector(".year-row.active"):null;
+  if(active){panel.scrollTop=Math.max(0,active.offsetTop-34)}
+}
+function sameDate(a,b){
+  return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate()
+}
+function openCalendar(){
+  var parsed=parseDate(byId("keyDate").value);
+  if(parsed){
+    state.calendarDate=parsed;
+    state.calendarYear=parsed.getFullYear()
+  }
+  state.calendarMode="days";
+  renderCalendar();
+  byId("calendarPopup").className="calendar-popup open"
+}
+function closeCalendar(){
+  state.calendarMode="days";
+  byId("calendarPopup").className="calendar-popup"
+}
+function buildTransactionList(){
+  var list=byId("transactionList");
+  var company=byId("companyCode").value;
+  var status=byId("statusFilter").value;
+  var typed=byId("transactionFilter").value.toLowerCase();
+  var seen={};
+  var html="";
+  var i,row,value;
+  for(i=0;i<DATA.length;i++){
+    row=DATA[i];
+    if(company&&row.companyCode!==company){continue}
+    if(status==="CONTRACT"&&row.settled){continue}
+    if(status==="SETTLED"&&!row.settled){continue}
+    value=String(row.lcTxn);
+    if(typed&&value.toLowerCase().indexOf(typed)<0){continue}
+    if(seen[value]){continue}
+    seen[value]=true;
+    html+='<button class="combo-option" data-txn="'+esc(value)+'" type="button">'+esc(value)+'</button>'
+  }
+  if(!html){html='<div class="combo-empty">No matching transactions</div>'}
+  list.innerHTML=html
+}
+function openTransactionList(){
+  buildTransactionList();
+  byId("transactionList").className="combo-list open"
+}
+function closeTransactionList(){byId("transactionList").className="combo-list"}
+byId("companyCode").onchange=function(){
+  byId("transactionFilter").value="";
+  closeTransactionList();
+  loadResults()
+};
+byId("keyDate").onchange=loadResults;
+byId("keyDate").onkeyup=function(){
+  if(String(this.value).length===10){loadResults()}
+};
+byId("filterToggle").onclick=function(){
+  var body=byId("filterBody");
+  var open=body.className.indexOf("open")>=0;
+  body.className=open?"filter-body":"filter-body open"
+};
+byId("transactionFilter").onkeyup=function(){
+  refreshFilters();
+  openTransactionList()
+};
+byId("transactionFilter").onclick=openTransactionList;
+byId("transactionDropBtn").onclick=function(){
+  var list=byId("transactionList");
+  if(list.className.indexOf("open")>=0){closeTransactionList()}
+  else{openTransactionList()}
+};
+byId("transactionList").onclick=function(e){
+  var target=e.target||e.srcElement;
+  var value=target.getAttribute("data-txn");
+  if(!value){return}
+  byId("transactionFilter").value=value;
+  closeTransactionList();
+  refreshFilters()
+};
+byId("statusFilter").onchange=function(){
+  byId("transactionFilter").value="";
+  closeTransactionList();
+  refreshFilters()
+};
+byId("clearFilters").onclick=function(){
+  byId("transactionFilter").value="";
+  closeTransactionList();
+  byId("statusFilter").value="CONTRACT";
+  refreshFilters()
+};
+byId("lcBody").onclick=function(e){
+  var target=e.target||e.srcElement;
+  var row=target;
+  var rows,i,radio,id;
+  while(row&&row.tagName&&row.tagName.toLowerCase()!=="tr"){row=row.parentNode}
+  if(!row){return}
+  id=row.getAttribute("data-id");
+  if(!id){return}
+  state.selectedId=id;
+  rows=byId("lcBody").getElementsByTagName("tr");
+  for(i=0;i<rows.length;i++){
+    if(rows[i].getAttribute("data-id")){
+      rows[i].className=findRowById(rows[i].getAttribute("data-id")).settled?"settled":""
+    }
+  }
+  row.className=(findRowById(id).settled?"settled ":"")+"selected";
+  radio=row.getElementsByTagName("input")[0];
+  if(radio){radio.checked=true}
+  updateActionState()
+};
+byId("paginationBar").onclick=function(e){
+  var target=e.target||e.srcElement;
+  var page=target.getAttribute("data-page");
+  var rows,pages;
+  if(!page||target.disabled){return}
+  rows=getFilteredRows();
+  pages=Math.max(1,Math.ceil(rows.length/state.pageSize));
+  if(page==="prev"){state.page=Math.max(1,state.page-1)}
+  else if(page==="next"){state.page=Math.min(pages,state.page+1)}
+  else{state.page=parseInt(page,10)||1}
+  clearSelection();
+  renderTable()
+};
+byId("settleBtn").onclick=openSettleModal;
+byId("settleClose").onclick=closeSettleModal;
+byId("settleNo").onclick=closeSettleModal;
+byId("settleYes").onclick=settleSelected;
+byId("calendarBtn").onclick=function(){
+  if(byId("calendarPopup").className.indexOf("open")>=0){closeCalendar()}
+  else{openCalendar()}
+};
+byId("calendarPopup").onclick=function(e){
+  var target=e.target||e.srcElement;
+  var nav=target.getAttribute("data-cal");
+  var date=target.getAttribute("data-date");
+  var year=target.getAttribute("data-year");
+  var month=target.getAttribute("data-month");
+  if(nav==="prev"){
+    state.calendarDate.setMonth(state.calendarDate.getMonth()-1);
+    state.calendarYear=state.calendarDate.getFullYear();
+    renderCalendar();
+    return
+  }
+  if(nav==="next"){
+    state.calendarDate.setMonth(state.calendarDate.getMonth()+1);
+    state.calendarYear=state.calendarDate.getFullYear();
+    renderCalendar();
+    return
+  }
+  if(nav==="title"){
+    state.calendarMode=state.calendarMode==="days"?"years":"days";
+    state.calendarYear=state.calendarDate.getFullYear();
+    renderCalendar();
+    return
+  }
+  if(nav==="clear"){
+    byId("keyDate").value="";
+    closeCalendar();
+    loadResults();
+    return
+  }
+  if(nav==="today"){
+    var today=new Date();
+    byId("keyDate").value=formatDate(today);
+    state.calendarDate=today;
+    state.calendarYear=today.getFullYear();
+    closeCalendar();
+    loadResults();
+    return
+  }
+  if(year!==null&&year!==""){
+    state.calendarYear=Number(year);
+    state.calendarDate.setFullYear(state.calendarYear);
+    state.calendarMode="years";
+    renderCalendar();
+    return
+  }
+  if(month!==null&&month!==""){
+    state.calendarDate=new Date(state.calendarYear,Number(month),1);
+    state.calendarMode="days";
+    renderCalendar();
+    return
+  }
+  if(date){
+    byId("keyDate").value=date;
+    state.calendarDate=parseDate(date);
+    state.calendarYear=state.calendarDate.getFullYear();
+    closeCalendar();
+    loadResults()
+  }
+};
+document.onkeydown=function(e){
+  var event=e||window.event;
+  if(event.keyCode===27){
+    closeSettleModal();
+    closeCalendar();
+    closeTransactionList()
+  }
+  return true
+};
+renderCalendar();
+})();
+</script>
+</body>
+</html>

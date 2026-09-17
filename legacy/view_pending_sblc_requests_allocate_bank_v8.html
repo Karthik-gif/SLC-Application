@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>View Pending SBLC Requests and Allocate Bank</title>
+<style type="text/css">
+html,body{margin:0;width:100%;height:100%;background:#f5f7f9;color:#1d2d3e;font-family:"72","Segoe UI",Arial,sans-serif;font-size:13px}
+*{box-sizing:border-box}
+button,input,select,table,th,td,div,span,label{font-family:"72","Segoe UI",Arial,sans-serif}
+button{cursor:pointer}
+button:disabled{cursor:default;opacity:.55}
+.shell{height:100vh;display:flex;flex-direction:column;background:#f5f7f9}
+.topbar{height:48px;flex:0 0 48px;background:#fff;border-bottom:1px solid #d9d9d9;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.topbar-inner{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 18px}
+.refresh-btn{border:1px solid #8996a1;background:#ffffff;color:#475e75;border-radius:4px;height:32px;padding:0 11px;
+font-size:12px;font-weight:400;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.refresh-btn:hover{background:#f2f4f5;color:#1d2d3e}
+.refresh-btn:active{transform:translateY(1px)}
+.title{font-size:16px;font-weight:600;color:#1d2d3e}
+.content{flex:1 1 auto;min-height:0;padding:10px 14px 28px;overflow:auto}
+.card{margin-bottom:10px;background:#fff;border:1px solid #e1e6ea;border-radius:8px;box-shadow:0 1px 4px rgba(29,45,62,.04)}
+.card-head{min-height:34px;display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:#fafcfe;
+border-bottom:1px solid #e5e9ed;border-radius:8px 8px 0 0}
+.card-title{font-size:12px;font-weight:600;color:#1d2d3e}
+.card-meta{font-size:11px;color:#6a6d70}
+.card-body{padding:12px}
+.field{display:grid;grid-template-columns:150px minmax(0,1fr);align-items:center;gap:10px}
+.field label{color:#1d2d3e;font-size:12px;font-weight:400}
+.input,.select{height:30px;width:100%;max-width:310px;padding:4px 8px;border:1px solid #b8b8b8;border-radius:4px;background:#fff;
+color:#1d2d3e;font-size:12px}
+.input:focus,.select:focus{outline:0;border-color:#0a6ed1;box-shadow:0 0 0 1px #0a6ed1}
+.selection-main-row{display:flex;align-items:center;gap:10px;flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px}
+.structure-field{width:auto;grid-template-columns:max-content 230px;gap:6px;flex:0 0 auto}
+.structure-field .select,.structure-field .input{width:230px;max-width:230px}
+.cc-field{grid-template-columns:max-content auto;gap:6px;flex:0 0 auto}
+.cc-field .select{width:230px;max-width:230px;text-overflow:clip}
+.tsf-field{grid-template-columns:max-content auto;gap:6px;flex:0 0 auto}
+.tsf-field .select{width:150px;max-width:150px;text-overflow:clip}
+.required-mark{color:#bb0000;margin-left:2px;font-weight:600}
+.date-field{grid-template-columns:max-content auto;gap:6px;flex:0 0 auto}
+.date-field .date-input-wrap{width:112px;max-width:112px}
+.date-input-wrap{position:relative;width:230px;max-width:230px}
+.date-input-wrap .input{width:100%;max-width:none;padding-right:26px}
+.calendar-btn-wrap{position:absolute;right:5px;top:50%;transform:translateY(-50%);width:16px;height:16px}
+.calendar-btn{width:16px;height:16px;padding:0;border:1px solid #0a6ed1;border-radius:2px;position:relative;
+background:linear-gradient(#0a6ed1,#0a6ed1) top/100% 4px no-repeat,
+repeating-linear-gradient(90deg,#cfe3fb 0 2px,transparent 2px 4px) 2px 6px/11px 7px no-repeat,
+repeating-linear-gradient(0deg,#cfe3fb 0 2px,transparent 2px 4px) 2px 6px/11px 7px no-repeat,#ffffff}
+.calendar-btn:before{content:"";position:absolute;top:-2px;left:3px;width:2px;height:2px;background:#0a6ed1;border-radius:1px}
+.calendar-btn:after{content:"";position:absolute;top:-2px;right:3px;width:2px;height:2px;background:#0a6ed1;border-radius:1px}
+.calendar-btn-wrap:hover .calendar-btn{border-color:#0854a0}
+.calendar-native{position:absolute;inset:0;opacity:0;width:100%;height:100%;border:0;padding:0;margin:0;cursor:pointer}
+.filter-icon-btn{width:30px;height:30px;padding:0;border:1px solid #b8b8b8;border-radius:4px;background:#fff;position:relative}
+.filter-icon-btn:hover{background:#f7f8f9;border-color:#0a6ed1}
+.filter-icon-btn:before{content:"";position:absolute;left:8px;top:7px;width:0;height:0;border-left:7px solid transparent;
+border-right:7px solid transparent;border-top:9px solid #556b82}
+.filter-icon-btn:after{content:"";position:absolute;left:13px;top:14px;width:3px;height:7px;background:#556b82}
+.filter-body{display:none}
+.filter-body.open{display:flex;align-items:center;gap:8px;flex-wrap:nowrap}
+.filter-item{display:flex;align-items:center;gap:6px;flex:0 0 auto}
+.filter-xs{width:100px;max-width:100px}
+.filter-sm{width:150px;max-width:150px}
+.filter-md{width:132px;max-width:132px}
+.filter-lg{width:200px;max-width:200px}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.toolbar-left,.toolbar-right{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.table-card{overflow:hidden}
+.table-wrap{width:100%;overflow:auto;background:#fff}
+.data-table{width:100%;min-width:1900px;border-collapse:separate;border-spacing:0;font-size:12px}
+.data-table th{position:sticky;top:0;z-index:2;height:34px;padding:6px 24px 6px 8px;background:#f5f8fa;color:#1d2d3e;
+border-right:1px solid #d9d9d9;border-bottom:1px solid #c7d4e0;text-align:left;font-weight:600;white-space:nowrap}
+.data-table td{height:34px;padding:4px 8px;background:#fff;border-right:1px solid #e7ebee;border-bottom:1px solid #e7ebee;
+white-space:nowrap;color:#1d2d3e}
+.data-table tbody tr:hover td{background:#f2f8fd}
+.data-table tbody tr.selected td{background:#eaf3fc}
+.data-table .number{text-align:right;font-variant-numeric:tabular-nums}
+.sort-arrows{position:absolute;top:9px;right:8px;width:8px;height:15px}
+.sort-up,.sort-down{position:absolute;left:0;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent}
+.sort-up{top:0;border-bottom:5px solid #9aa7b4}
+.sort-down{bottom:0;border-top:5px solid #9aa7b4}
+th.sort-asc .sort-up{border-bottom-color:#0a6ed1}
+th.sort-desc .sort-down{border-top-color:#0a6ed1}
+.money{text-align:right;font-variant-numeric:tabular-nums}
+.badge{display:inline-block;padding:3px 7px;border-radius:10px;font-size:10px;font-weight:600}
+.badge-pending{background:#fff4e5;color:#8d4f00}
+.badge-approved{background:#ebf5eb;color:#107e3e}
+.badge-rejected{background:#fdecea;color:#bb0000}
+.actions{display:flex;align-items:center;justify-content:flex-end;gap:7px;margin-top:14px}
+.btn{height:30px;padding:0 12px;border:1px solid #d1e8ff;border-radius:4px;background:#eaf3fc;color:#004b93;font-size:12px;
+font-weight:600}
+.btn:hover{background:#d1e8ff;border-color:#0a6ed1;color:#0854a0}
+.btn-primary{background:#0a6ed1;border-color:#0a6ed1;color:#fff}
+.btn-primary:hover{background:#0854a0;border-color:#0854a0;color:#fff}
+.btn-ghost{background:#fff;border-color:#d9d9d9;color:#1d2d3e}
+.btn-ghost:hover{background:#f7f8f9;border-color:#b8b8b8;color:#1d2d3e}
+.btn-icon{width:30px;height:30px;padding:0;border:1px solid #d1e8ff;border-radius:4px;background:#eaf3fc;color:#004b93;
+font-size:14px;font-weight:700}
+.btn-icon:hover{background:#d1e8ff;border-color:#0a6ed1}
+.small-btn{height:24px;padding:0 8px;font-size:11px;border-radius:3px}
+.search-btn{width:24px;height:24px;padding:0;border:1px solid #0a6ed1;border-radius:4px;background:#fff;position:relative;flex:0 0 auto}
+.search-btn:hover{background:#f2f8fd}
+.search-btn:before{content:"";position:absolute;left:5px;top:5px;width:8px;height:8px;border:2px solid #0a6ed1;border-radius:50%}
+.search-btn:after{content:"";position:absolute;left:13px;top:13px;width:5px;height:2px;background:#0a6ed1;transform:rotate(45deg)}
+.calc-btn{width:24px;height:24px;padding:0;border:1px solid #0a6ed1;border-radius:4px;flex:0 0 auto;
+background:linear-gradient(#0a6ed1,#0a6ed1) top/100% 6px no-repeat,
+repeating-linear-gradient(90deg,#cfe3fb 0 2px,transparent 2px 6px) 2px 9px/18px 5px no-repeat,
+repeating-linear-gradient(90deg,#cfe3fb 0 2px,transparent 2px 6px) 2px 15px/18px 5px no-repeat,#ffffff}
+.calc-btn:hover{border-color:#0854a0}
+.pagination-bar{display:flex;align-items:center;justify-content:flex-end;gap:5px;padding:8px 10px;background:#fff;
+border-top:1px solid #e5e9ed}
+.page-btn{min-width:30px;height:28px;padding:0 8px;border:1px solid #d9d9d9;border-radius:4px;background:#fff;color:#1d2d3e;
+font-size:11px}
+.page-btn:hover{background:#f7f8f9;border-color:#b8b8b8}
+.page-btn.active{background:#eaf3fc;border-color:#0a6ed1;color:#004b93;font-weight:600}
+.page-btn:disabled{background:#f7f8f9;color:#9aa7b4}
+.empty{padding:28px;text-align:center;color:#6a6d70}
+.detail-grid{display:grid;grid-template-columns:repeat(2,max-content);gap:10px 34px}
+.detail-line{display:grid;grid-template-columns:max-content max-content;align-items:center;gap:6px;min-height:28px}
+.detail-label{color:#556b82}
+.detail-value{min-height:28px;display:inline-flex;align-items:center;gap:8px;padding:4px 8px;border:1px solid #e1e6ea;
+background:#f8fafc;border-radius:4px;overflow:hidden;width:max-content;min-width:90px}
+.code{font-weight:600;color:#1d2d3e}
+.approve-field{display:grid;grid-template-columns:130px minmax(0,1fr);align-items:center;gap:10px;margin-bottom:10px}
+.approve-field .input{max-width:none;width:100%}
+.readonly-input{background:#f8fafc!important;color:#1d2d3e!important;border-color:#e1e6ea}
+.fee-amount-value{color:#0a6ed1;font-weight:600}
+.input-right{text-align:right}
+#approveModal .modal{max-width:600px}
+#transactionModal .modal{max-width:790px}
+.data-table.compact{min-width:0}
+.approve-grid{display:grid;grid-template-columns:max-content max-content;column-gap:16px;row-gap:12px;
+justify-content:start}
+.approve-cell{display:grid;grid-template-columns:90px 150px;align-items:center;gap:6px}
+.approve-cell.has-icon{grid-template-columns:90px 150px 24px}
+.approve-cell label{font-size:12px;color:#1d2d3e;white-space:nowrap}
+.approve-cell .input{width:150px;max-width:150px}
+.approve-cell-wide{grid-column:1/-1;display:grid;grid-template-columns:90px minmax(0,1fr);align-items:center;gap:6px}
+.approve-cell-wide label{font-size:12px;color:#1d2d3e;white-space:nowrap}
+.approve-cell-wide .input{width:100%;max-width:none}
+.edit-table{width:100%;min-width:980px;border-collapse:separate;border-spacing:0;font-size:12px}
+.edit-table th{position:sticky;top:0;z-index:2;height:34px;padding:6px 24px 6px 8px;background:#f5f8fa;color:#1d2d3e;
+border-right:1px solid #d9d9d9;border-bottom:1px solid #c7d4e0;text-align:left;font-weight:600;white-space:nowrap}
+.edit-table td{height:38px;padding:4px 6px;background:#f7f8f9;border-right:1px solid #e7ebee;border-bottom:1px solid #e7ebee;
+white-space:nowrap}
+.edit-table td.editable{background:#fff}
+.cell-input,.cell-select{width:100%;min-width:90px;height:28px;padding:3px 6px;border:1px solid transparent;border-radius:3px;
+background:#fff;color:#1d2d3e;font-size:12px}
+.cell-input:hover,.cell-select:hover{border-color:#b8b8b8}
+.cell-input:focus,.cell-select:focus{outline:0;border-color:#0a6ed1;box-shadow:0 0 0 1px #0a6ed1}
+.cell-input[readonly]{background:transparent;color:#556b82}
+.icon-cell{text-align:center}
+.link-button{border:0;background:transparent;color:#0a6ed1;text-decoration:underline;padding:0;font-size:12px;font-weight:600}
+.modal-bg{display:none;position:fixed;inset:0;z-index:2000;background:rgba(29,45,62,.30);padding:28px 18px;overflow:auto}
+.modal-bg.open{display:block}
+#confirmModal.open{display:flex;align-items:center;justify-content:center}
+#confirmModal .modal{margin:0;width:400px;max-width:90vw}
+.confirm-text{font-size:13px;color:#1d2d3e;line-height:18px;white-space:nowrap;padding:6px 0}
+.modal{max-width:940px;margin:0 auto;background:#fff;border:1px solid #d9d9d9;border-radius:8px;
+box-shadow:0 8px 24px rgba(0,0,0,.18);overflow:hidden}
+.modal.small{max-width:540px}
+.modal.large{max-width:1180px}
+.modal-head{height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:#eaf3fc;
+border-bottom:1px solid #d1e8ff}
+.modal-title{font-size:13px;font-weight:600}
+.modal-close{width:28px;height:28px;border:1px solid #d9d9d9;border-radius:4px;background:#fff;color:#556b82}
+.modal-body{padding:14px;max-height:76vh;overflow:auto}
+.modal-foot{display:flex;align-items:center;justify-content:flex-end;gap:7px;padding:10px 14px;background:#f7f8f9;
+border-top:1px solid #d9d9d9}
+.toast-region{position:fixed;right:22px;bottom:28px;z-index:4000;width:350px;max-width:calc(100% - 44px)}
+.toast{display:flex;gap:10px;margin-top:8px;padding:12px 14px;background:#f2f4f5;border:1px solid #d9d9d9;
+border-left:3px solid #a8b3bd;border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.toast.success{border-left-color:#107e3e}.toast.error{border-left-color:#bb0000}.toast.warning{border-left-color:#e9730c}
+.toast-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#e5e8eb;
+color:#556b82;font-weight:600}
+.toast.success .toast-icon{background:#ebf5eb;color:#107e3e}
+.toast-title{margin-bottom:2px;font-size:12px;font-weight:600}
+.toast-message{color:#556b82;font-size:12px;line-height:17px}
+.statusbar{position:fixed;left:0;right:0;bottom:0;height:20px;display:flex;align-items:center;padding:0 12px;background:#fff;
+border-top:1px solid #e1e6ea;color:#6a6d70;font-size:11px;z-index:900}
+.status-dot{width:7px;height:7px;margin-right:6px;border-radius:50%;background:#0a6ed1}
+@media screen and (max-width:980px){
+.detail-grid{grid-template-columns:1fr}.content{padding-left:8px;padding-right:8px}
+.field{grid-template-columns:130px minmax(0,1fr)}
+}
+@media screen and (max-width:640px){
+.topbar-inner{padding:0 10px}.content{padding-top:8px}
+.field,.detail-line,.approve-field{grid-template-columns:1fr;gap:3px}.input,.select{max-width:none}.actions{justify-content:stretch}
+.actions .btn{flex:1}.toolbar{align-items:flex-start}.toolbar-left,.toolbar-right{width:100%}
+.selection-main-row{flex-wrap:wrap;overflow-x:visible}
+.structure-field,.cc-field,.date-field,.tsf-field{width:100%}
+.structure-field .select,.structure-field .input,.cc-field .select,.date-field .date-input-wrap,
+.tsf-field .select{width:100%;max-width:none}
+.approve-grid{grid-template-columns:1fr;column-gap:0}
+.approve-cell{grid-template-columns:90px minmax(0,1fr)}
+.approve-cell.has-icon{grid-template-columns:90px minmax(0,1fr) 24px}
+.approve-cell .input{width:100%;max-width:none}
+.approve-cell-wide{grid-template-columns:90px minmax(0,1fr)}
+.filter-body.open{flex-wrap:wrap}
+.filter-item{width:100%}
+.filter-xs,.filter-sm,.filter-md,.filter-lg{width:100%;max-width:none}
+}
+.title-wrap{display:flex;align-items:center;gap:10px}
+img.mark{width:28px;height:28px;flex:none;object-fit:contain}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="title-wrap">
+        <img class="mark" alt="Fourth Signal" src="https://raw.githubusercontent.com/ryannayak/fs-assets/e82f35a83e28689167b22b4300d4994a249acee0/fs-short-logo.png"/>
+        <div class="title">View Pending SBLC Requests and Allocate Bank</div>
+      </div>
+      <button id="refreshBtn" class="refresh-btn" type="button">&#8635; Refresh</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">Basic Selection</div>
+        <div class="card-meta">Required</div>
+      </div>
+      <div class="card-body">
+        <div class="selection-main-row">
+          <div class="field structure-field cc-field">
+            <label for="ccCompanyCode">Company Code<span class="required-mark">*</span></label>
+            <select id="ccCompanyCode" class="select"></select>
+          </div>
+          <div class="field structure-field date-field">
+            <label for="ccKeyDate">Key Date<span class="required-mark">*</span></label>
+            <div class="date-input-wrap">
+              <input id="ccKeyDate" class="input" type="text" placeholder="DD-MM-YYYY">
+              <div class="calendar-btn-wrap">
+                <button class="calendar-btn" type="button" tabindex="-1" aria-hidden="true"></button>
+                <input id="ccKeyDateNative" class="calendar-native" type="date" aria-label="Open calendar">
+              </div>
+            </div>
+          </div>
+          <div class="field structure-field tsf-field">
+            <label for="ccTsfStructure">TSF Structure<span class="required-mark">*</span></label>
+            <select id="ccTsfStructure" class="select"></select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="resultsArea" style="display:none">
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <button id="filterToggle" class="filter-icon-btn" type="button" title="Filters" aria-label="Filters"></button>
+          <div id="filterBody" class="filter-body">
+            <div class="filter-item">
+              <select id="txnNoFilter" class="select filter-sm"></select>
+            </div>
+            <div class="filter-item">
+              <select id="reqNoFilter" class="select filter-sm"></select>
+            </div>
+            <div class="filter-item">
+              <select id="reqTypeFilter" class="select filter-lg"></select>
+            </div>
+            <div class="filter-item">
+              <select id="statusFilter" class="select filter-lg"></select>
+            </div>
+            <button id="clearFilters" class="btn btn-ghost" type="button">Clear</button>
+          </div>
+        </div>
+        <div class="toolbar-right">
+          <button id="approveBtn" class="btn btn-primary" type="button" disabled>Approve SBLC Request</button>
+          <button id="rejectBtn" class="btn btn-ghost" type="button" disabled>Reject SBLC Request</button>
+          <button id="dmsBtn" class="btn btn-ghost" type="button" disabled>DMS</button>
+        </div>
+      </div>
+      <div class="card table-card">
+        <div class="card-head">
+          <div class="card-title">Pending SBLC Requests</div>
+          <div class="card-meta" id="rowCountMeta"></div>
+        </div>
+        <div class="table-wrap">
+          <table id="mainTable" class="data-table">
+            <thead id="mainHead"></thead>
+            <tbody id="mainBody"></tbody>
+          </table>
+        </div>
+        <div id="paginationBar" class="pagination-bar"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="approveModal" class="modal-bg">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">View Pending SBLC Requests and Allocate Bank</div>
+      <button id="approveClose" class="modal-close" type="button">X</button>
+    </div>
+    <div class="modal-body">
+      <div class="card">
+        <div class="card-head"><div class="card-title">Create SBLC Txn</div><div class="card-meta">Selected Request</div></div>
+        <div class="card-body">
+          <div class="approve-grid">
+            <div class="approve-cell">
+              <label for="approveCompanyCode">Company Code</label>
+              <input id="approveCompanyCode" class="input readonly-input" type="text" readonly>
+            </div>
+            <div class="approve-cell has-icon">
+              <label for="approveFacility">Facility<span class="required-mark">*</span></label>
+              <input id="approveFacility" class="input" type="text" readonly placeholder="Select facility">
+              <button id="approveFacilitySearch" class="search-btn" type="button" title="Select Transaction"></button>
+            </div>
+            <div class="approve-cell-wide">
+              <label for="approveIssuingBank">Issuing Bank</label>
+              <input id="approveIssuingBank" class="input readonly-input" type="text" readonly>
+            </div>
+            <div class="approve-cell">
+              <label for="approveLcNumber">LC Number<span class="required-mark">*</span></label>
+              <input id="approveLcNumber" class="input" type="text" placeholder="Unique LC Number">
+            </div>
+            <div class="approve-cell has-icon">
+              <label for="approveIssuanceFee">Issuance Fee<span class="required-mark">*</span></label>
+              <input id="approveIssuanceFee" class="input input-right" type="text">
+              <button id="approveLcChargesBtn" class="calc-btn" type="button" title="LC Charges"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button id="approveCancel" class="btn btn-ghost" type="button">Cancel</button>
+      <button id="createSblcTxnBtn" class="btn btn-primary" type="button">Create SBLC Txn</button>
+    </div>
+  </div>
+</div>
+
+<div id="transactionModal" class="modal-bg">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="transactionModalTitle">Transaction</div>
+      <button id="transactionClose" class="modal-close" type="button">X</button>
+    </div>
+    <div class="modal-body">
+      <div class="card table-card">
+        <div class="table-wrap">
+          <table id="transactionTable" class="data-table compact">
+            <thead id="transactionHead"></thead>
+            <tbody id="transactionBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button id="transactionCancel" class="btn btn-ghost" type="button">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="lcChargesModal" class="modal-bg">
+  <div class="modal small">
+    <div class="modal-head">
+      <div class="modal-title">LC Charges</div>
+      <button id="lcChargesClose" class="modal-close" type="button">X</button>
+    </div>
+    <div class="modal-body">
+      <div class="approve-field">
+        <label for="lcAmount">SBLC Amount</label>
+        <input id="lcAmount" class="input readonly-input" type="text" readonly>
+      </div>
+      <div class="approve-field">
+        <label for="lcStartDate">Start Date<span class="required-mark">*</span></label>
+        <div class="date-input-wrap" style="width:100%;max-width:none">
+          <input id="lcStartDate" class="input" type="text" placeholder="DD-MM-YYYY">
+          <div class="calendar-btn-wrap">
+            <button class="calendar-btn" type="button" tabindex="-1" aria-hidden="true"></button>
+            <input id="lcStartDateNative" class="calendar-native" type="date" aria-label="Open calendar">
+          </div>
+        </div>
+      </div>
+      <div class="approve-field">
+        <label for="lcEndDate">End Date<span class="required-mark">*</span></label>
+        <div class="date-input-wrap" style="width:100%;max-width:none">
+          <input id="lcEndDate" class="input" type="text" placeholder="DD-MM-YYYY">
+          <div class="calendar-btn-wrap">
+            <button class="calendar-btn" type="button" tabindex="-1" aria-hidden="true"></button>
+            <input id="lcEndDateNative" class="calendar-native" type="date" aria-label="Open calendar">
+          </div>
+        </div>
+      </div>
+      <div class="approve-field">
+        <label for="lcFeePercent">Fee(%)<span class="required-mark">*</span></label>
+        <input id="lcFeePercent" class="input" type="text">
+      </div>
+      <div class="approve-field">
+        <label>No of Days</label>
+        <input id="lcNoOfDays" class="input readonly-input" type="text" readonly value="0">
+      </div>
+      <div class="approve-field">
+        <label class="fee-amount-value">Fee Amount</label>
+        <input id="lcFeeAmount" class="input readonly-input fee-amount-value" type="text" readonly value="0.00">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button id="lcChargesCancel" class="btn btn-ghost" type="button">Cancel</button>
+      <button id="lcChargesOk" class="btn btn-primary" type="button">OK</button>
+    </div>
+  </div>
+</div>
+
+<div id="dmsModal" class="modal-bg">
+  <div class="modal large">
+    <div class="modal-head">
+      <div class="modal-title">DMS</div>
+      <button id="dmsClose" class="modal-close" type="button">X</button>
+    </div>
+    <div class="modal-body">
+      <div class="card">
+        <div class="card-head"><div class="card-title">SBLC Request</div></div>
+        <div class="card-body">
+          <div class="detail-grid">
+            <div class="detail-line"><div class="detail-label">SBLC Request No</div>
+              <div class="detail-value"><span class="code" id="dmsRequestNo"></span></div></div>
+            <div class="detail-line"><div class="detail-label">SBLC Transaction</div>
+              <div class="detail-value"><span class="code" id="dmsTransaction"></span></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card table-card">
+        <div class="card-head"><div class="card-title">DMS Data</div></div>
+        <div class="table-wrap">
+          <table id="dmsTable" class="edit-table">
+            <thead id="dmsHead"></thead>
+            <tbody id="dmsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button id="dmsCancel" class="btn btn-ghost" type="button">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="confirmModal" class="modal-bg">
+  <div class="modal small">
+    <div class="modal-head">
+      <div class="modal-title">Confirm Action</div>
+      <button id="confirmClose" class="modal-close" type="button">X</button>
+    </div>
+    <div class="modal-body">
+      <div id="confirmMessage"></div>
+    </div>
+    <div class="modal-foot">
+      <button id="confirmNo" class="btn btn-ghost" type="button">No</button>
+      <button id="confirmYes" class="btn btn-primary" type="button">Yes</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="toastRegion" class="toast-region" aria-live="polite"></div>
+<div class="statusbar"><span class="status-dot"></span><span id="statusText">Ready</span></div>
+
+<script type="text/javascript">
+(function(){
+var VERSION="v8";
+var HAS_EXTERNAL_PAYLOAD=typeof SBLC_PAYLOAD!=="undefined";
+var DEFAULT_DATA={
+  companyCodes:[
+    {code:"AE13",name:"Olam International DMCC"},
+    {code:"AE11",name:"Olam Global Agri Pte. Ltd"},
+    {code:"SG03",name:"Olam Global Agri Pte. Ltd"}
+  ],
+  tsfStructures:["Corporate Trade","Structured LCs"],
+  statuses:["SBLC Request Created","TSF Approval/SBLC Created","Reject By TSF"],
+  requestTypes:["Performance Guarantee","Bid Bond","Advance Payment Guarantee","Financial Guarantee",
+    "Payment Guarantee","Warranty Guarantee"],
+  dmsDocTypes:[
+    {code:"D01",desc:"SBLC Bank"},
+    {code:"D02",desc:"SBLC - SWIFT Confirmation Issuance"},
+    {code:"D03",desc:"SBLC - SWIFT Confirmation Termination"},
+    {code:"D04",desc:"SBLC - Invoice 1"},
+    {code:"D05",desc:"SBLC - Invoice 2"},
+    {code:"D06",desc:"SBLC - Approval Email"},
+    {code:"D07",desc:"SBLC - Other"}
+  ],
+  facilities:[
+    {companyCode:"AE13",facilityNo:"2802000006"},
+    {companyCode:"AE11",facilityNo:"2802000100"},
+    {companyCode:"SG03",facilityNo:"2802000200"}
+  ],
+  transactionsByFacility:{
+    "2802000006":[
+      {transNo:"2802000006",productType:"FA1",bankName:"COBANK ACB",termEnd:"27-12-2030",
+        limitAmount:50000000,availableLimit:61598842.75,issuingBankCode:"660012887",issuingBankName:"COBANK ACB"},
+      {transNo:"2802000008",productType:"FA1",bankName:"BANK OF NOVA SCOTIA TORONTO",termEnd:"31-03-2028",
+        limitAmount:20000000,availableLimit:12966047.00,issuingBankCode:"660099001",
+        issuingBankName:"BANK OF NOVA SCOTIA TORONTO"},
+      {transNo:"2802000010",productType:"FA1",bankName:"BANK OF MONTREAL",termEnd:"31-12-2026",
+        limitAmount:2000000,availableLimit:2000000.00,issuingBankCode:"660099002",issuingBankName:"BANK OF MONTREAL"},
+      {transNo:"2802000012",productType:"FA1",bankName:"BANK OF MONTREAL",termEnd:"31-12-2029",
+        limitAmount:10000000,availableLimit:0.00,issuingBankCode:"660099003",issuingBankName:"BANK OF MONTREAL"}
+    ],
+    "2802000100":[
+      {transNo:"2802000101",productType:"FA1",bankName:"WESTPAC BANKING CORPORATION",termEnd:"30-06-2029",
+        limitAmount:15000000,availableLimit:9500000.00,issuingBankCode:"660088001",
+        issuingBankName:"WESTPAC BANKING CORPORATION"},
+      {transNo:"2802000102",productType:"FA1",bankName:"BANESCO (PANAMA) S.A.",termEnd:"15-05-2027",
+        limitAmount:8000000,availableLimit:8000000.00,issuingBankCode:"660088002",issuingBankName:"BANESCO (PANAMA) S.A."}
+    ],
+    "2802000200":[
+      {transNo:"2802000201",productType:"FA1",bankName:"QATAR NATIONAL BANK (QPSC)",termEnd:"20-09-2028",
+        limitAmount:12000000,availableLimit:5400000.00,issuingBankCode:"660077001",
+        issuingBankName:"QATAR NATIONAL BANK (QPSC)"},
+      {transNo:"2802000202",productType:"FA1",bankName:"THE COMMERCIAL BANK OF QATAR",termEnd:"10-11-2027",
+        limitAmount:6000000,availableLimit:3000000.00,issuingBankCode:"660077002",
+        issuingBankName:"THE COMMERCIAL BANK OF QATAR"}
+    ]
+  },
+  records:[
+    {companyCode:"AE13",companyName:"Olam International DMCC",tsfStructure:"Corporate Trade",
+      dealId:"12001358",sblcRequestNumber:"26001074",ottkNo:"101219",sblcRequestType:"Performance Guarantee",
+      beneficiaryCode:"660012542",startDate:"08-01-2026",endDate:"02-06-2027",sblcAmount:1000000,currency:"USD",
+      sblcRequestStatusDesc:"SBLC Request Created",sblcTransaction:"",issuingBankCode:"",issuingBankName:"",
+      issuanceFee:"",lcNumber:""},
+    {companyCode:"AE13",companyName:"Olam International DMCC",tsfStructure:"Structured LCs",
+      dealId:"12001483",sblcRequestNumber:"26001132",ottkNo:"101367",sblcRequestType:"Bid Bond",
+      beneficiaryCode:"660013541",startDate:"13-03-2026",endDate:"24-08-2026",sblcAmount:225000,currency:"USD",
+      sblcRequestStatusDesc:"TSF Approval/SBLC Created",sblcTransaction:"2802001247",
+      issuingBankCode:"660012887",issuingBankName:"COBANK ACB",issuanceFee:"0.75",lcNumber:"AE13SG03CN123"},
+    {companyCode:"AE13",companyName:"Olam International DMCC",tsfStructure:"Corporate Trade",
+      dealId:"12001484",sblcRequestNumber:"26001133",ottkNo:"101368",sblcRequestType:"Advance Payment Guarantee",
+      beneficiaryCode:"660013365",startDate:"13-03-2026",endDate:"25-04-2028",sblcAmount:230000,currency:"USD",
+      sblcRequestStatusDesc:"SBLC Request Created",sblcTransaction:"",issuingBankCode:"",issuingBankName:"",
+      issuanceFee:"",lcNumber:""},
+    {companyCode:"AE13",companyName:"Olam International DMCC",tsfStructure:"Structured LCs",
+      dealId:"12001485",sblcRequestNumber:"26001134",ottkNo:"101369",sblcRequestType:"Financial Guarantee",
+      beneficiaryCode:"660013365",startDate:"13-03-2026",endDate:"23-04-2027",sblcAmount:114000,currency:"USD",
+      sblcRequestStatusDesc:"Reject By TSF",sblcTransaction:"",issuingBankCode:"",issuingBankName:"",
+      issuanceFee:"",lcNumber:""},
+    {companyCode:"AE13",companyName:"Olam International DMCC",tsfStructure:"Corporate Trade",
+      dealId:"12001486",sblcRequestNumber:"26001135",ottkNo:"101370",sblcRequestType:"Payment Guarantee",
+      beneficiaryCode:"660013365",startDate:"13-03-2026",endDate:"29-07-2026",sblcAmount:248000,currency:"USD",
+      sblcRequestStatusDesc:"SBLC Request Created",sblcTransaction:"",issuingBankCode:"",issuingBankName:"",
+      issuanceFee:"",lcNumber:""},
+    {companyCode:"AE13",companyName:"Olam International DMCC",tsfStructure:"Structured LCs",
+      dealId:"12001498",sblcRequestNumber:"26001136",ottkNo:"101383",sblcRequestType:"Warranty Guarantee",
+      beneficiaryCode:"660013411",startDate:"13-03-2026",endDate:"27-12-2027",sblcAmount:153000,currency:"USD",
+      sblcRequestStatusDesc:"SBLC Request Created",sblcTransaction:"",issuingBankCode:"",issuingBankName:"",
+      issuanceFee:"",lcNumber:""},
+    {companyCode:"AE13",companyName:"Olam International DMCC",tsfStructure:"Corporate Trade",
+      dealId:"12001499",sblcRequestNumber:"26001137",ottkNo:"101384",sblcRequestType:"Bid Bond",
+      beneficiaryCode:"660013368",startDate:"13-03-2026",endDate:"07-09-2026",sblcAmount:280000,currency:"USD",
+      sblcRequestStatusDesc:"TSF Approval/SBLC Created",sblcTransaction:"2802001248",
+      issuingBankCode:"660099001",issuingBankName:"BANK OF NOVA SCOTIA TORONTO",issuanceFee:"0.60",
+      lcNumber:"AE13CN2498"},
+    {companyCode:"AE13",companyName:"Olam International DMCC",tsfStructure:"Structured LCs",
+      dealId:"12001501",sblcRequestNumber:"26001138",ottkNo:"101386",sblcRequestType:"Performance Guarantee",
+      beneficiaryCode:"660013368",startDate:"13-03-2026",endDate:"19-09-2026",sblcAmount:205000,currency:"USD",
+      sblcRequestStatusDesc:"SBLC Request Created",sblcTransaction:"",issuingBankCode:"",issuingBankName:"",
+      issuanceFee:"",lcNumber:""},
+    {companyCode:"AE13",companyName:"Olam International DMCC",tsfStructure:"Corporate Trade",
+      dealId:"12001502",sblcRequestNumber:"26001139",ottkNo:"101387",sblcRequestType:"Advance Payment Guarantee",
+      beneficiaryCode:"660013541",startDate:"13-03-2026",endDate:"16-08-2028",sblcAmount:138000,currency:"USD",
+      sblcRequestStatusDesc:"Reject By TSF",sblcTransaction:"",issuingBankCode:"",issuingBankName:"",
+      issuanceFee:"",lcNumber:""},
+    {companyCode:"AE13",companyName:"Olam International DMCC",tsfStructure:"Structured LCs",
+      dealId:"12001503",sblcRequestNumber:"26001140",ottkNo:"101388",sblcRequestType:"Financial Guarantee",
+      beneficiaryCode:"660013411",startDate:"13-03-2026",endDate:"04-09-2027",sblcAmount:173000,currency:"USD",
+      sblcRequestStatusDesc:"SBLC Request Created",sblcTransaction:"",issuingBankCode:"",issuingBankName:"",
+      issuanceFee:"",lcNumber:""},
+    {companyCode:"AE11",companyName:"Olam Global Agri Pte. Ltd",tsfStructure:"Corporate Trade",
+      dealId:"12002001",sblcRequestNumber:"26002001",ottkNo:"201001",sblcRequestType:"Performance Guarantee",
+      beneficiaryCode:"660088010",startDate:"05-02-2026",endDate:"05-08-2026",sblcAmount:475000,currency:"USD",
+      sblcRequestStatusDesc:"SBLC Request Created",sblcTransaction:"",issuingBankCode:"",issuingBankName:"",
+      issuanceFee:"",lcNumber:""},
+    {companyCode:"AE11",companyName:"Olam Global Agri Pte. Ltd",tsfStructure:"Structured LCs",
+      dealId:"12002002",sblcRequestNumber:"26002002",ottkNo:"201002",sblcRequestType:"Bid Bond",
+      beneficiaryCode:"660088011",startDate:"10-02-2026",endDate:"10-11-2026",sblcAmount:385000,currency:"USD",
+      sblcRequestStatusDesc:"TSF Approval/SBLC Created",sblcTransaction:"2802002101",
+      issuingBankCode:"660088001",issuingBankName:"WESTPAC BANKING CORPORATION",issuanceFee:"0.55",
+      lcNumber:"AE11CN2002"},
+    {companyCode:"AE11",companyName:"Olam Global Agri Pte. Ltd",tsfStructure:"Corporate Trade",
+      dealId:"12002003",sblcRequestNumber:"26002003",ottkNo:"201003",sblcRequestType:"Advance Payment Guarantee",
+      beneficiaryCode:"660088012",startDate:"15-02-2026",endDate:"15-02-2027",sblcAmount:512000,currency:"USD",
+      sblcRequestStatusDesc:"Reject By TSF",sblcTransaction:"",issuingBankCode:"",issuingBankName:"",
+      issuanceFee:"",lcNumber:""},
+    {companyCode:"AE11",companyName:"Olam Global Agri Pte. Ltd",tsfStructure:"Structured LCs",
+      dealId:"12002004",sblcRequestNumber:"26002004",ottkNo:"201004",sblcRequestType:"Financial Guarantee",
+      beneficiaryCode:"660088013",startDate:"18-02-2026",endDate:"18-06-2027",sblcAmount:296000,currency:"USD",
+      sblcRequestStatusDesc:"SBLC Request Created",sblcTransaction:"",issuingBankCode:"",issuingBankName:"",
+      issuanceFee:"",lcNumber:""},
+    {companyCode:"AE11",companyName:"Olam Global Agri Pte. Ltd",tsfStructure:"Corporate Trade",
+      dealId:"12002005",sblcRequestNumber:"26002005",ottkNo:"201005",sblcRequestType:"Payment Guarantee",
+      beneficiaryCode:"660088014",startDate:"22-02-2026",endDate:"22-09-2026",sblcAmount:340000,currency:"USD",
+      sblcRequestStatusDesc:"SBLC Request Created",sblcTransaction:"",issuingBankCode:"",issuingBankName:"",
+      issuanceFee:"",lcNumber:""},
+    {companyCode:"AE11",companyName:"Olam Global Agri Pte. Ltd",tsfStructure:"Structured LCs",
+      dealId:"12002006",sblcRequestNumber:"26002006",ottkNo:"201006",sblcRequestType:"Warranty Guarantee",
+      beneficiaryCode:"660088015",startDate:"25-02-2026",endDate:"25-05-2027",sblcAmount:189000,currency:"USD",
+      sblcRequestStatusDesc:"TSF Approval/SBLC Created",sblcTransaction:"2802002102",
+      issuingBankCode:"660088002",issuingBankName:"BANESCO (PANAMA) S.A.",issuanceFee:"0.65",lcNumber:"AE11CN2006"},
+    {companyCode:"SG03",companyName:"Olam Global Agri Pte. Ltd",tsfStructure:"Corporate Trade",
+      dealId:"12003001",sblcRequestNumber:"26003001",ottkNo:"301001",sblcRequestType:"Performance Guarantee",
+      beneficiaryCode:"660077020",startDate:"02-03-2026",endDate:"02-09-2026",sblcAmount:825000,currency:"USD",
+      sblcRequestStatusDesc:"SBLC Request Created",sblcTransaction:"",issuingBankCode:"",issuingBankName:"",
+      issuanceFee:"",lcNumber:""},
+    {companyCode:"SG03",companyName:"Olam Global Agri Pte. Ltd",tsfStructure:"Structured LCs",
+      dealId:"12003002",sblcRequestNumber:"26003002",ottkNo:"301002",sblcRequestType:"Bid Bond",
+      beneficiaryCode:"660077021",startDate:"05-03-2026",endDate:"05-12-2026",sblcAmount:620000,currency:"USD",
+      sblcRequestStatusDesc:"SBLC Request Created",sblcTransaction:"",issuingBankCode:"",issuingBankName:"",
+      issuanceFee:"",lcNumber:""},
+    {companyCode:"SG03",companyName:"Olam Global Agri Pte. Ltd",tsfStructure:"Corporate Trade",
+      dealId:"12003003",sblcRequestNumber:"26003003",ottkNo:"301003",sblcRequestType:"Advance Payment Guarantee",
+      beneficiaryCode:"660077022",startDate:"08-03-2026",endDate:"08-03-2027",sblcAmount:715000,currency:"USD",
+      sblcRequestStatusDesc:"Reject By TSF",sblcTransaction:"",issuingBankCode:"",issuingBankName:"",
+      issuanceFee:"",lcNumber:""},
+    {companyCode:"SG03",companyName:"Olam Global Agri Pte. Ltd",tsfStructure:"Structured LCs",
+      dealId:"12003004",sblcRequestNumber:"26003004",ottkNo:"301004",sblcRequestType:"Financial Guarantee",
+      beneficiaryCode:"660077023",startDate:"12-03-2026",endDate:"12-07-2027",sblcAmount:460000,currency:"USD",
+      sblcRequestStatusDesc:"TSF Approval/SBLC Created",sblcTransaction:"2802002203",
+      issuingBankCode:"660077001",issuingBankName:"QATAR NATIONAL BANK (QPSC)",issuanceFee:"0.70",
+      lcNumber:"SG03CN3004"},
+    {companyCode:"SG03",companyName:"Olam Global Agri Pte. Ltd",tsfStructure:"Corporate Trade",
+      dealId:"12003005",sblcRequestNumber:"26003005",ottkNo:"301005",sblcRequestType:"Payment Guarantee",
+      beneficiaryCode:"660077024",startDate:"15-03-2026",endDate:"15-10-2026",sblcAmount:350000,currency:"USD",
+      sblcRequestStatusDesc:"SBLC Request Created",sblcTransaction:"",issuingBankCode:"",issuingBankName:"",
+      issuanceFee:"",lcNumber:""}
+  ]
+};
+var DATA=HAS_EXTERNAL_PAYLOAD?SBLC_PAYLOAD:DEFAULT_DATA;
+var state={selectedReq:"",listPage:1,pageSize:12,sort:{index:-1,direction:""},
+  approveReq:"",lcChargesReq:"",dmsReq:"",dmsFileObjects:{}};
+var STATUS_TEXT_MAP={
+  "SBLC Request Created":"Pending",
+  "TSF Approval/SBLC Created":"Approved",
+  "Reject By TSF":"Rejected"
+};
+var STATUS_CODE_MAP={
+  "SBLC Request Created":"01",
+  "TSF Approval/SBLC Created":"02",
+  "Reject By TSF":"03"
+};
+var STATUS_CLASS_MAP={
+  "SBLC Request Created":"badge-pending",
+  "TSF Approval/SBLC Created":"badge-approved",
+  "Reject By TSF":"badge-rejected"
+};
+var MAIN_COLUMNS=[
+  {key:"status",label:"Status",width:90,compute:function(r){return STATUS_TEXT_MAP[r.sblcRequestStatusDesc]||r.sblcRequestStatusDesc},
+    statusText:true},
+  {key:"sblcStatusCode",label:"SBLC Status",width:90,compute:function(r){return STATUS_CODE_MAP[r.sblcRequestStatusDesc]||""}},
+  {key:"sblcRequestStatusDesc",label:"SBLC Request Status Description",width:230},
+  {key:"dealId",label:"Deal ID",width:100},
+  {key:"sblcRequestNumber",label:"SBLC Request Number",width:150},
+  {key:"ottkNo",label:"OTTK No",width:95},
+  {key:"sblcRequestType",label:"SBLC Request Type",width:180},
+  {key:"beneficiaryCode",label:"SBLC Beneficiary",width:120},
+  {key:"startDate",label:"Start Date",width:100},
+  {key:"endDate",label:"End Date",width:100},
+  {key:"sblcAmount",label:"SBLC Amount",width:130,number:true},
+  {key:"companyCode",label:"Company Code",width:100},
+  {key:"companyName",label:"Company Name",width:190},
+  {key:"sblcTransaction",label:"SBLC Transaction",width:140}
+];
+function byId(id){return document.getElementById(id)}
+function esc(value){
+  var t=String(value==null?"":value);
+  return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")
+}
+function money(value){
+  var n=Number(value||0);
+  var p=n.toFixed(2).split(".");
+  p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,",");
+  return p.join(".")
+}
+function setStatus(text){byId("statusText").innerHTML=esc(text)}
+function toast(message,kind){
+  var region=byId("toastRegion"),box=document.createElement("div"),icon=document.createElement("div");
+  var body=document.createElement("div");
+  box.className="toast "+(kind||"");
+  icon.className="toast-icon";
+  icon.innerHTML=kind==="success"?"OK":"i";
+  body.innerHTML='<div class="toast-title">'+(kind==="success"?"Success":kind==="warning"?"Warning":"Information")+
+    '</div><div class="toast-message">'+esc(message)+'</div>';
+  box.appendChild(icon);
+  box.appendChild(body);
+  region.appendChild(box);
+  window.setTimeout(function(){if(box.parentNode){box.parentNode.removeChild(box)}},4200)
+}
+function pad2(n){return (n<10?"0":"")+n}
+function parseDMY(s){
+  var m=String(s||"").match(/^(\d{2})-(\d{2})-(\d{4})$/);
+  if(!m){return null}
+  return new Date(Number(m[3]),Number(m[2])-1,Number(m[1]))
+}
+function formatDMY(d){return pad2(d.getDate())+"-"+pad2(d.getMonth()+1)+"-"+d.getFullYear()}
+function isoToDMY(iso){
+  var m=String(iso||"").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(!m){return iso||""}
+  return m[3]+"-"+m[2]+"-"+m[1]
+}
+function diffDaysDMY(startStr,endStr){
+  var s=parseDMY(startStr),e=parseDMY(endStr);
+  if(!s||!e){return 0}
+  var ms=e.getTime()-s.getTime();
+  return Math.max(0,Math.round(ms/86400000))
+}
+function calcFeeAmount(amount,feePercent,days){
+  var a=Number(amount||0),f=Number(feePercent||0),d=Number(days||0);
+  return a*f*d/36000
+}
+function parseShorthandAmount(value){
+  var raw=String(value==null?"":value).trim();
+  if(!raw){return null}
+  var match=raw.match(/^(-?[\d.]+)\s*([a-zA-Z]*)$/);
+  if(!match){return null}
+  var num=parseFloat(match[1]);
+  if(isNaN(num)){return null}
+  var suffix=match[2].toLowerCase();
+  var mult=1;
+  if(suffix==="k"){mult=1e3}
+  else if(suffix==="l"||suffix==="lc"||suffix==="lac"||suffix==="lakh"){mult=1e5}
+  else if(suffix==="m"){mult=1e6}
+  else if(suffix==="cr"||suffix==="c"){mult=1e7}
+  else if(suffix==="b"){mult=1e9}
+  else if(suffix!==""){return null}
+  return num*mult
+}
+function convertShorthandField(el){
+  var parsed=parseShorthandAmount(el.value);
+  if(parsed!==null){el.value=String(parsed)}
+}
+function statusBadgeHtml(sblcRequestStatusDesc){
+  var text=STATUS_TEXT_MAP[sblcRequestStatusDesc]||sblcRequestStatusDesc;
+  var cls=STATUS_CLASS_MAP[sblcRequestStatusDesc]||"";
+  return '<span class="badge '+cls+'">'+esc(text)+'</span>'
+}
+function headerHtml(columns){
+  var html="<tr>",i,c;
+  for(i=0;i<columns.length;i++){
+    c=columns[i];
+    html+='<th data-index="'+i+'" style="width:'+(c.width||110)+'px">'+esc(c.label)+
+      '<span class="sort-arrows"><span class="sort-up"></span><span class="sort-down"></span></span></th>'
+  }
+  return html+"</tr>"
+}
+function bindTableSort(){
+  var ths=document.querySelectorAll("#mainHead th[data-index]"),i;
+  for(i=0;i<ths.length;i++){
+    ths[i].onclick=function(){sortData(parseInt(this.getAttribute("data-index"),10))}
+  }
+}
+function applySortClass(index,direction){
+  var ths=document.querySelectorAll("#mainHead th[data-index]"),i;
+  for(i=0;i<ths.length;i++){ths[i].className=""}
+  if(ths[index]){ths[index].className=direction==="asc"?"sort-asc":"sort-desc"}
+}
+function sortData(index){
+  var col=MAIN_COLUMNS[index],direction;
+  direction=state.sort.index===index&&state.sort.direction==="asc"?"desc":"asc";
+  state.sort={index:index,direction:direction};
+  DATA.records.sort(function(a,b){
+    var av=col.compute?col.compute(a):a[col.key],bv=col.compute?col.compute(b):b[col.key];
+    if(col.number){av=Number(av||0);bv=Number(bv||0)}
+    else{av=String(av||"").toLowerCase();bv=String(bv||"").toLowerCase()}
+    if(av<bv){return direction==="asc"?-1:1}
+    if(av>bv){return direction==="asc"?1:-1}
+    return 0
+  });
+  state.listPage=1;
+  renderMainList();
+  applySortClass(index,direction)
+}
+function initSelections(){
+  var cc=byId("ccCompanyCode"),html='<option value="">Select Company Code</option>',i;
+  for(i=0;i<DATA.companyCodes.length;i++){
+    html+='<option value="'+esc(DATA.companyCodes[i].code)+'">'+esc(DATA.companyCodes[i].code)+' - '+
+      esc(DATA.companyCodes[i].name)+'</option>'
+  }
+  cc.innerHTML=html;
+  cc.onchange=onBasicSelectionChange;
+  var tsf=byId("ccTsfStructure"),tHtml='<option value="">Select TSF Structure</option>',j;
+  for(j=0;j<DATA.tsfStructures.length;j++){
+    tHtml+='<option value="'+esc(DATA.tsfStructures[j])+'">'+esc(DATA.tsfStructures[j])+'</option>'
+  }
+  tsf.innerHTML=tHtml;
+  tsf.onchange=onBasicSelectionChange;
+  byId("ccKeyDate").onchange=onBasicSelectionChange;
+  byId("ccKeyDateNative").onchange=function(){
+    if(this.value){byId("ccKeyDate").value=isoToDMY(this.value);onBasicSelectionChange()}
+  }
+}
+function onBasicSelectionChange(){
+  if(byId("ccCompanyCode").value&&byId("ccKeyDate").value&&byId("ccTsfStructure").value){
+    byId("resultsArea").style.display="block";
+    state.listPage=1;
+    renderFilterOptions();
+    renderMainList();
+    setStatus("Records loaded for "+byId("ccCompanyCode").value+" as of "+byId("ccKeyDate").value)
+  }else{
+    byId("resultsArea").style.display="none";
+    state.selectedReq="";
+    disableActionButtons();
+    setStatus("Enter Company Code, Key Date and TSF Structure")
+  }
+}
+function disableActionButtons(){
+  byId("approveBtn").disabled=true;
+  byId("rejectBtn").disabled=true;
+  byId("dmsBtn").disabled=true
+}
+function baseRowsForSelection(){
+  var cc=byId("ccCompanyCode").value,tsf=byId("ccTsfStructure").value,rows=[],i,r;
+  for(i=0;i<DATA.records.length;i++){
+    r=DATA.records[i];
+    if(r.companyCode===cc&&r.tsfStructure===tsf){rows.push(r)}
+  }
+  return rows
+}
+function fillDropdown(id,rows,key,placeholder){
+  var sel=byId(id),current=sel.value,seen={},items=[],i,v,html='<option value="">'+esc(placeholder)+'</option>';
+  for(i=0;i<rows.length;i++){v=String(rows[i][key]||"");if(v&&!seen[v]){seen[v]=true;items.push(v)}}
+  items.sort();
+  for(i=0;i<items.length;i++){
+    html+='<option value="'+esc(items[i])+'">'+esc(items[i])+'</option>'
+  }
+  sel.innerHTML=html;
+  if(items.indexOf(current)>=0){sel.value=current}
+}
+function fillStatusDropdown(){
+  var sel=byId("statusFilter"),current=sel.value,html='<option value="">Status</option>',i,s;
+  for(i=0;i<DATA.statuses.length;i++){
+    s=DATA.statuses[i];
+    html+='<option value="'+esc(s)+'">'+esc(s)+'</option>'
+  }
+  sel.innerHTML=html;
+  if(DATA.statuses.indexOf(current)>=0){sel.value=current}
+}
+function renderFilterOptions(){
+  var rows=baseRowsForSelection();
+  fillDropdown("txnNoFilter",rows,"ottkNo","Transaction No.");
+  fillDropdown("reqNoFilter",rows,"sblcRequestNumber","Request No.");
+  fillDropdown("reqTypeFilter",rows,"sblcRequestType","SBLC Request Type");
+  fillStatusDropdown()
+}
+function getFilteredRows(){
+  var rows=baseRowsForSelection();
+  var txn=byId("txnNoFilter").value,req=byId("reqNoFilter").value;
+  var reqType=byId("reqTypeFilter").value,status=byId("statusFilter").value,out=[],i,r;
+  for(i=0;i<rows.length;i++){
+    r=rows[i];
+    if(txn&&r.ottkNo!==txn){continue}
+    if(req&&r.sblcRequestNumber!==req){continue}
+    if(reqType&&r.sblcRequestType!==reqType){continue}
+    if(status&&r.sblcRequestStatusDesc!==status){continue}
+    out.push(r)
+  }
+  return out
+}
+function renderPagination(totalRows){
+  var bar=byId("paginationBar"),pages=Math.max(1,Math.ceil(totalRows/state.pageSize)),html="",startPage,endPage,p;
+  if(state.listPage>pages){state.listPage=pages}
+  html+='<button class="page-btn" data-page="prev" type="button"'+(state.listPage===1?' disabled="disabled"':'')+
+    '>Previous</button>';
+  startPage=Math.max(1,state.listPage-1);
+  endPage=Math.min(pages,startPage+2);
+  startPage=Math.max(1,endPage-2);
+  for(p=startPage;p<=endPage;p++){
+    html+='<button class="page-btn'+(p===state.listPage?' active':'')+'" data-page="'+p+'" type="button">'+p+'</button>'
+  }
+  html+='<button class="page-btn" data-page="next" type="button"'+(state.listPage===pages?' disabled="disabled"':'')+
+    '>Next</button>';
+  bar.innerHTML=html;
+  bar.onclick=function(e){
+    var target=e.target||e.srcElement,page=target.getAttribute("data-page");
+    if(!page||target.disabled){return}
+    if(page==="prev"){state.listPage-=1}
+    else if(page==="next"){state.listPage+=1}
+    else{state.listPage=parseInt(page,10)||1}
+    renderMainList()
+  }
+}
+function selectedRecord(){
+  var i;
+  for(i=0;i<DATA.records.length;i++){if(DATA.records[i].sblcRequestNumber===state.selectedReq){return DATA.records[i]}}
+  return null
+}
+function renderMainList(){
+  var rows=getFilteredRows(),body=byId("mainBody"),html="",i,j,r,c,val,display,start,end,pageRows;
+  byId("mainHead").innerHTML='<tr><th style="width:42px">Select</th>'+
+    headerHtml(MAIN_COLUMNS).replace(/^<tr>/,"").replace(/<\/tr>$/,"")+"</tr>";
+  start=(state.listPage-1)*state.pageSize;
+  end=Math.min(start+state.pageSize,rows.length);
+  pageRows=rows.slice(start,end);
+  for(i=0;i<pageRows.length;i++){
+    r=pageRows[i];
+    html+='<tr data-record="'+esc(r.sblcRequestNumber)+'"'+
+      (r.sblcRequestNumber===state.selectedReq?' class="selected"':'')+'>'+
+      '<td><input type="radio" name="recordPick" value="'+esc(r.sblcRequestNumber)+'"'+
+      (r.sblcRequestNumber===state.selectedReq?' checked':'')+'></td>';
+    for(j=0;j<MAIN_COLUMNS.length;j++){
+      c=MAIN_COLUMNS[j];
+      val=c.compute?c.compute(r):r[c.key];
+      if(c.statusText){display=statusBadgeHtml(r.sblcRequestStatusDesc)}
+      else if(c.number){display=esc(money(val))}
+      else{display=esc(val)}
+      html+='<td class="'+(c.number?"number":"")+'">'+display+'</td>'
+    }
+    html+="</tr>"
+  }
+  if(!html){html='<tr><td colspan="'+(MAIN_COLUMNS.length+1)+'" class="empty">No records match the current filters.</td></tr>'}
+  body.innerHTML=html;
+  byId("rowCountMeta").innerHTML=esc(rows.length+" record(s)");
+  if(!selectedRecord()){state.selectedReq="";disableActionButtons()}
+  renderPagination(rows.length);
+  bindTableSort()
+}
+byId("filterToggle").onclick=function(){
+  var body=byId("filterBody"),open=body.className.indexOf("open")>=0;
+  body.className=open?"filter-body":"filter-body open"
+};
+function refreshFromFilters(){
+  if(!byId("ccCompanyCode").value||!byId("ccKeyDate").value||!byId("ccTsfStructure").value){return}
+  state.listPage=1;
+  renderMainList()
+}
+byId("txnNoFilter").onchange=refreshFromFilters;
+byId("reqNoFilter").onchange=refreshFromFilters;
+byId("reqTypeFilter").onchange=refreshFromFilters;
+byId("statusFilter").onchange=refreshFromFilters;
+byId("clearFilters").onclick=function(){
+  byId("txnNoFilter").value="";
+  byId("reqNoFilter").value="";
+  byId("reqTypeFilter").value="";
+  byId("statusFilter").value="";
+  refreshFromFilters()
+};
+byId("mainBody").onclick=function(e){
+  var target=e.target||e.srcElement,row=target;
+  while(row&&row.tagName&&row.tagName.toLowerCase()!=="tr"){row=row.parentNode}
+  if(!row){return}
+  var req=row.getAttribute("data-record");
+  if(!req){return}
+  state.selectedReq=req;
+  var trs=byId("mainBody").getElementsByTagName("tr"),i,radio;
+  for(i=0;i<trs.length;i++){trs[i].className=""}
+  row.className="selected";
+  radio=row.getElementsByTagName("input")[0];
+  if(radio){radio.checked=true}
+  byId("approveBtn").disabled=false;
+  byId("rejectBtn").disabled=false;
+  byId("dmsBtn").disabled=false
+};
+function findFacility(companyCode){
+  var i;
+  for(i=0;i<DATA.facilities.length;i++){if(DATA.facilities[i].companyCode===companyCode){return DATA.facilities[i]}}
+  return null
+}
+byId("approveBtn").onclick=function(){
+  var r=selectedRecord();
+  if(!r){return}
+  if(r.sblcRequestStatusDesc==="TSF Approval/SBLC Created"){toast("This SBLC request is already approved.","warning");return}
+  if(r.sblcRequestStatusDesc==="Reject By TSF"){toast("This SBLC request has already been rejected.","warning");return}
+  state.approveReq=r.sblcRequestNumber;
+  byId("approveCompanyCode").value=r.companyCode;
+  byId("approveFacility").value="";
+  byId("approveIssuingBank").value="";
+  byId("approveIssuanceFee").value="";
+  byId("approveLcNumber").value="";
+  byId("approveModal").className="modal-bg open"
+};
+byId("approveClose").onclick=function(){byId("approveModal").className="modal-bg"};
+byId("approveCancel").onclick=function(){byId("approveModal").className="modal-bg"};
+byId("approveFacilitySearch").onclick=function(){
+  var r=selectedRecord();
+  if(!r){return}
+  var facilityRec=findFacility(r.companyCode),facilityNo=facilityRec?facilityRec.facilityNo:"";
+  var rows=DATA.transactionsByFacility[facilityNo]||[],i,html="";
+  byId("transactionModalTitle").innerHTML="Transaction";
+  var cols=[{label:"CoCd",width:55},{label:"Trans.",width:95},{label:"PTyp",width:55},
+    {label:"Bank Name",width:180},{label:"Term End",width:90},{label:"Limit Amount",width:100},
+    {label:"Available Limit",width:100}];
+  byId("transactionHead").innerHTML=headerHtml(cols);
+  for(i=0;i<rows.length;i++){
+    html+='<tr data-idx="'+i+'"><td>'+esc(r.companyCode)+'</td><td>'+esc(rows[i].transNo)+'</td>'+
+      '<td>'+esc(rows[i].productType)+'</td><td>'+esc(rows[i].bankName)+'</td>'+
+      '<td>'+esc(rows[i].termEnd)+'</td><td class="number">'+esc(money(rows[i].limitAmount))+'</td>'+
+      '<td class="number">'+esc(money(rows[i].availableLimit))+'</td></tr>'
+  }
+  if(!html){html='<tr><td colspan="7" class="empty">No transactions found for this facility.</td></tr>'}
+  byId("transactionBody").innerHTML=html;
+  byId("transactionBody").onclick=function(e){
+    var target=e.target||e.srcElement,row=target;
+    while(row&&row.tagName&&row.tagName.toLowerCase()!=="tr"){row=row.parentNode}
+    if(!row){return}
+    var idx=row.getAttribute("data-idx");
+    if(idx===null){return}
+    var trans=rows[parseInt(idx,10)];
+    byId("approveFacility").value=trans.transNo;
+    byId("approveIssuingBank").value=trans.issuingBankCode+" "+trans.issuingBankName;
+    byId("transactionModal").className="modal-bg"
+  };
+  byId("transactionModal").className="modal-bg open"
+};
+byId("transactionClose").onclick=function(){byId("transactionModal").className="modal-bg"};
+byId("transactionCancel").onclick=function(){byId("transactionModal").className="modal-bg"};
+function recalcLcCharges(){
+  convertShorthandField(byId("lcFeePercent"));
+  var days=diffDaysDMY(byId("lcStartDate").value,byId("lcEndDate").value);
+  var amount=Number(byId("lcAmount").value.replace(/,/g,""))||0;
+  var fee=Number(byId("lcFeePercent").value)||0;
+  byId("lcNoOfDays").value=days;
+  byId("lcFeeAmount").value=money(calcFeeAmount(amount,fee,days))
+}
+byId("approveLcChargesBtn").onclick=function(){
+  var r=selectedRecord();
+  if(!r){return}
+  byId("lcAmount").value=money(r.sblcAmount);
+  byId("lcStartDate").value="";
+  byId("lcEndDate").value="";
+  byId("lcFeePercent").value="";
+  byId("lcNoOfDays").value="0";
+  byId("lcFeeAmount").value="0.00";
+  byId("lcChargesModal").className="modal-bg open"
+};
+byId("lcStartDate").onchange=recalcLcCharges;
+byId("lcEndDate").onchange=recalcLcCharges;
+byId("lcFeePercent").onchange=recalcLcCharges;
+byId("lcStartDateNative").onchange=function(){
+  if(this.value){byId("lcStartDate").value=isoToDMY(this.value);recalcLcCharges()}
+};
+byId("lcEndDateNative").onchange=function(){
+  if(this.value){byId("lcEndDate").value=isoToDMY(this.value);recalcLcCharges()}
+};
+byId("lcChargesClose").onclick=function(){byId("lcChargesModal").className="modal-bg"};
+byId("lcChargesCancel").onclick=function(){byId("lcChargesModal").className="modal-bg"};
+byId("lcChargesOk").onclick=function(){
+  convertShorthandField(byId("lcFeePercent"));
+  byId("approveIssuanceFee").value=byId("lcFeePercent").value;
+  byId("lcChargesModal").className="modal-bg"
+};
+byId("approveIssuanceFee").onchange=function(){convertShorthandField(this)};
+function nextSblcTransactionNo(){
+  var maxNo=2802001246,i,n;
+  for(i=0;i<DATA.records.length;i++){
+    n=parseInt(DATA.records[i].sblcTransaction||"0",10);
+    if(n>maxNo){maxNo=n}
+  }
+  return String(maxNo+1)
+}
+byId("createSblcTxnBtn").onclick=function(){
+  var r=selectedRecord();
+  if(!r){return}
+  var facility=byId("approveFacility").value,issuingBank=byId("approveIssuingBank").value;
+  var fee=byId("approveIssuanceFee").value,lcNumber=byId("approveLcNumber").value;
+  if(!facility){toast("Please select a transaction for the facility.","warning");return}
+  if(!issuingBank){toast("Issuing Bank could not be determined. Select a transaction.","warning");return}
+  if(!fee){toast("Please enter the Issuance Fee.","warning");return}
+  if(!lcNumber){toast("Please enter the Unique LC Number.","warning");return}
+  var txnNo=nextSblcTransactionNo();
+  var bankParts=issuingBank.split(" ");
+  r.sblcTransaction=txnNo;
+  r.issuingBankCode=bankParts.shift();
+  r.issuingBankName=bankParts.join(" ");
+  r.issuanceFee=fee;
+  r.lcNumber=lcNumber;
+  r.sblcRequestStatusDesc="TSF Approval/SBLC Created";
+  byId("approveModal").className="modal-bg";
+  toast("SBLC transaction created successfully with number "+txnNo,"success");
+  setStatus("SBLC transaction "+txnNo+" created for request "+r.sblcRequestNumber);
+  state.selectedReq="";
+  disableActionButtons();
+  renderMainList()
+};
+byId("rejectBtn").onclick=function(){
+  var r=selectedRecord();
+  if(!r){return}
+  if(r.sblcRequestStatusDesc==="Reject By TSF"){toast("This SBLC request is already rejected.","warning");return}
+  if(r.sblcRequestStatusDesc==="TSF Approval/SBLC Created"){
+    toast("An approved SBLC request cannot be rejected.","warning");return
+  }
+  byId("confirmMessage").innerHTML='<div class="confirm-text">Are you sure you want to reject the SBLC request?</div>';
+  byId("confirmModal").className="modal-bg open"
+};
+byId("confirmClose").onclick=function(){byId("confirmModal").className="modal-bg"};
+byId("confirmNo").onclick=function(){byId("confirmModal").className="modal-bg"};
+byId("confirmYes").onclick=function(){
+  var r=selectedRecord();
+  byId("confirmModal").className="modal-bg";
+  if(!r){return}
+  r.sblcRequestStatusDesc="Reject By TSF";
+  toast("SBLC request "+r.sblcRequestNumber+" has been rejected successfully.","success");
+  setStatus("SBLC request "+r.sblcRequestNumber+" rejected");
+  state.selectedReq="";
+  disableActionButtons();
+  renderMainList()
+};
+function ensureDmsDocs(r){
+  if(!r.dmsDocs){r.dmsDocs={}}
+  return r.dmsDocs
+}
+function renderDmsRow(doc,saved){
+  var uploaded=!!(saved&&saved.uploaded);
+  var docDateVal=saved?(saved.docDate||""):"";
+  var pathVal=saved?(saved.fileName||""):"";
+  var codeVal=saved?(saved.dmsCode||""):"";
+  return '<tr data-doc="'+esc(doc.code)+'"><td>'+esc(doc.code)+'</td><td>'+esc(doc.desc)+'</td>'+
+    '<td class="editable"><div class="date-input-wrap" style="width:140px;max-width:140px">'+
+    '<input class="cell-input dms-date" type="text" placeholder="DD-MM-YYYY" value="'+esc(docDateVal)+'">'+
+    '<div class="calendar-btn-wrap"><button class="calendar-btn" type="button" tabindex="-1" aria-hidden="true">'+
+    '</button><input class="calendar-native dms-date-native" type="date" aria-label="Open calendar"></div></div></td>'+
+    '<td class="editable"><input class="cell-input dms-path" type="text" readonly style="cursor:pointer" '+
+    'placeholder="Click to select file" value="'+esc(pathVal)+'">'+
+    '<input class="dms-file-input" type="file" style="display:none"></td>'+
+    '<td><input class="cell-input dms-code" type="text" readonly value="'+esc(codeVal)+'"></td>'+
+    '<td class="icon-cell"><button class="btn btn-ghost small-btn dms-upload" type="button"'+
+    (uploaded?' disabled':'')+'>Upload</button></td>'+
+    '<td class="icon-cell"><button class="btn btn-ghost small-btn dms-download" type="button"'+
+    (uploaded?'':' disabled')+'>Download</button></td>'+
+    '<td class="icon-cell"><button class="btn btn-ghost small-btn dms-edit" type="button"'+
+    (uploaded?'':' disabled')+'>Edit</button></td></tr>'
+}
+byId("dmsBtn").onclick=function(){
+  var r=selectedRecord();
+  if(!r){return}
+  state.dmsReq=r.sblcRequestNumber;
+  var docs=ensureDmsDocs(r);
+  byId("dmsRequestNo").innerHTML=esc(r.sblcRequestNumber);
+  byId("dmsTransaction").innerHTML=esc(r.sblcTransaction||"-");
+  var cols=[{label:"Doc Type",width:80},{label:"Doc Type Desc",width:230},{label:"Doc Date",width:170},
+    {label:"File Path",width:230},{label:"DMS Code",width:130},{label:"Upload",width:90},
+    {label:"Download",width:90},{label:"Edit",width:80}];
+  byId("dmsHead").innerHTML=headerHtml(cols);
+  var html="",i;
+  for(i=0;i<DATA.dmsDocTypes.length;i++){html+=renderDmsRow(DATA.dmsDocTypes[i],docs[DATA.dmsDocTypes[i].code])}
+  byId("dmsBody").innerHTML=html;
+  var rows=byId("dmsBody").getElementsByTagName("tr"),j,row,docCode;
+  for(j=0;j<rows.length;j++){
+    row=rows[j];
+    docCode=row.getAttribute("data-doc");
+    (function(row,docCode){
+      var dateInput=row.getElementsByClassName("dms-date")[0];
+      var dateNative=row.getElementsByClassName("dms-date-native")[0];
+      var pathInput=row.getElementsByClassName("dms-path")[0];
+      var fileInput=row.getElementsByClassName("dms-file-input")[0];
+      var codeInput=row.getElementsByClassName("dms-code")[0];
+      var uploadBtn=row.getElementsByClassName("dms-upload")[0];
+      var downloadBtn=row.getElementsByClassName("dms-download")[0];
+      var editBtn=row.getElementsByClassName("dms-edit")[0];
+      function saveDoc(patch){
+        var saved=docs[docCode]||{};
+        var k;
+        for(k in patch){saved[k]=patch[k]}
+        docs[docCode]=saved;
+        return saved
+      }
+      dateInput.onchange=function(){saveDoc({docDate:dateInput.value})};
+      dateNative.onchange=function(){
+        if(this.value){dateInput.value=isoToDMY(this.value);saveDoc({docDate:dateInput.value})}
+      };
+      pathInput.onclick=function(){fileInput.click()};
+      fileInput.onchange=function(){
+        var file=fileInput.files&&fileInput.files[0];
+        if(!file){return}
+        var key=state.dmsReq+"_"+docCode;
+        state.dmsFileObjects[key]=file;
+        pathInput.value=file.name;
+        if(docs[docCode]&&docs[docCode].uploaded){
+          var todayVal=dateInput.value||formatDMY(new Date());
+          dateInput.value=todayVal;
+          saveDoc({fileName:file.name,docDate:todayVal});
+          toast("Document replaced for "+docCode+".","success")
+        }
+      };
+      uploadBtn.onclick=function(){
+        var key=state.dmsReq+"_"+docCode;
+        if(!state.dmsFileObjects[key]){
+          toast("Please select a file before uploading for "+docCode+".","warning");return
+        }
+        var docDateVal=dateInput.value||formatDMY(new Date());
+        dateInput.value=docDateVal;
+        var dmsCode="DMS"+docCode+state.dmsReq;
+        codeInput.value=dmsCode;
+        saveDoc({docDate:docDateVal,fileName:pathInput.value,dmsCode:dmsCode,uploaded:true});
+        uploadBtn.disabled=true;
+        downloadBtn.disabled=false;
+        editBtn.disabled=false;
+        toast("Document uploaded for "+docCode+".","success")
+      };
+      downloadBtn.onclick=function(){
+        var key=state.dmsReq+"_"+docCode,file=state.dmsFileObjects[key];
+        if(!file){toast("No document uploaded yet for "+docCode+".","warning");return}
+        var url=URL.createObjectURL(file),a=document.createElement("a");
+        a.href=url;a.download=file.name;document.body.appendChild(a);a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        toast("Downloading "+file.name,"")
+      };
+      editBtn.onclick=function(){fileInput.click()}
+    })(row,docCode)
+  }
+  byId("dmsModal").className="modal-bg open"
+};
+byId("dmsClose").onclick=function(){byId("dmsModal").className="modal-bg"};
+byId("dmsCancel").onclick=function(){byId("dmsModal").className="modal-bg"};
+document.onkeydown=function(e){
+  var x=e||window.event;
+  if(x.keyCode===27){
+    byId("approveModal").className="modal-bg";
+    byId("transactionModal").className="modal-bg";
+    byId("lcChargesModal").className="modal-bg";
+    byId("dmsModal").className="modal-bg";
+    byId("confirmModal").className="modal-bg"
+  }
+  return true
+};
+byId("refreshBtn").onclick=function(){location.reload()};
+initSelections();
+byId("statusText").innerHTML="Ready - "+VERSION;
+})();
+</script>
+</body>
+</html>

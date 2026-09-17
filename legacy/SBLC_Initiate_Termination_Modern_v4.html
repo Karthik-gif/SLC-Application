@@ -1,0 +1,3441 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SBLC: Initiate Termination</title>
+<style type="text/css">
+html,body{
+margin:0;width:100%;height:100%;background:#f5f7f9;color:#1d2d3e;
+font-family:"72","Segoe UI",Arial,sans-serif;font-size:13px
+}
+*{box-sizing:border-box}
+button,input,select,table,th,td,div,span,label{font-family:"72","Segoe UI",Arial,sans-serif}
+button{cursor:pointer}
+button:disabled{cursor:default;opacity:.45}
+.shell{height:100vh;display:flex;flex-direction:column;background:#f5f7f9}
+.topbar{height:48px;flex:0 0 48px;background:#fff;border-bottom:1px solid #d9d9d9;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.topbar-inner{height:48px;display:flex;align-items:center;padding:0 18px}
+.title{font-size:16px;font-weight:600;color:#1d2d3e}
+.content{flex:1 1 auto;min-height:0;padding:10px 14px 28px;overflow:hidden}
+.screen{max-width:1600px;height:100%;margin:0 auto;display:flex;flex-direction:column;min-height:0}
+.selection-panel{margin-bottom:8px;background:#fff;border:1px solid #e1e6ea;border-radius:8px;overflow:visible}
+.selection-row{display:flex;align-items:flex-end;min-height:62px;padding:9px 14px;white-space:nowrap;overflow:visible}
+.main-field-item{display:flex;align-items:flex-end;height:44px;flex:0 0 auto;margin-right:12px}
+.main-field-item label{height:30px;display:flex;align-items:center;margin-right:7px;color:#1d2d3e;font-size:12px}
+.field-shell{position:relative;display:flex;align-items:center;height:30px}
+.company-shell{width:150px}
+.date-shell{width:142px}
+.main-input{height:30px;padding:4px 32px 4px 8px;border:1px solid #b8b8b8;border-radius:4px;background:#fff;color:#1d2d3e}
+.company-shell .main-input{width:150px}
+.date-shell .main-input{width:142px}
+.main-input:focus,.filter-input:focus,.dms-date-input:focus{
+outline:0;border-color:#0a6ed1;box-shadow:0 0 0 1px #0a6ed1
+}
+.search-btn,.calendar-btn{position:absolute;right:1px;top:1px;width:29px;height:28px;padding:0;border:0;border-left:1px solid #e1e6ea;background:#fff}
+.search-btn:hover,.calendar-btn:hover{background:#f7f8f9}
+.search-btn:before{content:"";position:absolute;left:8px;top:6px;width:10px;height:10px;border:1px solid #0a6ed1;border-radius:50%}
+.search-btn:after{content:"";position:absolute;left:17px;top:16px;width:7px;height:1px;background:#0a6ed1;transform:rotate(45deg)}
+.calendar-btn:before{content:"";position:absolute;left:8px;top:6px;width:12px;height:13px;border:1px solid #0a6ed1;border-radius:2px}
+.calendar-btn:after{content:"";position:absolute;left:10px;top:11px;width:8px;height:1px;background:#0a6ed1;box-shadow:0 4px #0a6ed1}
+.filter-icon-btn{width:36px;height:30px;margin-right:10px;padding:0;border:1px solid #8ea2b5;border-radius:4px;background:#fff;position:relative}
+.filter-icon-btn:hover{background:#f7f8f9;border-color:#0a6ed1}
+.filter-icon-btn:before{content:"";position:absolute;left:10px;top:7px;border-left:7px solid transparent;border-right:7px solid transparent;border-top:9px solid #556b82}
+.filter-icon-btn:after{content:"";position:absolute;left:15px;top:15px;width:4px;height:7px;background:#556b82}
+.filter-body{display:none;height:44px;overflow:visible}
+.filter-body.open{display:block}
+.filter-grid{display:flex;align-items:flex-end;height:44px;overflow:visible}
+.filter-item{height:44px;display:flex;flex-direction:column;justify-content:flex-end;margin-right:10px}
+.filter-item label{height:12px;line-height:12px;margin-bottom:2px;color:#6a6d70;font-size:10px}
+.filter-input{height:30px;padding:4px 28px 4px 8px;border:1px solid #b8b8b8;border-radius:4px;background:#fff;color:#1d2d3e;font-size:12px}
+.filter-txn{width:132px}.filter-type{width:154px}.filter-state{width:148px}
+.combo-shell{position:relative;height:30px}
+.combo-shell .filter-input{width:100%}
+.combo-btn{position:absolute;right:1px;top:1px;width:26px;height:28px;padding:0;border:0;border-left:1px solid #e1e6ea;background:#fff}
+.combo-btn:after{content:"";position:absolute;left:9px;top:11px;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #556b82}
+.combo-btn:hover{background:#f7f8f9}
+.combo-list{display:none;position:absolute;left:0;top:31px;z-index:2850;width:100%;max-height:180px;overflow-y:auto;overflow-x:hidden}
+.combo-list{background:#fff;border:1px solid #9aa7b4;border-radius:4px;box-shadow:0 6px 16px rgba(29,45,62,.14)}
+.combo-list.open{display:block}
+.combo-option{display:block;width:100%;min-height:29px;padding:6px 8px;border:0;border-bottom:1px solid #eef1f3;background:#fff;text-align:left}
+.combo-option{color:#1d2d3e;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.combo-option:hover{background:#eaf3fc;color:#004b93}
+.combo-empty{padding:7px 8px;color:#6a6d70;font-size:11px}
+.btn{height:30px;margin-left:7px;padding:0 12px;border:1px solid #d1e8ff;border-radius:4px;background:#eaf3fc;color:#004b93;font-size:12px;font-weight:600}
+.btn:first-child{margin-left:0}
+.btn:hover{background:#d1e8ff;border-color:#0a6ed1;color:#0854a0}
+.btn-primary{background:#0a6ed1;border-color:#0a6ed1;color:#fff}
+.btn-primary:hover{background:#0854a0;border-color:#0854a0;color:#fff}
+.btn-ghost{background:#fff;border-color:#d9d9d9;color:#1d2d3e}
+.btn-ghost:hover{background:#f7f8f9;border-color:#b8b8b8;color:#1d2d3e}
+.toolbar{display:flex;align-items:center;justify-content:space-between;min-height:36px;margin-bottom:6px}
+.toolbar-left,.toolbar-right{display:flex;align-items:center}
+.record-count{color:#6a6d70;font-size:11px}
+.results{display:none;min-height:0;flex:1 1 auto;flex-direction:column}
+.results.open{display:flex}
+.card{background:#fff;border:1px solid #e1e6ea;border-radius:8px;box-shadow:0 1px 4px rgba(29,45,62,.04)}
+.table-card{min-height:0;flex:1 1 auto;display:flex;flex-direction:column;overflow:hidden}
+.card-head{min-height:34px;display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:#fafcfe;border-bottom:1px solid #e5e9ed}
+.card-title{font-size:12px;font-weight:600;color:#1d2d3e}
+.card-meta{font-size:11px;color:#6a6d70}
+.table-wrap{width:100%;min-height:0;flex:1 1 auto;overflow:auto;background:#fff}
+.data-table{width:auto;min-width:100%;border-collapse:separate;border-spacing:0;font-size:12px}
+.data-table th{position:sticky;top:0;z-index:2;height:34px;padding:6px 22px 6px 8px;background:#f5f8fa;color:#1d2d3e;border-right:1px solid #d9d9d9}
+.data-table th{border-bottom:1px solid #c7d4e0;text-align:left;font-weight:600;white-space:nowrap;cursor:pointer}
+.data-table td{height:34px;padding:4px 8px;background:#fff;border-right:1px solid #e7ebee;border-bottom:1px solid #e7ebee;white-space:nowrap;color:#1d2d3e}
+.data-table tbody tr:hover td{background:#f2f8fd}
+.data-table tbody tr.selected td{background:#eaf3fc}
+.data-table .number{text-align:right;font-variant-numeric:tabular-nums}
+.select-cell{text-align:center}
+.row-radio{width:14px;height:14px;margin:0;vertical-align:middle}
+.sort-arrows{position:absolute;right:8px;top:8px;width:8px;height:17px}
+.sort-up,.sort-down{position:absolute;left:0;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent}
+.sort-up{top:0;border-bottom:5px solid #9aa7b4}
+.sort-down{bottom:0;border-top:5px solid #9aa7b4}
+th.sort-asc .sort-up{border-bottom-color:#0a6ed1}
+th.sort-desc .sort-down{border-top-color:#0a6ed1}
+.termination-pending{display:inline-block;padding:4px 7px;border-radius:3px;background:#fff8e1;color:#b87500;font-weight:600}
+.termination-done{display:inline-block;padding:4px 7px;border-radius:3px;background:#e7f8ee;color:#107e3e;font-weight:600}
+.pagination{display:flex;align-items:center;justify-content:flex-end;min-height:42px;padding:7px 10px;background:#fff;border-top:1px solid #e5e9ed}
+.page-btn{min-width:30px;height:28px;margin-left:5px;padding:0 8px;border:1px solid #d9d9d9;border-radius:4px;background:#fff;color:#1d2d3e;font-size:11px}
+.page-btn:hover{background:#f7f8f9;border-color:#b8b8b8}
+.page-btn.active{background:#eaf3fc;border-color:#0a6ed1;color:#004b93;font-weight:600}
+.page-btn:disabled{background:#f7f8f9;color:#9aa7b4}
+.empty{padding:28px;text-align:center;color:#6a6d70}
+.modal-bg{display:none;position:fixed;top:0;right:0;bottom:0;left:0;z-index:2000;background:rgba(29,45,62,.30);padding:28px 18px;overflow:auto}
+.modal-bg.open{display:flex;align-items:center;justify-content:center}
+.modal{width:980px;max-width:calc(100% - 20px);background:#fff;border:1px solid #d9d9d9;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.18);overflow:visible}
+.modal.small{width:460px}
+.modal.confirm{width:500px}
+.modal.company{width:690px}
+.modal-head{height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:#eaf3fc;border-bottom:1px solid #d1e8ff;border-radius:8px 8px 0 0}
+.modal-title{font-size:13px;font-weight:600}
+.modal-close{width:28px;height:28px;border:1px solid #d9d9d9;border-radius:4px;background:#fff;color:#556b82}
+.modal-body{padding:14px}
+.modal-foot{display:flex;align-items:center;justify-content:flex-end;padding:10px 14px;background:#f7f8f9;border-top:1px solid #d9d9d9;border-radius:0 0 8px 8px}
+.company-table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px}
+.company-table th{height:32px;padding:6px 8px;background:#f5f8fa;border-right:1px solid #d9d9d9;border-bottom:1px solid #c7d4e0;text-align:left}
+.company-table td{height:31px;padding:5px 8px;border-right:1px solid #e7ebee;border-bottom:1px solid #e7ebee;white-space:nowrap}
+.company-table tr:hover td{background:#f2f8fd}
+.company-table tr.selected td{background:#eaf3fc}
+.company-scroll{max-height:420px;overflow:auto;border:1px solid #e1e6ea;border-radius:5px}
+.form-row{display:flex;align-items:center;min-height:42px}
+.form-label{width:150px;color:#556b82}
+.form-date-shell{position:relative;width:150px;height:30px}
+.form-date-input{width:150px;height:30px;padding:4px 32px 4px 8px;border:1px solid #b8b8b8;border-radius:4px;background:#fff;color:#1d2d3e}
+.confirm-message{display:flex;align-items:flex-start;padding:10px 2px;color:#1d2d3e;line-height:18px}
+.confirm-mark{width:24px;height:24px;flex:0 0 24px;margin-right:10px;border-radius:50%;background:#eaf3fc;color:#0a6ed1;font-weight:700;text-align:center;line-height:24px}
+.dms-detail{display:flex;align-items:center;margin-bottom:12px;padding:9px 10px;background:#fafcfe;border:1px solid #e1e6ea;border-radius:5px}
+.dms-detail-block{margin-right:26px}
+.dms-detail-label{display:block;color:#556b82;font-size:10px;margin-bottom:2px}
+.dms-detail-value{font-weight:600;color:#1d2d3e}
+.dms-modal{width:1180px}
+.dms-wrap{width:100%;overflow:visible}
+.dms-table{width:100%;min-width:0;table-layout:fixed;border-collapse:separate;border-spacing:0;font-size:12px}
+.dms-table th{height:34px;padding:6px 8px;background:#f5f8fa;border-right:1px solid #d9d9d9;border-bottom:1px solid #c7d4e0;text-align:left;white-space:nowrap}
+.dms-table td{height:42px;padding:5px 8px;background:#f7f8f9;border-right:1px solid #e7ebee;border-bottom:1px solid #e7ebee;white-space:nowrap;overflow:hidden}
+.dms-table td.editable{background:#fff}
+.dms-table th:nth-child(1){width:7%}.dms-table th:nth-child(2){width:23%}.dms-table th:nth-child(3){width:15%}
+.dms-table th:nth-child(4){width:23%}.dms-table th:nth-child(5){width:10%}.dms-table th:nth-child(6){width:7%}
+.dms-table th:nth-child(7){width:8%}.dms-table th:nth-child(8){width:7%}
+.dms-date-shell{position:relative;width:100%;height:30px}
+.dms-date-input{width:100%;height:30px;padding:4px 32px 4px 8px;border:1px solid #b8b8b8;border-radius:4px;background:#fff;color:#1d2d3e}
+.path-cell{width:100%;height:30px;display:flex;align-items:center;padding:4px 8px;border:1px solid #b8b8b8;border-radius:4px;background:#fff;cursor:pointer}
+.path-cell span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.path-cell.disabled{background:#f2f4f5;color:#6a6d70;cursor:default}
+.action-btn{width:100%;height:28px;min-width:0;padding:0 6px;border:1px solid #d1e8ff;border-radius:4px;background:#eaf3fc;color:#004b93;font-size:11px;font-weight:600}
+.action-btn:hover{background:#d1e8ff;border-color:#0a6ed1}
+.action-btn:disabled{background:#f2f4f5;border-color:#e1e6ea;color:#9aa7b4}
+.toast-region{position:fixed;right:22px;bottom:28px;z-index:4000;width:360px;max-width:calc(100% - 44px)}
+.toast{display:flex;margin-top:8px;padding:12px 14px;background:#f2f4f5;border:1px solid #d9d9d9;
+border-left:3px solid #a8b3bd;border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.toast.success{border-left-color:#107e3e}.toast.warning{border-left-color:#e9730c}
+.toast-icon{width:24px;height:24px;flex:0 0 24px;display:flex;align-items:center;justify-content:center;margin-right:10px;border-radius:50%;background:#e5e8eb}
+.toast.success .toast-icon{background:#ebf5eb;color:#107e3e}
+.toast-title{margin-bottom:2px;font-size:12px;font-weight:600}
+.toast-message{color:#556b82;font-size:12px;line-height:17px}
+.statusbar{position:fixed;left:0;right:0;bottom:0;height:20px;display:flex;align-items:center;padding:0 12px;
+background:#fff;border-top:1px solid #e1e6ea;color:#6a6d70;font-size:11px;z-index:900}
+.status-dot{width:7px;height:7px;margin-right:6px;border-radius:50%;background:#0a6ed1}
+.calendar-popup{display:none;position:absolute;z-index:3600;top:34px;left:0;width:294px;border:1px solid #9aa7b4;
+border-radius:5px;background:#fff;overflow:hidden;box-shadow:0 7px 18px rgba(29,45,62,.16)}
+.calendar-popup.open{display:block}
+.calendar-top{height:44px;display:flex;align-items:center;padding:0 12px;background:#fff}
+.calendar-title-btn{height:30px;padding:0 16px 0 0;border:0;background:#fff;color:#1d2d3e;font-size:12px;font-weight:600;position:relative}
+.calendar-title-btn:after{content:"";position:absolute;right:2px;top:13px;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #1d2d3e}
+.calendar-navs{margin-left:auto;display:flex}
+.calendar-nav{width:28px;height:28px;margin-left:2px;border:0;background:#fff;position:relative}
+.calendar-nav:hover{background:#f2f8fd}
+.calendar-nav.prev:before{content:"";position:absolute;left:9px;top:10px;border-right:7px solid #556b82;border-top:5px solid transparent;border-bottom:5px solid transparent}
+.calendar-nav.next:before{content:"";position:absolute;left:11px;top:10px;border-left:7px solid #556b82;border-top:5px solid transparent;border-bottom:5px solid transparent}
+.calendar-week{display:flex;padding:0 12px}
+.calendar-week span{width:14.285%;height:26px;display:flex;align-items:center;justify-content:center;color:#556b82;font-size:10px;font-weight:600}
+.calendar-days{display:flex;flex-wrap:wrap;padding:0 12px 8px}
+.calendar-cell{width:14.285%;height:32px;border:0;border-radius:3px;background:#fff;color:#1d2d3e;font-size:11px}
+.calendar-cell:hover{background:#eaf3fc;color:#004b93}
+.calendar-cell.other{color:#8a9bad}
+.calendar-cell.selected{background:#eaf3fc;box-shadow:inset 0 0 0 2px #0a6ed1}
+.calendar-foot{height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-top:1px solid #e1e6ea}
+.calendar-foot-btn{border:0;background:#fff;color:#0a6ed1;font-size:11px;font-weight:600;padding:5px 0}
+.calendar-picker{padding:8px 10px 10px}
+.month-grid{display:flex;flex-wrap:wrap;padding-bottom:8px;border-bottom:1px solid #e1e6ea}
+.month-btn{width:24%;height:34px;margin:.5%;border:0;border-radius:3px;background:#f2f4f5;color:#1d2d3e;font-size:11px;font-weight:600}
+.month-btn:hover{background:#eaf3fc}.month-btn.selected{background:#0a6ed1;color:#fff}
+.year-list{display:block;width:100%;height:128px;margin-top:7px;overflow-y:auto;overflow-x:hidden}
+.year-btn{display:block;width:100%;height:31px;margin-bottom:2px;border:0;background:#f2f4f5;color:#1d2d3e;text-align:left;padding:0 8px;font-size:11px}
+.year-btn:hover{background:#eaf3fc}.year-btn.selected{background:#eaf3fc;color:#004b93;font-weight:600}
+@media screen and (max-width:1180px){.selection-row{overflow-x:auto}.content{padding-left:8px;padding-right:8px}}
+@media screen and (max-width:720px){.toolbar{align-items:flex-start}.toolbar-right{margin-left:10px}.modal{width:100%}.modal-body{overflow:auto}}
+.title-wrap{display:flex;align-items:center;gap:10px}
+img.mark{width:28px;height:28px;flex:none;object-fit:contain}
+</style>
+</head>
+<body>
+<div class="shell">
+<div class="topbar"><div class="topbar-inner"><div class="title-wrap"><img class="mark" alt="Fourth Signal" src="https://raw.githubusercontent.com/ryannayak/fs-assets/e82f35a83e28689167b22b4300d4994a249acee0/fs-short-logo.png"/><div class="title">SBLC: Initiate Termination</div></div></div></div>
+<div class="content">
+<div class="screen">
+<div class="selection-panel">
+<div class="selection-row">
+<div class="main-field-item">
+<label for="companyCode">Company Code *</label>
+<div class="field-shell company-shell">
+<input id="companyCode" class="main-input" type="text" maxlength="4" autocomplete="off" placeholder="Select company">
+<button id="companyHelpBtn" class="search-btn" type="button" aria-label="Company code search help"></button>
+</div>
+</div>
+<div class="main-field-item">
+<label for="keyDate">Key Date *</label>
+<div class="field-shell date-shell">
+<input id="keyDate" class="main-input" type="text" placeholder="DD-MM-YYYY" autocomplete="off">
+<button id="keyDateCalendarBtn" class="calendar-btn" type="button" aria-label="Open key date calendar"></button>
+<div id="keyDateCalendar" class="calendar-popup"></div>
+</div>
+</div>
+<button id="filterToggle" class="filter-icon-btn" type="button" title="Optional filters" aria-label="Optional filters"></button>
+<div id="filterBody" class="filter-body">
+<div class="filter-grid">
+<div class="filter-item">
+<label for="transactionFilter">Transaction No</label>
+<div class="combo-shell filter-txn">
+<input id="transactionFilter" class="filter-input combo-input" type="text" autocomplete="off">
+<button class="combo-btn" data-combo="transactionFilter" type="button" aria-label="Show transaction values"></button>
+<div id="transactionFilterList" class="combo-list"></div>
+</div>
+</div>
+<div class="filter-item">
+<label for="requestTypeFilter">SBLC Request Type</label>
+<div class="combo-shell filter-type">
+<input id="requestTypeFilter" class="filter-input combo-input" type="text" autocomplete="off">
+<button class="combo-btn" data-combo="requestTypeFilter" type="button" aria-label="Show SBLC request types"></button>
+<div id="requestTypeFilterList" class="combo-list"></div>
+</div>
+</div>
+<div class="filter-item">
+<label for="terminationFilter">Additional Selection</label>
+<div class="combo-shell filter-state">
+<input id="terminationFilter" class="filter-input combo-input" type="text" autocomplete="off" readonly="readonly">
+<button class="combo-btn" data-combo="terminationFilter" type="button" aria-label="Show additional selection values"></button>
+<div id="terminationFilterList" class="combo-list"></div>
+</div>
+</div>
+<div class="filter-item"><label>&nbsp;</label><button id="clearFilters" class="btn btn-ghost" type="button">Clear filters</button></div>
+</div>
+</div>
+</div>
+</div>
+<div id="resultsArea" class="results">
+<div class="toolbar">
+<div class="toolbar-left"><span id="recordCount" class="record-count"></span></div>
+<div class="toolbar-right">
+<button id="terminateBtn" class="btn btn-primary" type="button" disabled="disabled">SBLC Initiate Termination</button>
+<button id="dmsBtn" class="btn" type="button" disabled="disabled">DMS</button>
+</div>
+</div>
+<div class="card table-card">
+<div class="card-head">
+<div class="card-title">SBLC Records</div>
+<div id="tableMeta" class="card-meta"></div>
+</div>
+<div class="table-wrap">
+<table id="requestTable" class="data-table">
+<thead id="requestHead"></thead>
+<tbody id="requestBody"></tbody>
+</table>
+</div>
+<div id="paginationBar" class="pagination"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="companyModal" class="modal-bg">
+<div class="modal company">
+<div class="modal-head">
+<div id="companyModalTitle" class="modal-title">Company Code</div>
+<button id="companyClose" class="modal-close" type="button">X</button>
+</div>
+<div class="modal-body">
+<div class="company-scroll">
+<table class="company-table">
+<thead><tr><th>Comp. Code</th><th>Company Name</th><th>City</th><th>Currency</th></tr></thead>
+<tbody id="companyBody"></tbody>
+</table>
+</div>
+</div>
+<div class="modal-foot">
+<button id="companyCancel" class="btn btn-ghost" type="button">Cancel</button>
+<button id="companySelect" class="btn btn-primary" type="button" disabled="disabled">Select</button>
+</div>
+</div>
+</div>
+<div id="dmsModal" class="modal-bg">
+<div class="modal dms-modal">
+<div class="modal-head">
+<div class="modal-title">DMS</div>
+<button id="dmsClose" class="modal-close" type="button">X</button>
+</div>
+<div class="modal-body">
+<div class="dms-detail">
+<div class="dms-detail-block">
+<span class="dms-detail-label">SBLC Request No</span>
+<span id="dmsRequestNo" class="dms-detail-value"></span>
+</div>
+<div class="dms-detail-block">
+<span class="dms-detail-label">SBLC Transaction</span>
+<span id="dmsTransaction" class="dms-detail-value"></span>
+</div>
+</div>
+<div class="dms-wrap">
+<table class="dms-table">
+<thead>
+<tr>
+<th>Doc Type</th><th>Doc Type Desc</th><th>Doc Date</th><th>File Path</th>
+<th>DMS Code</th><th>Upload</th><th>Download</th><th>Edit</th>
+</tr>
+</thead>
+<tbody id="dmsBody"></tbody>
+</table>
+</div>
+<input id="dmsFileInput" type="file" style="display:none">
+</div>
+<div class="modal-foot"><button id="dmsDone" class="btn btn-primary" type="button">Close</button></div>
+</div>
+</div>
+<div id="terminationModal" class="modal-bg">
+<div class="modal small">
+<div class="modal-head">
+<div class="modal-title">SBLC: Initiate Termination</div>
+<button id="terminationClose" class="modal-close" type="button">X</button>
+</div>
+<div class="modal-body">
+<div class="form-row">
+<div class="form-label">Enter Date</div>
+<div class="form-date-shell">
+<input id="terminationDate" class="form-date-input" type="text" placeholder="DD-MM-YYYY" autocomplete="off">
+<button id="terminationCalendarBtn" class="calendar-btn" type="button" aria-label="Open termination date calendar"></button>
+<div id="terminationCalendar" class="calendar-popup"></div>
+</div>
+</div>
+</div>
+<div class="modal-foot">
+<button id="terminationCancel" class="btn btn-ghost" type="button">Cancel</button>
+<button id="terminationUpdate" class="btn btn-primary" type="button">Update</button>
+</div>
+</div>
+</div>
+<div id="chargesModal" class="modal-bg">
+<div class="modal confirm">
+<div class="modal-head">
+<div class="modal-title">SBLC: Initiate Termination</div>
+<button id="chargesClose" class="modal-close" type="button">X</button>
+</div>
+<div class="modal-body">
+<div class="confirm-message">
+<div class="confirm-mark">?</div>
+<div>Charges not updated. Do you want to continue?</div>
+</div>
+</div>
+<div class="modal-foot">
+<button id="chargesCancel" class="btn btn-ghost" type="button">Cancel</button>
+<button id="chargesNo" class="btn btn-ghost" type="button">No</button>
+<button id="chargesYes" class="btn btn-primary" type="button">Yes</button>
+</div>
+</div>
+</div>
+<div id="toastRegion" class="toast-region" aria-live="polite"></div>
+<div class="statusbar">
+<span class="status-dot"></span>
+<span id="statusText">Select Company Code and Key Date to load SBLC records</span>
+</div>
+<script type="text/javascript">
+(function(){
+var HAS_EXTERNAL_PAYLOAD=typeof SBLC_TERMINATION_PAYLOAD!=="undefined";
+var DEFAULT_PAYLOAD=
+{
+  "settings": {
+    "pageSize": 12,
+    "nextDmsCode": 6100001001,
+    "dateFormat": "DD-MM-YYYY",
+    "defaultAdditionalSelection": "Pending Termination"
+  },
+  "companies": [
+    {
+      "code": "0001",
+      "name": "SAP SE",
+      "city": "Walldorf",
+      "currency": "EUR"
+    },
+    {
+      "code": "1000",
+      "name": "Template",
+      "city": "Mumbai",
+      "currency": "INR"
+    },
+    {
+      "code": "9510",
+      "name": "Config Automation",
+      "city": "Mumbai",
+      "currency": "INR"
+    },
+    {
+      "code": "9511",
+      "name": "Config Automation",
+      "city": "Mumbai",
+      "currency": "INR"
+    },
+    {
+      "code": "9512",
+      "name": "Config Automation",
+      "city": "Mumbai",
+      "currency": "INR"
+    },
+    {
+      "code": "9800",
+      "name": "Orica Finance Ltd",
+      "city": "Australia",
+      "currency": "AUD"
+    },
+    {
+      "code": "9801",
+      "name": "Motherson Global Inv BV",
+      "city": "Australia",
+      "currency": "AUD"
+    },
+    {
+      "code": "9802",
+      "name": "SMR Automotive Systems IN",
+      "city": "Singapore",
+      "currency": "SGD"
+    },
+    {
+      "code": "9803",
+      "name": "CIM Tools Pvt Ltd",
+      "city": "Colorado",
+      "currency": "USD"
+    },
+    {
+      "code": "9807",
+      "name": "Orica Australia Pty Ltd",
+      "city": "Australia",
+      "currency": "AUD"
+    },
+    {
+      "code": "9808",
+      "name": "Orica Singapore Pte Ltd",
+      "city": "Singapore",
+      "currency": "SGD"
+    },
+    {
+      "code": "9809",
+      "name": "Orica USA Inc",
+      "city": "New York",
+      "currency": "USD"
+    },
+    {
+      "code": "9990",
+      "name": "XYZ Ltd",
+      "city": "Mumbai",
+      "currency": "INR"
+    },
+    {
+      "code": "9999",
+      "name": "Template",
+      "city": "Mumbai",
+      "currency": "INR"
+    },
+    {
+      "code": "AE11",
+      "name": "OLAM GlobalAgri Pte. Ltd",
+      "city": "Singapore",
+      "currency": "AED"
+    },
+    {
+      "code": "AE13",
+      "name": "Olam International DMCC",
+      "city": "Dubai",
+      "currency": "AED"
+    },
+    {
+      "code": "SG03",
+      "name": "OLAM GlobalAgri Pte. Ltd",
+      "city": "Singapore",
+      "currency": "USD"
+    }
+  ],
+  "requestTypes": [
+    "01 - SBLC",
+    "02 - SBLC TSF"
+  ],
+  "additionalSelections": [
+    "Pending Termination",
+    "Terminated"
+  ],
+  "columns": [
+    {
+      "key": "dealId",
+      "label": "Deal ID",
+      "width": 86
+    },
+    {
+      "key": "sblcStatus",
+      "label": "SBLC Status",
+      "width": 82
+    },
+    {
+      "key": "sblcRequestStatusDescription",
+      "label": "SBLC Request Status Description",
+      "width": 196
+    },
+    {
+      "key": "companyName",
+      "label": "Company Name",
+      "width": 190
+    },
+    {
+      "key": "sblcTransaction",
+      "label": "SBLC Transaction",
+      "width": 122
+    },
+    {
+      "key": "productTypeDescription",
+      "label": "Product Type Description",
+      "width": 154
+    },
+    {
+      "key": "sblcBeneficiary",
+      "label": "SBLC Beneficiary",
+      "width": 120
+    },
+    {
+      "key": "sblcRequestNumber",
+      "label": "SBLC Request Number",
+      "width": 132
+    },
+    {
+      "key": "startDate",
+      "label": "Start Date",
+      "width": 92,
+      "type": "date"
+    },
+    {
+      "key": "endDate",
+      "label": "End Date",
+      "width": 92,
+      "type": "date"
+    },
+    {
+      "key": "sblcAmount",
+      "label": "SBLC Amount",
+      "width": 112,
+      "type": "amount"
+    },
+    {
+      "key": "ottkNo",
+      "label": "OTTK No",
+      "width": 84
+    },
+    {
+      "key": "sblcRequestTypeDescription",
+      "label": "SBLC Request Type Description",
+      "width": 184
+    },
+    {
+      "key": "lcAmountValue",
+      "label": "LC Amount Value",
+      "width": 112,
+      "type": "amount"
+    },
+    {
+      "key": "entityString",
+      "label": "Entity String",
+      "width": 174
+    },
+    {
+      "key": "requestDate",
+      "label": "Request Date",
+      "width": 96,
+      "type": "date"
+    },
+    {
+      "key": "expectedEndDate",
+      "label": "Expected End Date",
+      "width": 116,
+      "type": "date"
+    },
+    {
+      "key": "currency",
+      "label": "Currency",
+      "width": 76
+    },
+    {
+      "key": "issuingBank",
+      "label": "Issuing Bank",
+      "width": 118
+    },
+    {
+      "key": "requestorCoName",
+      "label": "Requestor Co Name",
+      "width": 178
+    },
+    {
+      "key": "requestorBankName",
+      "label": "Requestor Bank Name",
+      "width": 176
+    },
+    {
+      "key": "expectedDate",
+      "label": "Expected Date",
+      "width": 98,
+      "type": "date"
+    },
+    {
+      "key": "requestedBy",
+      "label": "Requested By",
+      "width": 112
+    },
+    {
+      "key": "sblcInitiateTermination",
+      "label": "SBLC Initiate Termination",
+      "width": 154
+    },
+    {
+      "key": "sblcTerminationDate",
+      "label": "SBLC Termination Date",
+      "width": 142,
+      "type": "date"
+    },
+    {
+      "key": "terminationCurrency",
+      "label": "Currency",
+      "width": 76
+    }
+  ],
+  "rows": [
+    {
+      "companyCode": "AE13",
+      "dealId": "12000880",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000846",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660013541",
+      "sblcRequestNumber": "26000800",
+      "startDate": "08-09-2025",
+      "endDate": "28-01-2028",
+      "sblcAmount": 190.0,
+      "ottkNo": "100676",
+      "sblcRequestTypeDescription": "01 - SBLC",
+      "lcAmountValue": 190.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "08-09-2025",
+      "expectedEndDate": "28-01-2028",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "28-01-2028",
+      "requestedBy": "ALOR",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "13000312",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000789",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660012897",
+      "sblcRequestNumber": "26000739",
+      "startDate": "03-09-2025",
+      "endDate": "05-03-2027",
+      "sblcAmount": 28331.0,
+      "ottkNo": "300312",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 28331.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "03-09-2025",
+      "expectedEndDate": "05-03-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "05-03-2027",
+      "requestedBy": "Treasury User",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "13000314",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000790",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660012897",
+      "sblcRequestNumber": "26000741",
+      "startDate": "03-09-2025",
+      "endDate": "17-02-2027",
+      "sblcAmount": 83677.0,
+      "ottkNo": "300314",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 83677.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "03-09-2025",
+      "expectedEndDate": "17-02-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "17-02-2027",
+      "requestedBy": "ALOR",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "13000316",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000791",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660012903",
+      "sblcRequestNumber": "26000742",
+      "startDate": "03-09-2025",
+      "endDate": "18-01-2027",
+      "sblcAmount": 60398.0,
+      "ottkNo": "300316",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 60398.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "03-09-2025",
+      "expectedEndDate": "18-01-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "18-01-2027",
+      "requestedBy": "Treasury User",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "13000317",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000792",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660012903",
+      "sblcRequestNumber": "26000743",
+      "startDate": "03-09-2025",
+      "endDate": "04-02-2027",
+      "sblcAmount": 45107.0,
+      "ottkNo": "300317",
+      "sblcRequestTypeDescription": "01 - SBLC",
+      "lcAmountValue": 45107.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "03-09-2025",
+      "expectedEndDate": "04-02-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "04-02-2027",
+      "requestedBy": "ALOR",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "13000318",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000813",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660012897",
+      "sblcRequestNumber": "26000776",
+      "startDate": "03-09-2025",
+      "endDate": "05-01-2027",
+      "sblcAmount": 31219.0,
+      "ottkNo": "300319",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 31219.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "03-09-2025",
+      "expectedEndDate": "05-01-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "05-01-2027",
+      "requestedBy": "Treasury User",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "13000319",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000794",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660012906",
+      "sblcRequestNumber": "26000745",
+      "startDate": "03-09-2025",
+      "endDate": "25-11-2026",
+      "sblcAmount": 48559.0,
+      "ottkNo": "300319",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 48559.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "03-09-2025",
+      "expectedEndDate": "25-11-2026",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "25-11-2026",
+      "requestedBy": "ALOR",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "13000322",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000795",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660012906",
+      "sblcRequestNumber": "26000746",
+      "startDate": "03-09-2025",
+      "endDate": "18-12-2026",
+      "sblcAmount": 21833.0,
+      "ottkNo": "300322",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 21833.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "03-09-2025",
+      "expectedEndDate": "18-12-2026",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "18-12-2026",
+      "requestedBy": "Treasury User",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "13000323",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000799",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660012906",
+      "sblcRequestNumber": "26000751",
+      "startDate": "03-09-2025",
+      "endDate": "08-10-2026",
+      "sblcAmount": 77603.0,
+      "ottkNo": "300323",
+      "sblcRequestTypeDescription": "01 - SBLC",
+      "lcAmountValue": 77603.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "03-09-2025",
+      "expectedEndDate": "08-10-2026",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "08-10-2026",
+      "requestedBy": "ALOR",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "13000326",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000801",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660012897",
+      "sblcRequestNumber": "26000752",
+      "startDate": "03-09-2025",
+      "endDate": "22-09-2026",
+      "sblcAmount": 95396.0,
+      "ottkNo": "300325",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 95396.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "03-09-2025",
+      "expectedEndDate": "22-09-2026",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "22-09-2026",
+      "requestedBy": "Treasury User",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "13000329",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000804",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660012906",
+      "sblcRequestNumber": "26000755",
+      "startDate": "03-09-2025",
+      "endDate": "07-01-2027",
+      "sblcAmount": 74516.0,
+      "ottkNo": "300328",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 74516.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "03-09-2025",
+      "expectedEndDate": "07-01-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "07-01-2027",
+      "requestedBy": "ALOR",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "13000333",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000808",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660012897",
+      "sblcRequestNumber": "26000758",
+      "startDate": "03-09-2025",
+      "endDate": "21-09-2026",
+      "sblcAmount": 82459.0,
+      "ottkNo": "300331",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 82459.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "03-09-2025",
+      "expectedEndDate": "21-09-2026",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "21-09-2026",
+      "requestedBy": "Treasury User",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "13000773",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000809",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660013365",
+      "sblcRequestNumber": "26000763",
+      "startDate": "03-09-2025",
+      "endDate": "11-02-2027",
+      "sblcAmount": 12977.0,
+      "ottkNo": "300336",
+      "sblcRequestTypeDescription": "01 - SBLC",
+      "lcAmountValue": 12977.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "03-09-2025",
+      "expectedEndDate": "11-02-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "11-02-2027",
+      "requestedBy": "ALOR",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "13000334",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000810",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660012897",
+      "sblcRequestNumber": "26000764",
+      "startDate": "03-09-2025",
+      "endDate": "14-12-2027",
+      "sblcAmount": 148.0,
+      "ottkNo": "100567",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 148.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "03-09-2025",
+      "expectedEndDate": "14-12-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "14-12-2027",
+      "requestedBy": "Treasury User",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "12000774",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000811",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660013411",
+      "sblcRequestNumber": "26000765",
+      "startDate": "03-09-2025",
+      "endDate": "29-04-2028",
+      "sblcAmount": 98951.0,
+      "ottkNo": "100568",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 98951.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "03-09-2025",
+      "expectedEndDate": "29-04-2028",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "29-04-2028",
+      "requestedBy": "ALOR",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "13000335",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000812",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660012897",
+      "sblcRequestNumber": "26000766",
+      "startDate": "03-09-2025",
+      "endDate": "10-01-2027",
+      "sblcAmount": 19562.0,
+      "ottkNo": "100568",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 19562.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "03-09-2025",
+      "expectedEndDate": "10-01-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "10-01-2027",
+      "requestedBy": "Treasury User",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "13000337",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000814",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660013411",
+      "sblcRequestNumber": "26000768",
+      "startDate": "04-09-2025",
+      "endDate": "04-08-2027",
+      "sblcAmount": 21089.0,
+      "ottkNo": "100569",
+      "sblcRequestTypeDescription": "01 - SBLC",
+      "lcAmountValue": 21089.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "04-09-2025",
+      "expectedEndDate": "04-08-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "04-08-2027",
+      "requestedBy": "ALOR",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "12000775",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000815",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660013411",
+      "sblcRequestNumber": "26000769",
+      "startDate": "04-09-2025",
+      "endDate": "19-01-2027",
+      "sblcAmount": 186.0,
+      "ottkNo": "100569",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 186.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "04-09-2025",
+      "expectedEndDate": "19-01-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "19-01-2027",
+      "requestedBy": "Treasury User",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "12000771",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000820",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660013541",
+      "sblcRequestNumber": "26000774",
+      "startDate": "04-09-2025",
+      "endDate": "28-10-2027",
+      "sblcAmount": 269.0,
+      "ottkNo": "100659",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 269.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "04-09-2025",
+      "expectedEndDate": "28-10-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "28-10-2027",
+      "requestedBy": "ALOR",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "12000811",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000824",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660013358",
+      "sblcRequestNumber": "26000778",
+      "startDate": "05-09-2025",
+      "endDate": "17-09-2027",
+      "sblcAmount": 151.0,
+      "ottkNo": "100609",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 151.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "05-09-2025",
+      "expectedEndDate": "17-09-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "17-09-2027",
+      "requestedBy": "Treasury User",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "12000815",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000825",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660013541",
+      "sblcRequestNumber": "26000779",
+      "startDate": "05-09-2025",
+      "endDate": "27-07-2027",
+      "sblcAmount": 115.0,
+      "ottkNo": "100611",
+      "sblcRequestTypeDescription": "01 - SBLC",
+      "lcAmountValue": 115.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "05-09-2025",
+      "expectedEndDate": "27-07-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "27-07-2027",
+      "requestedBy": "ALOR",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "12000817",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000828",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660013365",
+      "sblcRequestNumber": "26000781",
+      "startDate": "05-09-2025",
+      "endDate": "25-12-2027",
+      "sblcAmount": 265.0,
+      "ottkNo": "100621",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 265.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "05-09-2025",
+      "expectedEndDate": "25-12-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "25-12-2027",
+      "requestedBy": "Treasury User",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "12000827",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000832",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660013365",
+      "sblcRequestNumber": "26000785",
+      "startDate": "05-09-2025",
+      "endDate": "23-12-2027",
+      "sblcAmount": 179.0,
+      "ottkNo": "100622",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 179.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "05-09-2025",
+      "expectedEndDate": "23-12-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "23-12-2027",
+      "requestedBy": "ALOR",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "12000828",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000830",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660013365",
+      "sblcRequestNumber": "26000784",
+      "startDate": "05-09-2025",
+      "endDate": "14-03-2028",
+      "sblcAmount": 134.0,
+      "ottkNo": "100624",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 134.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "05-09-2025",
+      "expectedEndDate": "14-03-2028",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "14-03-2028",
+      "requestedBy": "Treasury User",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "12000830",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000833",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660013411",
+      "sblcRequestNumber": "26000787",
+      "startDate": "05-09-2025",
+      "endDate": "25-05-2027",
+      "sblcAmount": 268.0,
+      "ottkNo": "100626",
+      "sblcRequestTypeDescription": "01 - SBLC",
+      "lcAmountValue": 268.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "05-09-2025",
+      "expectedEndDate": "25-05-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "25-05-2027",
+      "requestedBy": "ALOR",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "12000832",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000834",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660013411",
+      "sblcRequestNumber": "26000788",
+      "startDate": "05-09-2025",
+      "endDate": "13-06-2027",
+      "sblcAmount": 152.0,
+      "ottkNo": "100647",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 152.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "05-09-2025",
+      "expectedEndDate": "13-06-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "13-06-2027",
+      "requestedBy": "Treasury User",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "12000833",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000835",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660013411",
+      "sblcRequestNumber": "26000789",
+      "startDate": "05-09-2025",
+      "endDate": "29-06-2027",
+      "sblcAmount": 297.0,
+      "ottkNo": "100628",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 297.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "05-09-2025",
+      "expectedEndDate": "29-06-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "29-06-2027",
+      "requestedBy": "ALOR",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "AE13",
+      "dealId": "12000834",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "AE13 - Olam International DMCC",
+      "sblcTransaction": "2803000834",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660013411",
+      "sblcRequestNumber": "26000790",
+      "startDate": "05-09-2025",
+      "endDate": "30-05-2027",
+      "sblcAmount": 117.0,
+      "ottkNo": "100646",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 117.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "05-09-2025",
+      "expectedEndDate": "30-05-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "Olam International DMCC",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "30-05-2027",
+      "requestedBy": "Treasury User",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "SG03",
+      "dealId": "14000001",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "SG03 - OLAM GlobalAgri Pte. Ltd",
+      "sblcTransaction": "2804000900",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660013541",
+      "sblcRequestNumber": "26000900",
+      "startDate": "08-09-2025",
+      "endDate": "28-01-2028",
+      "sblcAmount": 190.0,
+      "ottkNo": "400700",
+      "sblcRequestTypeDescription": "01 - SBLC",
+      "lcAmountValue": 190.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "08-09-2025",
+      "expectedEndDate": "28-01-2028",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "OLAM GlobalAgri Pte. Ltd",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "28-01-2028",
+      "requestedBy": "ALOR",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "SG03",
+      "dealId": "14000002",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "SG03 - OLAM GlobalAgri Pte. Ltd",
+      "sblcTransaction": "2804000901",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660012897",
+      "sblcRequestNumber": "26000901",
+      "startDate": "03-09-2025",
+      "endDate": "05-03-2027",
+      "sblcAmount": 28331.0,
+      "ottkNo": "400701",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 28331.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "03-09-2025",
+      "expectedEndDate": "05-03-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "OLAM GlobalAgri Pte. Ltd",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "05-03-2027",
+      "requestedBy": "Treasury User",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "SG03",
+      "dealId": "14000003",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "SG03 - OLAM GlobalAgri Pte. Ltd",
+      "sblcTransaction": "2804000902",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660012897",
+      "sblcRequestNumber": "26000902",
+      "startDate": "03-09-2025",
+      "endDate": "17-02-2027",
+      "sblcAmount": 83677.0,
+      "ottkNo": "400702",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 83677.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "03-09-2025",
+      "expectedEndDate": "17-02-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "OLAM GlobalAgri Pte. Ltd",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "17-02-2027",
+      "requestedBy": "ALOR",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "SG03",
+      "dealId": "14000004",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "SG03 - OLAM GlobalAgri Pte. Ltd",
+      "sblcTransaction": "2804000903",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660012903",
+      "sblcRequestNumber": "26000903",
+      "startDate": "03-09-2025",
+      "endDate": "18-01-2027",
+      "sblcAmount": 60398.0,
+      "ottkNo": "400703",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 60398.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "03-09-2025",
+      "expectedEndDate": "18-01-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "OLAM GlobalAgri Pte. Ltd",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "18-01-2027",
+      "requestedBy": "Treasury User",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "SG03",
+      "dealId": "14000005",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "SG03 - OLAM GlobalAgri Pte. Ltd",
+      "sblcTransaction": "2804000904",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660012903",
+      "sblcRequestNumber": "26000904",
+      "startDate": "03-09-2025",
+      "endDate": "04-02-2027",
+      "sblcAmount": 45107.0,
+      "ottkNo": "400704",
+      "sblcRequestTypeDescription": "01 - SBLC",
+      "lcAmountValue": 45107.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "03-09-2025",
+      "expectedEndDate": "04-02-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "OLAM GlobalAgri Pte. Ltd",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "04-02-2027",
+      "requestedBy": "ALOR",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    },
+    {
+      "companyCode": "SG03",
+      "dealId": "14000006",
+      "sblcStatus": "04",
+      "sblcRequestStatusDescription": "TSF Approval / SBLC Created",
+      "companyName": "SG03 - OLAM GlobalAgri Pte. Ltd",
+      "sblcTransaction": "2804000905",
+      "productTypeDescription": "22B - SBLC",
+      "sblcBeneficiary": "660012897",
+      "sblcRequestNumber": "26000905",
+      "startDate": "03-09-2025",
+      "endDate": "05-01-2027",
+      "sblcAmount": 31219.0,
+      "ottkNo": "400705",
+      "sblcRequestTypeDescription": "02 - SBLC TSF",
+      "lcAmountValue": 31219.0,
+      "entityString": "E021 - OGA-DMCC-PAN",
+      "requestDate": "03-09-2025",
+      "expectedEndDate": "05-01-2027",
+      "currency": "USD",
+      "issuingBank": "SCB UAE",
+      "requestorCoName": "OLAM GlobalAgri Pte. Ltd",
+      "requestorBankName": "Standard Chartered Bank UAE",
+      "expectedDate": "05-01-2027",
+      "requestedBy": "Treasury User",
+      "sblcInitiateTermination": "Pending",
+      "sblcTerminationDate": "",
+      "terminationCurrency": "USD",
+      "terminationState": "PENDING",
+      "dms": [
+        {
+          "docType": "D01",
+          "docTypeDesc": "SBLC Bank",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D02",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Issuance",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        },
+        {
+          "docType": "D03",
+          "docTypeDesc": "SBLC - SWIFT Confirmation Termination",
+          "docDate": "",
+          "fileName": "",
+          "dmsCode": "",
+          "uploaded": false
+        }
+      ]
+    }
+  ]
+};
+var DATA=HAS_EXTERNAL_PAYLOAD?SBLC_TERMINATION_PAYLOAD:DEFAULT_PAYLOAD;
+var VISIBLE_COMPANIES=[];
+var vc;
+for(vc=0;vc<DATA.companies.length;vc++){
+if(String(DATA.companies[vc].code||"").charAt(0)!=="9"){VISIBLE_COMPANIES.push(DATA.companies[vc])}
+}
+DATA.companies=VISIBLE_COMPANIES;
+var state={
+page:1,
+pageSize:Number(DATA.settings.pageSize)||12,
+selectedIndex:-1,
+activeRows:[],
+calendar:null,
+sort:{index:-1,direction:""},
+companySelection:-1,
+activeCombo:"",
+activeDmsIndex:-1,
+activeDmsDocIndex:-1,
+pendingFile:null,
+editDmsDocIndex:-1,
+pendingTerminationDate:""
+};
+function byId(id){return document.getElementById(id)}
+function esc(value){
+var text=String(value==null?"":value);
+text=text.replace(/&/g,"&amp;");
+text=text.replace(/</g,"&lt;");
+text=text.replace(/>/g,"&gt;");
+return text.replace(/"/g,"&quot;")
+}
+function pad2(value){return ("0"+value).slice(-2)}
+function parseDate(text){
+var match=String(text||"").match(/^(\d{2})[-.](\d{2})[-.](\d{2}|\d{4})$/);
+var year;
+var date;
+if(!match){return null}
+year=Number(match[3]);
+if(year<100){year+=2000}
+date=new Date(year,Number(match[2])-1,Number(match[1]));
+if(date.getFullYear()!==year||date.getMonth()!==Number(match[2])-1||date.getDate()!==Number(match[1])){return null}
+return date
+}
+function formatDate(date){return pad2(date.getDate())+"-"+pad2(date.getMonth()+1)+"-"+date.getFullYear()}
+function normalizeDate(id){
+var input=byId(id);
+var date=parseDate(input.value);
+if(date){input.value=formatDate(date)}
+return date
+}
+function money(value){
+var n=Number(value||0);
+var parts=n.toFixed(2).split(".");
+parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,",");
+return parts.join(".")
+}
+function setStatus(text){byId("statusText").innerHTML=esc(text)}
+function toast(message,kind){
+var region=byId("toastRegion");
+var box=document.createElement("div");
+var icon=document.createElement("div");
+var body=document.createElement("div");
+var title=kind==="success"?"Success":kind==="warning"?"Warning":"Information";
+box.className="toast "+(kind||"");
+icon.className="toast-icon";
+icon.innerHTML=kind==="success"?"OK":"i";
+body.innerHTML='<div class="toast-title">'+title+'</div><div class="toast-message">'+esc(message)+"</div>";
+box.appendChild(icon);
+box.appendChild(body);
+region.appendChild(box);
+window.setTimeout(function(){if(box.parentNode){box.parentNode.removeChild(box)}},4200)
+}
+function companyByCode(code){
+var i;
+var value=String(code||"").toUpperCase();
+for(i=0;i<DATA.companies.length;i++){
+if(String(DATA.companies[i].code).toUpperCase()===value){return DATA.companies[i]}
+}
+return null
+}
+function requestTypeValues(){return DATA.requestTypes||[]}
+function terminationValues(){return DATA.additionalSelections||[]}
+function terminationText(row){
+if(row.terminationState==="TERMINATED"){
+return '<span class="termination-done">Terminated</span>'
+}
+return '<span class="termination-pending">Pending</span>'
+}
+function valueText(row,column){
+var value=row[column.key];
+var date;
+if(column.key==="sblcInitiateTermination"){return value==="Terminated"?"Terminated":"Pending"}
+if(column.type==="amount"){return money(value)}
+if(column.type==="date"){
+date=parseDate(value);
+return date?formatDate(date):String(value==null?"":value)
+}
+return String(value==null?"":value)
+}
+function basicReady(showMessage){
+var company=companyByCode(byId("companyCode").value);
+var keyDate=parseDate(byId("keyDate").value);
+if(!company){
+if(showMessage){toast("Select a valid Company Code.","warning")}
+return false
+}
+if(!keyDate){
+if(showMessage){toast("Enter Key Date in DD-MM-YYYY format.","warning")}
+return false
+}
+byId("companyCode").value=company.code;
+byId("keyDate").value=formatDate(keyDate);
+return true
+}
+function getFilteredRows(){
+var company=String(byId("companyCode").value||"").toUpperCase();
+var txn=String(byId("transactionFilter").value||"").toLowerCase();
+var type=String(byId("requestTypeFilter").value||"").toLowerCase();
+var selection=String(byId("terminationFilter").value||"").toLowerCase();
+var rows=[];
+var i;
+var row;
+if(!basicReady(false)){return rows}
+for(i=0;i<DATA.rows.length;i++){
+row=DATA.rows[i];
+if(String(row.companyCode||"").toUpperCase()!==company){continue}
+if(txn&&String(row.sblcTransaction||"").toLowerCase().indexOf(txn)<0){continue}
+if(type&&String(row.sblcRequestTypeDescription||"").toLowerCase().indexOf(type)<0){continue}
+if(selection==="pending termination"&&row.terminationState==="TERMINATED"){continue}
+if(selection==="terminated"&&row.terminationState!=="TERMINATED"){continue}
+rows.push({row:row,index:i})
+}
+return rows
+}
+function sortValue(item,column){
+var value=item.row[column.key];
+var date;
+if(column.type==="amount"){return Number(value||0)}
+if(column.type==="date"){
+date=parseDate(value);
+return date?date.getTime():0
+}
+return String(value||"").toLowerCase()
+}
+function applySort(rows){
+var index=state.sort.index;
+var direction=state.sort.direction;
+var column;
+if(index<0||!direction||!DATA.columns[index]){return rows}
+column=DATA.columns[index];
+rows.sort(function(a,b){
+var av=sortValue(a,column);
+var bv=sortValue(b,column);
+if(av<bv){return direction==="asc"?-1:1}
+if(av>bv){return direction==="asc"?1:-1}
+return 0
+});
+return rows
+}
+function renderHeader(){
+var html='<tr><th class="select-cell" style="min-width:64px;cursor:default">Select</th>';
+var i;
+var column;
+var cls;
+var totalWidth=64;
+for(i=0;i<DATA.columns.length;i++){
+column=DATA.columns[i];
+cls=state.sort.index===i?(state.sort.direction==="asc"?"sort-asc":"sort-desc"):"";
+html+='<th class="'+cls+'" data-sort="'+i+'" style="min-width:'+column.width+'px">'+esc(column.label);
+html+='<span class="sort-arrows"><span class="sort-up"></span><span class="sort-down"></span></span></th>';
+totalWidth+=Number(column.width)||100
+}
+html+="</tr>";
+byId("requestHead").innerHTML=html;
+byId("requestTable").style.minWidth=totalWidth+"px"
+}
+function renderPagination(totalRows){
+var bar=byId("paginationBar");
+var pages=Math.max(1,Math.ceil(totalRows/state.pageSize));
+var html="";
+var start;
+var end;
+var p;
+if(state.page>pages){state.page=pages}
+html+='<button class="page-btn" data-page="prev" type="button"'+(state.page===1?' disabled="disabled"':'')+'>&lt;</button>';
+start=Math.max(1,state.page-1);
+end=Math.min(pages,start+2);
+start=Math.max(1,end-2);
+for(p=start;p<=end;p++){
+html+='<button class="page-btn'+(p===state.page?' active':'')+'" data-page="'+p+'" type="button">'+p+"</button>"
+}
+html+='<button class="page-btn" data-page="next" type="button"'+(state.page===pages?' disabled="disabled"':'')+'>&gt;</button>';
+bar.innerHTML=html
+}
+function renderTable(){
+var rows=applySort(getFilteredRows());
+var start=(state.page-1)*state.pageSize;
+var end=Math.min(start+state.pageSize,rows.length);
+var pageRows=rows.slice(start,end);
+var html="";
+var i;
+var j;
+var item;
+var row;
+var column;
+var cls;
+state.activeRows=rows;
+renderHeader();
+for(i=0;i<pageRows.length;i++){
+item=pageRows[i];
+row=item.row;
+cls=item.index===state.selectedIndex?"selected":"";
+html+='<tr class="'+cls+'" data-index="'+item.index+'">';
+html+='<td class="select-cell"><input class="row-radio" type="radio" name="sblcRowSelect"';
+html+=(item.index===state.selectedIndex?' checked="checked"':'')+'></td>';
+for(j=0;j<DATA.columns.length;j++){
+column=DATA.columns[j];
+if(column.key==="sblcInitiateTermination"){
+html+="<td>"+terminationText(row)+"</td>"
+}else if(column.type==="amount"){
+html+='<td class="number">'+esc(valueText(row,column))+"</td>"
+}else{
+html+="<td>"+esc(valueText(row,column))+"</td>"
+}
+}
+html+="</tr>"
+}
+if(!html){
+html='<tr><td class="empty" colspan="'+(DATA.columns.length+1)+'">No SBLC records match the current selection.</td></tr>'
+}
+byId("requestBody").innerHTML=html;
+byId("recordCount").innerHTML=rows.length+" record"+(rows.length===1?"":"s")+" found";
+byId("tableMeta").innerHTML="Key Date - "+esc(byId("keyDate").value);
+renderPagination(rows.length);
+updateActions()
+}
+function updateActions(){
+var row=state.selectedIndex>=0?DATA.rows[state.selectedIndex]:null;
+byId("terminateBtn").disabled=!row||row.terminationState==="TERMINATED";
+byId("dmsBtn").disabled=!row
+}
+function loadResults(showMessage){
+state.page=1;
+state.selectedIndex=-1;
+if(!basicReady(showMessage)){
+byId("resultsArea").className="results";
+setStatus("Select Company Code and Key Date to load SBLC records");
+return
+}
+byId("resultsArea").className="results open";
+renderTable();
+setStatus("SBLC records loaded")
+}
+function refreshFilters(){
+if(!basicReady(false)){return}
+state.page=1;
+state.selectedIndex=-1;
+renderTable()
+}
+function clearFilters(){
+byId("transactionFilter").value="";
+byId("requestTypeFilter").value="";
+byId("terminationFilter").value=DATA.settings.defaultAdditionalSelection||"Pending Termination";
+refreshFilters()
+}
+function transactionValues(query){
+var values=[];
+var seen={};
+var q=String(query||"").toLowerCase();
+var company=String(byId("companyCode").value||"").toUpperCase();
+var i;
+var value;
+for(i=0;i<DATA.rows.length;i++){
+if(company&&String(DATA.rows[i].companyCode||"").toUpperCase()!==company){continue}
+value=String(DATA.rows[i].sblcTransaction||"");
+if(!value||seen[value]){continue}
+if(q&&value.toLowerCase().indexOf(q)<0){continue}
+seen[value]=true;
+values.push(value)
+}
+values.sort();
+return values
+}
+function comboValues(inputId,query){
+var q=String(query||"").toLowerCase();
+var source=[];
+var values=[];
+var i;
+if(inputId==="transactionFilter"){source=transactionValues(query)}
+if(inputId==="requestTypeFilter"){source=requestTypeValues()}
+if(inputId==="terminationFilter"){source=terminationValues();q=""}
+for(i=0;i<source.length;i++){
+if(!q||String(source[i]).toLowerCase().indexOf(q)>=0){values.push(String(source[i]))}
+}
+return values
+}
+function comboListId(inputId){
+if(inputId==="transactionFilter"){return "transactionFilterList"}
+if(inputId==="requestTypeFilter"){return "requestTypeFilterList"}
+return "terminationFilterList"
+}
+function closeCombo(){
+var listId;
+if(state.activeCombo){
+listId=comboListId(state.activeCombo);
+byId(listId).className="combo-list"
+}
+state.activeCombo=""
+}
+function renderCombo(inputId){
+var listId=comboListId(inputId);
+var list=byId(listId);
+var values=comboValues(inputId,byId(inputId).value);
+var html="";
+var i;
+if(state.activeCombo&&state.activeCombo!==inputId){closeCombo()}
+state.activeCombo=inputId;
+for(i=0;i<values.length;i++){
+html+='<button class="combo-option" data-combo-value="'+esc(values[i])+'" type="button">'+esc(values[i])+"</button>"
+}
+if(!html){html='<div class="combo-empty">No matching values</div>'}
+list.innerHTML=html;
+list.className="combo-list open"
+}
+function chooseCombo(inputId,value){
+byId(inputId).value=value;
+closeCombo();
+refreshFilters()
+}
+function bindCombo(inputId){
+var list=byId(comboListId(inputId));
+var input=byId(inputId);
+var buttons=document.querySelectorAll('[data-combo="'+inputId+'"]');
+var i;
+input.oninput=function(){refreshFilters();renderCombo(inputId)};
+input.onfocus=function(){renderCombo(inputId)};
+for(i=0;i<buttons.length;i++){
+buttons[i].onclick=function(e){
+if(e&&e.stopPropagation){e.stopPropagation()}
+if(state.activeCombo===inputId){closeCombo()}else{renderCombo(inputId)}
+}
+}
+list.onclick=function(e){
+var target=e.target||e.srcElement;
+var value=target.getAttribute&&target.getAttribute("data-combo-value");
+if(value!==null&&value!==undefined){chooseCombo(inputId,value)}
+}
+}
+function renderCompanyModal(){
+var html="";
+var i;
+var c;
+for(i=0;i<DATA.companies.length;i++){
+c=DATA.companies[i];
+html+='<tr data-company-index="'+i+'">';
+html+="<td>"+esc(c.code)+"</td><td>"+esc(c.name)+"</td><td>"+esc(c.city)+"</td><td>"+esc(c.currency)+"</td>";
+html+="</tr>"
+}
+byId("companyBody").innerHTML=html;
+byId("companyModalTitle").innerHTML="Company Code - "+DATA.companies.length+" Entries";
+byId("companySelect").disabled=true;
+state.companySelection=-1
+}
+function openCompanyModal(){
+renderCompanyModal();
+byId("companyModal").className="modal-bg open"
+}
+function closeCompanyModal(){byId("companyModal").className="modal-bg"}
+function selectCompany(){
+var item=state.companySelection>=0?DATA.companies[state.companySelection]:null;
+if(!item){toast("Select a company code first.","warning");return}
+byId("companyCode").value=item.code;
+closeCompanyModal();
+loadResults(false)
+}
+function openTermination(){
+var row=state.selectedIndex>=0?DATA.rows[state.selectedIndex]:null;
+if(!row){toast("Select one SBLC record first.","warning");return}
+if(row.terminationState==="TERMINATED"){
+toast("The selected SBLC record is already terminated.","warning");
+return
+}
+byId("terminationDate").value="";
+byId("terminationModal").className="modal-bg open"
+}
+function closeTermination(){
+byId("terminationModal").className="modal-bg";
+state.pendingTerminationDate=""
+}
+function updateTermination(){
+var date=normalizeDate("terminationDate");
+if(!date){
+toast("Enter the termination date in DD-MM-YYYY format.","warning");
+return
+}
+state.pendingTerminationDate=formatDate(date);
+byId("terminationModal").className="modal-bg";
+byId("chargesModal").className="modal-bg open"
+}
+function closeCharges(){
+byId("chargesModal").className="modal-bg";
+state.pendingTerminationDate=""
+}
+function terminateSelected(){
+var row=state.selectedIndex>=0?DATA.rows[state.selectedIndex]:null;
+var requestNo;
+if(!row||!state.pendingTerminationDate){closeCharges();return}
+requestNo=row.sblcRequestNumber;
+row.terminationState="TERMINATED";
+row.sblcInitiateTermination="Terminated";
+row.sblcTerminationDate=state.pendingTerminationDate;
+byId("chargesModal").className="modal-bg";
+state.pendingTerminationDate="";
+state.selectedIndex=-1;
+renderTable();
+toast("SBLC Request "+requestNo+" terminated successfully.","success");
+setStatus("SBLC Request "+requestNo+" terminated successfully")
+}
+function dmsRow(){return state.activeDmsIndex>=0?DATA.rows[state.activeDmsIndex]:null}
+function dmsDoc(index){
+var row=dmsRow();
+return row&&row.dms&&row.dms[index]?row.dms[index]:null
+}
+function dmsPathText(doc){
+if(!doc){return "Select file"}
+if(doc.fileName){return doc.fileName}
+return "Select file"
+}
+function renderDms(){
+var row=dmsRow();
+var html="";
+var i;
+var doc;
+var date;
+var editable;
+if(!row){return}
+byId("dmsRequestNo").innerHTML=esc(row.sblcRequestNumber||"");
+byId("dmsTransaction").innerHTML=esc(row.sblcTransaction||"");
+for(i=0;i<row.dms.length;i++){
+doc=row.dms[i];
+date=parseDate(doc.docDate);
+editable=!doc.uploaded||state.editDmsDocIndex===i;
+html+="<tr>";
+html+="<td>"+esc(doc.docType)+"</td>";
+html+="<td>"+esc(doc.docTypeDesc)+"</td>";
+html+='<td class="editable"><div class="dms-date-shell">';
+html+='<input id="dmsDate'+i+'" class="dms-date-input" type="text" placeholder="DD-MM-YYYY" value="';
+html+=esc(date?formatDate(date):doc.docDate)+'"'+(editable?'':' disabled="disabled"')+">";
+html+='<button id="dmsCalBtn'+i+'" class="calendar-btn" data-dms-calendar="'+i+'" type="button"';
+html+=editable?'':' disabled="disabled"';
+html+=' aria-label="Open document date calendar"></button>';
+html+='<div id="dmsCalendar'+i+'" class="calendar-popup"></div></div></td>';
+html+='<td class="editable"><div class="path-cell'+(editable?'':' disabled')+'" data-path-index="'+i+'">';
+html+="<span>"+esc(dmsPathText(doc))+"</span></div></td>";
+html+="<td>"+esc(doc.dmsCode||"")+"</td>";
+html+='<td><button class="action-btn" data-upload-index="'+i+'" type="button"';
+html+=doc.uploaded&&state.editDmsDocIndex!==i?' disabled="disabled"':' disabled="disabled"';
+html+=">Upload</button></td>";
+html+='<td><button class="action-btn" data-download-index="'+i+'" type="button"';
+html+=doc.uploaded?'':' disabled="disabled"';
+html+=">Download</button></td>";
+html+='<td><button class="action-btn" data-edit-index="'+i+'" type="button"';
+html+=doc.uploaded&&state.editDmsDocIndex!==i?'':' disabled="disabled"';
+html+=">Edit</button></td>";
+html+="</tr>"
+}
+byId("dmsBody").innerHTML=html;
+bindDmsRowActions()
+}
+function openDms(){
+var row=state.selectedIndex>=0?DATA.rows[state.selectedIndex]:null;
+if(!row){toast("Select one SBLC record first.","warning");return}
+state.activeDmsIndex=state.selectedIndex;
+state.activeDmsDocIndex=-1;
+state.pendingFile=null;
+state.editDmsDocIndex=-1;
+byId("dmsFileInput").value="";
+renderDms();
+byId("dmsModal").className="modal-bg open"
+}
+function closeDms(){
+byId("dmsModal").className="modal-bg";
+state.activeDmsIndex=-1;
+state.activeDmsDocIndex=-1;
+state.pendingFile=null;
+state.editDmsDocIndex=-1;
+byId("dmsFileInput").value=""
+}
+function chooseDmsFile(index){
+var doc=dmsDoc(index);
+if(!doc){return}
+if(doc.uploaded&&state.editDmsDocIndex!==index){return}
+state.activeDmsDocIndex=index;
+state.pendingFile=null;
+byId("dmsFileInput").value="";
+byId("dmsFileInput").click()
+}
+function dmsFileSelected(){
+var input=byId("dmsFileInput");
+var file=input.files&&input.files.length?input.files[0]:null;
+var index=state.activeDmsDocIndex;
+var doc=dmsDoc(index);
+var dateInput;
+var uploadBtn;
+if(!file||!doc){return}
+dateInput=byId("dmsDate"+index);
+if(dateInput&&dateInput.value){doc.docDate=dateInput.value}
+doc.fileName=file.name||"Selected file";
+doc.pendingFileObject=file;
+state.pendingFile=file;
+renderDms();
+uploadBtn=document.querySelector('[data-upload-index="'+index+'"]');
+if(uploadBtn){uploadBtn.disabled=false}
+}
+function saveDmsDate(index){
+var doc=dmsDoc(index);
+var input=byId("dmsDate"+index);
+var date;
+if(!doc||!input){return null}
+date=parseDate(input.value);
+if(!date){return null}
+input.value=formatDate(date);
+doc.docDate=input.value;
+return date
+}
+function uploadDms(index){
+var doc=dmsDoc(index);
+var file=doc?doc.pendingFileObject:null;
+if(!doc){return}
+if(!saveDmsDate(index)){
+toast("Enter Doc Date in DD-MM-YYYY format before upload.","warning");
+return
+}
+if(!file){toast("Select a file from File Path first.","warning");return}
+doc.fileObject=file;
+doc.pendingFileObject=null;
+doc.uploaded=true;
+if(!doc.dmsCode){
+doc.dmsCode=String(Number(DATA.settings.nextDmsCode)||6100001001);
+DATA.settings.nextDmsCode=Number(doc.dmsCode)+1
+}
+state.pendingFile=null;
+state.editDmsDocIndex=-1;
+renderDms();
+toast("Document uploaded. DMS Code "+doc.dmsCode+" generated.","success");
+setStatus("DMS Code "+doc.dmsCode+" generated successfully")
+}
+function downloadDms(index){
+var doc=dmsDoc(index);
+var file;
+var url;
+var link;
+if(!doc||!doc.uploaded){return}
+file=doc.fileObject;
+if(file&&window.navigator&&window.navigator.msSaveOrOpenBlob){
+window.navigator.msSaveOrOpenBlob(file,doc.fileName||"SBLC_Document");
+return
+}
+if(file&&window.URL&&window.URL.createObjectURL){
+url=window.URL.createObjectURL(file);
+link=document.createElement("a");
+link.href=url;
+link.download=doc.fileName||"SBLC_Document";
+document.body.appendChild(link);
+link.click();
+document.body.removeChild(link);
+window.setTimeout(function(){window.URL.revokeObjectURL(url)},1000);
+return
+}
+toast("The uploaded document is available from SAP DMS in the integrated screen.","warning")
+}
+function editDms(index){
+var doc=dmsDoc(index);
+if(!doc||!doc.uploaded){return}
+state.editDmsDocIndex=index;
+state.activeDmsDocIndex=index;
+state.pendingFile=null;
+renderDms();
+toast("Document is unlocked. Select a replacement file and upload it.","")
+}
+function bindDmsRowActions(){
+var pathCells=document.querySelectorAll("[data-path-index]");
+var uploads=document.querySelectorAll("[data-upload-index]");
+var downloads=document.querySelectorAll("[data-download-index]");
+var edits=document.querySelectorAll("[data-edit-index]");
+var calBtns=document.querySelectorAll("[data-dms-calendar]");
+var i;
+for(i=0;i<pathCells.length;i++){
+pathCells[i].onclick=function(){
+chooseDmsFile(parseInt(this.getAttribute("data-path-index"),10))
+}
+}
+for(i=0;i<uploads.length;i++){
+uploads[i].onclick=function(){uploadDms(parseInt(this.getAttribute("data-upload-index"),10))}
+}
+for(i=0;i<downloads.length;i++){
+downloads[i].onclick=function(){downloadDms(parseInt(this.getAttribute("data-download-index"),10))}
+}
+for(i=0;i<edits.length;i++){
+edits[i].onclick=function(){editDms(parseInt(this.getAttribute("data-edit-index"),10))}
+}
+for(i=0;i<calBtns.length;i++){
+calBtns[i].onclick=function(e){
+var index=parseInt(this.getAttribute("data-dms-calendar"),10);
+toggleCalendar("dmsCalBtn"+index,"dmsDate"+index,"dmsCalendar"+index,e,"dms",index)
+}
+}
+}
+var CAL_MONTHS=[
+"January","February","March","April","May","June",
+"July","August","September","October","November","December"
+];
+var CAL_DAYS=["Su","Mo","Tu","We","Th","Fr","Sa"];
+function sameDate(a,b){
+return !!a&&!!b&&a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate()
+}
+function calendarIso(date){return date.getFullYear()+"-"+pad2(date.getMonth()+1)+"-"+pad2(date.getDate())}
+function calendarFromIso(text){
+var m=String(text||"").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+if(!m){return null}
+return new Date(Number(m[1]),Number(m[2])-1,Number(m[3]))
+}
+function calendarHeader(c){
+var html='<div class="calendar-top"><button class="calendar-title-btn" data-cal-action="picker" type="button">';
+html+=esc(CAL_MONTHS[c.month]+" "+c.year)+"</button>";
+html+='<div class="calendar-navs">';
+html+='<button class="calendar-nav prev" data-cal-action="prev" type="button"></button>';
+html+='<button class="calendar-nav next" data-cal-action="next" type="button"></button></div></div>';
+return html
+}
+function calendarDayView(c){
+var selected=parseDate(byId(c.targetId).value);
+var first=new Date(c.year,c.month,1);
+var start=new Date(c.year,c.month,1-first.getDay());
+var html=calendarHeader(c);
+var i;
+var d;
+var cls;
+html+='<div class="calendar-week">';
+for(i=0;i<CAL_DAYS.length;i++){html+="<span>"+CAL_DAYS[i]+"</span>"}
+html+='</div><div class="calendar-days">';
+for(i=0;i<42;i++){
+d=new Date(start.getFullYear(),start.getMonth(),start.getDate()+i);
+cls="calendar-cell";
+if(d.getMonth()!==c.month){cls+=" other"}
+if(sameDate(d,selected)){cls+=" selected"}
+html+='<button class="'+cls+'" data-cal-action="day" data-date="'+calendarIso(d)+'" type="button">'+d.getDate()+"</button>"
+}
+html+='</div><div class="calendar-foot">';
+html+='<button class="calendar-foot-btn" data-cal-action="clear" type="button">Clear</button>';
+html+='<button class="calendar-foot-btn" data-cal-action="today" type="button">Today</button></div>';
+return html
+}
+function calendarPickerView(c){
+var html=calendarHeader(c);
+var i;
+var startYear=c.year-6;
+var endYear=c.year+10;
+html+='<div class="calendar-picker"><div class="month-grid">';
+for(i=0;i<12;i++){
+html+='<button class="month-btn'+(i===c.month?' selected':'')+'" data-cal-action="month" data-month="'+i+'" type="button">';
+html+=CAL_MONTHS[i].substr(0,3)+"</button>"
+}
+html+='</div><div class="year-list">';
+for(i=startYear;i<=endYear;i++){
+html+='<button class="year-btn'+(i===c.year?' selected':'')+'" data-cal-action="year" data-year="'+i+'" type="button">'+i+"</button>"
+}
+html+="</div></div>";
+return html
+}
+function positionCalendarPopup(c,popup){
+var button;
+var rect;
+var left;
+var top;
+var popupHeight=330;
+if(c.kind!=="dms"){
+popup.style.position="";
+popup.style.left="";
+popup.style.top="";
+popup.style.zIndex="";
+return
+}
+button=byId(c.buttonId);
+if(!button){return}
+rect=button.getBoundingClientRect();
+left=rect.left;
+if(left+294>window.innerWidth-12){left=Math.max(12,window.innerWidth-306)}
+top=rect.bottom+4;
+if(top+popupHeight>window.innerHeight-12){top=Math.max(12,rect.top-popupHeight-4)}
+popup.style.position="fixed";
+popup.style.left=left+"px";
+popup.style.top=top+"px";
+popup.style.zIndex="4200"
+}
+function renderCalendar(){
+var c=state.calendar;
+var popup;
+if(!c){return}
+popup=byId(c.popupId);
+popup.innerHTML=c.view==="picker"?calendarPickerView(c):calendarDayView(c);
+positionCalendarPopup(c,popup);
+popup.className="calendar-popup open";
+popup.onclick=calendarClick
+}
+function calendarApply(c){
+if(c.kind==="basic"){loadResults(false);return}
+if(c.kind==="termination"){normalizeDate(c.targetId);return}
+if(c.kind==="dms"){
+normalizeDate(c.targetId);
+saveDmsDate(c.docIndex)
+}
+}
+function calendarClick(e){
+var target=e.target||e.srcElement;
+var action=target.getAttribute&&target.getAttribute("data-cal-action");
+var c=state.calendar;
+var date;
+if(!c||!action){return}
+e.stopPropagation();
+if(action==="picker"){
+c.view=c.view==="picker"?"days":"picker";
+renderCalendar();
+return
+}
+if(action==="prev"||action==="next"){
+date=new Date(c.year,c.month+(action==="prev"?-1:1),1);
+c.month=date.getMonth();
+c.year=date.getFullYear();
+c.view="days";
+renderCalendar();
+return
+}
+if(action==="month"){
+c.month=parseInt(target.getAttribute("data-month"),10)||0;
+renderCalendar();
+return
+}
+if(action==="year"){
+c.year=parseInt(target.getAttribute("data-year"),10)||c.year;
+c.view="days";
+renderCalendar();
+return
+}
+if(action==="day"){
+date=calendarFromIso(target.getAttribute("data-date"));
+if(!date){return}
+byId(c.targetId).value=formatDate(date);
+byId(c.popupId).className="calendar-popup";
+state.calendar=null;
+calendarApply(c);
+return
+}
+if(action==="clear"){
+byId(c.targetId).value="";
+byId(c.popupId).className="calendar-popup";
+state.calendar=null;
+calendarApply(c);
+return
+}
+if(action==="today"){
+byId(c.targetId).value=formatDate(new Date());
+byId(c.popupId).className="calendar-popup";
+state.calendar=null;
+calendarApply(c)
+}
+}
+function toggleCalendar(buttonId,targetId,popupId,e,kind,docIndex){
+var current=parseDate(byId(targetId).value)||new Date();
+if(e&&e.stopPropagation){e.stopPropagation()}
+if(state.calendar&&state.calendar.popupId===popupId){
+byId(popupId).className="calendar-popup";
+state.calendar=null;
+return
+}
+if(state.calendar){byId(state.calendar.popupId).className="calendar-popup"}
+state.calendar={
+buttonId:buttonId,
+targetId:targetId,
+popupId:popupId,
+month:current.getMonth(),
+year:current.getFullYear(),
+view:"days",
+kind:kind||"basic",
+docIndex:docIndex
+};
+renderCalendar()
+}
+byId("companyHelpBtn").onclick=openCompanyModal;
+byId("companyClose").onclick=closeCompanyModal;
+byId("companyCancel").onclick=closeCompanyModal;
+byId("companySelect").onclick=selectCompany;
+byId("companyBody").onclick=function(e){
+var target=e.target||e.srcElement;
+var tr=target;
+var index;
+var rows;
+var i;
+while(tr&&tr.tagName&&tr.tagName.toLowerCase()!=="tr"){tr=tr.parentNode}
+if(!tr||tr.getAttribute("data-company-index")===null){return}
+index=parseInt(tr.getAttribute("data-company-index"),10);
+if(isNaN(index)){return}
+state.companySelection=index;
+rows=byId("companyBody").getElementsByTagName("tr");
+for(i=0;i<rows.length;i++){rows[i].className=i===index?"selected":""}
+byId("companySelect").disabled=false
+};
+byId("companyBody").ondblclick=function(){if(state.companySelection>=0){selectCompany()}};
+byId("companyCode").onchange=function(){this.value=String(this.value||"").toUpperCase();loadResults(true)};
+byId("keyDate").onchange=function(){loadResults(true)};
+byId("keyDateCalendarBtn").onclick=function(e){
+toggleCalendar("keyDateCalendarBtn","keyDate","keyDateCalendar",e,"basic")
+};
+byId("filterToggle").onclick=function(){
+var body=byId("filterBody");
+body.className=body.className.indexOf("open")>=0?"filter-body":"filter-body open"
+};
+bindCombo("transactionFilter");
+bindCombo("requestTypeFilter");
+bindCombo("terminationFilter");
+byId("clearFilters").onclick=clearFilters;
+byId("requestHead").onclick=function(e){
+var target=e.target||e.srcElement;
+var th=target;
+var index;
+while(th&&th.tagName&&th.tagName.toLowerCase()!=="th"){th=th.parentNode}
+if(!th||th.getAttribute("data-sort")===null){return}
+index=parseInt(th.getAttribute("data-sort"),10);
+if(isNaN(index)){return}
+if(state.sort.index===index){state.sort.direction=state.sort.direction==="asc"?"desc":"asc"}
+else{state.sort.index=index;state.sort.direction="asc"}
+state.page=1;
+renderTable()
+};
+byId("requestBody").onclick=function(e){
+var target=e.target||e.srcElement;
+var tr=target;
+var index;
+while(tr&&tr.tagName&&tr.tagName.toLowerCase()!=="tr"){tr=tr.parentNode}
+if(!tr||tr.getAttribute("data-index")===null){return}
+index=parseInt(tr.getAttribute("data-index"),10);
+if(isNaN(index)){return}
+state.selectedIndex=index;
+renderTable()
+};
+byId("paginationBar").onclick=function(e){
+var target=e.target||e.srcElement;
+var page=target.getAttribute&&target.getAttribute("data-page");
+var pages=Math.max(1,Math.ceil(state.activeRows.length/state.pageSize));
+if(!page||target.disabled){return}
+if(page==="prev"){state.page=Math.max(1,state.page-1)}
+else if(page==="next"){state.page=Math.min(pages,state.page+1)}
+else{state.page=parseInt(page,10)||1}
+renderTable()
+};
+byId("terminateBtn").onclick=openTermination;
+byId("dmsBtn").onclick=openDms;
+byId("dmsClose").onclick=closeDms;
+byId("dmsDone").onclick=closeDms;
+byId("dmsFileInput").onchange=dmsFileSelected;
+byId("terminationClose").onclick=closeTermination;
+byId("terminationCancel").onclick=closeTermination;
+byId("terminationUpdate").onclick=updateTermination;
+byId("terminationCalendarBtn").onclick=function(e){
+toggleCalendar("terminationCalendarBtn","terminationDate","terminationCalendar",e,"termination")
+};
+byId("chargesClose").onclick=closeCharges;
+byId("chargesCancel").onclick=closeCharges;
+byId("chargesNo").onclick=closeCharges;
+byId("chargesYes").onclick=terminateSelected;
+byId("terminationFilter").value=DATA.settings.defaultAdditionalSelection||"Pending Termination";
+document.onclick=function(e){
+var target=e.target||e.srcElement;
+var popup;
+var btn;
+var shell=target;
+if(state.calendar){
+popup=byId(state.calendar.popupId);
+btn=byId(state.calendar.buttonId);
+if(target!==btn&&!popup.contains(target)){
+popup.className="calendar-popup";
+state.calendar=null
+}
+}
+if(state.activeCombo){
+while(shell&&shell.className&&String(shell.className).indexOf("combo-shell")<0){shell=shell.parentNode}
+if(!shell){closeCombo()}
+}
+};
+document.onkeydown=function(e){
+var event=e||window.event;
+if(event.keyCode===27){
+closeCombo();
+if(state.calendar){byId(state.calendar.popupId).className="calendar-popup";state.calendar=null}
+}
+return true
+};
+})();
+</script>
+</body>
+</html>

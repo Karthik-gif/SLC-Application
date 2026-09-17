@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Maintain Limits for Existing Banks</title>
+<style type="text/css">
+html,body{margin:0;width:100%;height:100%;background:#f5f7f9;color:#1d2d3e;font-family:"72","Segoe UI",Arial,sans-serif;font-size:13px}
+*{box-sizing:border-box}
+button,input,select,table,th,td,div,span,label,textarea{font-family:"72","Segoe UI",Arial,sans-serif}
+button{cursor:pointer}
+button:disabled{cursor:default;opacity:.55}
+.shell{height:100vh;display:flex;flex-direction:column;background:#f5f7f9}
+.topbar{height:48px;flex:0 0 48px;background:#fff;border-bottom:1px solid #d9d9d9;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.topbar-inner{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 18px}
+.title{font-size:16px;font-weight:600;color:#1d2d3e}
+.refresh-btn{border:1px solid #8996a1;background:#ffffff;color:#475e75;border-radius:4px;height:32px;padding:0 11px;
+font-size:12px;font-weight:400;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.refresh-btn:hover{background:#f2f4f5;color:#1d2d3e}
+.refresh-btn:active{transform:translateY(1px)}
+.content{flex:1 1 auto;min-height:0;padding:10px 14px 28px;overflow:auto}
+.card{margin-bottom:10px;background:#fff;border:1px solid #e1e6ea;border-radius:8px;box-shadow:0 1px 4px rgba(29,45,62,.04)}
+.card-head{min-height:34px;display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:#fafcfe;
+border-bottom:1px solid #e5e9ed;border-radius:8px 8px 0 0}
+.card-title{font-size:12px;font-weight:600;color:#1d2d3e}
+.card-meta{font-size:11px;color:#6a6d70}
+.card-body{padding:12px}
+.field{display:grid;grid-template-columns:150px minmax(0,1fr);align-items:center;gap:10px}
+.field label{color:#1d2d3e;font-size:12px;font-weight:400}
+.input,.select{height:30px;width:100%;max-width:310px;padding:4px 8px;border:1px solid #b8b8b8;border-radius:4px;background:#fff;color:#1d2d3e;font-size:12px}
+.input:focus,.select:focus{outline:0;border-color:#0a6ed1;box-shadow:0 0 0 1px #0a6ed1}
+.selection-main-row{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.ml-field{width:auto;min-width:150px;flex:0 0 auto;display:flex;flex-direction:column;gap:3px}
+.ml-field.cc{width:230px}
+.ml-field.bt{width:160px}
+.ml-field.wide{width:300px}
+.ml-field.llc{width:185px}
+.ml-field.narrow{width:150px}
+.ml-field label{font-size:11px;color:#556b82;font-weight:600;white-space:nowrap}
+.required-mark{color:#bb0000;margin-left:2px;font-weight:700}
+.ml-field .select,.ml-field .input{width:100%;max-width:none;text-overflow:clip}
+.date-input-wrap{position:relative;width:100%}
+.date-input-wrap .input,.date-input-wrap .cell-input{width:100%;max-width:none;padding-right:26px}
+.date-input-wrap.compact{width:120px}
+.calendar-btn-wrap{position:absolute;right:5px;top:50%;transform:translateY(-50%);width:16px;height:16px}
+.calendar-btn{width:16px;height:16px;padding:0;border:1px solid #0a6ed1;border-radius:2px;position:relative;
+background:linear-gradient(#0a6ed1,#0a6ed1) top/100% 4px no-repeat,
+repeating-linear-gradient(90deg,#cfe3fb 0 2px,transparent 2px 4px) 2px 6px/11px 7px no-repeat,
+repeating-linear-gradient(0deg,#cfe3fb 0 2px,transparent 2px 4px) 2px 6px/11px 7px no-repeat,#ffffff}
+.calendar-btn:before{content:"";position:absolute;top:-2px;left:3px;width:2px;height:2px;background:#0a6ed1;border-radius:1px}
+.calendar-btn:after{content:"";position:absolute;top:-2px;right:3px;width:2px;height:2px;background:#0a6ed1;border-radius:1px}
+.calendar-btn-wrap:hover .calendar-btn{border-color:#0854a0}
+.calendar-native{position:absolute;inset:0;opacity:0;width:100%;height:100%;border:0;padding:0;margin:0;cursor:pointer}
+.detail-readonly-input{background:#f8fafc!important;color:#1d2d3e!important;border-color:#e1e6ea}
+.filter-icon-btn{width:30px;height:30px;padding:0;border:1px solid #b8b8b8;border-radius:4px;background:#fff;position:relative;flex:0 0 auto}
+.filter-icon-btn:hover{background:#f7f8f9;border-color:#0a6ed1}
+.filter-icon-btn:before{content:"";position:absolute;left:8px;top:7px;width:0;height:0;border-left:7px solid transparent;
+border-right:7px solid transparent;border-top:9px solid #556b82}
+.filter-icon-btn:after{content:"";position:absolute;left:13px;top:14px;width:3px;height:7px;background:#556b82}
+.filter-body{display:none;align-items:center;gap:10px}
+.filter-body.open{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.filter-item{display:flex;align-items:center}
+.compact-filter{width:150px;max-width:none}
+.medium-filter{width:180px;max-width:none}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.toolbar-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.toolbar-right{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.table-card{overflow:hidden}
+.table-wrap{width:100%;overflow:auto;background:#fff}
+.data-table{width:100%;min-width:920px;border-collapse:separate;border-spacing:0;font-size:12px}
+.data-table th{position:sticky;top:0;z-index:2;height:34px;padding:6px 24px 6px 8px;background:#f5f8fa;color:#1d2d3e;
+border-right:1px solid #d9d9d9;border-bottom:1px solid #c7d4e0;text-align:left;font-weight:600;white-space:nowrap}
+.data-table td{height:34px;padding:4px 8px;background:#fff;border-right:1px solid #e7ebee;border-bottom:1px solid #e7ebee;white-space:nowrap;color:#1d2d3e}
+.data-table tbody tr:hover td{background:#f2f8fd}
+.data-table tbody tr.selected td{background:#eaf3fc}
+.data-table .number{text-align:right;font-variant-numeric:tabular-nums}
+.sort-arrows{position:absolute;top:9px;right:8px;width:8px;height:15px}
+.sort-up,.sort-down{position:absolute;left:0;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent}
+.sort-up{top:0;border-bottom:5px solid #9aa7b4}
+.sort-down{bottom:0;border-top:5px solid #9aa7b4}
+th.sort-asc .sort-up{border-bottom-color:#0a6ed1}
+th.sort-desc .sort-down{border-top-color:#0a6ed1}
+.badge{display:inline-block;padding:3px 7px;border-radius:10px;font-size:10px;font-weight:600}
+.badge-open{background:#fff4e5;color:#8d4f00}
+.badge-created{background:#eaf3fc;color:#004b93}
+.badge-closed{background:#ebf5eb;color:#107e3e}
+.badge-override{background:#eef0f2;color:#556b82}
+.btn{height:30px;padding:0 12px;border:1px solid #d1e8ff;border-radius:4px;background:#eaf3fc;color:#004b93;font-size:12px;font-weight:600}
+.btn:hover{background:#d1e8ff;border-color:#0a6ed1;color:#0854a0}
+.btn-primary{background:#0a6ed1;border-color:#0a6ed1;color:#fff}
+.btn-primary:hover{background:#0854a0;border-color:#0854a0;color:#fff}
+.btn-ghost{background:#fff;border-color:#d9d9d9;color:#1d2d3e}
+.btn-ghost:hover{background:#f7f8f9;border-color:#b8b8b8;color:#1d2d3e}
+.pagination-bar{display:flex;align-items:center;justify-content:flex-end;gap:5px;padding:8px 10px;background:#fff;border-top:1px solid #e5e9ed}
+.page-btn{min-width:30px;height:28px;padding:0 8px;border:1px solid #d9d9d9;border-radius:4px;background:#fff;color:#1d2d3e;font-size:11px}
+.page-btn:hover{background:#f7f8f9;border-color:#b8b8b8}
+.page-btn.active{background:#eaf3fc;border-color:#0a6ed1;color:#004b93;font-weight:600}
+.page-btn:disabled{background:#f7f8f9;color:#9aa7b4}
+.empty{padding:28px;text-align:center;color:#6a6d70}
+.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(300px,1fr));gap:8px 26px}
+.detail-grid.one-col{grid-template-columns:1fr}
+.detail-grid.three-col{grid-template-columns:repeat(3,minmax(170px,1fr))}
+.cl-grid{display:grid;grid-template-columns:330px 190px;gap:10px 20px}
+.cl-field{display:flex;flex-direction:column;gap:4px}
+.cl-field label{font-size:11px;color:#556b82;font-weight:600;white-space:nowrap}
+.cl-field .select,.cl-field .input,.cl-field .detail-value{width:100%}
+.cl-bp .detail-value{overflow:visible;white-space:nowrap}
+.cl-field.cl-fit .input,.cl-field.cl-fit .detail-value{width:170px}
+.cl-field.cl-fit .date-input-wrap{width:170px}
+.cl-field.cl-mid{width:220px}
+.cl-row-single{display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap}
+.dms-info-row{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+.dms-bp{width:330px}
+.dms-bp .detail-value{overflow:visible;white-space:nowrap}
+.dms-bt{width:150px}
+.dms-lt{width:140px}
+.dms-sd{width:100px}
+.dms-dc{width:75px}
+.detail-value.money,.input.money{justify-content:flex-end;text-align:right}
+.code.money{margin-left:auto;text-align:right}
+.detail-line{display:grid;grid-template-columns:150px minmax(0,1fr);align-items:center;gap:8px;min-height:28px}
+.detail-label{color:#556b82}
+.detail-value{min-height:28px;display:flex;align-items:center;gap:8px;padding:4px 8px;border:1px solid #e1e6ea;background:#f8fafc;border-radius:4px;overflow:hidden}
+.code{font-weight:600;color:#1d2d3e}
+.description{color:#556b82;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.edit-table{width:100%;min-width:860px;border-collapse:separate;border-spacing:0;font-size:12px}
+.edit-table th{position:sticky;top:0;z-index:2;height:30px;padding:5px 20px 5px 8px;background:#f5f8fa;color:#1d2d3e;
+border-right:1px solid #d9d9d9;border-bottom:1px solid #c7d4e0;text-align:left;font-weight:600;white-space:nowrap}
+.edit-table td{height:32px;padding:3px 6px;background:#f7f8f9;border-right:1px solid #e7ebee;border-bottom:1px solid #e7ebee;white-space:nowrap}
+.edit-table td.editable{background:#fff}
+.cell-input,.cell-select{width:100%;min-width:90px;height:24px;padding:2px 6px;border:1px solid transparent;border-radius:3px;background:#fff;color:#1d2d3e;font-size:12px}
+.cell-input:hover,.cell-select:hover{border-color:#b8b8b8}
+.cell-input:focus,.cell-select:focus{outline:0;border-color:#0a6ed1;box-shadow:0 0 0 1px #0a6ed1}
+.cell-input[readonly]{background:transparent;color:#556b82}
+.icon-cell{text-align:center}
+.modal-bg{display:none;position:fixed;inset:0;z-index:2000;background:rgba(29,45,62,.30);padding:28px 18px;overflow:auto}
+.modal-bg.open{display:block}
+.modal{max-width:940px;margin:0 auto;background:#fff;border:1px solid #d9d9d9;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.18);overflow:hidden}
+.modal.small{max-width:600px}
+.modal.large{max-width:960px}
+.modal-head{height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:#eaf3fc;border-bottom:1px solid #d1e8ff}
+.modal-title{font-size:13px;font-weight:600}
+.modal-close{width:28px;height:28px;border:1px solid #d9d9d9;border-radius:4px;background:#fff;color:#556b82}
+.modal-body{padding:14px;overflow:visible}
+.modal-foot{display:flex;align-items:center;justify-content:flex-end;gap:7px;padding:10px 14px;background:#f7f8f9;border-top:1px solid #d9d9d9}
+.subhead{font-size:12px;font-weight:600;color:#1d2d3e;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #e5e9ed}
+.dms-card{border:1px solid #e1e6ea;border-radius:6px;overflow:hidden;margin-top:4px}
+.dms-card-head{display:flex;align-items:center;height:34px;padding:0 12px;background:#fafcfe;
+border-bottom:1px solid #e5e9ed;border-left:4px solid #0a6ed1;font-size:12px;font-weight:700;color:#1d2d3e}
+.dms-action-btn{height:22px;padding:0 8px;border:1px solid #d1e8ff;border-radius:4px;background:#eaf3fc;color:#004b93;
+font-size:11px;font-weight:600;white-space:nowrap}
+.dms-action-btn:hover{background:#d1e8ff;border-color:#0a6ed1}
+.dms-action-btn:disabled{background:#f2f4f5;border-color:#e1e6ea;color:#9aa7b4}
+.email-note{width:100%;min-height:68px;padding:8px;border:1px solid #b8b8b8;border-radius:4px;font-size:12px;color:#1d2d3e;resize:vertical}
+.toast-region{position:fixed;right:22px;bottom:28px;z-index:4000;width:350px;max-width:calc(100% - 44px)}
+.toast{display:flex;gap:10px;margin-top:8px;padding:12px 14px;background:#f2f4f5;border:1px solid #d9d9d9;
+border-left:3px solid #a8b3bd;border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.toast.success{border-left-color:#107e3e}.toast.error{border-left-color:#bb0000}.toast.warning{border-left-color:#e9730c}
+.toast-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#e5e8eb;color:#556b82;font-weight:600}
+.toast.success .toast-icon{background:#ebf5eb;color:#107e3e}
+.toast-title{margin-bottom:2px;font-size:12px;font-weight:600}.toast-message{color:#556b82;font-size:12px;line-height:17px}
+.statusbar{position:fixed;left:0;right:0;bottom:0;height:20px;display:flex;align-items:center;padding:0 12px;background:#fff;
+border-top:1px solid #e1e6ea;color:#6a6d70;font-size:11px;z-index:900}
+.status-dot{width:7px;height:7px;margin-right:6px;border-radius:50%;background:#0a6ed1}
+@media screen and (max-width:980px){
+.detail-grid{grid-template-columns:1fr}.content{padding-left:8px;padding-right:8px}
+}
+@media screen and (max-width:640px){
+.topbar-inner{padding:0 10px}.content{padding-top:8px}
+.ml-field,.ml-field.wide,.ml-field.narrow{width:100%}
+.selection-main-row{flex-direction:column;align-items:stretch}
+.toolbar{justify-content:flex-start}
+}
+.title-wrap{display:flex;align-items:center;gap:10px}
+img.mark{width:28px;height:28px;flex:none;object-fit:contain}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="title-wrap">
+        <img class="mark" alt="Fourth Signal" src="https://raw.githubusercontent.com/ryannayak/fs-assets/e82f35a83e28689167b22b4300d4994a249acee0/fs-short-logo.png"/>
+        <div class="title">Maintain Limits for Existing Banks</div>
+      </div>
+      <button id="topRefreshBtn" class="refresh-btn" type="button">&#8635; Refresh</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">Basic Selection</div>
+        <div class="card-meta">Required</div>
+      </div>
+      <div class="card-body">
+        <div class="selection-main-row">
+          <div class="ml-field cc">
+            <label for="mlCompanyCode">Company Code<span class="required-mark">*</span></label>
+            <select id="mlCompanyCode" class="select"></select>
+          </div>
+          <div class="ml-field narrow">
+            <label for="mlKeyDate">Key Date<span class="required-mark">*</span></label>
+            <div class="date-input-wrap">
+              <input id="mlKeyDate" class="input" type="text" placeholder="DD-MM-YYYY">
+              <div class="calendar-btn-wrap">
+                <button class="calendar-btn" type="button" tabindex="-1" aria-hidden="true"></button>
+                <input id="mlKeyDateNative" class="calendar-native" type="date" aria-label="Open calendar">
+              </div>
+            </div>
+          </div>
+          <div class="ml-field bt">
+            <label for="mlBankType">Bank Type<span class="required-mark">*</span></label>
+            <select id="mlBankType" class="select"></select>
+          </div>
+          <div class="ml-field wide">
+            <label for="mlBusinessPartner">Business Partner<span class="required-mark">*</span></label>
+            <select id="mlBusinessPartner" class="select"></select>
+          </div>
+          <div class="ml-field llc">
+            <label for="mlLimitLevelCheck">Limit Level Check<span class="required-mark">*</span></label>
+            <select id="mlLimitLevelCheck" class="select"></select>
+          </div>
+          <div class="ml-field narrow">
+            <label for="mlTrader">Trader</label>
+            <input id="mlTrader" class="input detail-readonly-input" type="text" readonly>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="mlResultsArea" style="display:none">
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <button id="mlFilterToggle" class="filter-icon-btn" type="button" title="Filters" aria-label="Filters"></button>
+          <div id="mlFilterBody" class="filter-body">
+            <div class="filter-item">
+              <select id="mlBankTypeFilter" class="select compact-filter"></select>
+            </div>
+            <div class="filter-item">
+              <select id="mlLimitLevelFilter" class="select medium-filter"></select>
+            </div>
+            <button id="mlClearFilters" class="btn btn-ghost" type="button">Clear filters</button>
+          </div>
+        </div>
+        <div class="toolbar-right">
+          <button id="mlCreateLimitBtn" class="btn btn-primary" type="button">Create Limit</button>
+          <button id="mlRefreshBtn" class="btn btn-ghost" type="button">Refresh</button>
+          <button id="mlDmsBtn" class="btn btn-ghost" type="button" disabled>DMS</button>
+          <button id="mlAssignBpBtn" class="btn btn-ghost" type="button" disabled>Assign BP</button>
+          <button id="mlCreateGroupBpBtn" class="btn btn-ghost" type="button">Create Group BP</button>
+        </div>
+      </div>
+      <div class="card table-card">
+        <div class="card-head">
+          <div class="card-title">Limits Overview</div>
+        </div>
+        <div class="table-wrap">
+          <table id="mlMainTable" class="data-table">
+            <thead id="mlMainHead"></thead>
+            <tbody id="mlMainBody"></tbody>
+          </table>
+        </div>
+        <div id="mlPaginationBar" class="pagination-bar"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="createLimitModal" class="modal-bg">
+  <div class="modal small">
+    <div class="modal-head">
+      <div class="modal-title">Maintain Limits for Existing Banks</div>
+      <button id="createLimitClose" class="modal-close" type="button">X</button>
+    </div>
+    <div class="modal-body">
+      <div class="subhead">Create Limit</div>
+      <div class="cl-grid">
+        <div class="cl-field cl-bp"><label>Business Partner</label>
+        <div class="detail-value"><span id="clBpDisplay" class="code"></span></div></div>
+        <div class="cl-field"><label>Limit Type</label>
+        <select id="clLimitType" class="select"></select></div>
+        <div class="cl-field cl-fit"><label>Start Date</label>
+        <div class="date-input-wrap"><input id="clStartDate" class="input" type="text" placeholder="DD-MM-YYYY">
+        <div class="calendar-btn-wrap"><button class="calendar-btn" type="button" tabindex="-1" aria-hidden="true"></button>
+        <input id="clStartDateNative" class="calendar-native" type="date"></div></div></div>
+        <div class="cl-field"><label>End Date</label>
+        <div class="date-input-wrap"><input id="clEndDate" class="input" type="text" placeholder="DD-MM-YYYY">
+        <div class="calendar-btn-wrap"><button class="calendar-btn" type="button" tabindex="-1" aria-hidden="true"></button>
+        <input id="clEndDateNative" class="calendar-native" type="date"></div></div></div>
+        <div class="cl-field cl-fit"><label>Limit Amount</label>
+        <input id="clLimitAmount" class="input money amount-input" type="text" placeholder="0.00"></div>
+        <div class="cl-field"><label>Tenor</label>
+        <input id="clTenor" class="input" type="text" placeholder="Days"></div>
+      </div>
+      <div class="subhead" style="margin-top:12px">Email Note</div>
+      <textarea id="clEmailNote" class="email-note"></textarea>
+    </div>
+    <div class="modal-foot">
+      <button id="clCreateBtn" class="btn btn-primary" type="button">Create Limit</button>
+      <button id="clCancelBtn" class="btn btn-ghost" type="button">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="approvalModal" class="modal-bg">
+  <div class="modal small">
+    <div class="modal-head">
+      <div class="modal-title">Send for Approval</div>
+      <button id="approvalClose" class="modal-close" type="button">X</button>
+    </div>
+    <div class="modal-body">
+      <div class="subhead">Create Limit</div>
+      <div class="cl-grid">
+        <div class="cl-field cl-bp"><label>Business Partner</label>
+        <div class="detail-value"><span id="apBpDisplay" class="code"></span></div></div>
+        <div class="cl-field"><label>Limit Type</label>
+        <div class="detail-value"><span id="apLimitType" class="code"></span></div></div>
+        <div class="cl-field cl-fit"><label>Start Date</label>
+        <div class="detail-value"><span id="apStartDate" class="code"></span></div></div>
+        <div class="cl-field"><label>End Date</label>
+        <div class="detail-value"><span id="apEndDate" class="code"></span></div></div>
+        <div class="cl-field cl-fit"><label>Limit Amount</label>
+        <div class="detail-value money"><span id="apLimitAmount" class="code"></span></div></div>
+        <div class="cl-field"><label>Tenor</label>
+        <div class="detail-value"><span id="apTenor" class="code"></span></div></div>
+      </div>
+      <div class="subhead" style="margin-top:12px">Email Note</div>
+      <textarea id="apEmailNote" class="email-note"></textarea>
+    </div>
+    <div class="modal-foot">
+      <button id="apSendBtn" class="btn btn-primary" type="button">Send For Approval</button>
+      <button id="apSaveBtn" class="btn" type="button">Save</button>
+      <button id="apCancelBtn" class="btn btn-ghost" type="button">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="dmsModal" class="modal-bg">
+  <div class="modal large">
+    <div class="modal-head">
+      <div class="modal-title">Attach Document</div>
+      <button id="dmsClose" class="modal-close" type="button">X</button>
+    </div>
+    <div class="modal-body">
+      <div class="subhead">Bank Details</div>
+      <div class="dms-info-row">
+        <div class="cl-field dms-bp"><label>Business Partner</label>
+        <div class="detail-value"><span id="dmsBpDisplay" class="code"></span></div></div>
+        <div class="cl-field dms-bt"><label>Bank Type</label>
+        <div class="detail-value"><span id="dmsBankType" class="code"></span></div></div>
+        <div class="cl-field dms-lt"><label>Limit Type</label>
+        <div class="detail-value"><span id="dmsLimitType" class="code"></span></div></div>
+        <div class="cl-field dms-sd"><label>Start Date</label>
+        <div class="detail-value"><span id="dmsStartDate" class="code"></span></div></div>
+        <div class="cl-field dms-dc"><label>Document count</label>
+        <div class="detail-value"><span id="dmsDocCount" class="code"></span></div></div>
+      </div>
+      <div class="dms-card">
+        <div class="dms-card-head">DMS DATA</div>
+        <div class="table-wrap">
+          <table id="dmsTable" class="edit-table">
+            <thead id="dmsHead"></thead>
+            <tbody id="dmsBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <input id="dmsFileNative" type="file" style="display:none">
+    </div>
+    <div class="modal-foot">
+      <button id="dmsDoneBtn" class="btn btn-primary" type="button">&#10003; Approve</button>
+      <button id="dmsCancelBtn" class="btn btn-ghost" type="button">&#10005; Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="assignBpModal" class="modal-bg">
+  <div class="modal small">
+    <div class="modal-head">
+      <div class="modal-title">Assign BP</div>
+      <button id="assignBpClose" class="modal-close" type="button">X</button>
+    </div>
+    <div class="modal-body">
+      <div class="subhead">Assign Business Partner</div>
+      <div class="cl-row-single">
+        <div class="cl-field cl-bp"><label>Business Partner</label>
+        <div class="detail-value"><span id="abBpDisplay" class="code"></span></div></div>
+        <div class="cl-field cl-mid"><label>Group BP</label>
+        <select id="abGroupBp" class="select"></select></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button id="abAssignBtn" class="btn btn-primary" type="button">Assign</button>
+      <button id="abCancelBtn" class="btn btn-ghost" type="button">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="groupBpModal" class="modal-bg">
+  <div class="modal small">
+    <div class="modal-head">
+      <div class="modal-title">Create Group BP</div>
+      <button id="groupBpClose" class="modal-close" type="button">X</button>
+    </div>
+    <div class="modal-body">
+      <div class="subhead">Create Group BP</div>
+      <div class="cl-row-single">
+        <div class="cl-field cl-fit"><label>Group BP Code</label>
+        <div class="detail-value"><span id="gbCode" class="code"></span></div></div>
+        <div class="cl-field cl-mid"><label>Group BP Name</label>
+        <input id="gbName" class="input" type="text" placeholder="Enter group name"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button id="gbCreateBtn" class="btn btn-primary" type="button">Create</button>
+      <button id="gbCancelBtn" class="btn btn-ghost" type="button">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="toastRegion" class="toast-region" aria-live="polite"></div>
+<div class="statusbar"><span class="status-dot"></span><span id="statusText">Ready</span></div>
+
+<script type="text/javascript">
+(function(){
+var VERSION="v1";
+var HAS_EXTERNAL_PAYLOAD=typeof DASHBOARD_PAYLOAD!=="undefined";
+var DEFAULT_DATA={
+  companyCodes:[
+    {code:"AE13",name:"Olam International DMCC"},
+    {code:"AE11",name:"Olam Global Agri Pte. Ltd"},
+    {code:"SG03",name:"Olam Global Agri Pte. Ltd"}
+  ],
+  bankTypes:[
+    {code:"01",name:"Origination Bank"},
+    {code:"02",name:"Distribution Bank"}
+  ],
+  limitLevelChecks:[
+    {code:"BP",name:"BP Level"},
+    {code:"GRP",name:"Group BP Level"},
+    {code:"BPGRP",name:"BP & Group BP Level"}
+  ],
+  limitTypes:[
+    {code:"01",name:"Regular Limit"},
+    {code:"02",name:"Ad-Hoc Limit"}
+  ],
+  statusMap:{"01":"Limit Created","02":"Sent for Approval","05":"Limit Approved by Treasury Head (L3)","09":"Over-ridden with new Limit"},
+  traderMap:{"AE13":"T20 Ramona","AE11":"T15 Farah Yusof","SG03":"T20 Ramona"},
+  documentTypes:[
+    {code:"D01",desc:"IDD+ Reports"},{code:"D02",desc:"Financial Statement 01"},{code:"D03",desc:"Financial Statement 02"},
+    {code:"D04",desc:"Financial Statement 03"},{code:"D05",desc:"Financial Statement 04"},{code:"D06",desc:"Annual Report"},
+    {code:"D07",desc:"Investor Presentation 01"},{code:"D08",desc:"Investor Presentation 02"},
+    {code:"D09",desc:"Investor Presentation 03"},{code:"D10",desc:"Investor Presentation 04"},
+    {code:"D11",desc:"Investor Presentation 05"},{code:"D12",desc:"Investor Presentation 06"}
+  ],
+  businessPartners:[
+    {bankType:"02",code:"0660013444",name:"BANKIA_Madrid"},
+    {bankType:"02",code:"0660013443",name:"BANCO SANTANDER_Madrid"},
+    {bankType:"02",code:"0660013430",name:"ABANCA_Madrid"},
+    {bankType:"02",code:"0660012816",name:"ABSA BANK_Johannesburg"},
+    {bankType:"02",code:"0660013454",name:"ACCESS BANK_London"},
+    {bankType:"02",code:"0660012171",name:"ANZ Bank_SEA"},
+    {bankType:"02",code:"0660013468",name:"ARAB BANKING CORP_Singapore"},
+    {bankType:"02",code:"0660013440",name:"AXIS BANK_Singapore"},
+    {bankType:"02",code:"0660012542",name:"Abu Dhabi Commercial_Dubai"},
+    {bankType:"02",code:"0660015538",name:"Agriculture Bank of China"},
+    {bankType:"02",code:"0660013393",name:"BACB,UK"},
+    {bankType:"02",code:"0660013356",name:"BACB_London"},
+    {bankType:"02",code:"0660013455",name:"BANCO CONTINENTAL_Paraguay"},
+    {bankType:"02",code:"0660013441",name:"BANCO DE CREDITO_Miami"},
+    {bankType:"02",code:"0660013442",name:"BANCO DE CREDITO_Santiago"},
+    {bankType:"02",code:"0660013680",name:"BANCO DO BRASIL_LONDON"},
+    {bankType:"01",code:"0660013370",name:"ACCESS BANK PLC_Nigeria"},
+    {bankType:"01",code:"0660013454",name:"ACCESS BANK_London"},
+    {bankType:"01",code:"0660012542",name:"Abu Dhabi Commercial_Dubai"},
+    {bankType:"01",code:"0660015538",name:"Agriculture Bank of China"},
+    {bankType:"01",code:"0660013708",name:"BAC International Bank_Panama"},
+    {bankType:"01",code:"0660013544",name:"BANCO BRADESCO S.A._NEW YORK"},
+    {bankType:"01",code:"0660013455",name:"BANCO CONTINENTAL_Paraguay"},
+    {bankType:"01",code:"0660014570",name:"BANCO DE AMERICA CENTRAL, S.A."},
+    {bankType:"01",code:"0660013457",name:"BANCO DE BOGOTA_Colombia"},
+    {bankType:"01",code:"0660013459",name:"BANCO DE LA PRODUCCIO_Ecuador"},
+    {bankType:"01",code:"0660013458",name:"BANCO DEL PACIFICO_Ecuador"},
+    {bankType:"01",code:"0660013680",name:"BANCO DO BRASIL_LONDON"},
+    {bankType:"01",code:"0660013464",name:"BANCO DO BRASIL_NY"},
+    {bankType:"01",code:"0660012992",name:"BANCO DO BRASIL_Tokyo"}
+  ],
+  groupBps:[
+    {code:"GRP001",name:"Olam Treasury Group"},
+    {code:"GRP002",name:"Regional Banking Group"}
+  ],
+  nextGroupSeq:3,
+  records:[
+    {companyCode:"SG03",bankType:"02",bpCode:"0660013444",bpName:"BANKIA SA",limitType:"01",limitLevelCheck:"BP",
+      startDate:"2021-03-12",endDate:"2022-03-12",amount:100000000,statusCode:"05",documents:{}},
+    {companyCode:"SG03",bankType:"02",bpCode:"0660013444",bpName:"BANKIA SA",limitType:"01",limitLevelCheck:"BP",
+      startDate:"2026-09-10",endDate:"2027-09-10",amount:100000000,statusCode:"01",documents:{}},
+    {companyCode:"SG03",bankType:"02",bpCode:"0660013443",bpName:"BANCO SANTANDER SA",limitType:"01",limitLevelCheck:"BP",
+      startDate:"2022-04-04",endDate:"2023-04-04",amount:150000000,statusCode:"09",documents:{}},
+    {companyCode:"SG03",bankType:"02",bpCode:"0660013443",bpName:"BANCO SANTANDER SA",limitType:"01",limitLevelCheck:"BP",
+      startDate:"2023-04-04",endDate:"2024-04-04",amount:150000000,statusCode:"09",documents:{}},
+    {companyCode:"SG03",bankType:"02",bpCode:"0660013443",bpName:"BANCO SANTANDER SA",limitType:"01",limitLevelCheck:"BP",
+      startDate:"2024-04-04",endDate:"2025-04-04",amount:150000000,statusCode:"09",documents:{}},
+    {companyCode:"SG03",bankType:"02",bpCode:"0660013443",bpName:"BANCO SANTANDER SA",limitType:"01",limitLevelCheck:"BP",
+      startDate:"2025-04-04",endDate:"2026-04-04",amount:150000000,statusCode:"05",documents:{}},
+    {companyCode:"SG03",bankType:"02",bpCode:"0660013430",bpName:"ABANCA SA",limitType:"01",limitLevelCheck:"BP",
+      startDate:"2024-06-01",endDate:"2025-06-01",amount:75000000,statusCode:"05",documents:{}},
+    {companyCode:"SG03",bankType:"02",bpCode:"0660012816",bpName:"ABSA BANK LTD",limitType:"02",limitLevelCheck:"GRP",
+      startDate:"2025-01-15",endDate:"2025-07-15",amount:60000000,statusCode:"01",documents:{}},
+    {companyCode:"SG03",bankType:"02",bpCode:"0660013454",bpName:"ACCESS BANK PLC",limitType:"01",limitLevelCheck:"BPGRP",
+      startDate:"2023-09-20",endDate:"2024-09-20",amount:45000000,statusCode:"09",documents:{}},
+    {companyCode:"AE13",bankType:"01",bpCode:"0660013370",bpName:"ACCESS BANK PLC NIGERIA",limitType:"01",limitLevelCheck:"BP",
+      startDate:"2024-02-10",endDate:"2025-02-10",amount:120000000,statusCode:"05",documents:{}},
+    {companyCode:"AE13",bankType:"01",bpCode:"0660013370",bpName:"ACCESS BANK PLC NIGERIA",limitType:"01",limitLevelCheck:"BP",
+      startDate:"2026-09-10",endDate:"2027-09-10",amount:120000000,statusCode:"01",documents:{}},
+    {companyCode:"AE13",bankType:"01",bpCode:"0660012542",bpName:"ABU DHABI COMMERCIAL BANK",limitType:"01",limitLevelCheck:"BP",
+      startDate:"2023-05-05",endDate:"2024-05-05",amount:200000000,statusCode:"09",documents:{}},
+    {companyCode:"AE13",bankType:"01",bpCode:"0660012542",bpName:"ABU DHABI COMMERCIAL BANK",limitType:"01",limitLevelCheck:"BP",
+      startDate:"2024-05-05",endDate:"2025-05-05",amount:200000000,statusCode:"05",documents:{}},
+    {companyCode:"AE11",bankType:"01",bpCode:"0660015538",bpName:"AGRICULTURE BANK OF CHINA",limitType:"02",limitLevelCheck:"GRP",
+      startDate:"2025-03-18",endDate:"2025-09-18",amount:85000000,statusCode:"01",documents:{}},
+    {companyCode:"AE11",bankType:"01",bpCode:"0660013544",bpName:"BANCO BRADESCO S.A.",limitType:"01",limitLevelCheck:"BP",
+      startDate:"2022-08-08",endDate:"2023-08-08",amount:95000000,statusCode:"09",documents:{}},
+    {companyCode:"AE11",bankType:"01",bpCode:"0660013544",bpName:"BANCO BRADESCO S.A.",limitType:"01",limitLevelCheck:"BP",
+      startDate:"2023-08-08",endDate:"2024-08-08",amount:95000000,statusCode:"05",documents:{}},
+    {companyCode:"SG03",bankType:"02",bpCode:"0660013444",bpName:"BANKIA SA",limitType:"02",limitLevelCheck:"GRP",
+      startDate:"2026-09-11",endDate:"2027-09-11",amount:100000000,statusCode:"01",documents:{}},
+    {companyCode:"AE11",bankType:"01",bpCode:"0660015538",bpName:"AGRICULTURE BANK OF CHINA",limitType:"01",limitLevelCheck:"GRP",
+      startDate:"2026-09-11",endDate:"2027-03-11",amount:70000000,statusCode:"01",documents:{}},
+    {companyCode:"SG03",bankType:"02",bpCode:"0660013443",bpName:"BANCO SANTANDER SA",limitType:"01",limitLevelCheck:"BP",
+      startDate:"2019-01-01",endDate:"2020-01-01",amount:150000000,statusCode:"09",documents:{}},
+    {companyCode:"AE13",bankType:"01",bpCode:"0660012542",bpName:"ABU DHABI COMMERCIAL BANK",limitType:"01",limitLevelCheck:"BP",
+      startDate:"2028-01-01",endDate:"2029-01-01",amount:200000000,statusCode:"01",documents:{}}
+  ]
+};
+var DATA=HAS_EXTERNAL_PAYLOAD?DASHBOARD_PAYLOAD:DEFAULT_DATA;
+var state={listPage:1,pageSize:10,selectedIndex:-1,sort:{index:-1,direction:""}};
+var MAIN_COLUMNS=[
+  {key:"limitType",label:"Limit Type",width:90,compute:function(r){return r.limitType}},
+  {key:"bpCode",label:"BP",width:110},
+  {key:"bpName",label:"BP Name",width:180},
+  {key:"startDate",label:"Start Date",width:110,compute:function(r){return displayDate(r.startDate)}},
+  {key:"endDate",label:"End Date",width:110,compute:function(r){return displayDate(r.endDate)}},
+  {key:"amount",label:"Amount",width:130,number:true},
+  {key:"statusCode",label:"Limit Status",width:270,compute:function(r){return r.statusCode+" - "+(DATA.statusMap[r.statusCode]||"")}}
+];
+function byId(id){return document.getElementById(id)}
+function esc(value){var t=String(value==null?"":value);return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function money(value){var n=Number(value||0);var p=n.toFixed(2).split(".");p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,",");return p.join(".")}
+function parseAmountShorthand(text){
+  var m=String(text||"").trim().match(/^([0-9]*\.?[0-9]+)\s*(k|l|m|b|cr)$/i);
+  if(!m){return null}
+  var num=parseFloat(m[1]),unit=m[2].toLowerCase();
+  var multipliers={k:1000,l:100000,m:1000000,cr:10000000,b:1000000000};
+  return num*multipliers[unit]
+}
+function bindAmountShorthand(el){
+  el.addEventListener("keydown",function(e){
+    var key=e.key||"";
+    if(key!=="Enter"&&e.keyCode!==13){return}
+    var shorthand=parseAmountShorthand(el.value);
+    if(shorthand!==null){el.value=money(shorthand);e.preventDefault();return}
+    var plain=Number(String(el.value).replace(/,/g,""));
+    if(el.value!==""&&!isNaN(plain)){el.value=money(plain)}
+    e.preventDefault()
+  })
+}
+function bindAllAmountInputs(){
+  var els=document.getElementsByClassName("amount-input"),i;
+  for(i=0;i<els.length;i++){bindAmountShorthand(els[i])}
+}
+function setStatus(text){byId("statusText").innerHTML=esc(text)}
+function toast(message,kind){
+  var region=byId("toastRegion"),box=document.createElement("div"),icon=document.createElement("div"),body=document.createElement("div");
+  box.className="toast "+(kind||"");icon.className="toast-icon";icon.innerHTML=kind==="success"?"OK":"i";
+  body.innerHTML='<div class="toast-title">'+(kind==="success"?"Success":kind==="warning"?"Warning":"Information")+'</div>'+
+    '<div class="toast-message">'+esc(message)+'</div>';
+  box.appendChild(icon);box.appendChild(body);region.appendChild(box);
+  window.setTimeout(function(){if(box.parentNode){box.parentNode.removeChild(box)}},4200)
+}
+function displayDate(iso){
+  var m=String(iso||"").match(/^(\d{4})-(\d{2})-(\d{2})$/);if(!m){return iso||""}
+  return m[3]+"-"+m[2]+"-"+m[1]
+}
+function parseIso(iso){var m=String(iso||"").match(/^(\d{4})-(\d{2})-(\d{2})$/);if(!m){return null}return new Date(Number(m[1]),Number(m[2])-1,Number(m[3]))}
+function isoFromDisplay(text){
+  var m=String(text||"").match(/^(\d{2})-(\d{2})-(\d{4})$/);if(!m){return null}
+  return m[3]+"-"+m[2]+"-"+m[1]
+}
+function dayDiff(startIso,endIso){
+  var a=parseIso(startIso),b=parseIso(endIso);if(!a||!b){return 0}
+  return Math.round((b.getTime()-a.getTime())/86400000)
+}
+function headerHtml(columns){
+  var html="<tr>",i,c;for(i=0;i<columns.length;i++){c=columns[i];html+='<th style="width:'+(c.width||110)+'px">'+esc(c.label)+
+    '<span class="sort-arrows"><span class="sort-up"></span><span class="sort-down"></span></span></th>'}
+  return html+"</tr>"
+}
+function statusBadgeClass(code){
+  if(code==="05"){return "badge badge-closed"}
+  if(code==="09"){return "badge badge-override"}
+  if(code==="01"||code==="02"){return "badge badge-open"}
+  return "badge badge-created"
+}
+function fillSelect(id,items,valueKey,labelFn,placeholder){
+  var sel=byId(id),html=placeholder?'<option value="">'+esc(placeholder)+'</option>':"",i,it;
+  for(i=0;i<items.length;i++){it=items[i];html+='<option value="'+esc(it[valueKey])+'">'+esc(labelFn(it))+'</option>'}
+  sel.innerHTML=html
+}
+function initSelections(){
+  fillSelect("mlCompanyCode",DATA.companyCodes,"code",function(it){return it.code+" - "+it.name},"Select Company Code");
+  fillSelect("mlBankType",DATA.bankTypes,"code",function(it){return it.code+" "+it.name},"Select Bank Type");
+  fillSelect("mlLimitLevelCheck",DATA.limitLevelChecks,"code",function(it){return it.name},"Select Limit Level Check");
+  fillSelect("mlBankTypeFilter",DATA.bankTypes,"code",function(it){return it.code+" "+it.name},"Bank Type");
+  fillSelect("mlLimitLevelFilter",DATA.limitLevelChecks,"code",function(it){return it.name},"Limit Level Check");
+  byId("mlCompanyCode").onchange=onCompanyCodeChange;
+  byId("mlKeyDate").onchange=onBasicSelectionChange;
+  byId("mlKeyDateNative").onchange=function(){
+    if(this.value){byId("mlKeyDate").value=displayDate(this.value);onBasicSelectionChange()}
+  };
+  byId("mlBankType").onchange=onBankTypeChange;
+  byId("mlBusinessPartner").onchange=onBasicSelectionChange;
+  byId("mlLimitLevelCheck").onchange=onBasicSelectionChange
+}
+function onCompanyCodeChange(){
+  var cc=byId("mlCompanyCode").value;
+  byId("mlTrader").value=cc&&DATA.traderMap[cc]?DATA.traderMap[cc]:"";
+  onBasicSelectionChange()
+}
+function onBankTypeChange(){
+  var bt=byId("mlBankType").value,list=[],i;
+  for(i=0;i<DATA.businessPartners.length;i++){if(DATA.businessPartners[i].bankType===bt){list.push(DATA.businessPartners[i])}}
+  fillSelect("mlBusinessPartner",list,"code",function(it){return it.code+" "+it.name},"Select Business Partner");
+  onBasicSelectionChange()
+}
+function allFieldsFilled(){
+  return byId("mlCompanyCode").value&&byId("mlKeyDate").value&&byId("mlBankType").value&&
+    byId("mlBusinessPartner").value&&byId("mlLimitLevelCheck").value&&byId("mlTrader").value
+}
+function onBasicSelectionChange(){
+  if(allFieldsFilled()){
+    byId("mlResultsArea").style.display="block";
+    state.listPage=1;state.selectedIndex=-1;
+    renderMainList();
+    setStatus("Records loaded for "+byId("mlCompanyCode").value+" as of "+byId("mlKeyDate").value)
+  }else{
+    byId("mlResultsArea").style.display="none";
+    setStatus("Enter Company Code, Key Date, Bank Type, Business Partner and Limit Level Check")
+  }
+}
+function currentBpInfo(){
+  var code=byId("mlBusinessPartner").value,list=DATA.businessPartners,i;
+  for(i=0;i<list.length;i++){if(list[i].code===code&&list[i].bankType===byId("mlBankType").value){return list[i]}}
+  return null
+}
+function getFilteredRows(){
+  var cc=byId("mlCompanyCode").value,bt=byId("mlBankType").value,bp=byId("mlBusinessPartner").value,llc=byId("mlLimitLevelCheck").value;
+  var btFilter=byId("mlBankTypeFilter").value,llcFilter=byId("mlLimitLevelFilter").value,out=[],i,r;
+  for(i=0;i<DATA.records.length;i++){
+    r=DATA.records[i];
+    if(r.companyCode!==cc){continue}
+    if(r.bankType!==bt){continue}
+    if(r.bpCode!==bp){continue}
+    if(llc&&r.limitLevelCheck!==llc){continue}
+    if(btFilter&&r.bankType!==btFilter){continue}
+    if(llcFilter&&r.limitLevelCheck!==llcFilter){continue}
+    out.push(r)
+  }
+  return out
+}
+function renderPagination(totalRows){
+  var bar=byId("mlPaginationBar"),pages=Math.max(1,Math.ceil(totalRows/state.pageSize)),html="",startPage,endPage,p;
+  if(state.listPage>pages){state.listPage=pages}
+  html+='<button class="page-btn" data-page="prev" type="button"'+(state.listPage===1?' disabled="disabled"':'')+'>Previous</button>';
+  startPage=Math.max(1,state.listPage-1);endPage=Math.min(pages,startPage+2);startPage=Math.max(1,endPage-2);
+  for(p=startPage;p<=endPage;p++){html+='<button class="page-btn'+(p===state.listPage?' active':'')+'" data-page="'+p+'" type="button">'+p+'</button>'}
+  html+='<button class="page-btn" data-page="next" type="button"'+(state.listPage===pages?' disabled="disabled"':'')+'>Next</button>';
+  bar.innerHTML=html;
+  bar.onclick=function(e){
+    var target=e.target||e.srcElement,page=target.getAttribute("data-page");
+    if(!page||target.disabled){return}
+    if(page==="prev"){state.listPage-=1}else if(page==="next"){state.listPage+=1}else{state.listPage=parseInt(page,10)||1}
+    renderMainList()
+  }
+}
+function renderMainList(){
+  var rows=getFilteredRows(),body=byId("mlMainBody"),html="",i,j,r,c,val,start,end,pageRows;
+  byId("mlMainHead").innerHTML=headerHtml(MAIN_COLUMNS);
+  start=(state.listPage-1)*state.pageSize;end=Math.min(start+state.pageSize,rows.length);pageRows=rows.slice(start,end);
+  for(i=0;i<pageRows.length;i++){
+    r=pageRows[i];
+    html+='<tr data-index="'+DATA.records.indexOf(r)+'">';
+    for(j=0;j<MAIN_COLUMNS.length;j++){
+      c=MAIN_COLUMNS[j];val=c.compute?c.compute(r):r[c.key];
+      if(c.key==="statusCode"){
+        html+='<td><span class="'+statusBadgeClass(r.statusCode)+'">'+esc(val)+'</span></td>'
+      }else{
+        html+='<td class="'+(c.number?"number":"")+'">'+esc(c.number&&val!==""?money(val):val)+'</td>'
+      }
+    }
+    html+="</tr>"
+  }
+  if(!html){html='<tr><td colspan="'+MAIN_COLUMNS.length+'" class="empty">No records match the current selection.</td></tr>'}
+  body.innerHTML=html;
+  byId("mlDmsBtn").disabled=true;byId("mlAssignBpBtn").disabled=true;
+  renderPagination(rows.length);
+  bindRowClicks()
+}
+function bindRowClicks(){
+  byId("mlMainBody").onclick=function(e){
+    var target=e.target||e.srcElement,row=target;
+    while(row&&row.tagName&&row.tagName.toLowerCase()!=="tr"){row=row.parentNode}
+    if(!row||!row.getAttribute("data-index")){return}
+    var idx=parseInt(row.getAttribute("data-index"),10);state.selectedIndex=idx;
+    var trs=byId("mlMainBody").getElementsByTagName("tr"),i;
+    for(i=0;i<trs.length;i++){trs[i].className=""}
+    row.className="selected";
+    byId("mlDmsBtn").disabled=false;byId("mlAssignBpBtn").disabled=false;
+    var rec=DATA.records[idx];
+    if(rec.statusCode==="01"){openApprovalModal(idx)}
+  }
+}
+byId("mlFilterToggle").onclick=function(){
+  var body=byId("mlFilterBody"),open=body.className.indexOf("open")>=0;body.className=open?"filter-body":"filter-body open"
+};
+byId("mlBankTypeFilter").onchange=function(){state.listPage=1;renderMainList()};
+byId("mlLimitLevelFilter").onchange=function(){state.listPage=1;renderMainList()};
+byId("mlClearFilters").onclick=function(){
+  byId("mlBankTypeFilter").value="";byId("mlLimitLevelFilter").value="";state.listPage=1;renderMainList()
+};
+function openCreateLimitModal(){
+  var bp=currentBpInfo();if(!bp){toast("Select a Business Partner first.","warning");return}
+  byId("clBpDisplay").innerHTML=esc(bp.code+" "+bp.name);
+  fillSelect("clLimitType",DATA.limitTypes,"code",function(it){return it.code+" "+it.name});
+  byId("clStartDate").value="";byId("clEndDate").value="";byId("clLimitAmount").value="";byId("clTenor").value="";
+  byId("clEmailNote").value="";
+  byId("createLimitModal").className="modal-bg open"
+}
+function closeCreateLimitModal(){byId("createLimitModal").className="modal-bg"}
+byId("mlCreateLimitBtn").onclick=openCreateLimitModal;
+byId("createLimitClose").onclick=closeCreateLimitModal;
+byId("clCancelBtn").onclick=closeCreateLimitModal;
+byId("clStartDateNative").onchange=function(){if(this.value){byId("clStartDate").value=displayDate(this.value);recalcTenor()}};
+byId("clEndDateNative").onchange=function(){if(this.value){byId("clEndDate").value=displayDate(this.value);recalcTenor()}};
+byId("clStartDate").onchange=recalcTenor;
+byId("clEndDate").onchange=recalcTenor;
+function recalcTenor(){
+  var s=isoFromDisplay(byId("clStartDate").value),e=isoFromDisplay(byId("clEndDate").value);
+  if(s&&e){byId("clTenor").value=dayDiff(s,e)}
+}
+byId("clCreateBtn").onclick=function(){
+  var s=isoFromDisplay(byId("clStartDate").value),e=isoFromDisplay(byId("clEndDate").value);
+  var amount=Number(String(byId("clLimitAmount").value).replace(/,/g,""))||0;
+  if(!s||!e||!amount){toast("Enter Start Date, End Date and Limit Amount.","warning");return}
+  var bp=currentBpInfo();
+  var record={companyCode:byId("mlCompanyCode").value,bankType:byId("mlBankType").value,bpCode:bp.code,bpName:bp.name,
+    limitType:byId("clLimitType").value,limitLevelCheck:byId("mlLimitLevelCheck").value,startDate:s,endDate:e,
+    amount:amount,statusCode:"01",documents:{},emailNote:byId("clEmailNote").value};
+  DATA.records.push(record);
+  var newIndex=DATA.records.length-1;
+  closeCreateLimitModal();
+  state.listPage=1;renderMainList();
+  toast("Limit created successfully.","success");
+  setStatus("New limit created for "+bp.code+" "+bp.name);
+  openDmsModal(newIndex)
+};
+function openApprovalModal(idx){
+  var r=DATA.records[idx];state.selectedIndex=idx;
+  byId("apBpDisplay").innerHTML=esc(r.bpCode+" "+r.bpName);
+  var lt=DATA.limitTypes.filter(function(it){return it.code===r.limitType})[0];
+  byId("apLimitType").innerHTML=esc(r.limitType+" "+(lt?lt.name:""));
+  byId("apStartDate").innerHTML=esc(displayDate(r.startDate));
+  byId("apEndDate").innerHTML=esc(displayDate(r.endDate));
+  byId("apLimitAmount").innerHTML=esc(money(r.amount));
+  byId("apTenor").innerHTML=esc(dayDiff(r.startDate,r.endDate));
+  byId("apEmailNote").value=r.emailNote||"";
+  byId("approvalModal").className="modal-bg open"
+}
+function closeApprovalModal(){byId("approvalModal").className="modal-bg"}
+byId("approvalClose").onclick=closeApprovalModal;
+byId("apCancelBtn").onclick=closeApprovalModal;
+byId("apSaveBtn").onclick=function(){
+  var r=DATA.records[state.selectedIndex];if(r){r.emailNote=byId("apEmailNote").value}
+  closeApprovalModal();toast("Draft saved.","")
+};
+byId("apSendBtn").onclick=function(){
+  var r=DATA.records[state.selectedIndex];if(!r){return}
+  r.statusCode="02";r.emailNote=byId("apEmailNote").value;
+  closeApprovalModal();renderMainList();
+  toast("Limit has been sent for approval successfully.","success");
+  setStatus("Limit "+r.bpCode+" sent for approval")
+};
+function openDmsModal(idx){
+  if(typeof idx==="number"){state.selectedIndex=idx}
+  if(state.selectedIndex<0){toast("Select a record to attach documents.","warning");return}
+  var r=DATA.records[state.selectedIndex];
+  var bt=DATA.bankTypes.filter(function(it){return it.code===r.bankType})[0];
+  var lt=DATA.limitTypes.filter(function(it){return it.code===r.limitType})[0];
+  byId("dmsBankType").innerHTML=esc(r.bankType+" "+(bt?bt.name:""));
+  byId("dmsLimitType").innerHTML=esc(r.limitType+" "+(lt?lt.name:""));
+  byId("dmsStartDate").innerHTML=esc(displayDate(r.startDate));
+  byId("dmsBpDisplay").innerHTML=esc(r.bpCode+" "+r.bpName);
+  renderDmsTable();
+  byId("dmsModal").className="modal-bg open"
+}
+function closeDmsModal(){byId("dmsModal").className="modal-bg"}
+function docCount(r){var c=0,k;for(k in r.documents){if(r.documents[k]&&r.documents[k].uploaded){c+=1}}return c}
+function genDmsCode(){return "DMSD"+String(100000+Math.floor(Math.random()*899999))}
+function renderDmsTable(){
+  var r=DATA.records[state.selectedIndex],keyDate=byId("mlKeyDate").value,html,i,d,doc;
+  byId("dmsDocCount").innerHTML=esc(docCount(r));
+  byId("dmsHead").innerHTML=headerHtml([
+    {label:"Doc Type",width:60},{label:"Doc Type Desc",width:140},{label:"Doc Date",width:135},{label:"File Path",width:165},
+    {label:"DMS Code",width:95},{label:"Upload",width:65},{label:"Download",width:75},{label:"Edit",width:65}
+  ]);
+  html="";
+  for(i=0;i<DATA.documentTypes.length;i++){
+    d=DATA.documentTypes[i];doc=r.documents[d.code]||{date:keyDate,fileName:"",uploaded:false,dmsCode:""};
+    html+='<tr data-doc="'+d.code+'"><td>'+esc(d.code)+'</td><td>'+esc(d.desc)+'</td>'+
+      '<td class="editable"><div class="date-input-wrap compact"><input class="cell-input dms-date" type="text"'+
+      ' value="'+esc(doc.date||keyDate)+'" placeholder="DD-MM-YYYY"><div class="calendar-btn-wrap">'+
+      '<button class="calendar-btn" type="button" tabindex="-1" aria-hidden="true"></button>'+
+      '<input class="calendar-native dms-date-native" type="date"></div></div></td>'+
+      '<td class="editable"><input class="cell-input dms-file" type="text" readonly value="'+esc(doc.fileName||"")+'"'+
+      (doc.uploaded?'':' style="cursor:pointer"')+'></td>'+
+      '<td>'+esc(doc.dmsCode||"")+'</td>'+
+      '<td class="icon-cell"><button class="dms-action-btn dms-upload" type="button"'+(doc.uploaded?' disabled':'')+'>Upload</button></td>'+
+      '<td class="icon-cell"><button class="dms-action-btn dms-download" type="button"'+(doc.uploaded?'':' disabled')+'>Download</button></td>'+
+      '<td class="icon-cell"><button class="dms-action-btn dms-edit" type="button"'+(doc.uploaded?'':' disabled')+'>Edit</button></td></tr>'
+  }
+  byId("dmsBody").innerHTML=html;
+  bindDmsRowEvents()
+}
+function bindDmsRowEvents(){
+  var rows=byId("dmsBody").getElementsByTagName("tr"),i;
+  for(i=0;i<rows.length;i++){
+    (function(row){
+      var code=row.getAttribute("data-doc"),pendingFile=null;
+      var fileInput=row.getElementsByClassName("dms-file")[0],dateInput=row.getElementsByClassName("dms-date")[0];
+      var dateNative=row.getElementsByClassName("dms-date-native")[0];
+      var uploadBtn=row.getElementsByClassName("dms-upload")[0],downloadBtn=row.getElementsByClassName("dms-download")[0];
+      var editBtn=row.getElementsByClassName("dms-edit")[0];
+      function currentDoc(){var r=DATA.records[state.selectedIndex];r.documents[code]=r.documents[code]||{};return r.documents[code]}
+      dateInput.onchange=function(){currentDoc().date=dateInput.value};
+      dateNative.onchange=function(){if(this.value){dateInput.value=displayDate(this.value);currentDoc().date=dateInput.value}};
+      fileInput.onclick=function(){
+        if(currentDoc().uploaded){return}
+        byId("dmsFileNative").onchange=function(){
+          var f=this.files&&this.files[0]?this.files[0]:null;
+          if(f){pendingFile=f;fileInput.value=f.name}
+          byId("dmsFileNative").value=""
+        };
+        byId("dmsFileNative").click()
+      };
+      uploadBtn.onclick=function(){
+        if(!pendingFile){toast("Select a file before uploading.","warning");return}
+        var doc=currentDoc(),code2=genDmsCode();
+        doc.fileName=pendingFile.name;doc.fileObj=pendingFile;doc.uploaded=true;doc.dmsCode=code2;doc.date=dateInput.value;
+        row.getElementsByTagName("td")[4].innerHTML=esc(code2);
+        uploadBtn.disabled=true;downloadBtn.disabled=false;editBtn.disabled=false;
+        fileInput.style.cursor="default";
+        byId("dmsDocCount").innerHTML=esc(docCount(DATA.records[state.selectedIndex]));
+        toast("Document uploaded successfully for "+code+".","success")
+      };
+      downloadBtn.onclick=function(){
+        var doc=currentDoc();if(!doc.uploaded||!doc.fileObj){return}
+        var url=URL.createObjectURL(doc.fileObj),a=document.createElement("a");
+        a.href=url;a.download=doc.fileName;document.body.appendChild(a);a.click();
+        document.body.removeChild(a);URL.revokeObjectURL(url)
+      };
+      editBtn.onclick=function(){
+        byId("dmsFileNative").onchange=function(){
+          var f=this.files&&this.files[0]?this.files[0]:null;
+          if(f){
+            var doc=currentDoc(),code2=genDmsCode();
+            doc.fileName=f.name;doc.fileObj=f;doc.dmsCode=code2;
+            fileInput.value=f.name;row.getElementsByTagName("td")[4].innerHTML=esc(code2);
+            toast("Document updated successfully for "+code+".","success")
+          }
+          byId("dmsFileNative").value=""
+        };
+        byId("dmsFileNative").click()
+      }
+    })(rows[i])
+  }
+}
+byId("mlDmsBtn").onclick=openDmsModal;
+byId("dmsClose").onclick=closeDmsModal;
+byId("dmsCancelBtn").onclick=closeDmsModal;
+byId("dmsDoneBtn").onclick=function(){closeDmsModal();toast("Documents approved successfully.","success")};
+function openAssignBpModal(){
+  if(state.selectedIndex<0){toast("Select a record to assign business partner.","warning");return}
+  var r=DATA.records[state.selectedIndex];
+  byId("abBpDisplay").innerHTML=esc(r.bpCode+" "+r.bpName);
+  fillSelect("abGroupBp",DATA.groupBps,"code",function(it){return it.code+" "+it.name},"Select Group BP");
+  byId("assignBpModal").className="modal-bg open"
+}
+function closeAssignBpModal(){byId("assignBpModal").className="modal-bg"}
+byId("mlAssignBpBtn").onclick=openAssignBpModal;
+byId("assignBpClose").onclick=closeAssignBpModal;
+byId("abCancelBtn").onclick=closeAssignBpModal;
+byId("abAssignBtn").onclick=function(){
+  if(!byId("abGroupBp").value){toast("Select a Group BP.","warning");return}
+  closeAssignBpModal();toast("Business Partner assigned to group successfully.","success")
+};
+function openGroupBpModal(){
+  byId("gbCode").innerHTML=esc("GRP"+String(DATA.nextGroupSeq).padStart(3,"0"));
+  byId("gbName").value="";
+  byId("groupBpModal").className="modal-bg open"
+}
+function closeGroupBpModal(){byId("groupBpModal").className="modal-bg"}
+byId("mlCreateGroupBpBtn").onclick=openGroupBpModal;
+byId("groupBpClose").onclick=closeGroupBpModal;
+byId("gbCancelBtn").onclick=closeGroupBpModal;
+byId("gbCreateBtn").onclick=function(){
+  var name=byId("gbName").value;if(!name){toast("Enter a Group BP name.","warning");return}
+  var code="GRP"+String(DATA.nextGroupSeq).padStart(3,"0");DATA.nextGroupSeq+=1;
+  DATA.groupBps.push({code:code,name:name});
+  closeGroupBpModal();toast("Group BP "+code+" created successfully.","success")
+};
+byId("mlRefreshBtn").onclick=function(){
+  byId("mlBankTypeFilter").value="";byId("mlLimitLevelFilter").value="";state.listPage=1;
+  if(allFieldsFilled()){renderMainList()}
+  toast("Data refreshed.","success");
+  setStatus("Data refreshed")
+};
+document.onkeydown=function(e){
+  var x=e||window.event;
+  if(x.keyCode===27){
+    closeCreateLimitModal();closeApprovalModal();closeDmsModal();closeAssignBpModal();closeGroupBpModal()
+  }
+  return true
+};
+byId("topRefreshBtn").onclick=function(){location.reload()};
+initSelections();
+bindAllAmountInputs();
+byId("statusText").innerHTML="Ready - "+VERSION;
+})();
+</script>
+</body>
+</html>
