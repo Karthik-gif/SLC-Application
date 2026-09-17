@@ -2,7 +2,7 @@
 
 An API- and OData-driven application platform. One Node gateway fronts every backend — SAP
 OData services, the SAP dynamic gateway, and non-SAP REST APIs — and one React SPA hosts
-every application behind a sign-in page and a launcher.
+every application behind a sign-in page and a menu hub.
 
 ```
 browser ──▶ React SPA (one origin)
@@ -27,11 +27,28 @@ npm run dev               # gateway on :8080, Vite on :5173 — open :5173
 Sign in with `DEMO_USER` / `DEMO_PASSWORD` (`demo` / `demo` by default).
 
 Without a SAP password the gateway still starts: it logs each unusable backend and answers
-calls to them with `503` naming the missing variable, so sign-in, the launcher and any app
+calls to them with `503` naming the missing variable, so sign-in, the hub and any app
 that does not need SAP all work.
 
 For a production-shaped run: `npm run build && npm start`, then open `:8080` — the gateway
 serves the built SPA itself.
+
+## The hub
+
+Signing in lands on the menu hub. A sidebar rests as a 64px icon rail and widens on hover —
+or when a keyboard user tabs into it — to reach five sections:
+
+| Section | Route | Holds |
+|---|---|---|
+| Overview | `/overview` | KPIs, exposure and volume charts, recent activity. **Placeholder figures — nothing here is read from SAP.** |
+| Master Data | `/master-data` | Reference-data tiles. **Placeholders — nothing is wired behind them.** |
+| Functionality | `/` | The menu path itself: the tile and folder tree from `config/menu.json` that launches every application |
+| Reporting | `/reporting` | Stub |
+| Admin | `/admin` | Stub |
+
+Functionality keeps `/` because every converted application's Back button returns there.
+Overview's figures live in one module, `apps/web/src/menu/mock/overview.ts`; swapping in a
+live feed is a change to that file and nothing else.
 
 ## Commands
 
@@ -50,20 +67,25 @@ serves the built SPA itself.
 config/
   services.json     backend registry — odata | dyngw | rest
   apps.json         application registry — tile code -> route, status, backends
-  menu.json         launcher tree, extracted verbatim from the legacy Menu Path.html
+  menu.json         menu path tree, extracted verbatim from the legacy Menu Path.html
 packages/
   gateway/          Node + Fastify: registry, auth, CSRF, proxy, static hosting
   api-client/       shared client — apiFetch, OData helpers, React hooks
   ui/               design tokens and shared React components
-apps/web/           the SPA: login, launcher, and one lazy route per application
+apps/web/           the SPA: login, the hub, and one lazy route per application
+  src/menu/         the hub shell — sidebar, the five sections, and its SVG charts
+  src/features/     one folder per application
 legacy/             the original single-file HTML apps, kept as the conversion reference
 ```
 
 ## Status
 
-The framework is complete and verified end to end. The six applications are **scaffolded,
-not converted** — each has a route, a shell and a page stating what remains. Their logic
-still lives in `legacy/`.
+The framework is complete and verified end to end. `config/apps.json` is the registry of
+record — it carries every application's route, status, legacy source and permitted
+backends, so the list is not repeated here and this section does not drift as more land.
+
+**21 applications are registered. Four are `ready`** — converted and exercised against the
+gateway:
 
 | Application | Route | Backends | Legacy source |
 |---|---|---|---|
@@ -71,11 +93,16 @@ still lives in `legacy/`.
 | Distribution Ticket (DTTK) | `/apps/dttk` | `dttk`, `ottk` | `legacy/DTTK.html` |
 | Deal ID Creation | `/apps/deal-id` | `dealid`, `ottk`, `dttk` | `legacy/Deal ID.html` |
 | Trade Flow Upload | `/apps/tf-upload` | `tf` | `legacy/Uplaod TF.html` |
-| Manage Trade Flows | `/apps/tf-manage` | none yet | `legacy/Manage TF.html` |
-| Amend BLs & Finalise Invoices | `/apps/invoice` | none yet | `legacy/Invoice.html` |
 
-The last two have never called an API — they run on hard-coded dummy data, so their SAP
-contract is still undefined.
+**The other 17 are `scaffold`** — ICL, SBLC, LC issuance, discounting loans, IRS,
+prepayment, limits, Manage Trade Flows and Invoice. Their routes exist and render, and
+several have their legacy screen substantially converted, but **not one is wired to a
+backend yet**: every one of them has an empty `services` list, so they run on local data.
+
+`Manage TF` and `Invoice` never called an API even in their legacy form — they ran on a
+hard-coded `DUMMY_MASTER_DATA` literal, so their SAP contract has to be designed rather
+than ported. See
+[the Manage TF conversion design](docs/superpowers/specs/2026-09-16-tf-manage-conversion-design.md).
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how it works and why, and
 [docs/ADDING-AN-APP.md](docs/ADDING-AN-APP.md) for the steps to add or convert one.
