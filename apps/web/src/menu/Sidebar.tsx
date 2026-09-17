@@ -12,10 +12,10 @@ const ICON_ADMIN =
 
 type SidebarItem = { to: string; label: string; icon: string; end?: boolean }
 
-/** Order is the order the sections were asked for; Functionality keeps `/`. */
+/** Display order is independent of the routes; Functionality still owns `/`. */
 const ITEMS: SidebarItem[] = [
-  { to: '/master-data', label: 'Master Data', icon: ICON_MASTER_DATA },
   { to: '/overview', label: 'Overview', icon: ICON_OVERVIEW },
+  { to: '/master-data', label: 'Master Data', icon: ICON_MASTER_DATA },
   { to: '/', label: 'Functionality', icon: ICON_FUNCTIONALITY, end: true },
   { to: '/reporting', label: 'Reporting', icon: ICON_REPORTING },
   { to: '/admin', label: 'Admin', icon: ICON_ADMIN },

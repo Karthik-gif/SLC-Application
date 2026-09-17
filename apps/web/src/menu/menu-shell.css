@@ -8,44 +8,35 @@
   display: flex;
   flex: 1;
   min-height: 0;
-  /* Anchors the rail, which is taken out of flow below. */
-  position: relative;
 }
 
 /*
- * The sidebar rests as a 64px icon rail and widens to 224px on hover or keyboard focus.
- *
- * It is absolutely positioned so the expansion overlays the content instead of pushing it:
- * a rail in normal flow would reflow the tile grid on every pointer entry, reflowing a
- * 21-tile layout under the cursor. <main> gets a matching left margin instead, which
- * reserves the resting width once and never changes.
+ * The sidebar rests as a 64px icon rail and widens to 224px on hover, or when a keyboard
+ * user tabs into it. It stays in normal flow, so widening it pushes <main> to the right
+ * rather than covering it — the content is never hidden behind the panel.
  */
 .mp-side {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
   width: 64px;
-  z-index: 20;
+  flex-shrink: 0;
   background: var(--white);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
-  transition: width 0.18s ease, box-shadow 0.18s ease;
+  transition: width 0.18s ease;
 }
 
-/* :focus-within as well as :hover — tabbing into the nav must reveal the labels too,
- * since a keyboard user never generates a hover. */
+/*
+ * :focus-visible, not :focus-within. A plain :focus-within would keep the rail open after
+ * a mouse click, because the clicked link keeps focus once the pointer has left — so the
+ * panel would stay stuck open until you clicked elsewhere. :focus-visible only matches
+ * focus the browser judges keyboard-driven, so a click collapses on leave as expected
+ * while tabbing still reveals the labels.
+ */
 .mp-side:hover,
-.mp-side:focus-within {
+.mp-side:has(.mp-side-item:focus-visible) {
   width: 224px;
-  box-shadow: 0 14px 32px -12px rgba(21, 101, 192, 0.3);
-}
-
-.mp-body > main {
-  margin-left: 64px;
 }
 
 .mp-side-items {
@@ -97,7 +88,7 @@
 }
 
 .mp-side:hover .mp-side-label,
-.mp-side:focus-within .mp-side-label {
+.mp-side:has(.mp-side-item:focus-visible) .mp-side-label {
   opacity: 1;
 }
 
@@ -372,8 +363,7 @@
   }
   .mp-side,
   .mp-side:hover,
-  .mp-side:focus-within {
-    position: static;
+  .mp-side:has(.mp-side-item:focus-visible) {
     width: 100%;
     flex-direction: row;
     justify-content: flex-start;
@@ -381,7 +371,6 @@
     border-bottom: 1px solid var(--border);
     overflow-x: auto;
     overflow-y: hidden;
-    box-shadow: none;
   }
   .mp-side-items {
     flex-direction: row;
@@ -393,8 +382,5 @@
   }
   .mp-side-label {
     opacity: 1;
-  }
-  .mp-body > main {
-    margin-left: 0;
   }
 }
