@@ -11,10 +11,28 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  /* The generated shadow is almost invisible (5% black), which left every card, tile and
+   * panel looking like a flat outline on the tinted background. This keeps the same three
+   * layers but tints them with the page's own navy instead of pure black and gives the
+   * mid layer real depth, so cards sit above the page rather than being drawn on it.
+   * Redefining the token rather than each component means tiles, KPI cards, panels, stubs
+   * and the back button all lift together. */
+  --shadow-md:
+    0 1px 2px rgba(13, 42, 74, 0.05),
+    0 10px 24px -10px rgba(13, 42, 74, 0.16),
+    0 0 0 1px rgba(204, 224, 245, 0.55);
 }
 
+/* Lifted off the content so the header reads as a fixed bar rather than a white strip that
+ * happens to be on top. z-index is needed because the sidebar's own opaque white background
+ * would otherwise paint over the shadow. */
 .mp header {
   flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  box-shadow:
+    0 1px 2px rgba(13, 42, 74, 0.04),
+    0 10px 24px -16px rgba(13, 42, 74, 0.22);
 }
 
 .mp main {
