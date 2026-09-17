@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { SignOutButton } from '../auth/SignOutButton.tsx'
 import { apiFetch } from '@slc/api-client'
@@ -20,6 +20,11 @@ import './menu-shell.css'
  * Fetches the menu tree and the app registry, resolves tiles through config/apps.json to an
  * in-app route, and owns the toast shown when a tile launches or fails to. The tile browser
  * itself — the faithful reproduction of legacy/Menu Path.html — lives in FunctionalityView.
+ *
+ * The header and toast markup below is still legacy-governed: the brand, brand-logo, brand-text,
+ * path-switch, ps-label, status-dot, header-right and toast classes are all defined in the
+ * generated, .mp-scoped menu-path.css. Anything here that looks simplifiable is most likely
+ * load-bearing for the appearance — check the original before changing it.
  */
 
 const BRAND_LOGO =
@@ -30,6 +35,13 @@ export type HubSection = 'master-data' | 'overview' | 'functionality' | 'reporti
 export function MenuPage({ section }: { section: HubSection }) {
   const navigate = useNavigate()
   const [toast, setToast] = useState<string>()
+  // menu-path.overrides.css makes <main>, not the document, the scroll container (.mp has
+  // overflow: hidden and .mp main has overflow-y: auto), so scrolling the page back to the
+  // top on navigation means scrolling this element, not window.scrollTo.
+  const mainRef = useRef<HTMLElement | null>(null)
+  const scrollToTop = useCallback(() => {
+    mainRef.current?.scrollTo(0, 0)
+  }, [])
 
   const menu = useAsync<MenuNode[]>(() => apiFetch<MenuNode[]>('/config/menu.json'), [])
   const registry = useAsync<{ apps: AppEntry[] }>(() => apiFetch('/config/apps.json'), [])
@@ -90,7 +102,7 @@ export function MenuPage({ section }: { section: HubSection }) {
 
       <div className="mp-body">
         <Sidebar />
-        <main>
+        <main ref={mainRef}>
           {section === 'master-data' ? (
             <MasterDataView onToast={showToast} />
           ) : section === 'overview' ? (
@@ -100,7 +112,12 @@ export function MenuPage({ section }: { section: HubSection }) {
           ) : section === 'admin' ? (
             <AdminView />
           ) : (
-            <FunctionalityView groups={groups} onLaunch={launch} onToast={showToast} />
+            <FunctionalityView
+              groups={groups}
+              onLaunch={launch}
+              onToast={showToast}
+              scrollToTop={scrollToTop}
+            />
           )}
         </main>
       </div>

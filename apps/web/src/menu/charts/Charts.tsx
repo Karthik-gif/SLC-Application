@@ -34,8 +34,11 @@ export function Sparkline({ values, rising }: { values: number[]; rising: boolea
 
 export function BarChart({ data, unit, title }: { data: Slice[]; unit: string; title: string }) {
   const max = Math.max(...data.map((d) => d.value), 0)
+  // Not role="img": unlike the donut and line charts, this content is real text (six product
+  // labels and values) that a screen reader should be able to read individually, not collapse
+  // into a single image label. role="group" keeps it labelled without hiding it.
   return (
-    <div className="mp-bars" role="img" aria-label={title}>
+    <div className="mp-bars" role="group" aria-label={title}>
       {data.map((slice, index) => (
         <div className="mp-bar-row" key={slice.label}>
           <div className="mp-bar-label">{slice.label}</div>

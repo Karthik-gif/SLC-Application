@@ -16,10 +16,13 @@ function folderDesc(node: MenuNode): string {
  * legacy/Menu Path.html. Moved out of MenuPage unchanged when the hub gained a sidebar —
  * the markup below is still that page's, element for element and class for class.
  */
-export function FunctionalityView({ groups, onLaunch, onToast }: {
+export function FunctionalityView({ groups, onLaunch, onToast, scrollToTop }: {
   groups: MenuNode[]
   onLaunch: (tile: MenuTile) => void
   onToast: (message: string) => void
+  // <main>, not the document, is the scroll container here (see MenuPage), so drilling in or
+  // going up must scroll that element back to the top, not call window.scrollTo.
+  scrollToTop: () => void
 }) {
   const [path, setPath] = useState<number[]>([])
 
@@ -55,14 +58,14 @@ export function FunctionalityView({ groups, onLaunch, onToast }: {
         return
       }
       setPath(target)
-      window.scrollTo(0, 0)
+      scrollToTop()
     },
-    [nodeAt, onToast],
+    [nodeAt, onToast, scrollToTop],
   )
 
   const goUp = () => {
     setPath((current) => (current.length > 2 ? current.slice(0, -1) : []))
-    window.scrollTo(0, 0)
+    scrollToTop()
   }
 
   const current = path.length ? nodeAt(path) : undefined

@@ -163,6 +163,8 @@
   font-weight: 600;
 }
 
+/* The .mp custom-property set is blue-only and has no way to express "good"/"bad" direction
+ * or a warning state, so these four values (delta up/down and the pending pill) are literal. */
 .mp-kpi-delta.up {
   color: #0f8a5f;
 }

@@ -26,9 +26,13 @@ export function OverviewView() {
           <div className="mp-kpi" key={kpi.label}>
             <div className="mp-kpi-label">{kpi.label}</div>
             <div className="mp-kpi-value">{kpi.value}</div>
-            <div className={kpi.delta >= 0 ? 'mp-kpi-delta up' : 'mp-kpi-delta down'}>
+            <div
+              className={kpi.delta >= 0 ? 'mp-kpi-delta up' : 'mp-kpi-delta down'}
+              aria-label={`${kpi.delta >= 0 ? 'Up' : 'Down'} ${Math.abs(kpi.delta).toFixed(1)}% ${kpi.deltaNote}`}
+            >
               {/* An arrow as well as the colour, so the direction survives a greyscale print
-                  or a red-green colour deficiency. */}
+                  or a red-green colour deficiency. The aria-label above says the direction in
+                  words, since Math.abs() below strips the sign a screen reader could otherwise use. */}
               <span aria-hidden="true">{kpi.delta >= 0 ? '▲' : '▼'}</span>
               {Math.abs(kpi.delta).toFixed(1)}% {kpi.deltaNote}
             </div>
