@@ -22,9 +22,12 @@
   min-width: 0;
   overflow-y: auto;
   /* Was 75%, which left a quarter of the viewport empty on the right. The sidebar takes
-   * that space from the left instead, so the tile grid keeps its width. max-width:1700px
-   * from the generated file still applies. */
+   * that space from the left instead, so the tile grid keeps its width. */
   width: auto;
+  /* Was 1700px. <main> is the scroll container, so capping its width also moved its
+   * scrollbar inwards — on a 1920px screen it sat 156px short of the window edge, floating
+   * in the background rather than sitting at the right end. */
+  max-width: none;
 }
 
 /*
