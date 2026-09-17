@@ -109,7 +109,7 @@ export function LineChart({ data, title }: { data: { month: string; value: numbe
 
   return (
     <div className="mp-line-wrap">
-      <svg className="mp-line" viewBox={`-6 -10 ${width + 60} ${height + 40}`} role="img" aria-label={title}>
+      <svg className="mp-line" viewBox={`-12 -10 ${width + 66} ${height + 40}`} role="img" aria-label={title}>
         <title>{title}</title>
         {ticks.map((tick) => {
           const y = scaleLinear({ min: 0, max: top }, { min: height, max: 0 }, tick)
