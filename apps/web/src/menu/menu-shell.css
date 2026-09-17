@@ -16,6 +16,12 @@
  * rather than covering it — the content is never hidden behind the panel.
  */
 .mp-side {
+  position: relative;
+  /* Not decorative: position:relative alone leaves z-index auto, which does NOT open a
+   * stacking context, so the arch below would escape to the nearest one and paint behind
+   * .mp's opaque background — invisible. z-index:0 confines it here, above this element's
+   * own background but below its content. Same reason on .mp-body > main. */
+  z-index: 0;
   width: 64px;
   flex-shrink: 0;
   background: var(--white);
@@ -25,6 +31,35 @@
   overflow-y: auto;
   overflow-x: hidden;
   transition: width 0.18s ease;
+}
+
+/*
+ * A decorative arch/doorway silhouette in the rail's empty space below the nav items —
+ * pure CSS, no image asset: a tall box with fully rounded top corners reads as an arch.
+ * z-index:-1 relies on .mp-side's own position:relative above: a negative-z-index child
+ * paints before its container's normal-flow descendants, so the nav links always stay on
+ * top without needing a z-index of their own. Non-interactive and purely decorative.
+ */
+.mp-side::after {
+  content: '';
+  position: absolute;
+  bottom: 28px;
+  /* Anchored to the rail's own 10px gutter, not centred: a 50% centre would slide the arch
+   * sideways every time the rail expands on hover. This keeps it under the icon column. */
+  left: 10px;
+  z-index: -1;
+  /* Sized to the 64px rail, not the 224px expanded width: the rail clips horizontally, so
+   * anything wider than it would show only a featureless vertical slice of the curve. */
+  width: 44px;
+  height: 64px;
+  border-radius: 50% 50% 0 0;
+  /* --blue-pale sits too close in lightness to the page's own --bg to read at all; --blue-pale2
+   * is the next step up in saturation and is still one of the page's own tokens. The gradient
+   * runs top-down so the arch's curved crown — the part that actually reads as an arch —
+   * carries the colour, and it fades out before the flat bottom edge. */
+  background: linear-gradient(180deg, var(--blue-pale2) 0%, transparent 85%);
+  opacity: 0.55;
+  pointer-events: none;
 }
 
 /*
@@ -90,6 +125,38 @@
 .mp-side:hover .mp-side-label,
 .mp-side:has(.mp-side-item:focus-visible) .mp-side-label {
   opacity: 1;
+}
+
+/*
+ * The same arch motif, larger and softer, behind every section's page title — one rule on
+ * the shared <main> wrapper reaches Overview, Master Data, Functionality, Reporting and
+ * Admin alike, so no section file needs its own copy. overflow-x:hidden keeps the shape,
+ * which is deliberately wider than the corner it sits in, from ever forcing a horizontal
+ * scrollbar. See .mp-side::after above for why z-index:-1 is enough to stay behind the
+ * content without the content needing a z-index of its own.
+ */
+.mp-body > main {
+  position: relative;
+  /* See .mp-side — z-index:0 is what actually makes the negative-z arch visible. */
+  z-index: 0;
+  overflow-x: hidden;
+}
+
+.mp-body > main::before {
+  content: '';
+  position: absolute;
+  /* Kept fully inside main's box: main clips its overflow, so a negative top would shear the
+   * crown flat and lose the arch entirely. This lands the curve in the open band beside the
+   * page title, above where the first row of cards or tiles begins. */
+  top: 6px;
+  right: 48px;
+  z-index: -1;
+  width: 280px;
+  height: 360px;
+  border-radius: 50% 50% 0 0;
+  background: linear-gradient(180deg, var(--blue-pale2) 0%, transparent 85%);
+  opacity: 0.55;
+  pointer-events: none;
 }
 
 /* Section stub, used by Reporting and Admin. */
@@ -382,5 +449,18 @@
   }
   .mp-side-label {
     opacity: 1;
+  }
+  /* The rail is a short horizontal strip here — no room for an arch without it cutting
+   * across the icons. */
+  .mp-side::after {
+    display: none;
+  }
+  /* Scaled down, but the top offset stays positive for the same reason as the base rule:
+   * main clips its overflow, so a negative top shears the crown flat. */
+  .mp-body > main::before {
+    width: 180px;
+    height: 240px;
+    top: 6px;
+    right: 20px;
   }
 }
