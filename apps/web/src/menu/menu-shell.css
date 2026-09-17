@@ -119,6 +119,251 @@
   color: var(--text-muted);
 }
 
+/* Overview */
+
+.mp-kpi-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.mp-kpi {
+  flex: 1 1 210px;
+  min-width: 200px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 16px 18px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mp-kpi-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.mp-kpi-value {
+  font-size: 23px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.mp-kpi-delta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.mp-kpi-delta.up {
+  color: #0f8a5f;
+}
+
+.mp-kpi-delta.down {
+  color: #c2562f;
+}
+
+.mp-spark {
+  width: 100%;
+  height: 28px;
+  margin-top: 6px;
+}
+
+.mp-panel-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.mp-panel {
+  flex: 1 1 380px;
+  min-width: 300px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 20px;
+}
+
+.mp-panel-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.mp-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.mp-bar-row {
+  display: grid;
+  grid-template-columns: 130px 1fr 78px;
+  align-items: center;
+  gap: 10px;
+}
+
+.mp-bar-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-sub);
+}
+
+.mp-bar-track {
+  height: 9px;
+  border-radius: 5px;
+  background: var(--bg2);
+  overflow: hidden;
+}
+
+.mp-bar-fill {
+  height: 100%;
+  border-radius: 5px;
+}
+
+.mp-bar-value {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: right;
+}
+
+.mp-donut-wrap {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+
+.mp-donut {
+  width: 160px;
+  height: 160px;
+  flex-shrink: 0;
+}
+
+.mp-donut-total {
+  font-size: 19px;
+  font-weight: 800;
+  fill: var(--text);
+}
+
+.mp-donut-cap {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  fill: var(--text-muted);
+}
+
+.mp-legend {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 150px;
+}
+
+.mp-legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.mp-legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.mp-legend-label {
+  color: var(--text-sub);
+  font-weight: 600;
+  flex: 1;
+}
+
+.mp-legend-value {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.mp-line {
+  width: 100%;
+  height: 220px;
+}
+
+.mp-axis {
+  font-size: 10px;
+  font-weight: 600;
+  fill: var(--text-muted);
+}
+
+.mp-activity {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.mp-activity th {
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  padding: 0 10px 9px 0;
+  border-bottom: 1px solid var(--blue-pale2);
+}
+
+.mp-activity td {
+  padding: 10px 10px 10px 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-sub);
+}
+
+.mp-activity tr:last-child td {
+  border-bottom: 0;
+}
+
+.mp-activity-when,
+.mp-activity-who {
+  color: var(--text-muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.mp-activity-status {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: var(--blue-pale);
+  color: var(--blue-dark);
+}
+
+.mp-activity-status.pending {
+  background: #fff3e0;
+  color: #b45309;
+}
+
+.mp-activity-status.draft {
+  background: var(--bg2);
+  color: var(--text-muted);
+}
+
 /* Below this width the sidebar becomes a strip above the content. Five items fit, so no
  * hamburger and no overlay. The collapse toggle hides rather than resetting the stored
  * choice, so widening the window restores whichever state was picked. */
