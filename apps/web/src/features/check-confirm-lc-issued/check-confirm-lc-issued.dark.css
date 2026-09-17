@@ -1,0 +1,255 @@
+/* Night mode for check-confirm-lc-issued, derived from check-confirm-lc-issued.legacy.css.
+ * Generated — do not hand-edit; re-run `node tools/gen-dark-css.mjs`.
+ *
+ * Only the declarations whose colour changes at night are here; everything else is inherited
+ * from the light stylesheet. Brand and status colours are deliberately absent because they
+ * keep their identity in both themes — see tools/dark-palette.mjs for the rules.
+ */
+:root[data-theme='dark'] .cclcissued {
+  color-scheme: dark;
+}
+:root[data-theme='dark'] .cclcissued input:not([type='checkbox']):not([type='radio']),
+:root[data-theme='dark'] .cclcissued select,
+:root[data-theme='dark'] .cclcissued textarea {
+  background: #14212f;
+}
+:root[data-theme='dark'] .cclcissued {
+  background: #0d1724;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .cclcissued .shell {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .cclcissued .topbar {
+  background: #14212f;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .cclcissued .title {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .cclcissued .card {
+  background: #14212f;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .cclcissued .card-head {
+  background: #1b2b3d;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .cclcissued .card-title {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .cclcissued .card-meta {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .cclcissued .field-inline label {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .cclcissued .required {
+  color: #ff5c5c;
+}
+:root[data-theme='dark'] .cclcissued .input,
+:root[data-theme='dark'] .cclcissued .select {
+  border: 1px solid #3d5670;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .cclcissued .calendar-btn {
+  border-left: 1px solid #2a3d52;
+  background: #14212f;
+}
+:root[data-theme='dark'] .cclcissued .filter-icon-btn {
+  border: 1px solid #3d5670;
+  background: #14212f;
+}
+:root[data-theme='dark'] .cclcissued .filter-icon-btn:hover {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .cclcissued .filter-item label {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .cclcissued .combo-btn {
+  border-left: 1px solid #2a3d52;
+  background: #14212f;
+}
+:root[data-theme='dark'] .cclcissued .combo-list {
+  background: #14212f;
+  border: 1px solid #3d5670;
+}
+:root[data-theme='dark'] .cclcissued .combo-option {
+  border-bottom: 1px solid #2a3d52;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .cclcissued .combo-option:hover {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .cclcissued .combo-empty {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .cclcissued .btn {
+  border: 1px solid #2d4a6b;
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .cclcissued .btn:hover {
+  background: #17304a;
+  color: #64adf7;
+}
+:root[data-theme='dark'] .cclcissued .btn-ghost {
+  background: #14212f;
+  border-color: #2a3d52;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .cclcissued .btn-ghost:hover {
+  background: #1b2b3d;
+  border-color: #3d5670;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .cclcissued .record-count {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .cclcissued .table-wrap {
+  background: #14212f;
+}
+:root[data-theme='dark'] .cclcissued .data-table th {
+  background: #1b2b3d;
+  color: #e6eef8;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .cclcissued .data-table td {
+  background: #14212f;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2a3d52;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .cclcissued .data-table tbody tr:hover td {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .cclcissued .data-table tbody tr.selected td {
+  background: #17304a;
+}
+:root[data-theme='dark'] .cclcissued .data-table tbody tr.settled td {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .cclcissued .data-table tbody tr.settled.selected td {
+  background: #14321f;
+}
+:root[data-theme='dark'] .cclcissued .pagination-bar {
+  background: #14212f;
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .cclcissued .page-btn {
+  border: 1px solid #2a3d52;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .cclcissued .page-btn:hover {
+  background: #1b2b3d;
+  border-color: #3d5670;
+}
+:root[data-theme='dark'] .cclcissued .page-btn.active {
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .cclcissued .page-btn:disabled {
+  background: #1b2b3d;
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .cclcissued .empty {
+  color: #a9c2dd!important;
+}
+:root[data-theme='dark'] .cclcissued .modal {
+  background: #14212f;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .cclcissued .modal-head {
+  background: #17304a;
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .cclcissued .modal-close {
+  border: 1px solid #2a3d52;
+  background: #14212f;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .cclcissued .modal-foot {
+  background: #1b2b3d;
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .cclcissued .confirm-copy {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .cclcissued .edit-grid label {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .cclcissued .toast {
+  background: #1b2b3d;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .cclcissued .toast-icon {
+  background: #14321f;
+  color: #6eeda3;
+}
+:root[data-theme='dark'] .cclcissued .toast-message {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .cclcissued .statusbar {
+  background: #14212f;
+  border-top: 1px solid #2a3d52;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .cclcissued .calendar-popup {
+  background: #14212f;
+  border: 1px solid #3d5670;
+}
+:root[data-theme='dark'] .cclcissued .calendar-head {
+  background: #14212f;
+}
+:root[data-theme='dark'] .cclcissued .cal-title-btn {
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .cclcissued .cal-nav {
+  background: #14212f;
+}
+:root[data-theme='dark'] .cclcissued .calendar-weekdays span {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .cclcissued .calendar-day {
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .cclcissued .calendar-day:hover {
+  background: #17304a;
+}
+:root[data-theme='dark'] .cclcissued .calendar-day.other-month {
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .cclcissued .calendar-foot {
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .cclcissued .cal-link {
+  background: #14212f;
+  color: #63aef8;
+}
+:root[data-theme='dark'] .cclcissued .year-panel {
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .cclcissued .year-row {
+  border-bottom: 1px solid #2a3d52;
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .cclcissued .year-btn {
+  background: #1b2b3d;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .cclcissued .month-grid {
+  background: #14212f;
+}
+:root[data-theme='dark'] .cclcissued .month-btn {
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .cclcissued .month-btn:hover {
+  background: #17304a;
+}

@@ -48,6 +48,22 @@ The originals are in `legacy/`. Work through one app at a time.
 node tools/scope-css.mjs "legacy/OTTK.html" ".ottk" "apps/web/src/features/ottk/ottk.legacy.css"
 ```
 
+**Then generate its night stylesheet and import it.** Without this the app stays light while
+the rest of the product goes dark:
+
+```bash
+node tools/gen-dark-css.mjs        # writes apps/web/src/features/<id>/<id>.dark.css
+```
+
+```ts
+import './ottk.legacy.css'
+import './ottk.dark.css'          // after the legacy sheet — it overrides by specificity
+```
+
+Both files are generated. To change a night colour, edit the rules in
+`tools/dark-palette.mjs` and re-run; do not hand-edit the output. `npm run verify` fails if
+any `<app>.dark.css` is stale.
+
 Then mirror the original markup element for element and class for class, and wrap it in
 `<div className="ottk">`. The generated CSS is that page's own, so any structural change —
 a different wrapper, a generic table component, a `<span>` where the original had an

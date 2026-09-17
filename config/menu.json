@@ -339,157 +339,92 @@
     ]
   },
   {
-    "label": "BG Process",
+    "label": "Back-Office & Settlement",
     "subgroups": [
       {
-        "label": "BG Issuance Process",
+        "label": "Trade Invoice Settlement",
         "items": [
           {
-            "action": "OPEN_BG_REQ_CREATE",
-            "code": "ZFS_TL_DEM77",
-            "title": "BG Request Creation",
-            "tag": "Create",
-            "desc": "Create a new bank guarantee request against a PO, beneficiary and product type.",
-            "icon": "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 14H7v-2h10v2zm0-4H7v-2h10v2zm-3-5V3.5L18.5 8H14z"
+            "code": "ZSGSLCR014",
+            "title": "SLC Invoice Settlement: Execution",
+            "tag": "Process",
+            "desc": "Settle SLC trade invoices.",
+            "icon": "M19.5 3.5L18 2l-1.5 1.5L15 2l-1.5 1.5L12 2l-1.5 1.5L9 2 7.5 3.5 6 2 4.5 3.5 3 2v20l1.5-1.5L6 22l1.5-1.5L9 22l1.5-1.5L12 22l1.5-1.5L15 22l1.5-1.5L18 22l1.5-1.5L21 22V2l-1.5 1.5zM19 19.09H5V4.91h14v14.18zM6 15h12v2H6zm0-4h12v2H6zm0-4h12v2H6z"
           },
           {
-            "action": "OPEN_BG_REQ_CONFIRM",
-            "code": "ZFS_TL_DEM78",
-            "title": "BG Request Confirmation",
-            "tag": "Confirm",
-            "desc": "Approve or reject pending BG requests.",
-            "icon": "M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
-          },
-          {
-            "action": "OPEN_BG_BANK_ALLOC",
-            "code": "ZFS_TL_DEM80",
-            "title": "BG Bank Allocation",
-            "tag": "Confirm",
-            "desc": "Review and approve or reject BG requests routed for bank allocation.",
-            "icon": "M11.99 2L4 6v2h16V6l-7.99-4zM4 10v7H2v2h20v-2h-2v-7h-2v7h-3v-7h-2v7H9v-7H4z"
-          },
-          {
-            "action": "OPEN_BG_CONFIRM",
-            "code": "ZFS_TL_DEM79",
-            "title": "BG Confirmation",
-            "tag": "Confirm",
-            "desc": "Confirm the BG has been issued by the bank.",
-            "icon": "M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
+            "code": "ZSGSLCR015",
+            "title": "SLC Invoice Settlement: Post to Accounting",
+            "tag": "Process",
+            "desc": "Settled invoices to the ledger.",
+            "icon": "M4 10h3v7H4zm6.5 0h3v7h-3zM2 19h20v3H2zm15-9h3v7h-3zm-5-9L2 6v2h20V6z"
           }
         ]
       },
       {
-        "label": "BG Amendment Process",
+        "label": "ICL Receipt & Repayment",
         "items": [
           {
-            "action": "OPEN_BG_AMEND_REQUEST",
-            "code": "ZFS_TL_DEM81",
-            "title": "BG Amendment Request",
-            "tag": "Create",
-            "desc": "Request a change to amount, tolerance, expiry, or shipment date on an eligible BG.",
+            "code": "ZSGSLCR057",
+            "title": "Postings for ICL Received (TSF)",
+            "tag": "Process",
+            "desc": "Post intercompany loans received on the TSF side.",
+            "icon": "M20 5.41L18.59 4 7 15.59V9H5v10h10v-2H8.41z"
+          },
+          {
+            "code": "ZSGSLCR059",
+            "title": "Postings for ICL Given (Treasury)",
+            "tag": "Process",
+            "desc": "Post intercompany loans given on the Treasury side.",
+            "icon": "M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5z"
+          }
+        ]
+      },
+      {
+        "label": "Other Accounting / Postings",
+        "items": [
+          {
+            "code": "ZSGSLCR030",
+            "title": "Interest Payments / Receipts",
+            "tag": "Process",
+            "desc": "Post interest paid and received.",
+            "icon": "M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"
+          },
+          {
+            "code": "ZSGSLCR029",
+            "title": "Interest Accrual / Deferral",
+            "tag": "Process",
+            "desc": "ZSGSLCR029 — accrue and defer interest across period ends.",
+            "icon": "M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"
+          },
+          {
+            "code": "ZSGSLCR042",
+            "title": "Other Postings",
+            "tag": "Process",
+            "desc": "Postings that do not belong to a dedicated run.",
+            "icon": "M11 7h6v2h-6zm0 4h6v2h-6zm0 4h6v2h-6zM7 7h2v2H7zm0 4h2v2H7zm0 4h2v2H7zM20.1 3H3.9c-.5 0-.9.4-.9.9v16.2c0 .4.4.9.9.9h16.2c.4 0 .9-.5.9-.9V3.9c0-.5-.5-.9-.9-.9zM19 19H5V5h14v14z"
+          },
+          {
+            "code": "ZSGSLCR067",
+            "title": "Deposit Placement / Post Accounting Entries",
+            "tag": "Process",
+            "desc": "Place deposits and post the resulting entries.",
+            "icon": "M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"
+          },
+          {
+            "code": "ZSGSLCR102",
+            "title": "Accrual / Deferral for Charges",
+            "tag": "Process",
+            "desc": "Accrue and defer fees and charges.",
+            "icon": "M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"
+          },
+          {
+            "code": "ZSGSLCR117",
+            "title": "Manual Posting of All SLC Transactions",
+            "tag": "Process",
+            "desc": "Post any SLC transaction by hand.",
             "icon": "M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-          },
-          {
-            "action": "OPEN_BG_AMEND_CONFIRM",
-            "code": "ZFS_TL_DEM82",
-            "title": "BG Amendment Confirmation",
-            "tag": "Confirm",
-            "desc": "Approve or reject amendments currently pending, and review past decisions.",
-            "icon": "M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
           }
         ]
-      },
-      {
-        "label": "BG Termination Process",
-        "items": [
-          {
-            "action": "OPEN_BG_TERMINATION",
-            "code": "ZFS_TL_DEM83",
-            "title": "BG Termination",
-            "tag": "Create",
-            "desc": "Initiate closure of a live BG and submit it for termination approval.",
-            "icon": "M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-          },
-          {
-            "action": "OPEN_BG_TERM_CONFIRM",
-            "code": "ZFS_TL_DEM84",
-            "title": "BG Termination Confirmation",
-            "tag": "Confirm",
-            "desc": "Approve or reject termination requests and settle closed BGs.",
-            "icon": "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "label": "Accounting",
-    "items": [
-      {
-        "action": "OPEN_FEES_POSTING",
-        "code": "ZFS_TL_DEM76",
-        "title": "Posting of Fees",
-        "tag": "Process",
-        "desc": "Post accrued LC / BG fees and charges to the ledger.",
-        "icon": "M19 14V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2zm-9-1c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm10 3H2v2h18v-2z"
-      }
-    ]
-  },
-  {
-    "label": "Dashboard Reporting",
-    "items": [
-      {
-        "action": "OPEN_LIMIT_TRACKER",
-        "code": "ZFS_TL_DEM72",
-        "title": "Limit Utilization Tracker",
-        "tag": "Dashboard",
-        "desc": "Track sanctioned limit usage across facilities in real time.",
-        "icon": "M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"
-      },
-      {
-        "action": "OPEN_FEES_TRACKER",
-        "code": "ZFS_TL_DEM74",
-        "title": "Fees Tracker",
-        "tag": "Dashboard",
-        "desc": "Monitor fee accrual and posting status across all requests.",
-        "icon": "M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"
-      }
-    ]
-  },
-  {
-    "label": "Reporting",
-    "items": [
-      {
-        "action": "OPEN_LC_REGISTER",
-        "code": "ZFSTFR001",
-        "title": "LC Register",
-        "tag": "Report",
-        "desc": "Full register of LC requests across all statuses.",
-        "icon": "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"
-      },
-      {
-        "action": "OPEN_FAC_REGISTER",
-        "code": "ZFSTFR002",
-        "title": "Facility Register",
-        "tag": "Report",
-        "desc": "Full register of sanctioned facilities and their utilization.",
-        "icon": "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"
-      },
-      {
-        "action": "OPEN_LC_AMEND_REGISTER",
-        "code": "ZFSTFR005",
-        "title": "LC Amendment Register",
-        "tag": "Report",
-        "desc": "Full register of LC amendments, pending and processed.",
-        "icon": "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"
-      },
-      {
-        "action": "OPEN_FEES_REGISTER",
-        "code": "ZFSTFR006",
-        "title": "Fees & Chargers Register",
-        "tag": "Report",
-        "desc": "Full register of posted fees and charges.",
-        "icon": "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"
       }
     ]
   }

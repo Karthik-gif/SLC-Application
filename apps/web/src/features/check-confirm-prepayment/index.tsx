@@ -8,6 +8,9 @@ import { filterRows, settledForStatus, sortRows, uniqueCompanies } from './rows.
 import type { SortState } from './rows.ts'
 import type { PrepaymentRecord } from './types.ts'
 import './check-confirm-prepayment.legacy.css'
+// Night mode. Generated from the sheet above by tools/gen-dark-css.mjs; it only restates the
+// colours that change, at a higher specificity, so it must be imported after it.
+import './check-confirm-prepayment.dark.css'
 
 const PAGE_SIZE = 15
 const FIRST_STATUS = STATUSES[0]?.code ?? ''

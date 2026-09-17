@@ -1,0 +1,358 @@
+/* Night mode for sblc-terminate, derived from sblc-terminate.legacy.css.
+ * Generated — do not hand-edit; re-run `node tools/gen-dark-css.mjs`.
+ *
+ * Only the declarations whose colour changes at night are here; everything else is inherited
+ * from the light stylesheet. Brand and status colours are deliberately absent because they
+ * keep their identity in both themes — see tools/dark-palette.mjs for the rules.
+ */
+:root[data-theme='dark'] .sblcterminate {
+  color-scheme: dark;
+}
+:root[data-theme='dark'] .sblcterminate input:not([type='checkbox']):not([type='radio']),
+:root[data-theme='dark'] .sblcterminate select,
+:root[data-theme='dark'] .sblcterminate textarea {
+  background: #14212f;
+}
+:root[data-theme='dark'] .sblcterminate {
+  background: #0d1724;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .sblcterminate .shell {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .sblcterminate .topbar {
+  background: #14212f;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .sblcterminate .title {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .sblcterminate .selection-panel {
+  background: #14212f;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .sblcterminate .main-field-item label {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .sblcterminate .main-input {
+  border: 1px solid #3d5670;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .sblcterminate .search-btn,
+:root[data-theme='dark'] .sblcterminate .calendar-btn {
+  border-left: 1px solid #2a3d52;
+  background: #14212f;
+}
+:root[data-theme='dark'] .sblcterminate .search-btn:hover,
+:root[data-theme='dark'] .sblcterminate .calendar-btn:hover {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .sblcterminate .filter-icon-btn {
+  background: #14212f;
+}
+:root[data-theme='dark'] .sblcterminate .filter-icon-btn:hover {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .sblcterminate .filter-item label {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .sblcterminate .filter-input {
+  border: 1px solid #3d5670;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .sblcterminate .combo-btn {
+  border-left: 1px solid #2a3d52;
+  background: #14212f;
+}
+:root[data-theme='dark'] .sblcterminate .combo-btn:hover {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .sblcterminate .combo-list {
+  background: #14212f;
+}
+:root[data-theme='dark'] .sblcterminate .combo-option {
+  border-bottom: 1px solid #2a3d52;
+  background: #14212f;
+}
+:root[data-theme='dark'] .sblcterminate .combo-option {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .sblcterminate .combo-option:hover {
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .sblcterminate .combo-empty {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .sblcterminate .btn {
+  border: 1px solid #2d4a6b;
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .sblcterminate .btn:hover {
+  background: #17304a;
+  color: #64adf7;
+}
+:root[data-theme='dark'] .sblcterminate .btn-ghost {
+  background: #14212f;
+  border-color: #2a3d52;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .sblcterminate .btn-ghost:hover {
+  background: #1b2b3d;
+  border-color: #3d5670;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .sblcterminate .record-count {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .sblcterminate .card {
+  background: #14212f;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .sblcterminate .card-head {
+  background: #1b2b3d;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .sblcterminate .card-title {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .sblcterminate .card-meta {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .sblcterminate .table-wrap {
+  background: #14212f;
+}
+:root[data-theme='dark'] .sblcterminate .data-table th {
+  background: #1b2b3d;
+  color: #e6eef8;
+  border-right: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .sblcterminate .data-table th {
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .sblcterminate .data-table td {
+  background: #14212f;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2a3d52;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .sblcterminate .data-table tbody tr:hover td {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .sblcterminate .data-table tbody tr.selected td {
+  background: #17304a;
+}
+:root[data-theme='dark'] .sblcterminate .termination-pending {
+  background: #3a2a12;
+  color: #ffc45c;
+}
+:root[data-theme='dark'] .sblcterminate .termination-done {
+  background: #14321f;
+  color: #6eeda3;
+}
+:root[data-theme='dark'] .sblcterminate .pagination {
+  background: #14212f;
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .sblcterminate .page-btn {
+  border: 1px solid #2a3d52;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .sblcterminate .page-btn:hover {
+  background: #1b2b3d;
+  border-color: #3d5670;
+}
+:root[data-theme='dark'] .sblcterminate .page-btn.active {
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .sblcterminate .page-btn:disabled {
+  background: #1b2b3d;
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .sblcterminate .empty {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .sblcterminate .modal {
+  background: #14212f;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .sblcterminate .modal-head {
+  background: #17304a;
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .sblcterminate .modal-close {
+  border: 1px solid #2a3d52;
+  background: #14212f;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .sblcterminate .modal-foot {
+  background: #1b2b3d;
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .sblcterminate .company-table th {
+  background: #1b2b3d;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .sblcterminate .company-table td {
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .sblcterminate .company-table tr:hover td {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .sblcterminate .company-table tr.selected td {
+  background: #17304a;
+}
+:root[data-theme='dark'] .sblcterminate .company-scroll {
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .sblcterminate .form-label {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .sblcterminate .form-date-input {
+  border: 1px solid #3d5670;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .sblcterminate .confirm-message {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .sblcterminate .confirm-mark {
+  background: #17304a;
+  color: #63aef8;
+}
+:root[data-theme='dark'] .sblcterminate .dms-detail {
+  background: #1b2b3d;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .sblcterminate .dms-detail-label {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .sblcterminate .dms-detail-value {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .sblcterminate .dms-table th {
+  background: #1b2b3d;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .sblcterminate .dms-table td {
+  background: #1b2b3d;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .sblcterminate .dms-table td.editable {
+  background: #14212f;
+}
+:root[data-theme='dark'] .sblcterminate .dms-date-input {
+  border: 1px solid #3d5670;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .sblcterminate .path-cell {
+  border: 1px solid #3d5670;
+  background: #14212f;
+}
+:root[data-theme='dark'] .sblcterminate .path-cell.disabled {
+  background: #1b2b3d;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .sblcterminate .action-btn {
+  border: 1px solid #2d4a6b;
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .sblcterminate .action-btn:hover {
+  background: #17304a;
+}
+:root[data-theme='dark'] .sblcterminate .action-btn:disabled {
+  background: #1b2b3d;
+  border-color: #2a3d52;
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .sblcterminate .toast {
+  background: #1b2b3d;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .sblcterminate .toast-icon {
+  background: #16243a;
+}
+:root[data-theme='dark'] .sblcterminate .toast.success .toast-icon {
+  background: #14321f;
+  color: #6eeda3;
+}
+:root[data-theme='dark'] .sblcterminate .toast-message {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .sblcterminate .statusbar {
+  background: #14212f;
+  border-top: 1px solid #2a3d52;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .sblcterminate .calendar-popup {
+  background: #14212f;
+}
+:root[data-theme='dark'] .sblcterminate .calendar-top {
+  background: #14212f;
+}
+:root[data-theme='dark'] .sblcterminate .calendar-title-btn {
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .sblcterminate .calendar-nav {
+  background: #14212f;
+}
+:root[data-theme='dark'] .sblcterminate .calendar-nav:hover {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .sblcterminate .calendar-week span {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .sblcterminate .calendar-cell {
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .sblcterminate .calendar-cell:hover {
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .sblcterminate .calendar-cell.other {
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .sblcterminate .calendar-cell.selected {
+  background: #17304a;
+}
+:root[data-theme='dark'] .sblcterminate .calendar-foot {
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .sblcterminate .calendar-foot-btn {
+  background: #14212f;
+  color: #63aef8;
+}
+:root[data-theme='dark'] .sblcterminate .month-grid {
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .sblcterminate .month-btn {
+  background: #1b2b3d;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .sblcterminate .month-btn:hover {
+  background: #17304a;
+}
+:root[data-theme='dark'] .sblcterminate .year-btn {
+  background: #1b2b3d;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .sblcterminate .year-btn:hover {
+  background: #17304a;
+}
+:root[data-theme='dark'] .sblcterminate .year-btn.selected {
+  background: #17304a;
+  color: #5cafff;
+}

@@ -6,6 +6,9 @@ import { DUMMY_DEALS } from './deals.ts'
 import { buildLines, calculate, sortLines } from './lines.ts'
 import type { InvoiceDeal, InvoiceLine } from './types.ts'
 import './invoice.legacy.css'
+// Night mode. Generated from the sheet above by tools/gen-dark-css.mjs; it only restates the
+// colours that change, at a higher specificity, so it must be imported after it.
+import './invoice.dark.css'
 
 const BRAND_LOGO =
   'https://raw.githubusercontent.com/ryannayak/fs-assets/e82f35a83e28689167b22b4300d4994a249acee0/fs-short-logo.png'

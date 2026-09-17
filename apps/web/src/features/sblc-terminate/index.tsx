@@ -13,6 +13,9 @@ import { TerminationModal } from './TerminationModal.tsx'
 import { ToastRegion } from './ToastRegion.tsx'
 import type { DmsDoc, SblcRow, SortState, Toast, ToastKind } from './types.ts'
 import './sblc-terminate.legacy.css'
+// Night mode. Generated from the sheet above by tools/gen-dark-css.mjs; it only restates the
+// colours that change, at a higher specificity, so it must be imported after it.
+import './sblc-terminate.dark.css'
 
 /** Deep-copies the seed rows so terminating or uploading in this session never mutates data.ts. */
 function cloneRows(rows: SblcRow[]): SblcRow[] {

@@ -5,6 +5,8 @@ const ICON_MASTER_DATA =
 const ICON_OVERVIEW = 'M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z'
 const ICON_FUNCTIONALITY =
   'M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z'
+const ICON_TRADE_FLOWS =
+  'M6.99 11L3 15l3.99 4v-3H14v-2H6.99v-3zM21 9l-3.99-4v3H10v2h7.01v3L21 9z'
 const ICON_REPORTING =
   'M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z'
 const ICON_ADMIN =
@@ -16,6 +18,7 @@ type SidebarItem = { to: string; label: string; icon: string; end?: boolean }
 const ITEMS: SidebarItem[] = [
   { to: '/overview', label: 'Overview', icon: ICON_OVERVIEW },
   { to: '/master-data', label: 'Master Data', icon: ICON_MASTER_DATA },
+  { to: '/trade-flows', label: 'Trade Flows', icon: ICON_TRADE_FLOWS },
   { to: '/', label: 'Functionality', icon: ICON_FUNCTIONALITY, end: true },
   { to: '/reporting', label: 'Reporting', icon: ICON_REPORTING },
   { to: '/admin', label: 'Admin', icon: ICON_ADMIN },

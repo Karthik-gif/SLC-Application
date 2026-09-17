@@ -9,6 +9,9 @@ import { lookupText, statusColorForRow } from './format.ts'
 import { matchesFilters, sortRows, uniqueEntityIds } from './grid.ts'
 import type { DmsDoc, Filters, IclRequest, SortDirection, SortKey, Toast, ToastKind } from './types.ts'
 import './icl-approve-request.legacy.css'
+// Night mode. Generated from the sheet above by tools/gen-dark-css.mjs; it only restates the
+// colours that change, at a higher specificity, so it must be imported after it.
+import './icl-approve-request.dark.css'
 
 const EMPTY_FILTERS: Filters = {
   requestNo: '',

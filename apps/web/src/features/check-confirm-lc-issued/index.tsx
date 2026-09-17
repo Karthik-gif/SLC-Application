@@ -7,6 +7,9 @@ import { COMPANY_OPTIONS, LC_ROWS } from './data.ts'
 import { formatDate, money, parseDate, sortRows } from './format.ts'
 import type { LcRow, SortDirection, StatusFilter } from './types.ts'
 import './check-confirm-lc-issued.legacy.css'
+// Night mode. Generated from the sheet above by tools/gen-dark-css.mjs; it only restates the
+// colours that change, at a higher specificity, so it must be imported after it.
+import './check-confirm-lc-issued.dark.css'
 
 const PAGE_SIZE = 12
 

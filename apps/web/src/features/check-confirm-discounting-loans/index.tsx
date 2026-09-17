@@ -14,6 +14,9 @@ import { EDIT_COLUMNS, MAIN_COLUMNS, columnValue } from './columns.ts'
 import { SEED_PAYLOAD } from './data.ts'
 import type { DiscountingLoanRecord, EditForm, Toast, ToastKind } from './types.ts'
 import './check-confirm-discounting-loans.legacy.css'
+// Night mode. Generated from the sheet above by tools/gen-dark-css.mjs; it only restates the
+// colours that change, at a higher specificity, so it must be imported after it.
+import './check-confirm-discounting-loans.dark.css'
 
 const VERSION = 'v3'
 const PAGE_SIZE = 12

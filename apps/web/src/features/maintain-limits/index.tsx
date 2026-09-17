@@ -34,6 +34,9 @@ import type {
   ToastKind,
 } from './types.ts'
 import './maintain-limits.legacy.css'
+// Night mode. Generated from the sheet above by tools/gen-dark-css.mjs; it only restates the
+// colours that change, at a higher specificity, so it must be imported after it.
+import './maintain-limits.dark.css'
 
 const PAGE_SIZE = 10
 const VERSION = 'v1'

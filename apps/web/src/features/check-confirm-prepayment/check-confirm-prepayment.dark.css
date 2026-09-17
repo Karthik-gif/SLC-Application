@@ -1,0 +1,252 @@
+/* Night mode for check-confirm-prepayment, derived from check-confirm-prepayment.legacy.css.
+ * Generated — do not hand-edit; re-run `node tools/gen-dark-css.mjs`.
+ *
+ * Only the declarations whose colour changes at night are here; everything else is inherited
+ * from the light stylesheet. Brand and status colours are deliberately absent because they
+ * keep their identity in both themes — see tools/dark-palette.mjs for the rules.
+ */
+:root[data-theme='dark'] .ccprepayment {
+  color-scheme: dark;
+}
+:root[data-theme='dark'] .ccprepayment input:not([type='checkbox']):not([type='radio']),
+:root[data-theme='dark'] .ccprepayment select,
+:root[data-theme='dark'] .ccprepayment textarea {
+  background: #14212f;
+}
+:root[data-theme='dark'] .ccprepayment {
+  background: #0d1724;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccprepayment .required {
+  color: #ff5c5c;
+}
+:root[data-theme='dark'] .ccprepayment .shell {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .ccprepayment .topbar {
+  background: #14212f;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccprepayment .title {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccprepayment .card {
+  background: #14212f;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccprepayment .card-head {
+  background: #1b2b3d;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccprepayment .card-title {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccprepayment .card-meta {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccprepayment .field-inline label {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccprepayment .input,
+:root[data-theme='dark'] .ccprepayment .select {
+  border: 1px solid #3d5670;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccprepayment .calendar-btn {
+  border-left: 1px solid #2a3d52;
+  background: #14212f;
+}
+:root[data-theme='dark'] .ccprepayment .filter-icon-btn {
+  border: 1px solid #3d5670;
+  background: #14212f;
+}
+:root[data-theme='dark'] .ccprepayment .filter-icon-btn:hover {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .ccprepayment .filter-item label {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccprepayment .combo-btn {
+  border-left: 1px solid #2a3d52;
+  background: #14212f;
+}
+:root[data-theme='dark'] .ccprepayment .combo-list {
+  background: #14212f;
+  border: 1px solid #3d5670;
+}
+:root[data-theme='dark'] .ccprepayment .combo-option {
+  border-bottom: 1px solid #2a3d52;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccprepayment .combo-option:hover {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .ccprepayment .combo-empty {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccprepayment .btn {
+  border: 1px solid #2d4a6b;
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .ccprepayment .btn:hover {
+  background: #17304a;
+  color: #64adf7;
+}
+:root[data-theme='dark'] .ccprepayment .btn-ghost {
+  background: #14212f;
+  border-color: #2a3d52;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccprepayment .btn-ghost:hover {
+  background: #1b2b3d;
+  border-color: #3d5670;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccprepayment .record-count {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccprepayment .table-wrap {
+  background: #14212f;
+}
+:root[data-theme='dark'] .ccprepayment .data-table th {
+  background: #1b2b3d;
+  color: #e6eef8;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .ccprepayment .data-table td {
+  background: #14212f;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2a3d52;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccprepayment .data-table tbody tr:hover td {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .ccprepayment .data-table tbody tr.selected td {
+  background: #17304a;
+}
+:root[data-theme='dark'] .ccprepayment .data-table tbody tr.settled td {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccprepayment .data-table tbody tr.settled.selected td {
+  background: #14321f;
+}
+:root[data-theme='dark'] .ccprepayment .pagination-bar {
+  background: #14212f;
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccprepayment .page-btn {
+  border: 1px solid #2a3d52;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccprepayment .page-btn:hover {
+  background: #1b2b3d;
+  border-color: #3d5670;
+}
+:root[data-theme='dark'] .ccprepayment .page-btn.active {
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .ccprepayment .page-btn:disabled {
+  background: #1b2b3d;
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .ccprepayment .empty {
+  color: #a9c2dd!important;
+}
+:root[data-theme='dark'] .ccprepayment .modal {
+  background: #14212f;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccprepayment .modal-head {
+  background: #17304a;
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .ccprepayment .modal-close {
+  border: 1px solid #2a3d52;
+  background: #14212f;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccprepayment .modal-foot {
+  background: #1b2b3d;
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccprepayment .confirm-copy {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccprepayment .toast {
+  background: #1b2b3d;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccprepayment .toast-icon {
+  background: #14321f;
+  color: #6eeda3;
+}
+:root[data-theme='dark'] .ccprepayment .toast-message {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccprepayment .statusbar {
+  background: #14212f;
+  border-top: 1px solid #2a3d52;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccprepayment .calendar-popup {
+  background: #14212f;
+  border: 1px solid #3d5670;
+}
+:root[data-theme='dark'] .ccprepayment .calendar-head {
+  background: #14212f;
+}
+:root[data-theme='dark'] .ccprepayment .cal-title-btn {
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccprepayment .cal-nav {
+  background: #14212f;
+}
+:root[data-theme='dark'] .ccprepayment .calendar-weekdays span {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccprepayment .calendar-day {
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccprepayment .calendar-day:hover {
+  background: #17304a;
+}
+:root[data-theme='dark'] .ccprepayment .calendar-day.other-month {
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .ccprepayment .calendar-foot {
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccprepayment .cal-link {
+  background: #14212f;
+  color: #63aef8;
+}
+:root[data-theme='dark'] .ccprepayment .year-panel {
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccprepayment .year-row {
+  border-bottom: 1px solid #2a3d52;
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .ccprepayment .year-btn {
+  background: #1b2b3d;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccprepayment .month-grid {
+  background: #14212f;
+}
+:root[data-theme='dark'] .ccprepayment .month-btn {
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccprepayment .month-btn:hover {
+  background: #17304a;
+}

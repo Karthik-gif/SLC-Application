@@ -1,0 +1,303 @@
+/* Night mode for check-confirm-irs, derived from check-confirm-irs.legacy.css.
+ * Generated — do not hand-edit; re-run `node tools/gen-dark-css.mjs`.
+ *
+ * Only the declarations whose colour changes at night are here; everything else is inherited
+ * from the light stylesheet. Brand and status colours are deliberately absent because they
+ * keep their identity in both themes — see tools/dark-palette.mjs for the rules.
+ */
+:root[data-theme='dark'] .ccirs {
+  color-scheme: dark;
+}
+:root[data-theme='dark'] .ccirs input:not([type='checkbox']):not([type='radio']),
+:root[data-theme='dark'] .ccirs select,
+:root[data-theme='dark'] .ccirs textarea {
+  background: #14212f;
+}
+:root[data-theme='dark'] .ccirs {
+  background: #0d1724;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccirs .required {
+  color: #ff5c5c;
+}
+:root[data-theme='dark'] .ccirs .shell {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .ccirs .topbar {
+  background: #14212f;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccirs .title {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccirs .card {
+  background: #14212f;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccirs .card-head {
+  background: #1b2b3d;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccirs .card-title {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccirs .card-meta {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccirs .field-inline label {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccirs .input,
+:root[data-theme='dark'] .ccirs .select {
+  border: 1px solid #3d5670;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccirs .calendar-btn {
+  border-left: 1px solid #2a3d52;
+  background: #14212f;
+}
+:root[data-theme='dark'] .ccirs .filter-icon-btn {
+  border: 1px solid #3d5670;
+  background: #14212f;
+}
+:root[data-theme='dark'] .ccirs .filter-icon-btn:hover {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .ccirs .filter-item label {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccirs .combo-btn {
+  border-left: 1px solid #2a3d52;
+  background: #14212f;
+}
+:root[data-theme='dark'] .ccirs .combo-list {
+  background: #14212f;
+  border: 1px solid #3d5670;
+}
+:root[data-theme='dark'] .ccirs .combo-option {
+  border-bottom: 1px solid #2a3d52;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccirs .combo-option:hover {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .ccirs .combo-empty {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccirs .btn {
+  border: 1px solid #2d4a6b;
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .ccirs .btn:hover {
+  background: #17304a;
+  color: #64adf7;
+}
+:root[data-theme='dark'] .ccirs .btn-ghost {
+  background: #14212f;
+  border-color: #2a3d52;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccirs .btn-ghost:hover {
+  background: #1b2b3d;
+  border-color: #3d5670;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccirs .record-count {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccirs .table-wrap {
+  background: #14212f;
+}
+:root[data-theme='dark'] .ccirs .data-table th {
+  background: #1b2b3d;
+  color: #e6eef8;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .ccirs .data-table td {
+  background: #14212f;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2a3d52;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccirs .data-table tbody tr:hover td {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .ccirs .data-table tbody tr.selected td {
+  background: #17304a;
+}
+:root[data-theme='dark'] .ccirs .data-table tbody tr.settled td {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccirs .data-table tbody tr.settled.selected td {
+  background: #14321f;
+}
+:root[data-theme='dark'] .ccirs .cashflow-link {
+  color: #63aef8;
+}
+:root[data-theme='dark'] .ccirs .cashflow-modal {
+  background: #1b2b3d;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccirs .cashflow-close {
+  border: 1px solid #2a3d52;
+  background: #14212f;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccirs .display-section {
+  background: #14212f;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccirs .display-section-head {
+  background: #1b2b3d;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccirs .display-section-title {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccirs .display-section-meta {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccirs .display-label {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccirs .display-value {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccirs .cashflow-table-wrap {
+  background: #14212f;
+}
+:root[data-theme='dark'] .ccirs .cashflow-table th {
+  background: #1b2b3d;
+  color: #e6eef8;
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .ccirs .cashflow-table td {
+  background: #14212f;
+  color: #e6eef8;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccirs .cash-pos {
+  color: #6eeda3!important;
+}
+:root[data-theme='dark'] .ccirs .cash-neg {
+  color: #ff5c5c!important;
+}
+:root[data-theme='dark'] .ccirs .pagination-bar {
+  background: #14212f;
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccirs .page-btn {
+  border: 1px solid #2a3d52;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccirs .page-btn:hover {
+  background: #1b2b3d;
+  border-color: #3d5670;
+}
+:root[data-theme='dark'] .ccirs .page-btn.active {
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .ccirs .page-btn:disabled {
+  background: #1b2b3d;
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .ccirs .empty {
+  color: #a9c2dd!important;
+}
+:root[data-theme='dark'] .ccirs .modal {
+  background: #14212f;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccirs .modal-head {
+  background: #17304a;
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .ccirs .modal-close {
+  border: 1px solid #2a3d52;
+  background: #14212f;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccirs .modal-foot {
+  background: #1b2b3d;
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccirs .confirm-copy {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccirs .toast {
+  background: #1b2b3d;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccirs .toast-icon {
+  background: #14321f;
+  color: #6eeda3;
+}
+:root[data-theme='dark'] .ccirs .toast-message {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccirs .statusbar {
+  background: #14212f;
+  border-top: 1px solid #2a3d52;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccirs .calendar-popup {
+  background: #14212f;
+  border: 1px solid #3d5670;
+}
+:root[data-theme='dark'] .ccirs .calendar-head {
+  background: #14212f;
+}
+:root[data-theme='dark'] .ccirs .cal-title-btn {
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccirs .cal-nav {
+  background: #14212f;
+}
+:root[data-theme='dark'] .ccirs .calendar-weekdays span {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccirs .calendar-day {
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccirs .calendar-day:hover {
+  background: #17304a;
+}
+:root[data-theme='dark'] .ccirs .calendar-day.other-month {
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .ccirs .calendar-foot {
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccirs .cal-link {
+  background: #14212f;
+  color: #63aef8;
+}
+:root[data-theme='dark'] .ccirs .year-panel {
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccirs .year-row {
+  border-bottom: 1px solid #2a3d52;
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .ccirs .year-btn {
+  background: #1b2b3d;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccirs .month-grid {
+  background: #14212f;
+}
+:root[data-theme='dark'] .ccirs .month-btn {
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccirs .month-btn:hover {
+  background: #17304a;
+}

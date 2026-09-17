@@ -30,6 +30,9 @@ import { OttkViewModal } from './OttkViewModal.tsx'
 import { EMPTY_LOOKUPS } from './types.ts'
 import type { ChargeRow, ChargesContext, DttkRow, Lookups, OttkRow } from './types.ts'
 import './dttk.legacy.css'
+// Night mode. Generated from the sheet above by tools/gen-dark-css.mjs; it only restates the
+// colours that change, at a higher specificity, so it must be imported after it.
+import './dttk.dark.css'
 
 /**
  * Distribution Ticket (DTTK).

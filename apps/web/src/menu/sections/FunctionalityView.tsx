@@ -1,6 +1,6 @@
-import { Fragment, useCallback, useState } from 'react'
+import { Fragment, useCallback, useMemo, useState } from 'react'
 import { FOLDER_SVG, Tile } from '../Tile.tsx'
-import { childrenOf } from '../types.ts'
+import { childrenOf, TRADE_FLOWS_GROUP } from '../types.ts'
 import type { MenuNode, MenuTile } from '../types.ts'
 
 /** Exactly the wording renderFolderTile() produced. */
@@ -16,7 +16,7 @@ function folderDesc(node: MenuNode): string {
  * legacy/Menu Path.html. Moved out of MenuPage unchanged when the hub gained a sidebar —
  * the markup below is still that page's, element for element and class for class.
  */
-export function FunctionalityView({ groups, onLaunch, onToast, scrollToTop }: {
+export function FunctionalityView({ groups: allGroups, onLaunch, onToast, scrollToTop }: {
   groups: MenuNode[]
   onLaunch: (tile: MenuTile) => void
   onToast: (message: string) => void
@@ -24,6 +24,14 @@ export function FunctionalityView({ groups, onLaunch, onToast, scrollToTop }: {
   // going up must scroll that element back to the top, not call window.scrollTo.
   scrollToTop: () => void
 }) {
+  // Trade Flows has its own section now, so it is filtered out here rather than removed from
+  // config/menu.json. Filtering before anything else matters: `path` indexes into this array,
+  // so the drill-down must never see the unfiltered one.
+  const groups = useMemo(
+    () => allGroups.filter((group) => group.label !== TRADE_FLOWS_GROUP),
+    [allGroups],
+  )
+
   const [path, setPath] = useState<number[]>([])
 
   const nodeAt = useCallback(

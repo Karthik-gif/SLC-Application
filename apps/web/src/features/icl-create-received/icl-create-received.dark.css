@@ -1,0 +1,319 @@
+/* Night mode for icl-create-received, derived from icl-create-received.legacy.css.
+ * Generated — do not hand-edit; re-run `node tools/gen-dark-css.mjs`.
+ *
+ * Only the declarations whose colour changes at night are here; everything else is inherited
+ * from the light stylesheet. Brand and status colours are deliberately absent because they
+ * keep their identity in both themes — see tools/dark-palette.mjs for the rules.
+ */
+:root[data-theme='dark'] .iclcreate {
+  color-scheme: dark;
+}
+:root[data-theme='dark'] .iclcreate input:not([type='checkbox']):not([type='radio']),
+:root[data-theme='dark'] .iclcreate select,
+:root[data-theme='dark'] .iclcreate textarea {
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclcreate {
+  background: #0d1724;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclcreate .shell {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .iclcreate .topbar {
+  background: #14212f;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclcreate .title {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclcreate .selection-panel {
+  background: #14212f;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclcreate .main-date-item label {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclcreate .inline-date-input {
+  border: 1px solid #3d5670;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclcreate .inline-calendar-btn {
+  border-left: 1px solid #2a3d52;
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclcreate .inline-calendar-btn:hover {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .iclcreate .filter-icon-btn {
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclcreate .filter-icon-btn:hover {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .iclcreate .filter-item label {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclcreate .filter-input {
+  border: 1px solid #3d5670;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclcreate .combo-btn {
+  border-left: 1px solid #2a3d52;
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclcreate .combo-btn:hover {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .iclcreate .combo-list {
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclcreate .combo-option {
+  border-bottom: 1px solid #2a3d52;
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclcreate .combo-option {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclcreate .combo-option:hover {
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .iclcreate .combo-empty {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclcreate .btn {
+  border: 1px solid #2d4a6b;
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .iclcreate .btn:hover {
+  background: #17304a;
+  color: #64adf7;
+}
+:root[data-theme='dark'] .iclcreate .btn-ghost {
+  background: #14212f;
+  border-color: #2a3d52;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclcreate .btn-ghost:hover {
+  background: #1b2b3d;
+  border-color: #3d5670;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclcreate .record-count {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclcreate .card {
+  background: #14212f;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclcreate .card-head {
+  background: #1b2b3d;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclcreate .card-title {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclcreate .card-meta {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclcreate .table-wrap {
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclcreate .data-table th {
+  background: #1b2b3d;
+  color: #e6eef8;
+  border-right: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclcreate .data-table th {
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .iclcreate .data-table td {
+  background: #14212f;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2a3d52;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclcreate .data-table tbody tr:hover td {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .iclcreate .data-table tbody tr.selected td {
+  background: #17304a;
+}
+:root[data-theme='dark'] .iclcreate .status-pending {
+  background: #3a2a12;
+  color: #ffc45c;
+}
+:root[data-theme='dark'] .iclcreate .status-received {
+  background: #14321f;
+  color: #6eeda3;
+}
+:root[data-theme='dark'] .iclcreate .status-rejected {
+  background: #1b2b3d;
+  color: #ff5c5c;
+}
+:root[data-theme='dark'] .iclcreate .pagination {
+  background: #14212f;
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclcreate .page-btn {
+  border: 1px solid #2a3d52;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclcreate .page-btn:hover {
+  background: #1b2b3d;
+  border-color: #3d5670;
+}
+:root[data-theme='dark'] .iclcreate .page-btn.active {
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .iclcreate .page-btn:disabled {
+  background: #1b2b3d;
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .iclcreate .empty {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclcreate .modal {
+  background: #14212f;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclcreate .modal-head {
+  background: #17304a;
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .iclcreate .modal-close {
+  border: 1px solid #2a3d52;
+  background: #14212f;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclcreate .modal-foot {
+  background: #1b2b3d;
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclcreate .dms-detail {
+  background: #1b2b3d;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclcreate .dms-detail-label {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclcreate .dms-detail-value {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclcreate .dms-table th {
+  background: #1b2b3d;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .iclcreate .dms-table td {
+  background: #14212f;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclcreate .path-cell {
+  border: 1px solid #3d5670;
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclcreate .path-cell.disabled {
+  background: #1b2b3d;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclcreate .action-btn {
+  border: 1px solid #2d4a6b;
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .iclcreate .action-btn:hover {
+  background: #17304a;
+}
+:root[data-theme='dark'] .iclcreate .action-btn:disabled {
+  background: #1b2b3d;
+  border-color: #2a3d52;
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .iclcreate .toast {
+  background: #1b2b3d;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclcreate .toast-icon {
+  background: #16243a;
+}
+:root[data-theme='dark'] .iclcreate .toast.success .toast-icon {
+  background: #14321f;
+  color: #6eeda3;
+}
+:root[data-theme='dark'] .iclcreate .toast-message {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclcreate .statusbar {
+  background: #14212f;
+  border-top: 1px solid #2a3d52;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclcreate .calendar-popup {
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclcreate .calendar-top {
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclcreate .calendar-title-btn {
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclcreate .calendar-nav {
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclcreate .calendar-nav:hover {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .iclcreate .calendar-week span {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclcreate .calendar-cell {
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclcreate .calendar-cell:hover {
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .iclcreate .calendar-cell.other {
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .iclcreate .calendar-cell.selected {
+  background: #17304a;
+}
+:root[data-theme='dark'] .iclcreate .calendar-foot {
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclcreate .calendar-foot-btn {
+  background: #14212f;
+  color: #63aef8;
+}
+:root[data-theme='dark'] .iclcreate .month-grid {
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclcreate .month-btn {
+  background: #1b2b3d;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclcreate .month-btn:hover {
+  background: #17304a;
+}
+:root[data-theme='dark'] .iclcreate .year-btn {
+  background: #1b2b3d;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclcreate .year-btn:hover {
+  background: #17304a;
+}
+:root[data-theme='dark'] .iclcreate .year-btn.selected {
+  background: #17304a;
+  color: #5cafff;
+}

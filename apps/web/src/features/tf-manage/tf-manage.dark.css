@@ -1,0 +1,168 @@
+/* Night mode for tf-manage, derived from tf-manage.legacy.css.
+ * Generated — do not hand-edit; re-run `node tools/gen-dark-css.mjs`.
+ *
+ * Only the declarations whose colour changes at night are here; everything else is inherited
+ * from the light stylesheet. Brand and status colours are deliberately absent because they
+ * keep their identity in both themes — see tools/dark-palette.mjs for the rules.
+ */
+:root[data-theme='dark'] .tfmanage {
+  color-scheme: dark;
+}
+:root[data-theme='dark'] .tfmanage input:not([type='checkbox']):not([type='radio']),
+:root[data-theme='dark'] .tfmanage select,
+:root[data-theme='dark'] .tfmanage textarea {
+  background: #14212f;
+}
+:root[data-theme='dark'] .tfmanage {
+  --page: #0d1724;
+  --page2: #16243a;
+  --surface: #14212f;
+  --surfaceAlt: #1b2b3d;
+  --line: #2a3d52;
+  --lineStrong: #3d5670;
+  --text: #e6eef8;
+  --muted: #7f9bb8;
+  --labelInk: #a9c2dd;
+  --blueDark: #7cc0f8;
+  --blueSoft: #17304a;
+  --blueSoft2: #1e4368;
+  --tealSoft: #113330;
+  --greenSoft: #14321f;
+  --orangeSoft: #3a2a12;
+  --redSoft: #3a1b1e;
+  --grayReadOnly: #16243a;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 20px -10px rgba(0, 0, 0, 0.5);
+  --shadowHover: 0 2px 4px rgba(0, 0, 0, 0.35), 0 14px 30px -12px rgba(0, 0, 0, 0.55);
+}
+:root[data-theme='dark'] .tfmanage .app-title {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .tfmanage .toolbar-field label {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .tfmanage .toolbar-field input {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .tfmanage .panel-title {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .tfmanage table.data-table th {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .tfmanage table.data-table td {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .tfmanage .workspace-header {
+  background: #17304a;
+}
+:root[data-theme='dark'] .tfmanage .ws-field label {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .tfmanage .ws-field input {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .tfmanage .section-head {
+  background: #1b2b3d;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .tfmanage .section-head .header-check label {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .tfmanage .field-grid label {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .tfmanage .field-grid select {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .tfmanage .field-grid input:not([type="checkbox"]):not(.wide-text-input) {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .tfmanage .field-grid input.wide-text-input {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .tfmanage .field-grid input[readonly] {
+  color: #e6eef8;
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .tfmanage ::placeholder {
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .tfmanage .bl-inline-input {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .tfmanage .toolstrip .ws-field input {
+  background: #14212f;
+}
+:root[data-theme='dark'] .tfmanage .toolstrip select {
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .tfmanage .filter-by-label {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .tfmanage .main-filter-check {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .tfmanage .modal-dialog {
+  border: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .tfmanage .modal-head {
+  background: #17304a;
+}
+:root[data-theme='dark'] .tfmanage .modal-title {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .tfmanage .modal-close-btn {
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .tfmanage .modal-footer {
+  border-top: 1px solid #2d4a6b;
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .tfmanage .toast.error {
+  border-left-color: #5c2b30;
+}
+:root[data-theme='dark'] .tfmanage #screenWorkspace .ws-modal-box {
+  border: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .tfmanage #screenWorkspace .ws-modal-sub {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .tfmanage {
+  --page: #0d1724;
+  --page2: #16243a;
+  --surface: #14212f;
+  --surfaceAlt: #1b2b3d;
+  --line: #2a3d52;
+  --lineStrong: #3d5670;
+  --text: #e6eef8;
+  --muted: #7f9bb8;
+  --labelInk: #a9c2dd;
+  --blueDark: #7cc0f8;
+  --blueSoft: #17304a;
+  --blueSoft2: #1e4368;
+  --greenSoft: #14321f;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 20px -10px rgba(0, 0, 0, 0.5);
+}
+:root[data-theme='dark'] .tfmanage .ds-conn {
+  box-shadow: 0 0 0 3px #14321f;
+}
+:root[data-theme='dark'] .tfmanage .ds-panel > .toolstrip {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .tfmanage .ds-panel .toolstrip .ws-field input {
+  background: #14212f;
+}
+:root[data-theme='dark'] .tfmanage table.data-table th {
+  border-right: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .tfmanage table.data-table td {
+  border-bottom: 1px solid #2a3d52;
+  border-right: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .tfmanage table.data-table tbody tr:hover td {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .tfmanage .modal-title {
+  color: #e6eef8;
+}

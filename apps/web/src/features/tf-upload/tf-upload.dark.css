@@ -1,0 +1,127 @@
+/* Night mode for tf-upload, derived from tf-upload.legacy.css.
+ * Generated — do not hand-edit; re-run `node tools/gen-dark-css.mjs`.
+ *
+ * Only the declarations whose colour changes at night are here; everything else is inherited
+ * from the light stylesheet. Brand and status colours are deliberately absent because they
+ * keep their identity in both themes — see tools/dark-palette.mjs for the rules.
+ */
+:root[data-theme='dark'] .tfupload {
+  color-scheme: dark;
+}
+:root[data-theme='dark'] .tfupload input:not([type='checkbox']):not([type='radio']),
+:root[data-theme='dark'] .tfupload select,
+:root[data-theme='dark'] .tfupload textarea {
+  background: #14212f;
+}
+:root[data-theme='dark'] .tfupload {
+  --page: #0d1724;
+  --surface: #14212f;
+  --surface-alt: #1b2b3d;
+  --line: #2a3d52;
+  --line-strong: #3d5670;
+  --text: #e6eef8;
+  --text-secondary: #a9c2dd;
+  --muted: #7f9bb8;
+  --blue-active: #7cc0f8;
+  --blue-soft: #17304a;
+  --blue-soft-2: #1e4368;
+  --green-soft: #14321f;
+  --red-soft: #3a1b1e;
+  --orange-soft: #3a2a12;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 20px -10px rgba(0, 0, 0, 0.5);
+}
+:root[data-theme='dark'] .tfupload .btn:hover {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .tfupload .drop-zone {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .tfupload .progress-track {
+  background: #16243a;
+}
+:root[data-theme='dark'] .tfupload .upload-toast {
+  background: #1b2b3d;
+  border: 1px solid #2a3d52;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .tfupload .upload-toast-icon {
+  background: #16243a;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .tfupload .upload-toast-title {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .tfupload .upload-toast-message {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .tfupload .preview-table th {
+  background: #1b2b3d;
+  border-right: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .tfupload .preview-table td {
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .tfupload .preview-table tbody tr:hover td {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .tfupload ::-webkit-scrollbar-track {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .tfupload ::-webkit-scrollbar-thumb {
+  border: 2px solid #2a3d52;
+}
+:root[data-theme='dark'] .tfupload .template-link:hover {
+  color: #f9a761;
+}
+:root[data-theme='dark'] .tfupload {
+  --page: #0d1724;
+  --surface: #14212f;
+  --surface-alt: #1b2b3d;
+  --line: #2a3d52;
+  --line-strong: #3d5670;
+  --text: #e6eef8;
+  --text-secondary: #a9c2dd;
+  --muted: #7f9bb8;
+  --blue-active: #7cc0f8;
+  --blue-soft: #17304a;
+  --blue-soft-2: #1e4368;
+  --green-soft: #14321f;
+  --red-soft: #3a1b1e;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 20px -10px rgba(0, 0, 0, 0.5);
+}
+:root[data-theme='dark'] .tfupload .ds-conn {
+  box-shadow: 0 0 0 3px #14321f;
+}
+:root[data-theme='dark'] .tfupload select,
+:root[data-theme='dark'] .tfupload input[type="text"] {
+  background: #14212f;
+}
+:root[data-theme='dark'] .tfupload .table-toolbar {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .tfupload .preview-table th {
+  border-right: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .tfupload .preview-table td {
+  border-bottom: 1px solid #2a3d52;
+  border-right: 1px solid #2a3d52;
+  background: #14212f;
+}
+:root[data-theme='dark'] .tfupload .preview-table tbody tr:hover td {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .tfupload .page-btn,
+:root[data-theme='dark'] .tfupload .page-number-group button {
+  background: #14212f;
+}
+:root[data-theme='dark'] .tfupload .tf-status-pending {
+  background: #3a2a12;
+  color: #ffcc5c;
+}
+:root[data-theme='dark'] .tfupload .upload-toast-icon {
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .tfupload .drop-zone {
+  background: #1b2b3d;
+}

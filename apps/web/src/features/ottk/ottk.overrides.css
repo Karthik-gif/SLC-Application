@@ -1,0 +1,28 @@
+/*
+ * The only deviations from the generated legacy stylesheet, and why.
+ *
+ * ottk.legacy.css is produced by tools/scope-css.mjs from legacy/OTTK.html and is
+ * re-generated whenever that page changes, so it cannot be hand-edited — anything written
+ * there is lost on the next run. Deliberate departures from the original look live here
+ * instead, scoped under .ottk so they cannot reach another app, and imported after the
+ * generated sheet so they win on order alone rather than on specificity tricks.
+ */
+
+/*
+ * LC Issuing Bank. The modal's field rows are a four-track grid
+ * (.modal-content-grid .fields {grid-template-columns:repeat(4,minmax(0,1fr))}) and every
+ * control fills its track (.field select {width:100%}), so the bank select was a quarter of
+ * the Trade Details panel — too short for "0001 — Bank of Example", which the legacy page
+ * truncated mid-name. It is the only field in that panel carrying a code *and* a bank name,
+ * so it gets two of the four tracks; the remaining ten fields keep one each and still fill
+ * three exact rows, which keeps the tracks and every row below it aligned. Widening it by
+ * anything other than a whole track would take it out of the grid and misalign the rows.
+ *
+ * Only above 800px: below that the same .fields rule drops to two tracks, where spanning
+ * two would make the field full width.
+ */
+@media (min-width: 801px) {
+  .ottk .modal-content-grid .section:nth-child(2) .fields > .field:first-child {
+    grid-column: span 2;
+  }
+}

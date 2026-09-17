@@ -28,6 +28,9 @@ import {
 } from './data.ts'
 import type { CashflowRow, IrsForm, LoanRecord, Toast, ToastKind } from './types.ts'
 import './discounting-loans-irs.legacy.css'
+// Night mode. Generated from the sheet above by tools/gen-dark-css.mjs; it only restates the
+// colours that change, at a higher specificity, so it must be imported after it.
+import './discounting-loans-irs.dark.css'
 
 const VERSION = 'v18'
 const PAGE_SIZE = 12

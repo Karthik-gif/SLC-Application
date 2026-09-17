@@ -28,6 +28,9 @@ import {
   money,
 } from './format.ts'
 import './sblc-allocate-bank.legacy.css'
+// Night mode. Generated from the sheet above by tools/gen-dark-css.mjs; it only restates the
+// colours that change, at a higher specificity, so it must be imported after it.
+import './sblc-allocate-bank.dark.css'
 import type { DmsDoc, FacilityTransaction, SblcRecord, Toast, ToastKind } from './types.ts'
 
 const VERSION = 'v8'

@@ -14,6 +14,9 @@ import { RequestTable } from './RequestTable.tsx'
 import type { BankAccount, IclRequest, SortState, ToastItem, ToastKind } from './types.ts'
 import { ToastRegion } from './ToastRegion.tsx'
 import './icl-allocate-bank.legacy.css'
+// Night mode. Generated from the sheet above by tools/gen-dark-css.mjs; it only restates the
+// colours that change, at a higher specificity, so it must be imported after it.
+import './icl-allocate-bank.dark.css'
 
 let toastSeq = 0
 

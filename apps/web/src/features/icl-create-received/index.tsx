@@ -10,6 +10,9 @@ import type { ToastItem, ToastKind } from './ToastRegion.tsx'
 import { ToastRegion } from './ToastRegion.tsx'
 import type { CalendarTarget, FilterState, IclRequestRow, IclSettings, IndexedRow, SortState } from './types.ts'
 import './icl-create-received.legacy.css'
+// Night mode. Generated from the sheet above by tools/gen-dark-css.mjs; it only restates the
+// colours that change, at a higher specificity, so it must be imported after it.
+import './icl-create-received.dark.css'
 
 const DEFAULT_STATUS = 'Enter an Upto Request Date to load ICL requests'
 

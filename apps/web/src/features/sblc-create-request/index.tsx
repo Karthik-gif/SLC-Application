@@ -32,6 +32,9 @@ import type {
   Toast,
 } from './types.ts'
 import './sblc-create-request.legacy.css'
+// Night mode. Generated from the sheet above by tools/gen-dark-css.mjs; it only restates the
+// colours that change, at a higher specificity, so it must be imported after it.
+import './sblc-create-request.dark.css'
 
 const PAGE_SIZE = 15
 const TOAST_LIFETIME_MS = 4200

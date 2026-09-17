@@ -1,0 +1,82 @@
+/* Night mode for deal-id, derived from deal-id.legacy.css.
+ * Generated — do not hand-edit; re-run `node tools/gen-dark-css.mjs`.
+ *
+ * Only the declarations whose colour changes at night are here; everything else is inherited
+ * from the light stylesheet. Brand and status colours are deliberately absent because they
+ * keep their identity in both themes — see tools/dark-palette.mjs for the rules.
+ */
+:root[data-theme='dark'] .dealid {
+  color-scheme: dark;
+}
+:root[data-theme='dark'] .dealid input:not([type='checkbox']):not([type='radio']),
+:root[data-theme='dark'] .dealid select,
+:root[data-theme='dark'] .dealid textarea {
+  background: #14212f;
+}
+:root[data-theme='dark'] .dealid {
+  --bg: #0d1724;
+  --surface: #14212f;
+  --surface-2: #1b2b3d;
+  --border: #2a3d52;
+  --border-strong: #3d5670;
+  --text: #e6eef8;
+  --sub: #a9c2dd;
+  --muted: #7f9bb8;
+  --blue-soft: #17304a;
+  --blue-soft-2: #1e4368;
+  --red-soft: #3a1b1e;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 20px -10px rgba(0, 0, 0, 0.5);
+}
+:root[data-theme='dark'] .dealid .connection {
+  box-shadow: 0 0 0 3px #14321f;
+}
+:root[data-theme='dark'] .dealid .connection.offline {
+  box-shadow: 0 0 0 3px #3a1b1e;
+}
+:root[data-theme='dark'] .dealid .section-title {
+  color: #a9c2dd;
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .dealid .field input,
+:root[data-theme='dark'] .dealid .field select {
+  background: #14212f;
+}
+:root[data-theme='dark'] .dealid .field input.fs-amount-input.field-error {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .dealid th {
+  border-right: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .dealid td {
+  border-bottom: 1px solid #2a3d52;
+  border-right: 1px solid #2a3d52;
+  background: #14212f;
+}
+:root[data-theme='dark'] .dealid tbody tr:hover td {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .dealid .status-pill.open {
+  background: #14321f;
+}
+:root[data-theme='dark'] .dealid .status-pill.pending {
+  color: #ffcc5c;
+  background: #3a2a12;
+}
+:root[data-theme='dark'] .dealid .tool {
+  background: #14212f;
+}
+:root[data-theme='dark'] .dealid .advanced-filters {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .dealid .advanced-filters select {
+  background: #14212f;
+}
+:root[data-theme='dark'] .dealid .filter-reset-btn {
+  background: #14212f;
+}
+:root[data-theme='dark'] .dealid .modal-head {
+  background: linear-gradient(180deg,#14212f,#1b2b3d);
+}
+:root[data-theme='dark'] .dealid .success-icon {
+  background: #14321f;
+}

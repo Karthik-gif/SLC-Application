@@ -1,0 +1,245 @@
+/* Night mode for dttk, derived from dttk.legacy.css.
+ * Generated — do not hand-edit; re-run `node tools/gen-dark-css.mjs`.
+ *
+ * Only the declarations whose colour changes at night are here; everything else is inherited
+ * from the light stylesheet. Brand and status colours are deliberately absent because they
+ * keep their identity in both themes — see tools/dark-palette.mjs for the rules.
+ */
+:root[data-theme='dark'] .dttk {
+  color-scheme: dark;
+}
+:root[data-theme='dark'] .dttk input:not([type='checkbox']):not([type='radio']),
+:root[data-theme='dark'] .dttk select,
+:root[data-theme='dark'] .dttk textarea {
+  background: #14212f;
+}
+:root[data-theme='dark'] .dttk {
+  --bg: #0d1724;
+  --surface: #14212f;
+  --surface-2: #1b2b3d;
+  --border: #2a3d52;
+  --border-strong: #3d5670;
+  --text: #e6eef8;
+  --sub: #a9c2dd;
+  --muted: #7f9bb8;
+  --blue-soft: #17304a;
+  --blue-soft-2: #1e4368;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 20px -10px rgba(0, 0, 0, 0.5);
+}
+:root[data-theme='dark'] .dttk .connection {
+  box-shadow: 0 0 0 3px #14321f;
+}
+:root[data-theme='dark'] .dttk .field input,
+:root[data-theme='dark'] .dttk .field select {
+  background: #14212f;
+}
+:root[data-theme='dark'] .dttk .tool {
+  background: #14212f;
+}
+:root[data-theme='dark'] .dttk th {
+  border-right: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .dttk td {
+  border-bottom: 1px solid #2a3d52;
+  border-right: 1px solid #2a3d52;
+  background: #14212f;
+}
+:root[data-theme='dark'] .dttk tbody tr:hover td {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .dttk .empty-space {
+  background: linear-gradient(#14212f,#1b2b3d);
+}
+:root[data-theme='dark'] .dttk .pager button {
+  background: #14212f;
+}
+:root[data-theme='dark'] .dttk .modal-head {
+  background: linear-gradient(180deg,#14212f,#1b2b3d);
+}
+:root[data-theme='dark'] .dttk .modal-content-grid {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid .section-title {
+  background: #1b2b3d;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .dttk .modal-footer {
+  background: #14212f;
+}
+:root[data-theme='dark'] .dttk .modal-note b {
+  color: #ff5c5c;
+}
+:root[data-theme='dark'] .dttk .status-pill.open {
+  background: #14321f;
+}
+:root[data-theme='dark'] .dttk .status-pill.pending {
+  color: #ffcc5c;
+  background: #3a2a12;
+}
+:root[data-theme='dark'] .dttk .ottk-modal {
+  border: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .dttk .modal-head {
+  background: #17304a;
+}
+:root[data-theme='dark'] .dttk .modal-heading h2 {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .dttk .modal-heading p {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .dttk .modal-close {
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .dttk .modal-close:hover {
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .dttk .modal-head-created {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .dttk .modal-head-created b {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid {
+  background: #14212f;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid .section:nth-child(1),
+:root[data-theme='dark'] .dttk .modal-content-grid .section:nth-child(2) {
+  border: 1px solid #2d4a6b;
+  background: #14212f;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid .section-title {
+  border-bottom: 1px solid #2d4a6b;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid .field label {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid .field input,
+:root[data-theme='dark'] .dttk .modal-content-grid .field select {
+  border-bottom: 1px solid #2a3d52;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid .field input[readonly] {
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid .suffix {
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid .section:nth-child(3) {
+  border: 1px solid #2d4a6b;
+  background: #17304a;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid .section:nth-child(3) .section-title {
+  color: #6baff0;
+  border-bottom-color: #2d4a6b;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid .section:nth-child(4),
+:root[data-theme='dark'] .dttk .modal-content-grid .section:nth-child(5) {
+  border: 1px solid #26543a;
+  background: #14321f;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid .section:nth-child(4) .section-title,
+:root[data-theme='dark'] .dttk .modal-content-grid .section:nth-child(5) .section-title {
+  color: #a9c2dd;
+  border-bottom-color: #26543a;
+}
+:root[data-theme='dark'] .dttk .modal-footer {
+  background: #1b2b3d;
+  border-top: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid .fs-amount-input.field-error {
+  background: #1b2b3d!important;
+}
+:root[data-theme='dark'] .dttk .advanced-filters {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .dttk .advanced-filters select {
+  background: #14212f;
+}
+:root[data-theme='dark'] .dttk .filter-reset-btn {
+  background: #14212f;
+}
+:root[data-theme='dark'] .dttk .connection.offline {
+  box-shadow: 0 0 0 3px #3a1b1e;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid .compound .btn.icon-only {
+  background: #14212f;
+}
+:root[data-theme='dark'] .dttk .charges-body {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .dttk .charges-table-wrap {
+  background: #14212f;
+}
+:root[data-theme='dark'] .dttk .charges-table th {
+  border-right: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .dttk .charges-table td {
+  border-bottom: 1px solid #2a3d52;
+  border-right: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .dttk .charges-table input,
+:root[data-theme='dark'] .dttk .charges-table select {
+  background: #14212f;
+}
+:root[data-theme='dark'] .dttk .success-icon {
+  background: #14321f;
+}
+:root[data-theme='dark'] .dttk .success-warn {
+  color: #ff5c5c;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid.dttk-grid .section {
+  border: 1px solid #2d4a6b;
+  background: #14212f;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid.dttk-grid .sec-confirmation {
+  border-color: #2d4a6b;
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid.dttk-grid .sec-discounting,
+:root[data-theme='dark'] .dttk .modal-content-grid.dttk-grid .sec-additional {
+  border-color: #26543a;
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid.dttk-grid .section-title {
+  border-bottom: 1px solid #2d4a6b;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid.dttk-grid .sec-confirmation .section-title {
+  color: #6baff0;
+  border-bottom-color: #2d4a6b;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid.dttk-grid .sec-discounting .section-title,
+:root[data-theme='dark'] .dttk .modal-content-grid.dttk-grid .sec-additional .section-title {
+  color: #a9c2dd;
+  border-bottom-color: #26543a;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid.dttk-grid .field label {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid.dttk-grid .field input,
+:root[data-theme='dark'] .dttk .modal-content-grid.dttk-grid .field select {
+  border-bottom: 1px solid #2a3d52;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid.dttk-grid .field input[readonly] {
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid.dttk-grid .field input:disabled {
+  color: #e6eef8;
+  -webkit-text-fill-color: #e6eef8;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid.dttk-grid .compound>.suffix {
+  border-bottom: 1px solid #2a3d52;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .dttk .modal-content-grid.dttk-grid .compound .btn.icon-only {
+  background: #14212f;
+}
+:root[data-theme='dark'] .dttk body.display-ticket .dttk-grid select:disabled {
+  color: #e6eef8;
+  -webkit-text-fill-color: #e6eef8;
+}

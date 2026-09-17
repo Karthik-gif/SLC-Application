@@ -22,6 +22,9 @@ import type {
   Toast,
 } from './types.ts'
 import './icl-request.legacy.css'
+// Night mode. Generated from the sheet above by tools/gen-dark-css.mjs; it only restates the
+// colours that change, at a higher specificity, so it must be imported after it.
+import './icl-request.dark.css'
 
 const PAGE_SIZE = 12
 

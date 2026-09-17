@@ -17,6 +17,9 @@ import { EDIT_COLUMNS, MAIN_COLUMNS } from './columns.ts'
 import { DUMMY_PAYLOAD } from './data.ts'
 import type { DepositRecord, Toast } from './types.ts'
 import './check-confirm-deposit.legacy.css'
+// Night mode. Generated from the sheet above by tools/gen-dark-css.mjs; it only restates the
+// colours that change, at a higher specificity, so it must be imported after it.
+import './check-confirm-deposit.dark.css'
 
 const VERSION = 'v8'
 const PAGE_SIZE = 12

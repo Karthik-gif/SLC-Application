@@ -19,6 +19,9 @@ import { TfTable } from './TfTable.tsx'
 import { EMPTY_FILTERS } from './types.ts'
 import type { TfFilters, TrdFlowRow } from './types.ts'
 import './tf-manage.legacy.css'
+// Night mode. Generated from the sheet above by tools/gen-dark-css.mjs; it only restates the
+// colours that change, at a higher specificity, so it must be imported after it.
+import './tf-manage.dark.css'
 
 const TABS = [
   { id: 'basicData', label: 'Basic Data', sections: BASIC_SECTIONS, fields: BASIC_FIELDS },

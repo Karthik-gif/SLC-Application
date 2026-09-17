@@ -288,26 +288,6 @@ export function DttkModal(props: DttkModalProps) {
                 </select>
               </div>
             </Field>
-            <Field label="DTTK Trade Value">
-              <div className="compound">
-                <input
-                  {...amountProps('tradeValue')}
-                  disabled={locked}
-                  placeholder="e.g. 1.5M"
-                  title="Enter a number or use K, M, B, T (example: 1.5M)"
-                />
-                <select
-                  className="suffix"
-                  disabled={locked}
-                  value={form.tradeValueCcy}
-                  onChange={(e) => set('tradeValueCcy', e.target.value)}
-                >
-                  {CCY_OPTIONS.map((c) => (
-                    <option key={c}>{c}</option>
-                  ))}
-                </select>
-              </div>
-            </Field>
             <div className="field field-duo">
               <div className="duo-item">
                 <label htmlFor="lcdate">Expected LC Date</label>
@@ -393,6 +373,26 @@ export function DttkModal(props: DttkModalProps) {
                   </option>
                 ))}
               </select>
+            </Field>
+            <Field label="DTTK Trade Value">
+              <div className="compound">
+                <input
+                  {...amountProps('tradeValue')}
+                  disabled={locked}
+                  placeholder="e.g. 1.5M"
+                  title="Enter a number or use K, M, B, T (example: 1.5M)"
+                />
+                <select
+                  className="suffix"
+                  disabled={locked}
+                  value={form.tradeValueCcy}
+                  onChange={(e) => set('tradeValueCcy', e.target.value)}
+                >
+                  {CCY_OPTIONS.map((c) => (
+                    <option key={c}>{c}</option>
+                  ))}
+                </select>
+              </div>
             </Field>
             <Field label="Disc. Calc Method" htmlFor="disVal">
               <select id="disVal" value={form.disVal} onChange={(e) => set('disVal', e.target.value)}>

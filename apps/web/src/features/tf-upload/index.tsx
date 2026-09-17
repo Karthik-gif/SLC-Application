@@ -12,6 +12,9 @@ import { parseExcelFile } from './xlsx.ts'
 import type { CellValue } from './xlsx.ts'
 import payload from './template.json'
 import './tf-upload.legacy.css'
+// Night mode. Generated from the sheet above by tools/gen-dark-css.mjs; it only restates the
+// colours that change, at a higher specificity, so it must be imported after it.
+import './tf-upload.dark.css'
 
 /**
  * Trade Flow Excel Upload.

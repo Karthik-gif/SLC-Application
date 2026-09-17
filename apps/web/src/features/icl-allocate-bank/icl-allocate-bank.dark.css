@@ -1,0 +1,389 @@
+/* Night mode for icl-allocate-bank, derived from icl-allocate-bank.legacy.css.
+ * Generated — do not hand-edit; re-run `node tools/gen-dark-css.mjs`.
+ *
+ * Only the declarations whose colour changes at night are here; everything else is inherited
+ * from the light stylesheet. Brand and status colours are deliberately absent because they
+ * keep their identity in both themes — see tools/dark-palette.mjs for the rules.
+ */
+:root[data-theme='dark'] .iclallocate {
+  color-scheme: dark;
+}
+:root[data-theme='dark'] .iclallocate input:not([type='checkbox']):not([type='radio']),
+:root[data-theme='dark'] .iclallocate select,
+:root[data-theme='dark'] .iclallocate textarea {
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclallocate {
+  background: #0d1724;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .shell {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .iclallocate .topbar {
+  background: #14212f;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclallocate .title {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .card {
+  background: #14212f;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclallocate .card-head {
+  background: #1b2b3d;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclallocate .card-title {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .card-meta {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclallocate .field label {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .input,
+:root[data-theme='dark'] .iclallocate .select {
+  border: 1px solid #3d5670;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .range-to {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclallocate .btn {
+  border: 1px solid #2d4a6b;
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .iclallocate .btn:hover {
+  background: #17304a;
+  color: #64adf7;
+}
+:root[data-theme='dark'] .iclallocate .btn-ghost {
+  background: #14212f;
+  border-color: #2a3d52;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .btn-ghost:hover {
+  background: #1b2b3d;
+  border-color: #3d5670;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .btn-danger {
+  background: #14212f;
+  color: #ff5c5c;
+}
+:root[data-theme='dark'] .iclallocate .btn-danger:hover {
+  background: #1b2b3d;
+  color: #ff5c5c;
+}
+:root[data-theme='dark'] .iclallocate .calendar-btn {
+  border: 1px solid #3d5670;
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclallocate .calendar-btn:hover {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .iclallocate .calendar-popup {
+  background: #14212f;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclallocate .calendar-head select {
+  border: 1px solid #3d5670;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .calendar-dow {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclallocate .calendar-day {
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .calendar-day:hover {
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .iclallocate .calendar-day.empty {
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclallocate .record-count {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclallocate .table-wrap {
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclallocate .data-table th {
+  background: #1b2b3d;
+  color: #e6eef8;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .iclallocate .data-table td {
+  background: #14212f;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2a3d52;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .data-table tbody tr:hover td {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .iclallocate .data-table tbody tr.selected td {
+  background: #17304a;
+}
+:root[data-theme='dark'] .iclallocate .pagination-bar {
+  background: #14212f;
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclallocate .page-btn {
+  border: 1px solid #2a3d52;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .page-btn:hover {
+  background: #1b2b3d;
+  border-color: #3d5670;
+}
+:root[data-theme='dark'] .iclallocate .page-btn.active {
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .iclallocate .page-btn:disabled {
+  background: #1b2b3d;
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .iclallocate .modal {
+  background: #14212f;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclallocate .modal-head {
+  background: #17304a;
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .iclallocate .modal-close {
+  border: 1px solid #2a3d52;
+  background: #14212f;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclallocate .modal-foot {
+  background: #1b2b3d;
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclallocate .modal-label {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclallocate .lookup-input {
+  border: 1px solid #3d5670;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .lookup-input[readonly] {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .iclallocate .lookup-btn {
+  border: 1px solid #3d5670;
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .iclallocate .lookup-btn:hover {
+  background: #17304a;
+}
+:root[data-theme='dark'] .iclallocate .read-value {
+  border: 1px solid #2a3d52;
+  background: #1b2b3d;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .search-input {
+  border: 1px solid #3d5670;
+}
+:root[data-theme='dark'] .iclallocate .lookup-table th {
+  background: #1b2b3d;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .iclallocate .lookup-table td {
+  background: #14212f;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclallocate .lookup-table tr:hover td {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .iclallocate .lookup-table tr.selected td {
+  background: #17304a;
+}
+:root[data-theme='dark'] .iclallocate .warning-box {
+  background: #3a2a12;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .message-table th {
+  background: #1b2b3d;
+  color: #e6eef8;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .iclallocate .message-table td {
+  background: #14212f;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclallocate .toast {
+  background: #1b2b3d;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclallocate .toast-icon {
+  background: #16243a;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclallocate .toast.success .toast-icon {
+  background: #14321f;
+  color: #6eeda3;
+}
+:root[data-theme='dark'] .iclallocate .toast-message {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclallocate .statusbar {
+  background: #14212f;
+  border-top: 1px solid #2a3d52;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclallocate .empty {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclallocate .selection-panel {
+  background: #14212f;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclallocate .selection-date-label {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .inline-date-input {
+  border: 1px solid #3d5670;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .inline-calendar-btn {
+  border-left: 1px solid #2a3d52;
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclallocate .inline-calendar-btn:hover {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .iclallocate .inline-calendar-btn:before {
+  box-shadow: inset 0 4px 0 #17304a;
+}
+:root[data-theme='dark'] .iclallocate .filter-icon-btn {
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclallocate .filter-icon-btn:hover {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .iclallocate .filter-caption {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .filter-item label {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclallocate .filter-select {
+  border: 1px solid #3d5670;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .filter-input {
+  border: 1px solid #3d5670;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .compact-bank-form .modal-label {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclallocate .calendar-popup {
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclallocate .calendar-top {
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclallocate .calendar-title-btn {
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .calendar-nav {
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclallocate .calendar-nav:hover {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .iclallocate .calendar-week span {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .iclallocate .calendar-cell {
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .calendar-cell:hover {
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .iclallocate .calendar-cell.other {
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .iclallocate .calendar-cell.selected {
+  background: #17304a;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .calendar-cell.today {
+  color: #63aef8;
+}
+:root[data-theme='dark'] .iclallocate .calendar-foot {
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclallocate .calendar-foot-btn {
+  background: #14212f;
+  color: #63aef8;
+}
+:root[data-theme='dark'] .iclallocate .month-grid {
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclallocate .month-btn {
+  background: #1b2b3d;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .month-btn:hover {
+  background: #17304a;
+}
+:root[data-theme='dark'] .iclallocate .year-btn {
+  background: #1b2b3d;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclallocate .year-btn:hover {
+  background: #17304a;
+}
+:root[data-theme='dark'] .iclallocate .year-btn.selected {
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .iclallocate #rejectBtn {
+  background: #17304a;
+  border-color: #2d4a6b;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .iclallocate #rejectBtn:hover {
+  background: #17304a;
+  color: #64adf7;
+}
+:root[data-theme='dark'] .iclallocate .lookup-field .lookup-input {
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclallocate .lookup-field.disabled .lookup-input {
+  background: #1b2b3d;
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .iclallocate .lookup-cue {
+  border-left: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclallocate .main-date-item label {
+  color: #e6eef8;
+}

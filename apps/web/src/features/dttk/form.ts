@@ -11,8 +11,6 @@ export type DttkForm = {
   bank: string
   otkValue: string
   otkValueCcy: string
-  tradeValue: string
-  tradeValueCcy: string
   lcdate: string
   tenor: string
   lcApplicant: string
@@ -23,6 +21,8 @@ export type DttkForm = {
   businessAreaName: string
   rma: string
   disBank: string
+  tradeValue: string
+  tradeValueCcy: string
   disVal: string
   disAmt: string
   disCurr: string
@@ -61,8 +61,6 @@ export const EMPTY_FORM: DttkForm = {
   bank: '',
   otkValue: '',
   otkValueCcy: 'USD',
-  tradeValue: '',
-  tradeValueCcy: 'USD',
   lcdate: '',
   tenor: '',
   lcApplicant: '',
@@ -73,6 +71,8 @@ export const EMPTY_FORM: DttkForm = {
   businessAreaName: '',
   rma: '',
   disBank: '',
+  tradeValue: '',
+  tradeValueCcy: 'USD',
   disVal: '',
   disAmt: '',
   disCurr: 'USD',
@@ -265,7 +265,8 @@ export function hasConfirmationLeg(type1: string): boolean {
 
 /**
  * Once a DTTK is tied to an OTTK, its trade terms ARE the OTTK's trade terms, so the whole
- * Trade Details section goes non-editable and nothing there can drift from the OTTK.
+ * Trade Details section — and DTTK Trade Value, which sits beside Discounting Bank — goes
+ * non-editable and nothing there can drift from the OTTK.
  */
 export function isTradeLocked(form: DttkForm): boolean {
   return Boolean(form.otkNo)

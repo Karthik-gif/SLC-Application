@@ -1,0 +1,187 @@
+/* Night mode for icl-approve-request, derived from icl-approve-request.legacy.css.
+ * Generated — do not hand-edit; re-run `node tools/gen-dark-css.mjs`.
+ *
+ * Only the declarations whose colour changes at night are here; everything else is inherited
+ * from the light stylesheet. Brand and status colours are deliberately absent because they
+ * keep their identity in both themes — see tools/dark-palette.mjs for the rules.
+ */
+:root[data-theme='dark'] .iclapprove {
+  color-scheme: dark;
+}
+:root[data-theme='dark'] .iclapprove input:not([type='checkbox']):not([type='radio']),
+:root[data-theme='dark'] .iclapprove select,
+:root[data-theme='dark'] .iclapprove textarea {
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclapprove {
+  --page: #0d1724;
+  --page2: #16243a;
+  --surface: #14212f;
+  --surfaceAlt: #1b2b3d;
+  --line: #2a3d52;
+  --lineStrong: #3d5670;
+  --text: #e6eef8;
+  --muted: #7f9bb8;
+  --labelInk: #a9c2dd;
+  --blueDark: #7cc0f8;
+  --blueSoft: #17304a;
+  --blueSoft2: #1e4368;
+  --tealSoft: #113330;
+  --greenSoft: #14321f;
+  --orangeSoft: #3a2a12;
+  --redSoft: #3a1b1e;
+  --grayReadOnly: #16243a;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 20px -10px rgba(0, 0, 0, 0.5);
+  --shadowHover: 0 2px 4px rgba(0, 0, 0, 0.35), 0 14px 30px -12px rgba(0, 0, 0, 0.55);
+}
+:root[data-theme='dark'] .iclapprove .app-title {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclapprove .hdr-btn.danger {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclapprove .hdr-btn.danger:hover {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclapprove .toolbar-field label {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclapprove .table-card {
+  border: 1px solid #2a3d52;
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclapprove .table-card-head {
+  border-bottom: 1px solid #2a3d52;
+  background: #1b2b3d;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclapprove .table-scroll {
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclapprove table.data-table th {
+  background: #1b2b3d;
+  color: #e6eef8;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .iclapprove table.data-table td {
+  background: #14212f;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2a3d52;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclapprove .pagination-bar {
+  background: #14212f;
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .iclapprove .page-btn {
+  border: 1px solid #2a3d52;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclapprove .page-btn:hover:not(:disabled) {
+  background: #1b2b3d;
+  border-color: #3d5670;
+}
+:root[data-theme='dark'] .iclapprove .page-btn.active {
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .iclapprove .page-btn:disabled {
+  background: #1b2b3d;
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .iclapprove table.data-table tbody tr:hover td {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .iclapprove table.data-table tbody tr.selected-row td {
+  background: #17304a !important;
+}
+:root[data-theme='dark'] .iclapprove .date-field-wrap input[type="text"] {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclapprove #uptoRequestDate {
+  background: #14212f;
+}
+:root[data-theme='dark'] .iclapprove .toolbar select {
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclapprove .toolbar select.placeholder-active {
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .iclapprove .toolbar select option {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclapprove .toolbar input.filter-text {
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclapprove .toolbar input.filter-text::placeholder {
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .iclapprove #filtersRow .date-field-wrap input[type="text"] {
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclapprove #filtersRow .date-field-wrap input[type="text"]::placeholder {
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .iclapprove .modal-dialog {
+  border: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .iclapprove .modal-head {
+  background: #17304a;
+}
+:root[data-theme='dark'] .iclapprove .modal-title {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclapprove .modal-close-btn {
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .iclapprove .modal-footer {
+  border-top: 1px solid #2d4a6b;
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .iclapprove .section-head {
+  background: #1b2b3d;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclapprove .field-grid label {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclapprove .field-grid input:not([type="checkbox"]),
+:root[data-theme='dark'] .iclapprove .field-grid select {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclapprove .field-grid input[readonly] {
+  color: #e6eef8;
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .iclapprove .stacked-field label {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclapprove .stacked-field input,
+:root[data-theme='dark'] .iclapprove .stacked-field select {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclapprove .stacked-field input[readonly] {
+  color: #e6eef8;
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .iclapprove .dms-table th {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclapprove .dms-table td {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclapprove .dms-table input[type="text"] {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclapprove .dms-table input[readonly] {
+  background: #1b2b3d;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .iclapprove .toast.error {
+  border-left-color: #5c2b30;
+}

@@ -6,6 +6,9 @@ import { BANK_COLUMNS, DEPOSIT_COLUMNS, ICL_COLUMNS, MAIN_COLUMNS } from './colu
 import { BANKS, COMPANY_CODES, NEXT_NUMBERS, RECORDS } from './data.ts'
 import type { Bank, EditColumn, IclRecord, MainColumn, ToastItem, ToastKind } from './types.ts'
 import './icl-deposit.legacy.css'
+// Night mode. Generated from the sheet above by tools/gen-dark-css.mjs; it only restates the
+// colours that change, at a higher specificity, so it must be imported after it.
+import './icl-deposit.dark.css'
 
 const VERSION = 'v1'
 const PAGE_SIZE = 12

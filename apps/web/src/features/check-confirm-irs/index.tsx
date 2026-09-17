@@ -17,6 +17,9 @@ import { SettleModal } from './SettleModal.tsx'
 import type { ComboKind, IrsRecord, SortDirection } from './types.ts'
 import { ToastRegion, type Toast } from './ToastRegion.tsx'
 import './check-confirm-irs.legacy.css'
+// Night mode. Generated from the sheet above by tools/gen-dark-css.mjs; it only restates the
+// colours that change, at a higher specificity, so it must be imported after it.
+import './check-confirm-irs.dark.css'
 
 const PAGE_SIZE = 15
 const DEFAULT_CALENDAR_DATE = new Date(2026, 8, 18)

@@ -1,0 +1,249 @@
+/* Night mode for check-confirm-discounting-loans, derived from check-confirm-discounting-loans.legacy.css.
+ * Generated — do not hand-edit; re-run `node tools/gen-dark-css.mjs`.
+ *
+ * Only the declarations whose colour changes at night are here; everything else is inherited
+ * from the light stylesheet. Brand and status colours are deliberately absent because they
+ * keep their identity in both themes — see tools/dark-palette.mjs for the rules.
+ */
+:root[data-theme='dark'] .ccdiscloans {
+  color-scheme: dark;
+}
+:root[data-theme='dark'] .ccdiscloans input:not([type='checkbox']):not([type='radio']),
+:root[data-theme='dark'] .ccdiscloans select,
+:root[data-theme='dark'] .ccdiscloans textarea {
+  background: #14212f;
+}
+:root[data-theme='dark'] .ccdiscloans {
+  background: #0d1724;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccdiscloans .shell {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .ccdiscloans .topbar {
+  background: #14212f;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccdiscloans .refresh-btn {
+  background: #14212f;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccdiscloans .refresh-btn:hover {
+  background: #1b2b3d;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccdiscloans .title {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccdiscloans .card {
+  background: #14212f;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccdiscloans .card-head {
+  background: #1b2b3d;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccdiscloans .card-title {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccdiscloans .card-meta {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccdiscloans .field label {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccdiscloans .input,
+:root[data-theme='dark'] .ccdiscloans .select {
+  border: 1px solid #3d5670;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccdiscloans .calendar-btn {
+  background: linear-gradient(#0a6ed1,#0a6ed1) top/100% 4px no-repeat,
+repeating-linear-gradient(90deg,#1e4368 0 2px,transparent 2px 4px) 2px 6px/11px 7px no-repeat,
+repeating-linear-gradient(0deg,#1e4368 0 2px,transparent 2px 4px) 2px 6px/11px 7px no-repeat,#14212f;
+}
+:root[data-theme='dark'] .ccdiscloans .filter-icon-btn {
+  border: 1px solid #3d5670;
+  background: #14212f;
+}
+:root[data-theme='dark'] .ccdiscloans .filter-icon-btn:hover {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .ccdiscloans .table-wrap {
+  background: #14212f;
+}
+:root[data-theme='dark'] .ccdiscloans .data-table th {
+  background: #1b2b3d;
+  color: #e6eef8;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .ccdiscloans .data-table td {
+  background: #14212f;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2a3d52;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccdiscloans .data-table tbody tr:hover td {
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .ccdiscloans .data-table tbody tr.selected td {
+  background: #17304a;
+}
+:root[data-theme='dark'] .ccdiscloans .badge-open {
+  background: #3a2a12;
+  color: #ffb75c;
+}
+:root[data-theme='dark'] .ccdiscloans .badge-created {
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .ccdiscloans .badge-closed {
+  background: #14321f;
+  color: #6eeda3;
+}
+:root[data-theme='dark'] .ccdiscloans .btn {
+  border: 1px solid #2d4a6b;
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .ccdiscloans .btn:hover {
+  background: #17304a;
+  color: #64adf7;
+}
+:root[data-theme='dark'] .ccdiscloans .btn-ghost {
+  background: #14212f;
+  border-color: #2a3d52;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccdiscloans .btn-ghost:hover {
+  background: #1b2b3d;
+  border-color: #3d5670;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccdiscloans .btn-icon {
+  border: 1px solid #2d4a6b;
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .ccdiscloans .btn-icon:hover {
+  background: #17304a;
+}
+:root[data-theme='dark'] .ccdiscloans .pagination-bar {
+  background: #14212f;
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccdiscloans .page-btn {
+  border: 1px solid #2a3d52;
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccdiscloans .page-btn:hover {
+  background: #1b2b3d;
+  border-color: #3d5670;
+}
+:root[data-theme='dark'] .ccdiscloans .page-btn.active {
+  background: #17304a;
+  color: #5cafff;
+}
+:root[data-theme='dark'] .ccdiscloans .page-btn:disabled {
+  background: #1b2b3d;
+  color: #7f9bb8;
+}
+:root[data-theme='dark'] .ccdiscloans .empty {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccdiscloans .detail-label {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccdiscloans .detail-value {
+  border: 1px solid #2a3d52;
+  background: #1b2b3d;
+}
+:root[data-theme='dark'] .ccdiscloans .code {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccdiscloans .description {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccdiscloans .detail-readonly-select:disabled {
+  background: #1b2b3d;
+  color: #e6eef8;
+  border-color: #2a3d52;
+  -webkit-text-fill-color: #e6eef8;
+}
+:root[data-theme='dark'] .ccdiscloans .detail-readonly-input {
+  background: #1b2b3d!important;
+  color: #e6eef8!important;
+  border-color: #2a3d52;
+}
+:root[data-theme='dark'] .ccdiscloans .edit-table th {
+  background: #1b2b3d;
+  color: #e6eef8;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .ccdiscloans .edit-table td {
+  background: #1b2b3d;
+  border-right: 1px solid #2a3d52;
+  border-bottom: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccdiscloans .edit-table td.editable {
+  background: #14212f;
+}
+:root[data-theme='dark'] .ccdiscloans .cell-input,
+:root[data-theme='dark'] .ccdiscloans .cell-select {
+  background: #14212f;
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccdiscloans .cell-input:hover,
+:root[data-theme='dark'] .ccdiscloans .cell-select:hover {
+  border-color: #3d5670;
+}
+:root[data-theme='dark'] .ccdiscloans .cell-input[readonly] {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccdiscloans .link-button {
+  color: #63aef8;
+}
+:root[data-theme='dark'] .ccdiscloans .confirm-text {
+  color: #e6eef8;
+}
+:root[data-theme='dark'] .ccdiscloans .modal {
+  background: #14212f;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccdiscloans .modal-head {
+  background: #17304a;
+  border-bottom: 1px solid #2d4a6b;
+}
+:root[data-theme='dark'] .ccdiscloans .modal-close {
+  border: 1px solid #2a3d52;
+  background: #14212f;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccdiscloans .modal-foot {
+  background: #1b2b3d;
+  border-top: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccdiscloans .toast {
+  background: #1b2b3d;
+  border: 1px solid #2a3d52;
+}
+:root[data-theme='dark'] .ccdiscloans .toast-icon {
+  background: #16243a;
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccdiscloans .toast.success .toast-icon {
+  background: #14321f;
+  color: #6eeda3;
+}
+:root[data-theme='dark'] .ccdiscloans .toast-message {
+  color: #a9c2dd;
+}
+:root[data-theme='dark'] .ccdiscloans .statusbar {
+  background: #14212f;
+  border-top: 1px solid #2a3d52;
+  color: #a9c2dd;
+}

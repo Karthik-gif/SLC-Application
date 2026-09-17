@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { BrowserRouter, Link, Route, Routes, useParams } from 'react-router-dom'
 import { AppShell, Button, EmptyState, Spinner, ToastProvider } from '@slc/ui'
 import { AuthProvider } from './auth/AuthContext.tsx'
+import { ThemeProvider } from './shared/ThemeContext.tsx'
 import { LoginPage } from './auth/LoginPage.tsx'
 import { RequireAuth } from './auth/RequireAuth.tsx'
 import { MenuPage } from './menu/MenuPage.tsx'
@@ -16,27 +17,30 @@ import './app.css'
 export function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <ToastProvider>
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/" element={<RequireAuth><MenuPage section="functionality" /></RequireAuth>} />
-            <Route path="/master-data" element={<RequireAuth><MenuPage section="master-data" /></RequireAuth>} />
-            <Route path="/overview" element={<RequireAuth><MenuPage section="overview" /></RequireAuth>} />
-            <Route path="/reporting" element={<RequireAuth><MenuPage section="reporting" /></RequireAuth>} />
-            <Route path="/admin" element={<RequireAuth><MenuPage section="admin" /></RequireAuth>} />
-            <Route
-              path="/apps/:appId"
-              element={
-                <RequireAuth>
-                  <FeatureRoute />
-                </RequireAuth>
-              }
-            />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </ToastProvider>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <ToastProvider>
+            <Routes>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/" element={<RequireAuth><MenuPage section="functionality" /></RequireAuth>} />
+              <Route path="/master-data" element={<RequireAuth><MenuPage section="master-data" /></RequireAuth>} />
+              <Route path="/overview" element={<RequireAuth><MenuPage section="overview" /></RequireAuth>} />
+              <Route path="/trade-flows" element={<RequireAuth><MenuPage section="trade-flows" /></RequireAuth>} />
+              <Route path="/reporting" element={<RequireAuth><MenuPage section="reporting" /></RequireAuth>} />
+              <Route path="/admin" element={<RequireAuth><MenuPage section="admin" /></RequireAuth>} />
+              <Route
+                path="/apps/:appId"
+                element={
+                  <RequireAuth>
+                    <FeatureRoute />
+                  </RequireAuth>
+                }
+              />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </ToastProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
   )
 }

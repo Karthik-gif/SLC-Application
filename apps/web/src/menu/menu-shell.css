@@ -4,6 +4,86 @@
  * in scope for every rule below.
  */
 
+/*
+ * Night mode.
+ *
+ * Every surface, border and text colour in the hub resolves from the custom properties the
+ * generated menu-path.css declares on .mp, so night mode is almost entirely a matter of
+ * redefining those here — no component is restyled.
+ *
+ * Two of the names stop being literal and that is deliberate rather than an oversight:
+ * --white is the card SURFACE (dark here), and --blue-dark is the accent TEXT colour used on
+ * pale fills, so it has to become light or every tag and active nav item would go unreadable.
+ *
+ * Scope: the hub only. Each converted application carries the legacy stylesheet it was
+ * ported from, scoped under its own class and light by construction, so opening one still
+ * lands on a light screen.
+ */
+:root[data-theme='dark'] .mp {
+  --bg: #0d1724;
+  --bg2: #16243a;
+  /* The card surface. Lighter than --bg so panels still lift off the page. */
+  --white: #14212f;
+  --border: rgba(148, 186, 224, 0.14);
+  --border2: rgba(148, 186, 224, 0.26);
+  --text: #e6eef8;
+  --text-sub: #a9c2dd;
+  --text-muted: #7f9bb8;
+  /* Accent text on pale fills — inverted, see above. */
+  --blue-dark: #7cc0f8;
+  --blue: #4fa9f0;
+  --blue-mid: #64b5f6;
+  /* The pale fills themselves: dark tints rather than light ones. */
+  --blue-pale: #17304a;
+  --blue-pale2: #1e4368;
+  --shadow-md:
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 10px 24px -10px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(148, 186, 224, 0.1);
+}
+
+/* The two semantic colours are literals, so they need night values of their own: the day
+ * greens and reds are too dark to read on a dark surface. */
+:root[data-theme='dark'] .mp .mp-kpi-delta.up {
+  color: #5fd39b;
+}
+
+:root[data-theme='dark'] .mp .mp-kpi-delta.down {
+  color: #f08d6b;
+}
+
+:root[data-theme='dark'] .mp .mp-field-error {
+  color: #f08d6b;
+}
+
+/* Light amber on a dark card is glaring, so the pending pill is re-tinted rather than left
+ * as the day version. */
+:root[data-theme='dark'] .mp .mp-activity-status.pending {
+  background: #3a2a12;
+  color: #f0b866;
+}
+
+/* The rings are a percentage of a light blue, which all but vanishes against a dark page. */
+:root[data-theme='dark'] .mp .mp-side::before,
+:root[data-theme='dark'] .mp .mp-body > main::before {
+  border-color: rgba(99, 179, 237, 0.13);
+}
+
+:root[data-theme='dark'] .mp .mp-side::after,
+:root[data-theme='dark'] .mp .mp-body > main::after {
+  border-color: rgba(99, 179, 237, 0.08);
+}
+
+.mp-theme-toggle {
+  cursor: pointer;
+}
+
+/* .path-switch nudges sideways on hover, which reads as "go somewhere" on a control that
+ * switches a setting in place. */
+.mp-theme-toggle:hover {
+  transform: none;
+}
+
 .mp-body {
   display: flex;
   flex: 1;
@@ -290,6 +370,118 @@
   font-weight: 700;
   color: var(--text);
   margin-bottom: 16px;
+}
+
+/* A lone figure inside a panel should stay figure-sized. .mp-kpi grows to fill by design,
+ * which is right for a row of five on Overview but stretches a single Admin count across the
+ * whole panel. */
+.mp-panel .mp-kpi-grid .mp-kpi {
+  flex-grow: 0;
+}
+
+/* Admin — the account page. */
+
+.mp-profile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 18px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+.mp-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--white);
+  background: linear-gradient(140deg, var(--blue-dark), var(--blue-mid));
+}
+
+.mp-profile-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.mp-profile-sub {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+/* Same footprint as the initials circle, so swapping one for the other does not shift the
+ * name beside it. */
+.mp-avatar-img {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+  border: 1px solid var(--border2);
+}
+
+.mp-avatar-actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+/* The file input itself is never shown — browsers style it inconsistently and it cannot
+ * carry the page's own look — so a button forwards the click to it. Clipped rather than
+ * display:none, which would take it out of the accessibility tree along with its label. */
+.mp-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.mp-link-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--blue-dark);
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.mp-link-button:hover {
+  color: var(--blue);
+}
+
+/* Explains a limitation rather than reporting a failure, so it is muted rather than an
+ * error colour. */
+.mp-note {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  background: var(--bg2);
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+/* Carries role="alert" where it is used, so the failure is announced and not colour-only. */
+.mp-field-error {
+  font-size: 11px;
+  font-weight: 600;
+  color: #c2562f;
 }
 
 .mp-bars {

@@ -4,11 +4,14 @@ import { SignOutButton } from '../auth/SignOutButton.tsx'
 import { apiFetch } from '@slc/api-client'
 import { useAsync } from '@slc/api-client/react'
 import { Sidebar } from './Sidebar.tsx'
+import { ThemeToggle } from './ThemeToggle.tsx'
+import { useTheme } from '../shared/ThemeContext.tsx'
 import { AdminView } from './sections/AdminView.tsx'
 import { FunctionalityView } from './sections/FunctionalityView.tsx'
 import { MasterDataView } from './sections/MasterDataView.tsx'
 import { OverviewView } from './sections/OverviewView.tsx'
 import { ReportingView } from './sections/ReportingView.tsx'
+import { TradeFlowsView } from './sections/TradeFlowsView.tsx'
 import type { AppEntry, MenuNode, MenuTile } from './types.ts'
 import './menu-path.css'
 import './menu-path.overrides.css'
@@ -30,7 +33,13 @@ import './menu-shell.css'
 const BRAND_LOGO =
   'https://raw.githubusercontent.com/ryannayak/fs-assets/e82f35a83e28689167b22b4300d4994a249acee0/fs-short-logo.png'
 
-export type HubSection = 'master-data' | 'overview' | 'functionality' | 'reporting' | 'admin'
+export type HubSection =
+  | 'master-data'
+  | 'overview'
+  | 'trade-flows'
+  | 'functionality'
+  | 'reporting'
+  | 'admin'
 
 export function MenuPage({ section }: { section: HubSection }) {
   const navigate = useNavigate()
@@ -42,6 +51,10 @@ export function MenuPage({ section }: { section: HubSection }) {
   const scrollToTop = useCallback(() => {
     mainRef.current?.scrollTo(0, 0)
   }, [])
+
+  // Owned by ThemeProvider above the router, not here: the choice has to outlive this page so
+  // that opening an application from a tile does not drop back to a light screen.
+  const { theme, toggleTheme } = useTheme()
 
   const menu = useAsync<MenuNode[]>(() => apiFetch<MenuNode[]>('/config/menu.json'), [])
   const registry = useAsync<{ apps: AppEntry[] }>(() => apiFetch('/config/apps.json'), [])
@@ -83,18 +96,7 @@ export function MenuPage({ section }: { section: HubSection }) {
           </div>
         </div>
         <div className="header-right">
-          <a
-            className="path-switch"
-            href="http://localhost:8775/"
-            title="Applications that reach SAP through the dynamic gateway"
-            onClick={(event) => {
-              // The dynamic gateway hub has not been converted, so this does not navigate yet.
-              event.preventDefault()
-              showToast('The Dynamic Gateway hub is not part of this application yet.')
-            }}
-          >
-            <span className="ps-label">Other path</span> Dynamic Gateway &rarr;
-          </a>
+          <ThemeToggle theme={theme} onToggle={toggleTheme} />
           <div className="status-dot" title="SAP TRM connected" />
           <SignOutButton className="path-switch mp-signout" showIcon={false} />
         </div>
@@ -107,6 +109,8 @@ export function MenuPage({ section }: { section: HubSection }) {
             <MasterDataView onToast={showToast} />
           ) : section === 'overview' ? (
             <OverviewView />
+          ) : section === 'trade-flows' ? (
+            <TradeFlowsView groups={groups} onLaunch={launch} />
           ) : section === 'reporting' ? (
             <ReportingView />
           ) : section === 'admin' ? (

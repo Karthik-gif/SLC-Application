@@ -39,6 +39,35 @@ What this means in practice:
   would change the appearance. Do not "tidy" a converted app onto them.
 - `packages/api-client` **is** shared by everything. It holds behaviour, not appearance.
 - Regenerate rather than hand-edit: `node tools/scope-css.mjs "legacy/X.html" ".x" "apps/web/src/features/x/x.legacy.css"`.
+  **Check the diff before you keep it.** 18 of the 21 `*.legacy.css` files have been edited
+  since they were generated — different fonts, page colours, deleted rules — without the
+  `legacy/*.html` source being updated. For those, the CSS is the source of truth and a
+  regeneration will silently revert real work.
+
+## Night mode
+
+One attribute drives the whole product: `<html data-theme="dark">`, written by
+`apps/web/src/shared/ThemeContext.tsx`, which sits above the router in `App.tsx`. It has to
+live above the router because the hub and the applications are separate routes — a theme held
+in `MenuPage` would be unmounted the moment a tile was opened, which is exactly why night mode
+once stopped at the launcher.
+
+- The hub's night colours are hand-written in `menu-shell.css`, keyed `:root[data-theme='dark'] .mp`.
+- Each application's are **generated**: `node tools/gen-dark-css.mjs` derives
+  `<app>.dark.css` from that app's current `<app>.legacy.css` and it is imported straight
+  after it. It restates only the declarations whose colour changes, at a higher specificity.
+- The rules live in `tools/dark-palette.mjs` and are tested in `tools/dark-palette.test.mjs`.
+  A colour is classified by the property it is used in and by its own hue, chroma and
+  lightness — 292 distinct (property, colour) pairs across the apps is far too many to keep
+  by hand. Surfaces, rules and ink inevitably invert; **brand and status colours deliberately
+  do not**, so SAP blue, a confirmed green and a breach red mean the same thing in both
+  themes.
+- Derived from the CSS rather than the HTML on purpose: see the warning above about the
+  stale `legacy/*.html` sources.
+- `npm run verify` fails if any `<app>.dark.css` is out of date.
+
+Applications inherit the choice and have no toggle of their own; the switch lives once, in
+the hub header.
 - `codeText()` joins with a plain space (`01 New`) because the legacy consoles did. An em dash
   there changes every Type and Structure cell; the dash is used deliberately elsewhere
   (`0001 — Bank of Example`).
