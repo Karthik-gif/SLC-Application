@@ -3,10 +3,16 @@ import { useNavigate } from 'react-router-dom'
 import { SignOutButton } from '../auth/SignOutButton.tsx'
 import { apiFetch } from '@slc/api-client'
 import { useAsync } from '@slc/api-client/react'
+import { Sidebar } from './Sidebar.tsx'
+import { AdminView } from './sections/AdminView.tsx'
 import { FunctionalityView } from './sections/FunctionalityView.tsx'
+import { MasterDataView } from './sections/MasterDataView.tsx'
+import { OverviewView } from './sections/OverviewView.tsx'
+import { ReportingView } from './sections/ReportingView.tsx'
 import type { AppEntry, MenuNode, MenuTile } from './types.ts'
 import './menu-path.css'
 import './menu-path.overrides.css'
+import './menu-shell.css'
 
 /**
  * SLC hub shell: header, sign-out and the toast, hosting the menu path section below.
@@ -19,7 +25,9 @@ import './menu-path.overrides.css'
 const BRAND_LOGO =
   'https://raw.githubusercontent.com/ryannayak/fs-assets/e82f35a83e28689167b22b4300d4994a249acee0/fs-short-logo.png'
 
-export function MenuPage() {
+export type HubSection = 'master-data' | 'overview' | 'functionality' | 'reporting' | 'admin'
+
+export function MenuPage({ section }: { section: HubSection }) {
   const navigate = useNavigate()
   const [toast, setToast] = useState<string>()
 
@@ -80,9 +88,22 @@ export function MenuPage() {
         </div>
       </header>
 
-      <main>
-        <FunctionalityView groups={groups} onLaunch={launch} onToast={showToast} />
-      </main>
+      <div className="mp-body">
+        <Sidebar />
+        <main>
+          {section === 'master-data' ? (
+            <MasterDataView />
+          ) : section === 'overview' ? (
+            <OverviewView />
+          ) : section === 'reporting' ? (
+            <ReportingView />
+          ) : section === 'admin' ? (
+            <AdminView />
+          ) : (
+            <FunctionalityView groups={groups} onLaunch={launch} onToast={showToast} />
+          )}
+        </main>
+      </div>
 
       <div className={toast ? 'toast show' : 'toast'}>{toast}</div>
     </div>

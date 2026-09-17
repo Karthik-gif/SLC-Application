@@ -20,14 +20,11 @@ export function App() {
         <ToastProvider>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
-            <Route
-              path="/"
-              element={
-                <RequireAuth>
-                  <MenuPage />
-                </RequireAuth>
-              }
-            />
+            <Route path="/" element={<RequireAuth><MenuPage section="functionality" /></RequireAuth>} />
+            <Route path="/master-data" element={<RequireAuth><MenuPage section="master-data" /></RequireAuth>} />
+            <Route path="/overview" element={<RequireAuth><MenuPage section="overview" /></RequireAuth>} />
+            <Route path="/reporting" element={<RequireAuth><MenuPage section="reporting" /></RequireAuth>} />
+            <Route path="/admin" element={<RequireAuth><MenuPage section="admin" /></RequireAuth>} />
             <Route
               path="/apps/:appId"
               element={

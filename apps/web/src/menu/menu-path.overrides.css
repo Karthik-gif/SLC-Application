@@ -1,14 +1,30 @@
 /*
  * The only deviations from the generated legacy stylesheet, and why.
  *
- * The original page scrolled the document, so its ::-webkit-scrollbar rules styled the
- * window scrollbar. Scoped under .mp those rules only reach scrollable descendants, so the
- * blue scrollbar was lost. Making .mp the scroll container restores it without touching any
- * of the original declarations.
+ * The original page was one column that scrolled the document, so its ::-webkit-scrollbar
+ * rules styled the window scrollbar. The hub now puts a sidebar beside the content, so .mp
+ * is a flex column and <main> is what scrolls. Those scrollbar rules are scoped under .mp
+ * and <main> is a descendant, so the blue scrollbar is still styled.
  */
 .mp {
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.mp header {
+  flex-shrink: 0;
+}
+
+.mp main {
+  flex: 1;
+  min-width: 0;
   overflow-y: auto;
+  /* Was 75%, which left a quarter of the viewport empty on the right. The sidebar takes
+   * that space from the left instead, so the tile grid keeps its width. max-width:1700px
+   * from the generated file still applies. */
+  width: auto;
 }
 
 /*
