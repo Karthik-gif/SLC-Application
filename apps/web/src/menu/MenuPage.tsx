@@ -92,7 +92,7 @@ export function MenuPage({ section }: { section: HubSection }) {
         <Sidebar />
         <main>
           {section === 'master-data' ? (
-            <MasterDataView />
+            <MasterDataView onToast={showToast} />
           ) : section === 'overview' ? (
             <OverviewView />
           ) : section === 'reporting' ? (
