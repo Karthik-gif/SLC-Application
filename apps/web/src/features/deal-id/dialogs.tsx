@@ -223,7 +223,9 @@ export function DealIdListDialog({ open, onClose }: { open: boolean; onClose: ()
                   <td>{row.ZdealCurr}</td>
                   <td>{row.ZdealIdDesc}</td>
                   <td>{row.ZdealStat}</td>
-                  <td>{row.ZdealStatDesc}</td>
+                  {/* No status-text source survived the move off OData, so the raw code is
+                      shown rather than an empty cell — the same fallback the OTTK grid uses. */}
+                  <td>{row.ZdealStatDesc ?? row.ZdealStat ?? ''}</td>
                 </tr>
               ))
             )}

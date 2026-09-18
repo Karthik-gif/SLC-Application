@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { FS_LOGO, Spinner } from '@slc/ui'
 import { useAuth } from './AuthContext.tsx'
 import './login.css'
@@ -55,10 +55,12 @@ function charSkew(index: number, code: string) {
   }
 }
 
+/** Every sign-in opens the hub on Overview, whatever route first sent the user here. */
+const LANDING = '/overview'
+
 export function LoginPage() {
   const { status, signIn } = useAuth()
   const navigate = useNavigate()
-  const location = useLocation()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [revealed, setRevealed] = useState(false)
@@ -72,8 +74,6 @@ export function LoginPage() {
     setCaptchaInput('')
   }
 
-  const from = (location.state as { from?: string } | null)?.from ?? '/'
-
   if (status === 'checking') {
     return (
       <div className="slc-page-center">
@@ -81,7 +81,7 @@ export function LoginPage() {
       </div>
     )
   }
-  if (status === 'authenticated') return <Navigate to={from} replace />
+  if (status === 'authenticated') return <Navigate to={LANDING} replace />
 
   async function onSubmit(event: FormEvent) {
     event.preventDefault()
@@ -97,7 +97,7 @@ export function LoginPage() {
     setBusy(true)
     try {
       await signIn(username, password)
-      navigate(from, { replace: true })
+      navigate(LANDING, { replace: true })
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Sign-in failed.')
       // A fresh code per attempt — otherwise one solve covers unlimited guesses.

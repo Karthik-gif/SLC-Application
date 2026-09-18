@@ -1,11 +1,10 @@
-import { Navigate, useLocation } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import type { ReactNode } from 'react'
 import { Spinner } from '@slc/ui'
 import { useAuth } from './AuthContext.tsx'
 
 export function RequireAuth({ children }: { children: ReactNode }) {
   const { status } = useAuth()
-  const location = useLocation()
 
   // Render nothing decisive until the session check finishes, or a reload would flash the
   // login page at an already-signed-in user before bouncing them back.
@@ -18,8 +17,8 @@ export function RequireAuth({ children }: { children: ReactNode }) {
   }
 
   if (status === 'anonymous') {
-    // Remember where they were headed so sign-in returns them there, not to the menu.
-    return <Navigate to="/login" replace state={{ from: location.pathname + location.search }} />
+    // Sign-in always lands on Overview, so there is nothing to remember about where they were headed.
+    return <Navigate to="/login" replace />
   }
 
   return <>{children}</>

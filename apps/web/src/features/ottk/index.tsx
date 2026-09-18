@@ -220,12 +220,7 @@ export default function OttkApp() {
         setSuccess({ title: 'OTTK Updated', ottkNo: editKey, verb: 'updated', fees })
       } else {
         const newNo = await createOttk(payload)
-        const fees = newNo
-          ? await syncOttkFeeRows(newNo, currency, chargeRows)
-          : {
-              saved: 0,
-              failed: ['OTTK number could not be read back from the service — charge lines were not saved'],
-            }
+        const fees = await syncOttkFeeRows(newNo, currency, chargeRows)
         setModalOpen(false)
         setReloadToken((token) => token + 1)
         setSuccess({ title: 'OTTK Created', ottkNo: newNo, verb: 'created', fees })

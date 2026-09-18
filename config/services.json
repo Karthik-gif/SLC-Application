@@ -8,8 +8,8 @@
     "  odata - a dedicated SAP OData V4 service (ZFS_SB_*_O4_API). Typed, one per business object.",
     "  dyngw - the dynamic gateway service (ZFS_SB_DYNGW_O4_API): Registry + CallLog broker calls,",
     "          so a new app needs a registry row rather than an ABAP transport.",
-    "  rest  - a non-SAP JSON/REST API. No instance is configured yet; see 'example' below for the",
-    "          shape, and docs/ARCHITECTURE.md for what the gateway does and does not do for it.",
+    "  rest  - a non-SAP JSON/REST API. 'middleware' is the first instance; see docs/ARCHITECTURE.md",
+    "          for what the gateway does and does not do for one.",
     "",
     "No secret belongs in this file. 'passwordEnv' names an environment variable; the gateway",
     "refuses to start if a referenced variable is unset."
@@ -54,6 +54,11 @@
       "tlsVerify": false,
       "base": "https://vhnlqds4ap01.sap.niififl.in:44300/sap/opu/odata4/sap/zfs_sb_trdflow_o4_api/srvd_a2x/sap/zfs_sd_trdflow/0001",
       "description": "ZFS_SB_TRDFLOW_O4_API — TrdFlow, ChComm"
+    },
+    "middleware": {
+      "kind": "rest",
+      "base": "https://slc-middleware-c3d8g8cteug0c6e6.centralindia-01.azurewebsites.net/api/v1",
+      "description": "SLC middleware — reads SAP tables directly. data/entityString serves ZSGTSFTR_ENT_STR."
     },
     "dyngw": {
       "kind": "dyngw",

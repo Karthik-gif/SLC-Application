@@ -265,16 +265,10 @@ export default function DttkApp() {
         setSuccess({ title: 'DTTK Updated', dttkNo: editKey, verb: 'updated', fees })
       } else {
         const newNo = await createDttk(payload)
-        const fees = newNo
-          ? await syncDttkFeeRows(newNo, currency, chargeState.confirmation, chargeState.other)
-          : {
-              saved: 0,
-              failed: ['DTTK number could not be read back from the service — charge lines were not saved'],
-            }
+        const fees = await syncDttkFeeRows(newNo, currency, chargeState.confirmation, chargeState.other)
         setModalOpen(false)
         setReloadToken((token) => token + 1)
-        if (newNo) setSuccess({ title: 'DTTK Created', dttkNo: newNo, verb: 'created', fees })
-        else notify('Created, but the new DTTK number could not be read back')
+        setSuccess({ title: 'DTTK Created', dttkNo: newNo, verb: 'created', fees })
       }
     } catch (error) {
       notify(`Save failed: ${error instanceof Error ? error.message : String(error)}`)

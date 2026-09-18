@@ -68,10 +68,12 @@ export type DttkRow = {
 }
 
 export type BankRow = { Zbp?: string; BpName?: string; Zrbusa?: string; ZbaText?: string }
-export type EntityRow = { ZentId?: string; ZentDesc?: string; Zent1?: string; Zent2?: string }
-export type CoCodeRow = { ZcomId?: string; Zbukrs?: string; Butxt?: string }
 export type RefIntRow = { ZrefInt?: string; ZrefDesc?: string }
 export type { ChargeRow, FeeTypeRow } from '../../shared/charge-types.ts'
+export type { CoCodeRow } from '../../shared/co-code.ts'
+export type { EntityRow } from '../../shared/entity-string.ts'
+import type { CoCodeRow } from '../../shared/co-code.ts'
+import type { EntityRow } from '../../shared/entity-string.ts'
 import type { FeeTypeRow } from '../../shared/charge-types.ts'
 
 export type Lookups = {

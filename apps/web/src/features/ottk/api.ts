@@ -1,5 +1,8 @@
-import { apiFetch, apiRequest, entityPath, list, odataQuery, odataString, service, toNum } from '@slc/api-client'
+import { apiFetch, entityPath, list, odataQuery, odataString, service, toNum } from '@slc/api-client'
 import { isChargeRowTouched } from '../../shared/charges.ts'
+import { loadCoCodes } from '../../shared/co-code.ts'
+import { loadEntityStrings } from '../../shared/entity-string.ts'
+import { mwCreate, mwList, mwUpdate, nextNumber } from '../../shared/middleware.ts'
 import type {
   BankRow,
   ChargeRow,
@@ -14,7 +17,6 @@ import type {
 } from './types.ts'
 
 const ottkApi = service('ottk')
-const dttkApi = service('dttk')
 
 /**
  * This console only handles tickets still open for assignment. Anything past
@@ -26,12 +28,12 @@ export function isAssignableStatus(code: string | undefined): boolean {
 }
 
 export async function loadOttk(signal?: AbortSignal): Promise<OttkRow[]> {
-  const rows = await list<OttkRow>(ottkApi('SlcOttkDetail'), undefined, signal ? { signal } : undefined)
+  const rows = await mwList<OttkRow>('ottk', undefined, signal)
   return rows.filter((row) => isAssignableStatus(row.ZottkSt))
 }
 
 export async function loadDttk(signal?: AbortSignal): Promise<DttkRow[]> {
-  const rows = await list<DttkRow>(dttkApi('SlcDttkDetail'), undefined, signal ? { signal } : undefined)
+  const rows = await mwList<DttkRow>('dttk', undefined, signal)
   return rows.filter((row) => isAssignableStatus(row.ZdttkSt))
 }
 
@@ -39,6 +41,9 @@ export async function loadDttk(signal?: AbortSignal): Promise<DttkRow[]> {
  * The five master-data lookups the create/edit form depends on. A lookup that fails yields
  * an empty list rather than failing the others — a missing Ref Int list must not stop the
  * form opening.
+ *
+ * Bank and Fee Type are still read from SAP OData: the middleware exposes no equivalent
+ * resource for either, so they cannot move until it does.
  */
 export async function loadLookups(signal?: AbortSignal): Promise<Lookups> {
   const options = signal ? { signal } : undefined
@@ -47,9 +52,9 @@ export async function loadLookups(signal?: AbortSignal): Promise<Lookups> {
 
   const [banks, entities, coCodes, refInts, feeTypes] = await Promise.all([
     get<BankRow>('Bank'),
-    get<EntityRow>('EntityString'),
-    get<CoCodeRow>('CoCode'),
-    get<RefIntRow>('RefInt'),
+    loadEntityStrings(signal).catch(() => [] as EntityRow[]),
+    loadCoCodes(signal).catch(() => [] as CoCodeRow[]),
+    mwList<RefIntRow>('refInt', undefined, signal).catch(() => [] as RefIntRow[]),
     get<FeeTypeRow>('FeeType'),
   ])
   return { banks, entities, coCodes, refInts, feeTypes }
@@ -59,7 +64,12 @@ export async function loadFeeTypes(): Promise<FeeTypeRow[]> {
   return list<FeeTypeRow>(ottkApi('FeeType')).catch(() => [])
 }
 
-/** Existing charge lines for a ticket, keyed by fee type. */
+/**
+ * Existing charge lines for a ticket, keyed by fee type.
+ *
+ * Still on SAP OData. The middleware's 'fee' resource is the fee-type master, not the
+ * per-ticket charge lines, so there is nothing to migrate this onto.
+ */
 export async function fetchFeeRowsByType(ottkNo: string): Promise<Record<string, Record<string, unknown>>> {
   const byType: Record<string, Record<string, unknown>> = {}
   const rows = await list<Record<string, unknown>>(ottkApi('SlcOttkFee'), {
@@ -70,35 +80,21 @@ export async function fetchFeeRowsByType(ottkNo: string): Promise<Record<string,
 }
 
 /**
- * Creates the header and returns the server-generated OTTK number.
+ * Creates the header and returns the OTTK number.
  *
- * `Prefer: return=representation` asks the service to echo the created entity, which is the
- * cheapest of the three ways the number can come back; createEntity falls through to the
- * OData-EntityId/Location header and then a highest-number re-read.
+ * The number is allocated up front because the middleware does not generate keys — a POST
+ * without one inserts a blank-keyed row. That removes the guesswork the OData path needed to
+ * learn the number after the fact, but it also means the number is only as unique as
+ * `nextNumber` can make it; see the caveat there.
  */
 export async function createOttk(payload: OttkPayload): Promise<string> {
-  const response = await apiRequest<OttkRow>(ottkApi('SlcOttkDetail'), {
-    method: 'POST',
-    body: payload,
-    headers: { Prefer: 'return=representation' },
-  })
-  if (response.data?.ZottkNo) return String(response.data.ZottkNo)
-
-  const header = response.headers.get('OData-EntityId') ?? response.headers.get('Location') ?? ''
-  const match = header.match(/\('([^']+)'\)/)
-  if (match?.[1]) return decodeURIComponent(match[1])
-
-  try {
-    const latest = await list<OttkRow>(ottkApi('SlcOttkDetail'), { orderby: 'ZottkNo desc', top: 1 })
-    if (latest[0]?.ZottkNo) return String(latest[0].ZottkNo)
-  } catch {
-    // Fall through to '' — the caller reports it rather than swallowing it.
-  }
-  return ''
+  const ZottkNo = await nextNumber('ottk', 'ZottkNo')
+  await mwCreate('ottk', { ...payload, ZottkNo })
+  return ZottkNo
 }
 
 export async function updateOttk(key: string, payload: OttkPayload): Promise<void> {
-  await apiFetch(ottkApi(entityPath('SlcOttkDetail', key)), { method: 'PATCH', body: payload })
+  await mwUpdate('ottk', { ZottkNo: key }, payload)
 }
 
 export type FeeSyncResult = { saved: number; failed: string[] }
@@ -111,6 +107,9 @@ export type FeeSyncResult = { saved: number; failed: string[] }
  * whole OTTK save. A post that fails is collected and reported in the success dialog, not a
  * toast: the toast is replaced within seconds and sits behind the dialog, so a failed charge
  * line was invisible in practice.
+ *
+ * Still on SAP OData for the same reason as fetchFeeRowsByType: the middleware's 'fee'
+ * resource is the fee-type master, not per-ticket charge lines.
  */
 export async function syncOttkFeeRows(
   ottkNo: string,

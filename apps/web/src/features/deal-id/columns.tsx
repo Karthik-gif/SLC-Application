@@ -51,7 +51,12 @@ export function ottkColumns(totals: AssignedTotals, onOpen: (key: string) => voi
     { header: 'Structure', cell: (r) => codeText(r.Zstr, r.ZstrText) },
     { header: 'Entity ID', cell: (r) => r.ZentId ?? '' },
     { header: 'Entity String', cell: (r) => r.ZentDesc ?? '' },
-    { header: 'LC Issuing Bank', cell: (r) => (r.ZottkBank ? `${r.ZottkBank} — ${r.BpName ?? ''}` : '') },
+    // The name is joined in from the bank master and can legitimately be missing, so the
+    // separator is only drawn when there is something on both sides of it.
+    {
+      header: 'LC Issuing Bank',
+      cell: (r) => [r.ZottkBank, r.BpName].filter(Boolean).join(' — '),
+    },
     { header: 'Trade Value', className: 'num', cell: (r) => fmtNum(r.ZottkValue) },
     { header: 'Crcy', cell: (r) => r.ZottkCurr ?? '' },
     { header: 'Balance', className: 'num', cell: (r) => balance(r.ZottkValue, totals.byOttk.get(r.ZottkNo ?? '')) },
