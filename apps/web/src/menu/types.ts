@@ -37,14 +37,21 @@ export type AppEntry = {
  *
  * config/menu.json stays the single source of truth for these tiles — it is still the tree
  * extracted verbatim from the legacy page — and the split happens here, at the UI layer:
- * TradeFlowsView renders this group, FunctionalityView skips it. Matching by label rather
+ * TradeFlowsView renders this group, SlcStructureView skips it. Matching by label rather
  * than adding a field to menu.json keeps that file untouched; if the group is ever renamed
- * there, it reappears under Functionality rather than vanishing, which is the safe failure.
+ * there, it reappears under SLC Structure rather than vanishing, which is the safe failure.
  */
 export const TRADE_FLOWS_GROUP = 'Trade Flows'
 
-export function childrenOf(node: MenuNode): MenuNode[] | MenuTile[] {
-  return node.subgroups ?? node.items ?? []
+/**
+ * Everything inside a node, folders and screens together.
+ *
+ * A node can hold both: the FX menu's Front-Office group has nine transactions and two
+ * folders beside them. Callers use this for "is there anything in here", so it has to count
+ * both rather than pick whichever list is present.
+ */
+export function childrenOf(node: MenuNode): (MenuNode | MenuTile)[] {
+  return [...(node.subgroups ?? []), ...(node.items ?? [])]
 }
 
 export function isFolder(node: MenuNode | MenuTile): node is MenuNode {

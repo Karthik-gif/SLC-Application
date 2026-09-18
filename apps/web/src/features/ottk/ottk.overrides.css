@@ -26,3 +26,34 @@
     grid-column: span 2;
   }
 }
+
+/*
+ * Short values get short controls.
+ *
+ * In the modal the field rows are a four-track grid and every control fills its track
+ * (.modal-content-grid .field input {width:100%} via align-items:stretch), so a 10-character
+ * party code, a rate and a date each drew an underline as wide as "DSX — Deposit Set Off -
+ * Cross Border". The underline read as a promise of room that the value never uses, and the
+ * eye had to travel the full track to find a right-aligned "0.00".
+ *
+ * Capping max-width leaves the fields in their tracks — the grid, the labels and every row
+ * below stay aligned — and only shortens the control itself. Three widths, sized to the
+ * longest value each kind actually holds: a 5-decimal rate, a 10-character code, and
+ * dd-mm-yyyy plus the picker icon. `.short`/`.code` already do the same for Expected LC
+ * Tenor and Company Code; these follow them rather than introduce another mechanism.
+ *
+ * The compound selector reaches the input inside Other Charges' input+button pair, so the
+ * breakdown button moves left with the input instead of staying at the track's right edge.
+ */
+@media (min-width: 801px) {
+  .ottk .modal-content-grid .field.narrow-num > input,
+  .ottk .modal-content-grid .field.narrow-num > .compound > input {
+    max-width: 104px;
+  }
+  .ottk .modal-content-grid .field.narrow-code > input {
+    max-width: 132px;
+  }
+  .ottk .modal-content-grid .field.narrow-date > input {
+    max-width: 150px;
+  }
+}

@@ -5,11 +5,36 @@ import { FS_LOGO, Spinner } from '@slc/ui'
 import { useAuth } from './AuthContext.tsx'
 import './login.css'
 
-/** The three guarantees shown on the marketing panel, as numbered nodes on a flow line. */
-const FLOW_STEPS = [
-  { no: '01', label: 'Gateway Held Credentials' },
-  { no: '02', label: 'One Signed-In Session' },
-  { no: '03', label: 'Live OData Backends' },
+/**
+ * Where trade structured finance sits along Olam Agri's physical chain.
+ *
+ * The four stages are Olam Agri's own value chain as it describes it — "global origination,
+ * processing, trading, logistics, distribution" (olamagri.com) — and each detail line is the
+ * financing instrument that funds that leg. This is the business the application serves, so
+ * it is what the sign-in screen shows; it is deliberately not a tour of the screens inside.
+ */
+const CHAIN = [
+  { no: '01', stage: 'Originate', detail: 'Pre-export finance' },
+  { no: '02', stage: 'Process', detail: 'Inventory finance' },
+  { no: '03', stage: 'Ship', detail: 'Documentary credits' },
+  { no: '04', stage: 'Distribute', detail: 'Receivables discounting' },
+]
+
+/**
+ * Olam Agri calls itself a food, feed and fibre agri-business; these are its product
+ * platforms from olamagri.com/products-services, grouped under those three words.
+ */
+const PLATFORMS = [
+  { group: 'Food', items: ['Grains & Oilseeds', 'Rice', 'Edible Oils', 'Wheat Milling & Pasta'] },
+  { group: 'Feed', items: ['Animal Feed & Protein', 'Specialty Grains & Seeds'] },
+  { group: 'Fibre', items: ['Cotton', 'Wood Products', 'Rubber'] },
+]
+
+/** Scale, as Olam Agri publishes it on olamagri.com. */
+const STATS = [
+  { figure: '30+', label: 'Countries' },
+  { figure: '9,300', label: 'Customers' },
+  { figure: '70', label: 'Processing facilities' },
 ]
 
 /** No I/O/0/1 — they are indistinguishable in a distorted glyph and only cause retypes. */
@@ -84,7 +109,7 @@ export function LoginPage() {
 
   // The gateway authenticates one shared credential; no OAuth client is configured.
   function onGoogle() {
-    setError('Google sign-in is not configured. Use your SLC username and password.')
+    setError('Google sign-in is not configured. Use your TSF username and password.')
   }
 
   return (
@@ -93,36 +118,54 @@ export function LoginPage() {
         <div className="login__brand">
           <img src={FS_LOGO} alt="" className="login__mark" />
           <div>
-            <h1 className="login__brandName">SLC</h1>
-            <p className="login__brandTag">Treasury &amp; Trade Operations</p>
+            <h1 className="login__brandName">TSF</h1>
+            <p className="login__brandTag">Olam Agri &bull; Trade Structured Finance</p>
           </div>
         </div>
 
         <div className="login__pitchBody">
-          <h2 className="login__headline">
-            One controlled platform for trade flow operations.
-          </h2>
+          <h2 className="login__headline">Structured finance for food, feed and fibre.</h2>
           <p className="login__sub">
-            Originate and distribute tickets, assign deal IDs, and post trade flows against live SAP
-            OData services — from a single signed-in session.
+            Grains, rice, edible oils and cotton moving from farm-gate to destination market
+            across 30+ countries — and the facilities that fund every leg of that journey.
           </p>
 
+          <ul className="login__stats">
+            {STATS.map((stat) => (
+              <li className="login__stat" key={stat.label}>
+                <span className="login__statFigure">{stat.figure}</span>
+                <span className="login__statLabel">{stat.label}</span>
+              </li>
+            ))}
+          </ul>
+
           <div className="login__flow">
+            <p className="login__flowTitle">Finance across the chain</p>
             <ol className="login__flowSteps">
-              {FLOW_STEPS.map((step) => (
-                <li className="login__step" key={step.no}>
-                  <span className="login__stepNo">{step.no}</span>
-                  {step.label}
+              {CHAIN.map((step) => (
+                <li className="login__stage" key={step.no}>
+                  <span className="login__stageDot" aria-hidden="true" />
+                  <span className="login__stageNo">{step.no}</span>
+                  <span className="login__stageName">{step.stage}</span>
+                  <span className="login__stageDetail">{step.detail}</span>
                 </li>
               ))}
             </ol>
-            <div className="login__flowLine" aria-hidden="true">
-              <span className="login__node" />
-              <span className="login__rail" />
-              <span className="login__node" />
-              <span className="login__rail" />
-              <span className="login__node" />
-            </div>
+          </div>
+
+          <div className="login__desks">
+            {PLATFORMS.map((row) => (
+              <div className="login__desk" key={row.group}>
+                <span className="login__deskName">{row.group}</span>
+                <div className="login__deskItems">
+                  {row.items.map((item) => (
+                    <span className="login__chip" key={item}>
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -130,7 +173,7 @@ export function LoginPage() {
       <section className="login__panel">
         <form className="login__card" onSubmit={onSubmit} noValidate>
           <h2 className="login__welcome">Welcome Back</h2>
-          <p className="login__intro">Login to continue to SLC</p>
+          <p className="login__intro">Login to continue to TSF</p>
           <span className="login__rule" aria-hidden="true" />
 
           <div className="login__field">
@@ -260,7 +303,7 @@ export function LoginPage() {
 
           <p className="login__note">
             <ShieldIcon />
-            Internal SLC access only
+            Internal TSF access only
           </p>
         </form>
       </section>

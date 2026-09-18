@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { BarChart, DonutChart, LineChart, Sparkline } from '../charts/Charts.tsx'
 import {
   DEAL_STATUS,
@@ -8,17 +9,54 @@ import {
 } from '../mock/overview.ts'
 
 /**
- * Position and activity across the SLC estate. Every figure is static — see
- * mock/overview.ts — so the page says so rather than implying it is live.
+ * The four structures the hub is divided into, plus the combined view they default to.
+ *
+ * Short labels on purpose: the row sits under a heading that already says Overview, and the
+ * full names ("XLC-CRP Structure") would wrap the row onto two lines on a laptop.
+ */
+const SCOPES = ['All', 'FX', 'SLC', 'XLC-CRP', 'ICFS'] as const
+
+type Scope = (typeof SCOPES)[number]
+
+/**
+ * Position and activity across the estate. Every figure is static — see mock/overview.ts —
+ * so the page says so rather than implying it is live.
+ *
+ * The structure picker below changes nothing yet, and that is the honest state of it: there
+ * is one placeholder data set, not four. It exists now so the page has the shape it will
+ * keep, and it says outright that the figures are not split, because a picker that silently
+ * redraws the same numbers reads as four structures that happen to be identical.
  */
 export function OverviewView() {
+  const [scope, setScope] = useState<Scope>('All')
+
   return (
     <>
       <div className="hub-title">Overview</div>
       <div className="hub-sub">
-        Position and activity across the SLC estate. Figures on this page are placeholders and
+        Position and activity across the TSF estate. Figures on this page are placeholders and
         are not read from SAP.
       </div>
+
+      <div className="mp-scope-row" role="group" aria-label="Structure">
+        {SCOPES.map((option) => (
+          <button
+            type="button"
+            key={option}
+            className={option === scope ? 'mp-scope active' : 'mp-scope'}
+            aria-pressed={option === scope}
+            onClick={() => setScope(option)}
+          >
+            {option}
+          </button>
+        ))}
+      </div>
+      {scope !== 'All' ? (
+        <p className="mp-scope-note">
+          The figures below are not split by structure yet — this is the same placeholder set
+          shown for {scope} as for every other structure.
+        </p>
+      ) : null}
 
       <div className="group-label">Key figures</div>
       <div className="mp-kpi-grid">

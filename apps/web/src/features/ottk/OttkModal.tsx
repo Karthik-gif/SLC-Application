@@ -32,9 +32,22 @@ export type OttkModalProps = {
 }
 
 /** One labelled control in the modal grid; matches the legacy `.field` markup. */
-function Field({ label, htmlFor, children, hidden }: { label: ReactNode; htmlFor?: string; children: ReactNode; hidden?: boolean }) {
+function Field({
+  label,
+  htmlFor,
+  size,
+  children,
+  hidden,
+}: {
+  label: ReactNode
+  htmlFor?: string
+  /** Caps the control's width for values that are never long — see ottk.overrides.css. */
+  size?: 'num' | 'code' | 'date'
+  children: ReactNode
+  hidden?: boolean
+}) {
   return (
-    <div className="field" hidden={hidden}>
+    <div className={size ? `field narrow-${size}` : 'field'} hidden={hidden}>
       <label htmlFor={htmlFor}>{label}</label>
       {children}
     </div>
@@ -272,7 +285,7 @@ export function OttkModal(props: OttkModalProps) {
                 <option value="03">03 Fixed Maturity Date</option>
               </select>
             </Field>
-            <Field label="Other Charges">
+            <Field label="Other Charges" size="num">
               <div className="compound">
                 <input
                   className="num-input"
@@ -295,10 +308,10 @@ export function OttkModal(props: OttkModalProps) {
                 <option value="02">02 Copy BL</option>
               </select>
             </Field>
-            <Field label="LC Applicant">
+            <Field label="LC Applicant" size="code">
               <input maxLength={10} value={form.lcApplicant} onChange={(e) => onApplicantChange(e.target.value)} />
             </Field>
-            <Field label="LC Beneficiary">
+            <Field label="LC Beneficiary" size="code">
               <input maxLength={10} value={form.lcBeneficiary} onChange={(e) => set('lcBeneficiary', e.target.value)} />
             </Field>
             <Field label="Company Code">
@@ -356,7 +369,7 @@ export function OttkModal(props: OttkModalProps) {
                 <option value="04">04 Bank COF</option>
               </select>
             </Field>
-            <Field label="Interest Rate" hidden={!fixed}>
+            <Field label="Interest Rate" size="num" hidden={!fixed}>
               <input
                 className="num-input"
                 inputMode="decimal"
@@ -389,7 +402,7 @@ export function OttkModal(props: OttkModalProps) {
                 onChange={(e) => set('spreadRate', e.target.value)}
               />
             </Field>
-            <Field label="1st Interest Date">
+            <Field label="1st Interest Date" size="date">
               <input
                 type="date"
                 value={form.firstInterestDate}
@@ -417,7 +430,7 @@ export function OttkModal(props: OttkModalProps) {
           </Section>
 
           <Section title="Commercial Summary">
-            <Field label="Expected P&L %">
+            <Field label="Expected P&L %" size="num">
               <input
                 className="num-input"
                 inputMode="decimal"

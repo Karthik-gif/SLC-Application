@@ -3,7 +3,7 @@ import { Tile } from '../Tile.tsx'
 import { MASTER_DATA_GROUPS } from '../mock/master-data.ts'
 
 /**
- * Reference data behind the SLC screens. The tiles are placeholders — see
+ * Reference data behind the TSF screens. The tiles are placeholders — see
  * mock/master-data.ts — so clicking one says so rather than navigating, which is the same
  * thing the launcher does for an application that is not wired up.
  */
@@ -12,7 +12,7 @@ export function MasterDataView({ onToast }: { onToast: (message: string) => void
     <>
       <div className="hub-title">Master Data</div>
       <div className="hub-sub">
-        Reference data behind the SLC screens. These tiles are placeholders — none of them is
+        Reference data behind the TSF screens. These tiles are placeholders — none of them is
         wired to SAP yet.
       </div>
       {/* A Fragment, not a wrapper div: .group-label:first-of-type{margin-top:0} would match

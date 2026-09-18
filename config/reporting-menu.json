@@ -1,0 +1,48 @@
+[
+  {
+    "label": "FX Structure",
+    "subgroups": [
+      {
+        "label": "FX Master Contract",
+        "items": []
+      },
+      {
+        "label": "FX Front-Office",
+        "items": []
+      },
+      {
+        "label": "FX Mid-Office",
+        "items": []
+      },
+      {
+        "label": "FX Back-Office & Settlement",
+        "items": []
+      }
+    ]
+  },
+  {
+    "label": "SLC Structure",
+    "subgroups": [
+      {
+        "label": "Front Office",
+        "items": []
+      },
+      {
+        "label": "Mid Office",
+        "items": []
+      },
+      {
+        "label": "Back-Office & Settlement",
+        "items": []
+      }
+    ]
+  },
+  {
+    "label": "XLC-CRP Structure",
+    "items": []
+  },
+  {
+    "label": "ICFS Structure",
+    "items": []
+  }
+]

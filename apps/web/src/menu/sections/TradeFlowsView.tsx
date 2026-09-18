@@ -6,7 +6,7 @@ import type { MenuNode, MenuTile } from '../types.ts'
  * Trade Flows, promoted out of the menu path into a section of its own.
  *
  * The tiles are the real applications, not placeholders: they come from the same
- * config/menu.json group Functionality used to show and launch through config/apps.json
+ * config/menu.json group SLC Structure used to show and launch through config/apps.json
  * exactly as before, so moving them changed where they live and nothing about what they do.
  */
 export function TradeFlowsView({ groups, onLaunch }: {

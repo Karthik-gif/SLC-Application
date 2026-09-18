@@ -7,22 +7,26 @@ import { Sidebar } from './Sidebar.tsx'
 import { ThemeToggle } from './ThemeToggle.tsx'
 import { useTheme } from '../shared/ThemeContext.tsx'
 import { AdminView } from './sections/AdminView.tsx'
-import { FunctionalityView } from './sections/FunctionalityView.tsx'
+import { FxStructureView } from './sections/FxStructureView.tsx'
+import { IcfsStructureView } from './sections/IcfsStructureView.tsx'
 import { MasterDataView } from './sections/MasterDataView.tsx'
 import { OverviewView } from './sections/OverviewView.tsx'
+import { ReportingStructureView } from './sections/ReportingStructureView.tsx'
 import { ReportingView } from './sections/ReportingView.tsx'
+import { SlcStructureView } from './sections/SlcStructureView.tsx'
 import { TradeFlowsView } from './sections/TradeFlowsView.tsx'
+import { XlcCrpStructureView } from './sections/XlcCrpStructureView.tsx'
 import type { AppEntry, MenuNode, MenuTile } from './types.ts'
 import './menu-path.css'
 import './menu-path.overrides.css'
 import './menu-shell.css'
 
 /**
- * SLC hub shell: header, sign-out and the toast, hosting the menu path section below.
+ * TSF hub shell: header, sign-out and the toast, hosting the menu path section below.
  *
  * Fetches the menu tree and the app registry, resolves tiles through config/apps.json to an
  * in-app route, and owns the toast shown when a tile launches or fails to. The tile browser
- * itself — the faithful reproduction of legacy/Menu Path.html — lives in FunctionalityView.
+ * itself — the faithful reproduction of legacy/Menu Path.html — lives in SlcStructureView.
  *
  * The header and toast markup below is still legacy-governed: the brand, brand-logo, brand-text,
  * path-switch, ps-label, status-dot, header-right and toast classes are all defined in the
@@ -37,9 +41,28 @@ export type HubSection =
   | 'master-data'
   | 'overview'
   | 'trade-flows'
-  | 'functionality'
+  | 'fx-structure'
+  | 'slc-structure'
+  | 'xlc-crp-structure'
+  | 'icfs-structure'
   | 'reporting'
+  | 'reporting-fx-structure'
+  | 'reporting-slc-structure'
+  | 'reporting-xlc-crp-structure'
+  | 'reporting-icfs-structure'
   | 'admin'
+
+/**
+ * Reporting's four child sections differ only in which structure they show, so they map to a
+ * label in config/reporting-menu.json rather than to four components. The labels are the
+ * ones in that file — ReportingStructureView looks the node up by label.
+ */
+const REPORTING_STRUCTURES: Partial<Record<HubSection, string>> = {
+  'reporting-fx-structure': 'FX Structure',
+  'reporting-slc-structure': 'SLC Structure',
+  'reporting-xlc-crp-structure': 'XLC-CRP Structure',
+  'reporting-icfs-structure': 'ICFS Structure',
+}
 
 export function MenuPage({ section }: { section: HubSection }) {
   const navigate = useNavigate()
@@ -71,6 +94,7 @@ export function MenuPage({ section }: { section: HubSection }) {
   }, [])
 
   const groups = menu.data ?? []
+  const reportingStructure = REPORTING_STRUCTURES[section]
 
   const launch = useCallback(
     (tile: MenuTile) => {
@@ -91,7 +115,7 @@ export function MenuPage({ section }: { section: HubSection }) {
         <div className="brand">
           <img className="brand-logo" alt="Fourth Signal" src={BRAND_LOGO} />
           <div className="brand-text">
-            <h1>SLC</h1>
+            <h1>TSF</h1>
             <p>FS &bull; VISTA</p>
           </div>
         </div>
@@ -111,12 +135,25 @@ export function MenuPage({ section }: { section: HubSection }) {
             <OverviewView />
           ) : section === 'trade-flows' ? (
             <TradeFlowsView groups={groups} onLaunch={launch} />
+          ) : section === 'fx-structure' ? (
+            <FxStructureView onLaunch={launch} onToast={showToast} scrollToTop={scrollToTop} />
+          ) : section === 'xlc-crp-structure' ? (
+            <XlcCrpStructureView />
+          ) : section === 'icfs-structure' ? (
+            <IcfsStructureView />
+          ) : reportingStructure ? (
+            <ReportingStructureView
+              structure={reportingStructure}
+              onLaunch={launch}
+              onToast={showToast}
+              scrollToTop={scrollToTop}
+            />
           ) : section === 'reporting' ? (
             <ReportingView />
           ) : section === 'admin' ? (
             <AdminView />
           ) : (
-            <FunctionalityView
+            <SlcStructureView
               groups={groups}
               onLaunch={launch}
               onToast={showToast}

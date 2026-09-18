@@ -36,17 +36,25 @@ serves the built SPA itself.
 ## The hub
 
 Signing in lands on the menu hub. A sidebar rests as a 64px icon rail and widens on hover —
-or when a keyboard user tabs into it — to reach five sections:
+or when a keyboard user tabs into it — to reach nine sections:
 
 | Section | Route | Holds |
 |---|---|---|
 | Overview | `/overview` | KPIs, exposure and volume charts, recent activity. **Placeholder figures — nothing here is read from SAP.** |
 | Master Data | `/master-data` | Reference-data tiles. **Placeholders — nothing is wired behind them.** |
-| Functionality | `/` | The menu path itself: the tile and folder tree from `config/menu.json` that launches every application |
-| Reporting | `/reporting` | Stub |
+| Trade Flows | `/trade-flows` | The `Trade Flows` group from `config/menu.json`, promoted out of the menu path |
+| FX Structure | `/fx-structure` | The SAP FX menu tree from `config/fx-menu.json` — master contract, front office, mid office and settlement. **The transactions are listed, none is converted yet.** |
+| SLC Structure | `/` | The menu path itself: the tile and folder tree from `config/menu.json` that launches every application |
+| XLC-CRP Structure | `/xlc-crp-structure` | Stub |
+| ICFS Structure | `/icfs-structure` | Stub |
+| Reporting | `/reporting` | A parent section: the reports in `config/reporting-menu.json` are held one subtree per structure, and each structure is a child entry under Reporting in the sidebar |
+| &nbsp;&nbsp;↳ FX Structure | `/reporting/fx-structure` | The FX report folders — **no report is set up yet** |
+| &nbsp;&nbsp;↳ SLC Structure | `/reporting/slc-structure` | The SLC report folders — **no report is set up yet** |
+| &nbsp;&nbsp;↳ XLC-CRP Structure | `/reporting/xlc-crp-structure` | XLC-CRP reports — **no report is set up yet** |
+| &nbsp;&nbsp;↳ ICFS Structure | `/reporting/icfs-structure` | ICFS reports — **no report is set up yet** |
 | Admin | `/admin` | Stub |
 
-Functionality keeps `/` because every converted application's Back button returns there.
+SLC Structure keeps `/` because every converted application's Back button returns there.
 Overview's figures live in one module, `apps/web/src/menu/mock/overview.ts`; swapping in a
 live feed is a change to that file and nothing else.
 
@@ -73,7 +81,7 @@ packages/
   api-client/       shared client — apiFetch, OData helpers, React hooks
   ui/               design tokens and shared React components
 apps/web/           the SPA: login, the hub, and one lazy route per application
-  src/menu/         the hub shell — sidebar, the five sections, and its SVG charts
+  src/menu/         the hub shell — sidebar, the nine sections, and its SVG charts
   src/features/     one folder per application
 legacy/             the original single-file HTML apps, kept as the conversion reference
 ```

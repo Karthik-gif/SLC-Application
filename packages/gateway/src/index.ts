@@ -67,7 +67,7 @@ export async function build() {
 
   // Menu and app registries, served rather than bundled so a tile can be added or an app's
   // status flipped without rebuilding the frontend.
-  for (const name of ['menu', 'apps'] as const) {
+  for (const name of ['menu', 'fx-menu', 'reporting-menu', 'apps'] as const) {
     app.get(`/config/${name}.json`, async (req, reply) => {
       if (!requireSession(req, reply)) return
       return JSON.parse(readFileSync(resolve(REPO_ROOT, `config/${name}.json`), 'utf8'))
